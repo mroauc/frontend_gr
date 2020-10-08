@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -15,8 +15,9 @@ import 'bootstrap/dist/js/bootstrap';
 // import subProyecto from './componentes/SubProyecto/SubProyecto'
 
 
-function App() {
-  return (
+class App extends Component {
+  render(){
+    return (
     // <Router>
     //   <Route path="/" component={Navigation}></Route>
     //   <Route path="/comentarios" component={Comentario} ></Route>
@@ -30,7 +31,8 @@ function App() {
       
       
     // </Router>
-  );
+    );
+  }
 }
 
 export default App;
