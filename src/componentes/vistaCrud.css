@@ -1,0 +1,24 @@
+.Encabezado{
+    font-size: 65px;
+    text-align: center;
+    color: white;
+}
+
+.Encabezado > p{
+    border-bottom: 1px solid rgba(0,0,0,.15);
+    text-shadow: 7px 4px 5px rgba(73, 73, 73, 0.151);
+    -webkit-text-stroke: 1px black;
+}
+
+table{
+    margin: 30px auto;
+}
+
+.paginado{
+    margin: 0 auto;
+}
+
+.boton{
+    background-color: rgba(147, 212, 255, 0.137);
+    border: 1px solid rgba(0, 0, 0, 0.342);
+}
