@@ -3,7 +3,8 @@ import './Glosario.css'
 import '../vistaCrud.css'
 import axios from 'axios'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
-import { Link } from 'react-router-dom'
+import ModalGlosario from './GlosarioModal'
+import TablaGlosario from './GlosarioTabla'
 
 const url="http://localhost:8080/api/glosario/";
 
@@ -16,7 +17,8 @@ export default class Glosario extends Component {
             id_proyecto: ''
         },
         modalInsertar: false,
-        modalEditar: false
+        modalEditar: false,
+        modalEliminar: false
     }
     
     componentDidMount(){
@@ -26,11 +28,7 @@ export default class Glosario extends Component {
     getGlosarios = () => {
         axios.get(url).then(response=>{
             this.setState({
-                data: response.data,
-                glosario: {
-                    id_glosario: '',
-                    id_proyecto: ''
-                }
+                data: response.data
             });
         })
     }
@@ -48,111 +46,69 @@ export default class Glosario extends Component {
         console.log(this.state.modalEditar);
 
         if(!this.state.modalEditar){
-            this.setState({glosario : {id_glosario : '', id_proyecto : ''}})
+            this.setState({
+                glosario : {
+                    id_glosario : '',
+                    id_proyecto : ''
+                }})
         }
     }
     
-    obtenerGlosario = (elemento) => {
+    cambiarEstadoEliminar = (elemento) => {
         this.setState({
+            glosario : elemento,
+            modalEliminar : true
+        })
+    }
+
+    obtenerGlosario = async (elemento) => {
+        await this.setState({
             glosario : elemento
         });
         this.cambiarEstadoEditar();
     }
-    
-    insertarGlosario = async (glosario) => {
-        var urlGuardar = url + 'guardar';
-        console.log(urlGuardar);
-        console.log(glosario);
-        
-        await axios.post(urlGuardar, glosario)
-        .then(response => {
-            (this.state.modalEditar) ? this.cambiarEstadoEditar() : this.cambiarEstadoInsertar();
-            this.getGlosarios();
-            console.log(response);
-        })
-        .catch(error => {
-            console.log(error)
-        })
-    }
-    
-    eliminarGlosario = (id_glosario) => {
-        var urlEliminar = url + 'eliminar/' + id_glosario;
+
+    eliminarGlosario = () => {
+        var urlEliminar = url + 'eliminar/' + this.state.glosario.id_glosario;
         axios.delete(urlEliminar).then(response=>{
             this.getGlosarios();
         });
-    }
-
-
-    
-    changeHandler = (e) => {
         this.setState({
-            glosario : {
-              ...this.state.glosario, [e.target.name]: e.target.value
-            }
-          });
+            modalEliminar : false
+        })
     }
-
+    
     render(){
         return(
-            <div>
-                <div className="glosario col-10">
-                    <div className="Encabezado"><p>Glosario</p></div>
+            
+            <div className="glosario col-10">
+                <div className="Encabezado"><p>Glosario</p></div>
+                <button type="button" class="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Ingresar Glosario</button>
 
-                    <button type="button" class="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Ingresar Glosario</button>
+                <TablaGlosario
+                    glosarios={this.state.data}
+                    obtenerGlosario = {this.obtenerGlosario}
+                    eliminarGlosario = {this.eliminarGlosario}
+                    cambiarEstadoEliminar = {this.cambiarEstadoEliminar}
+                />
 
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                            <th scope="col" style={{width:'30%'}}>ID</th>
-                            <th style={{width:'30%'}}>ID Proyecto</th>
-                            <th style={{width:'30%'}}>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {this.state.data.map(glosario => {
-                                return(
-                                    <tr>
-                                        <td scope="col">{glosario.id_glosario}</td>
-                                        <td>{glosario.id_proyecto}</td>
-                                        <td >
-                                            <Link to={"/glosario/"+glosario.id_glosario} ><button className="btn btn-success" >Ver Definiciones</button></Link> &nbsp;
-                                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modalEditar" onClick={() => this.obtenerGlosario(glosario)}>Editar</button> &nbsp;
-                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalEditar" onClick={() => this.eliminarGlosario(glosario.id_glosario)}>Eliminar</button>
-                                            
-                                            
-                                        </td>
+                <ModalGlosario
+                    glosario = {this.state.glosario}
+                    getGlosarios = {this.getGlosarios}
+                    estadoEditar = {this.state.modalEditar} 
+                    estadoInsertar = {this.state.modalInsertar}
+                    cambiarEstadoInsertar = {this.cambiarEstadoInsertar}
+                    cambiarEstadoEditar = {this.cambiarEstadoEditar}
+                />
 
-                                    </tr>
-                                )
-                            })}
-                        
-                        </tbody>
-                    </table>
-                </div>
-                    
-                    {/* MODAL INSERTAR */}
-
-                    <Modal isOpen = {this.state.modalInsertar || this.state.modalEditar} >
-                        <ModalHeader style={{display : 'block'}}>
-                            <span>{(this.state.modalInsertar) ? 'Ingresar Glosario' :'Editar Glosario'}</span>
-                            
-                            <span style={{cursor : 'pointer' , float : 'right'}} onClick={() => {(this.state.modalEditar) ? this.cambiarEstadoEditar() : this.cambiarEstadoInsertar()}}>x</span>
-                        </ModalHeader>
-                        <ModalBody>
-                            <div className="form-group">
-                                <label htmlFor="id">ID</label>
-                                <input className="form-control" type="text" name="id_glosario" id="id_glosario" value={(this.state.modalEditar) ? this.state.glosario.id_glosario : this.state.data.length+1} readOnly />
-                                <br/>
-                                <label htmlFor="id_proyecto">ID Proyecto</label>
-                                <input className="form-control" type="text" name="id_proyecto" id="id_proyecto" onChange={this.changeHandler} value={this.state.glosario.id_proyecto}/>
-                                <br/>
-                            </div>
-                        </ModalBody>
-                        <ModalFooter>
-                            <button type="submit" className="btn btn-success" onClick={() => this.insertarGlosario(this.state.glosario)} >Guardar Cambios</button>
-                            <button className="btn btn-danger" onClick={() => {(this.state.modalInsertar) ? this.cambiarEstadoInsertar() : this.cambiarEstadoEditar()}} >Cancelar</button>
-                        </ModalFooter>
-                    </Modal>
+                <Modal isOpen={this.state.modalEliminar}>
+                    <ModalHeader></ModalHeader>
+                    <ModalBody>Estas seguro que quiere eliminar el glosario de palabras</ModalBody>
+                    <ModalFooter>
+                        <button className="btn btn-danger" onClick ={() => {this.eliminarGlosario(); this.setState({glosario : ''})}}>SI</button>
+                        <button className="btn btn-secunday" onClick={() => this.setState({modalEliminar : false})}>NO</button>
+                    </ModalFooter>
+                </Modal>
 
             </div>
         );

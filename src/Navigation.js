@@ -20,7 +20,7 @@ class Navigation extends Component {
                         <Link className="nav-link" to="/">Home</Link>
                     </li>
                     <li class="nav-item">
-                        <Link class="nav-link" to="/Comentarios">Comentarios</Link>
+                        <Link class="nav-link" to="/comentarios">Comentarios</Link>
                     </li>
                     <li class="nav-item">
                         <Link class="nav-link" to="/subProyectos">subProyectos</Link>
@@ -39,9 +39,9 @@ class Navigation extends Component {
                         <Link class="nav-link" to="/palabras">Palabras</Link>
                     </li>
 
-                    <li class="nav-item">
-                        <Link class="nav-link" to="/Comentarios2">Comentarios2</Link>
-                    </li>
+                    {/* <li class="nav-item">
+                        <Link class="nav-link" to="/comentarios3">comentarios3</Link>
+                    </li> */}
                     
     
                     <li class="nav-item dropdown">
@@ -55,9 +55,7 @@ class Navigation extends Component {
                         <a class="dropdown-item" href="#">Something else here</a>
                         </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" href="#">Ejemplo 3</a>
-                    </li>
+                   
                     </ul>
                     
                 </div>

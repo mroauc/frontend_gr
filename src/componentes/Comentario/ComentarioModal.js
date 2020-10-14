@@ -13,7 +13,14 @@ export default class ComentarioModal extends Component {
             id_requerimiento : '',
             fecha_ingreso: '',
             id_usuario: ''
-        }
+        },
+        requerimientos: [],
+        usuarios: []
+    }
+
+    componentDidMount(){
+        this.getRequerimientos();
+        this.getUsuarios();
     }
 
     componentWillReceiveProps(next_props) {
@@ -24,8 +31,9 @@ export default class ComentarioModal extends Component {
 
     guardarComentario = async (comentario) => {
         var urlGuardar = url + 'guardar';
-        console.log(urlGuardar);
-        console.log(comentario);
+        
+        if(this.props.estadoInsertar)
+            comentario.fecha_ingreso = new Date().toLocaleString();
         
         await axios.post(urlGuardar, comentario)
         .then(response => {
@@ -44,6 +52,24 @@ export default class ComentarioModal extends Component {
               ...this.state.comentario, [e.target.name]: e.target.value
             }
           });
+    }
+
+    getRequerimientos = async () => {
+        await axios.get("http://localhost:8080/api/requerimiento/").then(response=>{
+            this.setState({
+                requerimientos: response.data
+            })
+        });
+        console.log(this.state.requerimientos);
+    }
+
+    getUsuarios = async () => {
+        await axios.get("http://localhost:8080/api/usuario/").then(response=>{
+            this.setState({
+                usuarios: response.data
+            })
+        });
+        console.log(this.state.usuarios);
     }
 
 
@@ -66,13 +92,27 @@ export default class ComentarioModal extends Component {
                             <input className="form-control" type="text" name="texto" id="texto" onChange={this.changeHandler} value={this.state.comentario.texto}/>
                             <br/>
                             <label htmlFor="id_requerimiento">ID Requerimiento</label>
-                            <input className="form-control" type="text" name="id_requerimiento" id="id_requerimiento" onChange={this.changeHandler} value={this.state.comentario.id_requerimiento} />
+                            <select className="form-control" type="text" name="id_requerimiento" id="id_requerimiento" onChange={this.changeHandler} value={this.state.comentario.id_requerimiento}>
+                                <option>Seleccione un Requerimiento</option>
+                                {this.state.requerimientos.map(requerimiento => {
+                                    return(
+                                    <option value={requerimiento.id_requerimiento}>{requerimiento.id_requerimiento + " - " + requerimiento.categoria}</option>
+                                    )
+                                })}
+                            </select>
                             <br/>
                             <label htmlFor="id_usuario">ID Usuario</label>
-                            <input className="form-control" type="text" name="id_usuario" id="id_usuario" onChange={this.changeHandler} value={this.state.comentario.id_usuario}/>
+                            <select className="form-control" type="text" name="id_usuario" id="id_usuario" onChange={this.changeHandler} value={this.state.comentario.id_usuario}>
+                                <option>Selecciona un Usuario</option>
+                                {this.state.usuarios.map(usuario => {
+                                    return(
+                                    <option value={usuario.id_usuario}>{usuario.id_usuario + " - " + usuario.nombre}</option>
+                                    )
+                                })}
+                            </select>
                             <br/>
-                            <label htmlFor="fecha_ingreso">Fecha Ingreso</label>
-                            <input className="form-control" type="date" name="fecha_ingreso" onChange={this.changeHandler} value={this.state.comentario.fecha_ingreso}/>
+                            {/* <label htmlFor="fecha_ingreso">Fecha Ingreso</label>
+                            <input className="form-control" type="date" name="fecha_ingreso" onChange={this.changeHandler} value={this.state.comentario.fecha_ingreso}/> */}
                         </div>
                     </ModalBody>
                     <ModalFooter>

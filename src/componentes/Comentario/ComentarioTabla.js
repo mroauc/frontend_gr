@@ -9,7 +9,7 @@ export default class ComentarioTabla extends Component {
                             <tr>
                             <th scope="col">ID</th>
                             <th scope="col">Comentario</th>
-                            <th scope="col">ID Requermiento</th>
+                            <th scope="col">ID Requerimiento</th>
                             <th scope="col">ID Usuario</th>
                             <th scope="col">Fecha</th>
                             <th scope="col">Acciones</th>
