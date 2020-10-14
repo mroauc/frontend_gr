@@ -1,6 +1,8 @@
 import Axios from 'axios';
 import React, { Component } from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import RelacionRequerimientosModal from './RelacionRequerimientosModal';
+import TablaRelacionRequerimientos from './TablaRelacionRequerimientos';
 
 class RelacionRequerimientos extends Component{
 
@@ -9,9 +11,11 @@ class RelacionRequerimientos extends Component{
         modalInsertar: false,
         modalEliminar: false,
         tipoModal: '',
-        id_relacionRequerimientos: 0,
-        id_requerimiento_a: '',
-        id_requerimiento_b: ''
+        relacion: {
+            id_relacionRequerimientos: 0,
+            id_requerimiento_a: '',
+            id_requerimiento_b: ''
+        }
     }
 
     index=()=>{
@@ -29,27 +33,15 @@ class RelacionRequerimientos extends Component{
 
     modalInsertar=()=>{
         this.setState({
+            relacion: '',
             modalInsertar: !this.state.modalInsertar,
             tipoModal: 'insertar'
         });
     }
 
-    guardar=async()=>{
-        await Axios.post('http://localhost:8080/api/relacionrequerimientos/guardar/',{
-            id_requerimiento_a: this.state.id_requerimiento_a,
-            id_requerimiento_b: this.state.id_requerimiento_b
-        })
-        .then(response=>{
-            this.modalInsertar();
-            this.index();
-        })
-    }
-
-    editar=(relacionRequerimientos)=>{
-        this.setState({
-            id_relacionRequerimientos: relacionRequerimientos.id_relacionRequerimientos,
-            id_requerimiento_a: relacionRequerimientos.id_requerimiento_a,
-            id_requerimiento_b: relacionRequerimientos.id_requerimiento_b
+    editar=async(relacionRequerimientos)=>{
+        await this.setState({
+            relacion: relacionRequerimientos
         });
         this.modalActualizar();
     }
@@ -61,89 +53,40 @@ class RelacionRequerimientos extends Component{
         });
     }
 
-    guardarActualizacion=()=>{
-        Axios.post('http://localhost:8080/api/relacionrequerimientos/editar/',{
-            id_relacionRequerimientos: this.state.id_relacionRequerimientos,
-            id_requerimiento_a: this.state.id_requerimiento_a,
-            id_requerimiento_b: this.state.id_requerimiento_b
-        })
-        .then(response=>{
-            this.modalInsertar();
-            this.index();
-        })
+    modalEliminar=(relacion)=>{
+        this.setState({
+            modalEliminar:true,
+            relacion: relacion
+        });
     }
 
     eliminar=()=>{
-        Axios.delete(`http://localhost:8080/api/relacionrequerimientos/eliminar/${this.state.id_relacionRequerimientos}`)
+        Axios.delete(`http://localhost:8080/api/relacionrequerimientos/eliminar/${this.state.relacion.id_relacionRequerimientos}`)
         .then(response=>{
-            this.setState({modalEliminar:false});
+            this.setState({modalEliminar:false, relacion:''});
             this.index();
         })
     }
 
     render(){
         return(
-            <div className="relacionRequerimientos">
-                <h2>Relaciones entre Requerimientos</h2>
-                <br/>
-                <button className="btn btn-success" onClick={()=>{this.setState({id_relacionRequerimientos:0, id_requerimiento_a: '', id_requerimiento_b: ''}); this.modalInsertar()}}>Insertar</button>
-                <br/><br/>
-                <table className="table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>ID Requerimiento A</th>
-                            <th>ID Requerimiento B</th>
-                            <th>Editar</th>
-                            <th>Eliminar</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.state.relacionesRequerimientos.map(relacionRequerimientos=>
-                            <tr key={relacionRequerimientos.id_relacionRequerimientos}>
-                                <td>{relacionRequerimientos.id_relacionRequerimientos}</td>
-                                <td>{relacionRequerimientos.id_requerimiento_a}</td>
-                                <td>{relacionRequerimientos.id_requerimiento_b}</td>
-                                <td>
-                                    <button className="btn btn-warning" onClick={()=>this.editar(relacionRequerimientos)}>Editar</button>
-                                </td>
-                                <td>
-                                    <button className="btn btn-danger" onClick={()=>this.setState({id_relacionRequerimientos:relacionRequerimientos.id_relacionRequerimientos, modalEliminar: true})}>Eliminar</button>
-                                </td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
+            <div className="relaciones col-10">
+                <div className="Encabezado"><p>Relacion entre Requerimientos</p></div>
+                <button type="button" class="btn btn-success" onClick={() => this.modalInsertar()}>Insertar</button>
 
-                <Modal isOpen={this.state.modalInsertar}>
-                    <ModalHeader style={{display: 'block'}}>
-                        <span style={{float: 'right'}} onClick={()=>this.modalInsertar()}>X</span>
-                    </ModalHeader>
-                    <ModalBody>
-                        <div className="form-group">
-                            <label htmlFor="id_relacionRequerimientos">ID</label>
-                            <input className="form-control" type="text" name="id_relacionRequerimientos" id="id_relacionRequerimientos" value={this.state.id_relacionRequerimientos} readOnly/>
-                            <br/>
-                            <label htmlFor="id_requerimiento_a">ID Requerimiento A</label>
-                            <input className="form-control" type="text" name="id_requerimiento_a" id="id_requerimiento_a" onChange={(e)=>this.setState({id_requerimiento_a:e.target.value})} value={this.state.id_requerimiento_a}/>
-                            <br/>
-                            <label htmlFor="id_requerimiento_b">ID Requerimiento B</label>
-                            <input className="form-control" type="text" name="id_requerimiento_b" id="id_requerimiento_b" onChange={(e)=>this.setState({id_requerimiento_b:e.target.value})} value={this.state.id_requerimiento_b}/>
-                        </div>
-                    </ModalBody>
-                    <ModalFooter>
-                        {this.state.tipoModal==='insertar'?
-                            <button className="btn btn-success" onClick={()=>this.guardar()}>
-                                Insertar
-                            </button>
-                            :
-                            <button className="btn btn-success" onClick={()=>this.guardarActualizacion()}>
-                                Actualizar
-                            </button>
-                        }
-                            <button className="btn btn-danger" onClick={()=>this.modalInsertar()}>Cancelar</button>
-                    </ModalFooter>
-                </Modal>
+                <TablaRelacionRequerimientos
+                    relaciones={this.state.relacionesRequerimientos}
+                    editar={this.editar}
+                    modalEliminar={this.modalEliminar}
+                />
+
+                <RelacionRequerimientosModal
+                    relacion={this.state.relacion}
+                    index={this.index}
+                    tipoModal={this.state.tipoModal}
+                    estadoModalInsertar={this.state.modalInsertar}
+                    modalInsertar={this.modalInsertar}
+                />
 
                 <Modal isOpen={this.state.modalEliminar}>
                     <ModalBody>
