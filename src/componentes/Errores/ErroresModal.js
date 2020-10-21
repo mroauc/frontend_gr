@@ -17,11 +17,12 @@ export class ErroresModal extends Component{
     }
 
     guardar=async()=>{
+        const token = localStorage.getItem('token');
         await Axios.post('http://localhost:8080/api/errores/guardar/',{
             contenido: this.state.dataError.contenido,
             id_usuario: this.state.dataError.id_usuario,
             fecha: new Date().toLocaleString()
-        })
+        },{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.props.modalInsertar();
             this.props.index();
@@ -29,7 +30,8 @@ export class ErroresModal extends Component{
     }
 
     guardarActualizacion=()=>{
-        Axios.post('http://localhost:8080/api/errores/editar/',this.state.dataError)
+        const token = localStorage.getItem('token');
+        Axios.post('http://localhost:8080/api/errores/editar/',this.state.dataError, {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.props.modalInsertar();
             this.props.index();

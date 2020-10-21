@@ -22,6 +22,7 @@ class RequerimientoModal extends Component{
     }
 
     guardar=async()=>{
+        const token = localStorage.getItem('token');
         await Axios.post('http://localhost:8080/api/requerimiento/guardar/',{
             descripcion: this.state.requerimiento.descripcion,
             id_usuario: this.state.requerimiento.id_usuario,
@@ -31,7 +32,7 @@ class RequerimientoModal extends Component{
             estado: this.state.requerimiento.estado,
             categoria: this.state.requerimiento.categoria,
             id_template: this.state.requerimiento.id_template
-        })
+        }, {headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             this.props.modalInsertar();
             this.props.index();
@@ -39,7 +40,8 @@ class RequerimientoModal extends Component{
     }
 
     guardarActualizacion=()=>{
-        Axios.post('http://localhost:8080/api/requerimiento/editar/',this.state.requerimiento)
+        const token = localStorage.getItem('token');
+        Axios.post('http://localhost:8080/api/requerimiento/editar/',this.state.requerimiento, {headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             this.props.modalInsertar();
             this.props.index();

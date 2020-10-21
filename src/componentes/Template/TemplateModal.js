@@ -21,13 +21,14 @@ class TemplateModal extends Component{
     }
 
     guardar=async()=>{
+        const token = localStorage.getItem('token');
         await Axios.post('http://localhost:8080/api/template/guardar/',{
             prefijo: this.state.template.prefijo,
             nombre: this.state.template.nombre,
             tipo: this.state.template.tipo,
             template: this.state.template.template,
             fecha: new Date().toLocaleString()
-        })
+        }, {headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             this.props.modalInsertar();
             this.props.index();
@@ -35,7 +36,16 @@ class TemplateModal extends Component{
     }
 
     guardarActualizacion=()=>{
-        Axios.post('http://localhost:8080/api/template/editar/',this.state.template)
+        const token = localStorage.getItem('token');
+        const requestInfo = {
+            method: 'POST',
+            body: JSON.stringify(this.state.template),
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            })
+        };
+        Axios.post('http://localhost:8080/api/template/editar/',this.state.template, {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.props.modalInsertar();
             this.props.index();

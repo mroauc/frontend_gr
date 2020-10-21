@@ -22,7 +22,8 @@ class Proyecto extends Component{
     }
 
     index=()=>{
-        Axios.get('http://localhost:8080/api/proyecto/')
+        const token = localStorage.getItem('token');
+        Axios.get('http://localhost:8080/api/proyecto/', {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 proyectos: response.data
@@ -64,7 +65,8 @@ class Proyecto extends Component{
     }
 
     eliminar=()=>{
-        Axios.delete(`http://localhost:8080/api/proyecto/eliminar/${this.state.proyecto.id_proyecto}`)
+        const token = localStorage.getItem('token');
+        Axios.delete(`http://localhost:8080/api/proyecto/eliminar/${this.state.proyecto.id_proyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({modalEliminar:false, proyecto:''});
             this.index();
