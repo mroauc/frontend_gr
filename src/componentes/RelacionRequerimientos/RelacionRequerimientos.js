@@ -19,7 +19,8 @@ class RelacionRequerimientos extends Component{
     }
 
     index=()=>{
-        Axios.get('http://localhost:8080/api/relacionrequerimientos/')
+        const token = localStorage.getItem('token');
+        Axios.get('http://localhost:8080/api/relacionrequerimientos/',{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 relacionesRequerimientos: response.data
@@ -61,7 +62,8 @@ class RelacionRequerimientos extends Component{
     }
 
     eliminar=()=>{
-        Axios.delete(`http://localhost:8080/api/relacionrequerimientos/eliminar/${this.state.relacion.id_relacionRequerimientos}`)
+        const token = localStorage.getItem('token');
+        Axios.delete(`http://localhost:8080/api/relacionrequerimientos/eliminar/${this.state.relacion.id_relacionRequerimientos}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({modalEliminar:false, relacion:''});
             this.index();

@@ -25,6 +25,7 @@ class PropuestaCambioModal extends Component{
     }
 
     guardar=async()=>{
+        const token = localStorage.getItem('token');
         await Axios.post('http://localhost:8080/api/propuestacambio/guardar/',{
             nombre: this.state.propuestaCambio.nombre,
             id_modulo: this.state.propuestaCambio.id_modulo,
@@ -37,7 +38,7 @@ class PropuestaCambioModal extends Component{
             fecha_resolucion: this.state.propuestaCambio.fecha_resolucion,
             comentarios: this.state.propuestaCambio.comentarios,
             estado: this.state.propuestaCambio.estado
-        })
+        },{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.props.modalInsertar();
             this.props.index();
@@ -45,7 +46,8 @@ class PropuestaCambioModal extends Component{
     }
 
     guardarActualizacion=()=>{
-        Axios.post('http://localhost:8080/api/propuestacambio/editar/',this.state.propuestaCambio)
+        const token = localStorage.getItem('token');
+        Axios.post('http://localhost:8080/api/propuestacambio/editar/',this.state.propuestaCambio, {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.props.modalInsertar();
             this.props.index();
@@ -82,13 +84,13 @@ class PropuestaCambioModal extends Component{
                             <input className="form-control" type="date" name="fecha_peticion" id="fecha_peticion" onChange={this.changeHandler} value={this.state.propuestaCambio.fecha_peticion} />
                             <br/>
                             <label htmlFor="id_usuario">Autor</label>
-                            <input className="form-control" type="text" name="id_usuario" id="id_usuario" onChange={this.changeHandler} value={this.state.propuestaCambio.id_usuario} />
+                            <input className="form-control" type="number" name="id_usuario" id="id_usuario" onChange={this.changeHandler} value={this.state.propuestaCambio.id_usuario} />
                             <br/>
                             <label htmlFor="descripcion">Descripcion</label>
                             <input className="form-control" type="text" name="descripcion" id="descripcion" onChange={this.changeHandler} value={this.state.propuestaCambio.descripcion} />
                             <br/>
                             <label htmlFor="justificacion">Justificacion</label>
-                            <input className="form-control" type="text" name="justificacion" id="justificacion" onChange={this.changeHandler} value={this.state.propuestaCambio.justificacion} />
+                            <input className="form-control" type="number" name="justificacion" id="justificacion" onChange={this.changeHandler} value={this.state.propuestaCambio.justificacion} />
                             <br/>
                             <label htmlFor="alternativas">Alternativas</label>
                             <input className="form-control" type="text" name="alternativas" id="alternativas" onChange={this.changeHandler} value={this.state.propuestaCambio.alternativas} />

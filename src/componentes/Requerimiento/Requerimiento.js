@@ -1,5 +1,6 @@
 import Axios from 'axios';
 import React, {Component} from 'react';
+import { Link } from 'react-router-dom';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import RequerimientoModal from './RequerimientoModal';
 import TablaRequerimiento from './TablaRequerimiento';
@@ -25,7 +26,8 @@ class Requerimiento extends Component{
     }
 
     index=()=>{
-        Axios.get('http://localhost:8080/api/requerimiento/')
+        const token = localStorage.getItem('token');
+        Axios.get('http://localhost:8080/api/requerimiento/',{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 requerimientos: response.data
@@ -68,7 +70,8 @@ class Requerimiento extends Component{
     }
 
     eliminar=()=>{
-        Axios.delete(`http://localhost:8080/api/requerimiento/eliminar/${this.state.requerimiento.id_requerimiento}`)
+        const token = localStorage.getItem('token');
+        Axios.delete(`http://localhost:8080/api/requerimiento/eliminar/${this.state.requerimiento.id_requerimiento}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({modalEliminar:false, requerimiento:'', requerimiento:{prioridad:'Baja',estado:'Creado'},});
             this.index();
@@ -80,6 +83,7 @@ class Requerimiento extends Component{
             <div className="requerimientos col-10">
                 <div className="Encabezado"><p>Requerimientos</p></div>
                 <button type="button" class="btn btn-success" onClick={() => this.modalInsertar()}>Insertar</button>
+                <Link to="/index" className="btn btn-outline-primary">Volver</Link>
 
                 <TablaRequerimiento
                     requerimientos={this.state.requerimientos}

@@ -1,6 +1,8 @@
 import Axios from 'axios';
 import React, {Component} from 'react';
+import { Link } from 'react-router-dom';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import DashboardAdmin from '../Dashboard/DashboardAdmin';
 import TablaTemplate from './TablaTemplate';
 import TemplateModal from './TemplateModal';
 import VistaTemplate from './VistaTemplate';
@@ -24,7 +26,8 @@ class Template extends Component{
     }
 
     index=()=>{
-        Axios.get('http://localhost:8080/api/template/')
+        const token = localStorage.getItem('token');
+        Axios.get('http://localhost:8080/api/template/', {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 templates: response.data
@@ -80,7 +83,9 @@ class Template extends Component{
     }
 
     eliminar=()=>{
-        Axios.delete(`http://localhost:8080/api/template/eliminar/${this.state.template.id_template}`)
+        const token = localStorage.getItem('token');
+        //const token = "123";
+        Axios.delete(`http://localhost:8080/api/template/eliminar/${this.state.template.id_template}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({modalEliminar:false, template:'', template:{template:''}});
             this.index();
@@ -89,9 +94,12 @@ class Template extends Component{
 
     render(){
         return(
+            <React.Fragment>
+                < DashboardAdmin />
             <div className="templates col-10">
-                <div className="Encabezado"><p>Templates</p></div>
                 <button type="button" class="btn btn-success" onClick={() => this.modalInsertar()}>Insertar</button>
+                <Link to="/index" className="btn btn-outline-primary">Volver</Link>
+                <Link to="/logout" className="btn btn-outline-primary">Cerrar Sesion</Link>
 
                 <TablaTemplate
                     templates={this.state.templates}
@@ -124,6 +132,7 @@ class Template extends Component{
                     </ModalFooter>
                 </Modal>
             </div>
+            </React.Fragment>
         );
     }
 }

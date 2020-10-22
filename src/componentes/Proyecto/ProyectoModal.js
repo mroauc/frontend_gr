@@ -19,13 +19,14 @@ class ProyectoModal extends Component{
     }
 
     guardar=async()=>{
+        const token = localStorage.getItem('token');
         await Axios.post('http://localhost:8080/api/proyecto/guardar/',{
             nombre: this.state.proyecto.nombre,
             fecha_inicio: this.state.proyecto.fecha_inicio,
             fecha_fin: this.state.proyecto.fecha_fin,
             id_usuario: this.state.proyecto.id_usuario,
             fecha_creacion: new Date().toLocaleString()
-        })
+        },{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.props.modalInsertar();
             this.props.index();
@@ -33,7 +34,8 @@ class ProyectoModal extends Component{
     }
     
     guardarActualizacion=()=>{
-        Axios.post('http://localhost:8080/api/proyecto/editar/',this.state.proyecto)
+        const token = localStorage.getItem('token');
+        Axios.post('http://localhost:8080/api/proyecto/editar/',this.state.proyecto, {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.props.modalInsertar();
             this.props.index();

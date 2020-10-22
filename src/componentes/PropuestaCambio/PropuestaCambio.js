@@ -30,7 +30,8 @@ class PropuestaCambio extends Component{
     }
 
     index=()=>{
-        Axios.get('http://localhost:8080/api/propuestacambio/')
+        const token = localStorage.getItem('token');
+        Axios.get('http://localhost:8080/api/propuestacambio/',{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 propuestas: response.data
@@ -86,9 +87,10 @@ class PropuestaCambio extends Component{
     }
 
     eliminar=()=>{
-        Axios.delete(`http://localhost:8080/api/propuestacambio/eliminar/${this.state.propuesta.id_propuestaCambio}`)
+        const token = localStorage.getItem('token');
+        Axios.delete(`http://localhost:8080/api/propuestacambio/eliminar/${this.state.propuesta.id_propuestaCambio}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
-            this.setState({modalEliminar:false, propuesta:''});
+            this.setState({modalEliminar:false, propuesta:'', propuesta:{estado:'Pendiente'}});
             this.index();
         })
     }

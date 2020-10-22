@@ -20,7 +20,8 @@ class Errores extends Component{
     }
 
     index=()=>{
-        Axios.get('http://localhost:8080/api/errores/')
+        const token = localStorage.getItem('token');
+        Axios.get('http://localhost:8080/api/errores/',{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 errores: response.data
@@ -62,7 +63,8 @@ class Errores extends Component{
     }
 
     eliminar=()=>{
-        Axios.delete(`http://localhost:8080/api/errores/eliminar/${this.state.dataError.id_error}`)
+        const token = localStorage.getItem('token');
+        Axios.delete(`http://localhost:8080/api/errores/eliminar/${this.state.dataError.id_error}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({modalEliminar:false, dataError:''});
             this.index();
