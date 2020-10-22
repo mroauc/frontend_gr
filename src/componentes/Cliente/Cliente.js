@@ -29,7 +29,8 @@ export default class Cliente extends Component{
     }
 
     getClientes = () => {
-        axios.get(url).then(response=>{
+        const token = localStorage.getItem('token');
+        axios.get(url,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.setState({
                 data: response.data
             });
@@ -74,8 +75,9 @@ export default class Cliente extends Component{
     }
 
     eliminarCliente = () => {
+        const token = localStorage.getItem('token');
         var urlEliminar = url + 'eliminar/' + this.state.cliente.id_cliente;
-        axios.delete(urlEliminar).then(response=>{
+        axios.delete(urlEliminar,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.getClientes();
         });
         this.setState({
@@ -89,7 +91,7 @@ export default class Cliente extends Component{
                 <div className="cliente col-10">
                     <div className="Encabezado"><p>Cliente</p></div>
 
-                    <button type="button" class="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Ingresar Cliente</button>
+                    <button type="button" className="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Ingresar Cliente</button>
 
                     <ClienteTabla
                         clientes={this.state.data}

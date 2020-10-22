@@ -1,5 +1,5 @@
 .navi{
-    background-color: rgba(147, 212, 255, 0.137);
+    background-color: rgba(134, 186, 221, 0.137);
     border-bottom: 1px solid rgba(0,0,0,.15);
     padding: 0 16px;
 }
@@ -13,6 +13,7 @@ li{
 li:hover{
     background-color: rgba(224, 224, 224, 0.651);
 }
+
 
 .sistema{
     margin: 0 auto;

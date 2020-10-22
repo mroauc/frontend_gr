@@ -13,9 +13,11 @@ export default class unGlosario extends Component {
     }
 
     getPalabras = () => {
+        const token = localStorage.getItem('token');
+
         const urlGlosario = url + this.props.match.params.id_glosario;
         console.log(urlGlosario);
-        Axios.get(urlGlosario).then(response=>{
+        Axios.get(urlGlosario,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.setState({
                 data : response.data
             });
@@ -30,18 +32,10 @@ export default class unGlosario extends Component {
 
     render(){
         return(
-        
-        // <div>
-        //         <h1>{this.props.match.params.id_glosario}</h1>
-        //     </div> 
-   
-         
             <div className="glosario col-10">
                 <div className="Encabezado"><p>Glosario ID: {this.props.match.params.id_glosario}</p></div>
 
-                {/* <button type="button" class="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Ingresar Palabra</button> */}
-
-                <table class="table table-hover">
+                <table className="table table-hover">
                     <thead>
                         <tr>
                         <th scope="col">ID</th>
@@ -58,12 +52,6 @@ export default class unGlosario extends Component {
                                     <td>{palabra.palabra}</td>
                                     <td>{palabra.significado}</td>
                                     <td>{palabra.id_glosario}</td>
-                                    {/* <td >
-                                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modalEditar" onClick={() => this.obtenerGlosario(glosario)}>Editar</button> &nbsp;
-                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalEditar" onClick={() => this.eliminarGlosario(glosario.id_glosario)}>Eliminar</button> &nbsp;
-                                        <Link><button className="btn btn-success" onClick={console.log("hi")} >Ver Definiciones</button></Link>
-                                        
-                                    </td> */}
 
                                 </tr>
                             )

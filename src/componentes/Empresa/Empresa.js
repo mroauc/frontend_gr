@@ -6,7 +6,6 @@ import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 import ModalEmpresa from './EmpresaModal'
 import TablaEmpresa from './EmpresaTabla'
 
-
 const url="http://localhost:8080/api/empresa/";
 
 export default class Empresa extends Component{
@@ -29,7 +28,9 @@ export default class Empresa extends Component{
     }
 
     getEmpresas = () => {
-        axios.get(url).then(response=>{
+        const token = localStorage.getItem('token');
+
+        axios.get(url,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.setState({
                 data: response.data
             });
@@ -90,8 +91,10 @@ export default class Empresa extends Component{
     // }
 
     eliminarEmpresa = () => {
+        const token = localStorage.getItem('token');
+
         var urlEliminar = url + 'eliminar/' + this.state.empresa.id_empresa;
-        axios.delete(urlEliminar).then(response=>{
+        axios.delete(urlEliminar,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.getEmpresas();
         });
         this.setState({
@@ -104,7 +107,7 @@ export default class Empresa extends Component{
             <div className="empresa col-10">
                 <div className="Encabezado"><p>Empresa</p></div>
 
-                <button type="button" class="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Ingresar Empresa</button>
+                <button type="button" className="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Ingresar Empresa</button>
 
                 <TablaEmpresa
                     empresas={this.state.data}

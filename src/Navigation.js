@@ -38,10 +38,6 @@ class Navigation extends Component {
                     <li class="nav-item">
                         <Link class="nav-link" to="/palabras">Palabras</Link>
                     </li>
-
-                    {/* <li class="nav-item">
-                        <Link class="nav-link" to="/comentarios3">comentarios3</Link>
-                    </li> */}
                     
     
                     <li class="nav-item dropdown">

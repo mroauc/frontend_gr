@@ -8,6 +8,7 @@ import TablaGlosario from './GlosarioTabla'
 
 const url="http://localhost:8080/api/glosario/";
 
+
 export default class Glosario extends Component {
     
     state ={
@@ -26,7 +27,9 @@ export default class Glosario extends Component {
     }
     
     getGlosarios = () => {
-        axios.get(url).then(response=>{
+        const token = localStorage.getItem('token');
+
+        axios.get(url,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.setState({
                 data: response.data
             });
@@ -69,8 +72,10 @@ export default class Glosario extends Component {
     }
 
     eliminarGlosario = () => {
+        const token = localStorage.getItem('token');
+
         var urlEliminar = url + 'eliminar/' + this.state.glosario.id_glosario;
-        axios.delete(urlEliminar).then(response=>{
+        axios.delete(urlEliminar,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.getGlosarios();
         });
         this.setState({

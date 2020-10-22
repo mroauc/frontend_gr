@@ -31,7 +31,9 @@ export default class SubProyecto extends Component{
     }
 
     getSubProyectos = () => {
-        axios.get(url).then(response=>{
+        const token = localStorage.getItem('token');
+
+        axios.get(url,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.setState({
                 data: response.data
             });
@@ -78,27 +80,11 @@ export default class SubProyecto extends Component{
         this.cambiarEstadoEditar();
     }
 
-    
-
-    // insertarSubProyecto = async (subProyecto) => {
-    //     var urlGuardar = url + 'guardar';
-    //     console.log(urlGuardar);
-    //     console.log(subProyecto);
-        
-    //     await axios.post(urlGuardar, subProyecto)
-    //     .then(response => {
-    //         (this.state.modalEditar) ? this.cambiarEstadoEditar() : this.cambiarEstadoInsertar();
-    //         this.getSubProyectos();
-    //         console.log(response);
-    //     })
-    //     .catch(error => {
-    //         console.log(error)
-    //     })
-    // }
-
     eliminarSubProyecto = () => {
+        const token = localStorage.getItem('token');
+
         var urlEliminar = url + 'eliminar/' + this.state.subProyecto.id_subProyecto;
-        axios.delete(urlEliminar).then(response=>{
+        axios.delete(urlEliminar,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.getSubProyectos();
         });
         this.setState({
@@ -106,23 +92,13 @@ export default class SubProyecto extends Component{
         })
     }
 
-    // changeHandler = (e) => {
-    //     this.setState({
-    //         subProyecto : {
-    //           ...this.state.subProyecto, [e.target.name]: e.target.value
-    //         }
-    //       });
-    // }
-
-
-
     render(){
         return(
             <div>
                 <div className="subProyecto col-10">
                     <div className="Encabezado"><p>SubProyecto</p></div>
 
-                    <button type="button" class="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Ingresar SubProyecto</button>
+                    <button type="button" className="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Ingresar SubProyecto</button>
 
                     <TablasubProyecto
                         subProyectos={this.state.data}

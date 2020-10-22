@@ -4,7 +4,8 @@ import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
 const url="http://localhost:8080/api/empresa/";
 
-export default class ComentarioModal extends Component {
+
+export default class EmpresaModal extends Component {
     state ={
         empresa: {
             id_empresa: '',
@@ -15,16 +16,17 @@ export default class ComentarioModal extends Component {
     }
 
     componentWillReceiveProps(next_props) {
-        this.setState({ comentario: this.props.empresa});
-        // console.log("WILL RECIVE");
+        this.setState({ empresa: this.props.empresa});
     }
 
     guardarEmpresa = async (empresa) => {
+        const token = localStorage.getItem('token');
+
         var urlGuardar = url + 'guardar';
         console.log(urlGuardar);
         console.log(empresa);
         
-        await axios.post(urlGuardar, empresa)
+        await axios.post(urlGuardar, empresa,{headers: {"Authorization": `Bearer  ${token}`}})
         .then(response => {
             (this.props.estadoEditar) ? this.props.cambiarEstadoEditar() : this.props.cambiarEstadoInsertar();
             this.props.getEmpresas();
