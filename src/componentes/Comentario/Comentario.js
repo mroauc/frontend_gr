@@ -28,7 +28,8 @@ export default class Comentario extends Component {
     }
 
     getComentarios = () => {
-        axios.get(url).then(response=>{
+        const token = localStorage.getItem('token');
+        axios.get(url,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.setState({
                 data: response.data
             })
@@ -74,7 +75,8 @@ export default class Comentario extends Component {
 
     eliminarComentario = () => {
         var urlEliminar = url + 'eliminar/' + this.state.comentario.id_comentario;
-        axios.delete(urlEliminar).then(response=>{
+        const token = localStorage.getItem('token');
+        axios.delete(urlEliminar,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.getComentarios();
         });
         this.setState({
@@ -87,7 +89,7 @@ export default class Comentario extends Component {
             
             <div className="comentario col-10">
                 <div className="Encabezado"><p>Comentario</p></div>
-                <button type="button" class="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Ingresar Comentario</button>
+                <button type="button" className="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Ingresar Comentario</button>
                 
                 <TablaComentario 
                     comentarios={this.state.data}

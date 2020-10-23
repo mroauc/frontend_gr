@@ -22,15 +22,14 @@ export default class PalabraModal extends Component {
 
     componentWillReceiveProps(next_props) {
         this.setState({ palabra: this.props.palabra});
-        // console.log("WILL RECIVE");
     }
 
     guardarPalabra = async (palabra) => {
+
+        const token = localStorage.getItem('token');
         var urlGuardar = url + 'guardar';
-        console.log(urlGuardar);
-        console.log(palabra);
         
-        await axios.post(urlGuardar, palabra)
+        await axios.post(urlGuardar, palabra, {headers: {"Authorization": `Bearer  ${token}`}})
         .then(response => {
             (this.props.estadoEditar) ? this.props.cambiarEstadoEditar() : this.props.cambiarEstadoInsertar();
             this.props.getPalabras();
@@ -50,7 +49,9 @@ export default class PalabraModal extends Component {
     }
 
     getGlosarios = async () => {
-        await axios.get("http://localhost:8080/api/glosario/").then(response=>{
+        const token = localStorage.getItem('token');
+
+        await axios.get("http://localhost:8080/api/glosario/" ,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.setState({
                 glosarios: response.data
             })

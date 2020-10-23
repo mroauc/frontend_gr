@@ -4,6 +4,7 @@ import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
 const url="http://localhost:8080/api/glosario/";
 
+
 export default class GlosarioModal extends Component {
     
     state ={
@@ -24,11 +25,13 @@ export default class GlosarioModal extends Component {
     }
 
     guardarGlosario= async (glosario) => {
+        const token = localStorage.getItem('token');
+
         var urlGuardar = url + 'guardar';
         console.log(urlGuardar);
         console.log(glosario);
         
-        await axios.post(urlGuardar, glosario)
+        await axios.post(urlGuardar, glosario,{headers: {"Authorization": `Bearer  ${token}`}})
         .then(response => {
             (this.props.estadoEditar) ? this.props.cambiarEstadoEditar() : this.props.cambiarEstadoInsertar();
             this.props.getGlosarios();
@@ -40,7 +43,9 @@ export default class GlosarioModal extends Component {
     }
 
     getProyectos = async () => {
-        await axios.get("http://localhost:8080/api/proyecto/").then(response=>{
+        const token = localStorage.getItem('token');
+
+        await axios.get("http://localhost:8080/api/proyecto/",{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.setState({
                 proyectos: response.data
             })

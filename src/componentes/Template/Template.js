@@ -2,7 +2,6 @@ import Axios from 'axios';
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import DashboardAdmin from '../Dashboard/DashboardAdmin';
 import TablaTemplate from './TablaTemplate';
 import TemplateModal from './TemplateModal';
 import VistaTemplate from './VistaTemplate';
@@ -95,7 +94,6 @@ class Template extends Component{
     render(){
         return(
             <React.Fragment>
-                < DashboardAdmin />
             <div className="templates col-10">
                 <button type="button" class="btn btn-success" onClick={() => this.modalInsertar()}>Insertar</button>
                 <Link to="/index" className="btn btn-outline-primary">Volver</Link>

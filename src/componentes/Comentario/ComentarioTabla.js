@@ -4,7 +4,7 @@ export default class ComentarioTabla extends Component {
     render(){
         return(
             <div>
-                <table class="table table-hover">
+                <table className="table table-hover">
                         <thead>
                             <tr>
                             <th scope="col">ID</th>
@@ -25,8 +25,8 @@ export default class ComentarioTabla extends Component {
                                         <td>{comentario.id_usuario}</td>
                                         <td>{comentario.fecha_ingreso}</td>
                                         <td>
-                                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modalEditar" onClick={() => this.props.obtenerComentario(comentario)}>Editar</button> &nbsp;
-                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalEditar" onClick={() => this.props.cambiarEstadoEliminar(comentario)}>Eliminar</button>
+                                            <button type="button" className="btn btn-warning" data-toggle="modal" data-target="#modalEditar" onClick={() => this.props.obtenerComentario(comentario)}>Editar</button> &nbsp;
+                                            <button type="button" className="btn btn-danger" data-toggle="modal" data-target="#modalEditar" onClick={() => this.props.cambiarEstadoEliminar(comentario)}>Eliminar</button>
                                         </td>
 
                                     </tr>

@@ -30,12 +30,12 @@ export default class ComentarioModal extends Component {
 
 
     guardarComentario = async (comentario) => {
+        const token = localStorage.getItem('token');
         var urlGuardar = url + 'guardar';
-        
         if(this.props.estadoInsertar)
             comentario.fecha_ingreso = new Date().toLocaleString();
         
-        await axios.post(urlGuardar, comentario)
+        await axios.post(urlGuardar, comentario,{headers: {"Authorization": `Bearer  ${token}`}})
         .then(response => {
             (this.props.estadoEditar) ? this.props.cambiarEstadoEditar() : this.props.cambiarEstadoInsertar();
             this.props.getComentarios();
@@ -55,7 +55,8 @@ export default class ComentarioModal extends Component {
     }
 
     getRequerimientos = async () => {
-        await axios.get("http://localhost:8080/api/requerimiento/").then(response=>{
+        const token = localStorage.getItem('token');
+        await axios.get("http://localhost:8080/api/requerimiento/",{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.setState({
                 requerimientos: response.data
             })
@@ -64,7 +65,8 @@ export default class ComentarioModal extends Component {
     }
 
     getUsuarios = async () => {
-        await axios.get("http://localhost:8080/api/usuario/").then(response=>{
+        const token = localStorage.getItem('token');
+        await axios.get("http://localhost:8080/api/usuario/",{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.setState({
                 usuarios: response.data
             })

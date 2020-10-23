@@ -8,6 +8,7 @@ import TablaPalabra from './PalabraTabla'
 
 const url="http://localhost:8080/api/palabra/";
 
+
 export default class Palabra extends Component{
    
     state ={
@@ -28,7 +29,9 @@ export default class Palabra extends Component{
     }
 
     getPalabras = () => {
-        axios.get(url).then(response=>{
+        const token = localStorage.getItem('token');
+
+        axios.get(url,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.setState({
                 data: response.data
             });
@@ -71,24 +74,11 @@ export default class Palabra extends Component{
         this.cambiarEstadoEditar();
     }
 
-    // insertarPalabra = async (palabra) => {
-    //     var urlGuardar = url + 'guardar';
-    //     console.log(urlGuardar);
-        
-    //     await axios.post(urlGuardar, palabra)
-    //     .then(response => {
-    //         (this.state.modalEditar) ? this.cambiarEstadoEditar() : this.cambiarEstadoInsertar();
-    //         this.getPalabras();
-    //         console.log(response);
-    //     })
-    //     .catch(error => {
-    //         console.log(error)
-    //     })
-    // }
-
     eliminarPalabra = () => {
+        const token = localStorage.getItem('token');
+
         var urlEliminar = url + 'eliminar/' + this.state.palabra.id_palabra;
-        axios.delete(urlEliminar).then(response=>{
+        axios.delete(urlEliminar,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.getPalabras();
         });
         this.setState({
@@ -101,7 +91,7 @@ export default class Palabra extends Component{
             
             <div className="palabra col-10">
                 <div className="Encabezado"><p>Palabra</p></div>
-                <button type="button" class="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Ingresar Palabra</button>
+                <button type="button" className="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Ingresar Palabra</button>
 
                 <TablaPalabra
                     palabras={this.state.data}

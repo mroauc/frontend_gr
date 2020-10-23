@@ -24,15 +24,15 @@ export default class ComentarioModal extends Component {
 
     componentWillReceiveProps(next_props) {
         this.setState({ cliente: this.props.cliente});
-        // console.log("WILL RECIVE");
     }
 
     guardarCliente = async (cliente) => {
+        const token = localStorage.getItem('token');
         var urlGuardar = url + 'guardar';
         console.log(urlGuardar);
         console.log(cliente);
         
-        await axios.post(urlGuardar, cliente)
+        await axios.post(urlGuardar, cliente,{headers: {"Authorization": `Bearer  ${token}`}})
         .then(response => {
             (this.props.estadoEditar) ? this.props.cambiarEstadoEditar() : this.props.cambiarEstadoInsertar();
             this.props.getClientes();
@@ -52,7 +52,9 @@ export default class ComentarioModal extends Component {
     }
 
     getUsuarios = async () => {
-        await axios.get("http://localhost:8080/api/usuario/").then(response=>{
+        const token = localStorage.getItem('token');
+
+        await axios.get("http://localhost:8080/api/usuario/",{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.setState({
                 usuarios: response.data
             })
@@ -61,7 +63,9 @@ export default class ComentarioModal extends Component {
     }
     
     getEmpresas = async () => {
-        await axios.get("http://localhost:8080/api/empresa/").then(response=>{
+        const token = localStorage.getItem('token');
+
+        await axios.get("http://localhost:8080/api/empresa/",{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.setState({
                 empresas: response.data
             })

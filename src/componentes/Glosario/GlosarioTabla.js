@@ -5,7 +5,7 @@ export default class GlosarioTabla extends Component {
     render(){
         return(
             <div>
-                <table class="table table-hover">
+                <table className="table table-hover">
                     <thead>
                         <tr>
                         <th scope="col" style={{width:'30%'}}>ID</th>
@@ -21,8 +21,8 @@ export default class GlosarioTabla extends Component {
                                     <td>{glosario.id_proyecto}</td>
                                     <td >
                                         <Link to={"/glosario/"+glosario.id_glosario} ><button className="btn btn-success" >Ver Definiciones</button></Link> &nbsp;
-                                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modalEditar" onClick={() => this.props.obtenerGlosario(glosario)}>Editar</button> &nbsp;
-                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalEditar" onClick={() => this.props.cambiarEstadoEliminar(glosario)}>Eliminar</button>
+                                        <button type="button" className="btn btn-warning" data-toggle="modal" data-target="#modalEditar" onClick={() => this.props.obtenerGlosario(glosario)}>Editar</button> &nbsp;
+                                        <button type="button" className="btn btn-danger" data-toggle="modal" data-target="#modalEditar" onClick={() => this.props.cambiarEstadoEliminar(glosario)}>Eliminar</button>
                                         
                                         
                                     </td>

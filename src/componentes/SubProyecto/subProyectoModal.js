@@ -27,15 +27,13 @@ export default class subProyectoModal extends Component {
 
     componentWillReceiveProps(next_props) {
         this.setState({subProyecto: this.props.subProyecto});
-        console.log("WILL RECIVE");
     }
 
     guardarSubproyecto = async (subProyecto) => {
+        const token = localStorage.getItem('token');
         var urlGuardar = url + 'guardar';
-        console.log(urlGuardar);
-        console.log(subProyecto);
         
-        await axios.post(urlGuardar, subProyecto)
+        await axios.post(urlGuardar, subProyecto,{headers: {"Authorization": `Bearer  ${token}`}})
         .then(response => {
             (this.props.estadoEditar) ? this.props.cambiarEstadoEditar() : this.props.cambiarEstadoInsertar();
             this.props.getSubProyectos();
@@ -47,7 +45,9 @@ export default class subProyectoModal extends Component {
     }
 
     getUsuarios = async () => {
-        await axios.get("http://localhost:8080/api/usuario/").then(response=>{
+        const token = localStorage.getItem('token');
+
+        await axios.get("http://localhost:8080/api/usuario/",{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.setState({
                 usuarios: response.data
             })
@@ -55,7 +55,9 @@ export default class subProyectoModal extends Component {
     }
 
     getProyectos = async () => {
-        await axios.get("http://localhost:8080/api/proyecto/").then(response=>{
+        const token = localStorage.getItem('token');
+
+        await axios.get("http://localhost:8080/api/proyecto/",{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.setState({
                 proyectos: response.data
             })
@@ -88,7 +90,7 @@ export default class subProyectoModal extends Component {
                             <input className="form-control" type="text" name="nombre_subProyecto" id="nombre_subProyecto" onChange={this.changeHandler} value={this.state.subProyecto.nombre_subProyecto}/>
                             <br/>
                             <label htmlFor="fecha_inicio">Fecha Inicio</label>
-                            <input className="form-control" type="date" name="fecha_inicio" id="fecha_inicio" pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}" onChange={this.changeHandler} value={this.state.subProyecto.fecha_inicio}/>
+                            <input className="form-control" type="date" name="fecha_inicio" id="fecha_inicio" onChange={this.changeHandler} value={this.state.subProyecto.fecha_inicio}/>
                             <br/>
                             <label htmlFor="id_usuario">Fecha Termino</label>
                             <input className="form-control" type="date" name="fecha_fin" id="fecha_fin" onChange={this.changeHandler} value={this.state.subProyecto.fecha_fin}/>
@@ -111,7 +113,7 @@ export default class subProyectoModal extends Component {
                                 <option>Selecciona un Usuario</option>
                                 {this.state.usuarios.map(usuario => {
                                     return(
-                                    <option value={usuario.id_usuario}>{usuario.id_usuario + " - " + usuario.nombre}</option>
+                                    <option value={usuario.id}>{usuario.id + " - " + usuario.nombre}</option>
                                     )
                                 })}
                             </select>                            

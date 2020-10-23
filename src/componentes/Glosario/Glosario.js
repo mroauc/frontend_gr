@@ -5,8 +5,10 @@ import axios from 'axios'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 import ModalGlosario from './GlosarioModal'
 import TablaGlosario from './GlosarioTabla'
+import Menu from '../Menu/Menu'
 
 const url="http://localhost:8080/api/glosario/";
+
 
 export default class Glosario extends Component {
     
@@ -26,7 +28,9 @@ export default class Glosario extends Component {
     }
     
     getGlosarios = () => {
-        axios.get(url).then(response=>{
+        const token = localStorage.getItem('token');
+
+        axios.get(url,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.setState({
                 data: response.data
             });
@@ -69,8 +73,10 @@ export default class Glosario extends Component {
     }
 
     eliminarGlosario = () => {
+        const token = localStorage.getItem('token');
+
         var urlEliminar = url + 'eliminar/' + this.state.glosario.id_glosario;
-        axios.delete(urlEliminar).then(response=>{
+        axios.delete(urlEliminar,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.getGlosarios();
         });
         this.setState({
@@ -80,8 +86,8 @@ export default class Glosario extends Component {
     
     render(){
         return(
-            
             <div className="glosario col-10">
+                <Menu/>
                 <div className="Encabezado"><p>Glosario</p></div>
                 <button type="button" class="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Ingresar Glosario</button>
 
