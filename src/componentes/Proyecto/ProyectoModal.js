@@ -72,7 +72,7 @@ class ProyectoModal extends Component{
                             <input className="form-control" type="date" name="fecha_fin" id="fecha_fin" onChange={this.changeHandler} value={this.state.proyecto.fecha_fin} />
                             <br/>
                             <label htmlFor="id_usuario">ID Usuario</label>
-                            <input className="form-control" type="text" name="id_usuario" id="id_usuario" onChange={this.changeHandler} value={this.state.proyecto.id_usuario} />
+                            <input className="form-control" type="text" name="id_usuario" id="id_usuario" value={this.state.proyecto.id_usuario} readOnly/>
                             <br/>
                         </div>
                     </ModalBody>

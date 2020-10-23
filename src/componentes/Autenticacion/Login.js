@@ -30,8 +30,14 @@ export default class Login extends Component{
         .then(token=>{
             localStorage.setItem('token',token.token);
             localStorage.setItem('rol',token.authorities[token.authorities.length-1].authority);
-            this.props.history.push("/index");
-            return;
+            localStorage.setItem('email',token.email);
+            if(localStorage.getItem('rol')==="ROLE_CLIENTE"){
+                this.props.history.push("/indexCliente");
+                return;
+            }else{
+                this.props.history.push("/index");
+                return;
+            }  
         })
         .catch(e=>{
             this.setState({message: e.message});

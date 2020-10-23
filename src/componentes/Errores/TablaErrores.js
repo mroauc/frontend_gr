@@ -1,6 +1,31 @@
+import Axios from 'axios';
 import React, { Component } from 'react'
 
 export class TablaErrores extends Component{
+
+    state={
+        usuarios: []
+    }
+
+    buscarUsuario=(id_usuario)=>{
+        for (let index = 0; index < this.state.usuarios.length; index++) {
+            if(this.state.usuarios[index].id===id_usuario){
+                return this.state.usuarios[index].nombre;
+            }
+        }
+        return '';
+    }
+
+    componentDidMount(){
+        const token = localStorage.getItem('token');
+        Axios.get('http://localhost:8080/api/usuario/',{headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            this.setState({
+                usuarios: response.data
+            });
+        })
+    }
+
     render(){
         return(
             <div>
@@ -21,7 +46,7 @@ export class TablaErrores extends Component{
                                 <tr key={singleError.id_error}>
                                     <td>{index+1}</td>
                                     <td>{singleError.contenido}</td>
-                                    <td>{singleError.id_usuario}</td>
+                                    <td>{this.buscarUsuario(singleError.id_usuario)}</td>
                                     <td>{singleError.fecha}</td>
                                     <td>
                                         <button className="btn btn-warning" onClick={()=>this.props.editar(singleError)}>Editar</button>

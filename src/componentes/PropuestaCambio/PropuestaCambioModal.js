@@ -84,7 +84,7 @@ class PropuestaCambioModal extends Component{
                             <input className="form-control" type="date" name="fecha_peticion" id="fecha_peticion" onChange={this.changeHandler} value={this.state.propuestaCambio.fecha_peticion} />
                             <br/>
                             <label htmlFor="id_usuario">Autor</label>
-                            <input className="form-control" type="number" name="id_usuario" id="id_usuario" onChange={this.changeHandler} value={this.state.propuestaCambio.id_usuario} />
+                            <input className="form-control" type="number" name="id_usuario" id="id_usuario" value={this.state.propuestaCambio.id_usuario} readOnly/>
                             <br/>
                             <label htmlFor="descripcion">Descripcion</label>
                             <input className="form-control" type="text" name="descripcion" id="descripcion" onChange={this.changeHandler} value={this.state.propuestaCambio.descripcion} />

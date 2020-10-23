@@ -1,6 +1,7 @@
 import Axios from 'axios';
 import React, {Component} from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import DashboardCliente from '../Dashboard/Cliente/DashboardCliente';
 import ProyectoModal from './ProyectoModal';
 import TablaProyecto from './TablaProyecto';
 
@@ -35,12 +36,25 @@ class Proyecto extends Component{
         this.index();
     }
 
-    modalInsertar=()=>{
-        this.setState({
+    modalInsertar=async()=>{
+        /*this.setState({
             proyecto: '',
             modalInsertar: !this.state.modalInsertar,
             tipoModal: 'insertar'
-        });
+        });*/
+        const token = localStorage.getItem('token');
+        await Axios.get(`http://localhost:8080/api/usuario/${localStorage.getItem('email')}`,{headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            this.setState({
+                proyecto:{id_proyecto: 0, nombre: '', fecha_inicio: '',fecha_fin: '',id_usuario:response.data.id, fecha_creacion: ''},
+            });
+        })
+
+        this.setState({
+            modalInsertar: !this.state.modalInsertar,
+            tipoModal: 'insertar'
+        })
+
     }
 
     editar=async(proyecto)=>{
@@ -75,6 +89,10 @@ class Proyecto extends Component{
 
     render(){
         return(
+            <React.Fragment>
+                {localStorage.getItem('rol')==="ROLE_CLIENTE"?(
+                    <DashboardCliente/>
+                ): ''}
             <div className="proyecto col-10">
                 <div className="encabezado"><p>Proyectos</p></div>
                 <button type="button" class="btn btn-success" onClick={() => this.modalInsertar()}>Insertar</button>
@@ -103,6 +121,7 @@ class Proyecto extends Component{
                     </ModalFooter>
                 </Modal>
             </div>
+            </React.Fragment>
         );
     }
 }

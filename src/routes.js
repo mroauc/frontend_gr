@@ -6,15 +6,18 @@ import Logout from './componentes/Autenticacion/Logout';
 import DashboardAdmin from './componentes/Dashboard/DashboardAdmin';
 import Template from './componentes/Template/Template';
 import Errores from './componentes/Errores/Errores';
-import Navigation from './Navigation';
+import DashboardCliente from './componentes/Dashboard/Cliente/DashboardCliente';
+import Proyecto from './componentes/Proyecto/Proyecto';
 
 const Routes=()=>(
     <Router>
         <Switch>
             <Route exact path="/" component={Login} />
             <PrivateRoute path="/index" component={DashboardAdmin} />
+            <PrivateRoute path="/indexCliente" component={DashboardCliente} />
+            <PrivateRoute path="/proyectos" component={Proyecto} />
             <PrivateRoute path="/templates" component={Template} />
-            <PrivateRoute path="/error" component={Errores} />
+            <PrivateRoute path="/errores" component={Errores} />
             <Route exact path="/logout" component={Logout} />
         </Switch>
     </Router>

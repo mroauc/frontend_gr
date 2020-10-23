@@ -62,7 +62,7 @@ export class ErroresModal extends Component{
                             <input className="form-control" type="text" name="contenido" id="contenido" onChange={this.changeHandler} value={this.state.dataError.contenido}/>
                             <br/>
                             <label htmlFor="id_usuario">ID Usuario</label>
-                            <input className="form-control" type="text" name="id_usuario" id="id_usuario" onChange={this.changeHandler} value={this.state.dataError.id_usuario}/>
+                            <input className="form-control" type="text" name="id_usuario" id="id_usuario" value={this.state.dataError.id_usuario} readOnly/>
                         </div>
                     </ModalBody>
                     <ModalFooter>

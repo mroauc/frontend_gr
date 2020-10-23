@@ -1,6 +1,7 @@
 import Axios from 'axios';
 import React, { Component } from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import DashboardCliente from '../Dashboard/Cliente/DashboardCliente';
 import ErroresModal from './ErroresModal';
 import TablaErrores from './TablaErrores';
 
@@ -33,12 +34,24 @@ class Errores extends Component{
         this.index();
     }
 
-    modalInsertar=()=>{
-        this.setState({
+    modalInsertar=async()=>{
+        /*this.setState({
             dataError: '',
             modalInsertar: !this.state.modalInsertar,
             tipoModal: 'insertar'
-        });
+        });*/
+        const token = localStorage.getItem('token');
+        await Axios.get(`http://localhost:8080/api/usuario/${localStorage.getItem('email')}`,{headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            this.setState({
+                dataError:{id_error: 0, contenido: '', id_usuario:response.data.id,fecha:''}
+            });
+        })
+
+        this.setState({
+            modalInsertar: !this.state.modalInsertar,
+            tipoModal: 'insertar'
+        })
     }
 
     editar=async(errorsingle)=>{
@@ -73,6 +86,10 @@ class Errores extends Component{
 
     render(){
         return(
+            <React.Fragment>
+                {localStorage.getItem('rol')==="ROLE_CLIENTE"?(
+                    <DashboardCliente/>
+                ):''}
             <div className="errores col-10">
                 <div className="Encabezado"><p>Errores</p></div>
                 <button type="button" class="btn btn-success" onClick={() => this.modalInsertar()}>Insertar</button>
@@ -100,6 +117,7 @@ class Errores extends Component{
                     </ModalFooter>
                 </Modal>
             </div>
+            </React.Fragment>
         );
     }
 }

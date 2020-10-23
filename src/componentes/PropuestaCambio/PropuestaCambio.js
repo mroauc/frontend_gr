@@ -43,13 +43,32 @@ class PropuestaCambio extends Component{
         this.index();
     }
 
-    modalInsertar=()=>{
+    modalInsertar=async()=>{
+        const token = localStorage.getItem('token');
+        await Axios.get(`http://localhost:8080/api/usuario/${localStorage.getItem('email')}`,{headers:{"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            this.setState({
+                propuesta:{
+                    id_propuestaCambio: 0,
+                    nombre: '',
+                    id_modulo: 0,
+                    fecha_peticion: 0,
+                    id_usuario: response.data.id,
+                    descripcion: '',
+                    justificacion: '',
+                    alternativas: '',
+                    consecuencias_rechazo: '',
+                    fecha_resolucion: '',
+                    comentarios: '',
+                    estado: 'Pendiente'
+                }
+            });
+        })
+
         this.setState({
-            propuesta: '',
-            propuesta:{estado:'Pendiente'},
             modalInsertar: !this.state.modalInsertar,
             tipoModal: 'insertar'
-        });
+        })
     }
 
     editar=async(propuestaEdit)=>{

@@ -39,13 +39,34 @@ class Requerimiento extends Component{
         this.index();
     }
 
-    modalInsertar=()=>{
-        this.setState({
+    modalInsertar=async()=>{
+        /*this.setState({
             requerimiento: '',
             requerimiento: {prioridad:'Baja',estado:'Creado'},
             modalInsertar: !this.state.modalInsertar,
             tipoModal: 'insertar'
-        });
+        });*/
+        const token = localStorage.getItem('token');
+        await Axios.get(`http://localhost:8080/api/usuario/${localStorage.getItem('email')}`,{headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            this.setState({
+                requerimiento:{
+                    id_requerimiento: 0,
+                    descripcion: '',
+                    id_usuario: response.data.id,
+                    id_subProyecto: 0,
+                    fecha_creacion: '',
+                    prioridad: 'Baja',
+                    estado: 'Creado',
+                    categoria: '',
+                    id_template: 0
+                }
+            });
+        })
+        this.setState({
+            modalInsertar: !this.state.modalInsertar,
+            tipoModal: 'insertar'
+        })
     }
 
     editar=async(requerimiento)=>{
