@@ -29,7 +29,20 @@ export default class Login extends Component{
         })
         .then(token=>{
             localStorage.setItem('token',token.token);
-            localStorage.setItem('rol',token.authorities[token.authorities.length-1].authority);
+            console.log(token.authorities);
+            if(token.authorities.length === 1){
+                localStorage.setItem('rol',token.authorities[0].authority);
+            }
+            if(token.authorities.length === 2){
+                localStorage.setItem('rol' , 'ROLE_LIDER_SUBPROYECTO')
+            }
+            if(token.authorities.length === 3){
+                localStorage.setItem('rol' , 'ROLE_JEFE_PROYECTO')
+            }
+            if(token.authorities.length === 5){
+                localStorage.setItem('rol' , 'ROLE_ADMIN')
+            }
+            console.log(localStorage.getItem('rol'));
             this.props.history.push("/index");
             return;
         })

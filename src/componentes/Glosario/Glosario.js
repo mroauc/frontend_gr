@@ -5,6 +5,7 @@ import axios from 'axios'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 import ModalGlosario from './GlosarioModal'
 import TablaGlosario from './GlosarioTabla'
+import Menu from '../Menu/Menu'
 
 const url="http://localhost:8080/api/glosario/";
 
@@ -85,8 +86,8 @@ export default class Glosario extends Component {
     
     render(){
         return(
-            
             <div className="glosario col-10">
+                <Menu/>
                 <div className="Encabezado"><p>Glosario</p></div>
                 <button type="button" class="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Ingresar Glosario</button>
 
