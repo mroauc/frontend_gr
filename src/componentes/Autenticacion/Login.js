@@ -29,17 +29,6 @@ export default class Login extends Component{
         })
         .then(token=>{
             localStorage.setItem('token',token.token);
-<<<<<<< HEAD
-            localStorage.setItem('rol',token.authorities[token.authorities.length-1].authority);
-            localStorage.setItem('email',token.email);
-            if(localStorage.getItem('rol')==="ROLE_CLIENTE"){
-                this.props.history.push("/indexCliente");
-                return;
-            }else{
-                this.props.history.push("/index");
-                return;
-            }  
-=======
             console.log(token.authorities);
             if(token.authorities.length === 1){
                 localStorage.setItem('rol',token.authorities[0].authority);
@@ -56,7 +45,6 @@ export default class Login extends Component{
             console.log(localStorage.getItem('rol'));
             this.props.history.push("/index");
             return;
->>>>>>> d5826602bb59085918b5d1f543feca6f7df682cc
         })
         .catch(e=>{
             this.setState({message: e.message});
