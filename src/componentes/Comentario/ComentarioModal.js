@@ -104,17 +104,7 @@ export default class ComentarioModal extends Component {
                             </select>
                             <br/>
                             <label htmlFor="id_usuario">ID Usuario</label>
-                            <select className="form-control" type="text" name="id_usuario" id="id_usuario" onChange={this.changeHandler} value={this.state.comentario.id_usuario}>
-                                <option>Selecciona un Usuario</option>
-                                {this.state.usuarios.map(usuario => {
-                                    return(
-                                    <option value={usuario.id_usuario}>{usuario.id_usuario + " - " + usuario.nombre}</option>
-                                    )
-                                })}
-                            </select>
-                            <br/>
-                            {/* <label htmlFor="fecha_ingreso">Fecha Ingreso</label>
-                            <input className="form-control" type="date" name="fecha_ingreso" onChange={this.changeHandler} value={this.state.comentario.fecha_ingreso}/> */}
+                            <input className="form-control" type="text" name="id_usuario" id="id_usuario" onChange={this.changeHandler} value={this.state.comentario.id_usuario} readOnly />
                         </div>
                     </ModalBody>
                     <ModalFooter>

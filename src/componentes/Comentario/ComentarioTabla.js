@@ -1,6 +1,31 @@
+import Axios from 'axios';
 import React, { Component } from 'react'
 
 export default class ComentarioTabla extends Component {
+    
+    state={
+        usuarios: []
+    }
+
+    buscarUsuario=(id_usuario)=>{
+        for (let index = 0; index < this.state.usuarios.length; index++) {
+            if(this.state.usuarios[index].id===id_usuario){
+                return this.state.usuarios[index].nombre;
+            }
+        }
+        return '';
+    }
+
+    componentDidMount(){
+        const token = localStorage.getItem('token');
+        Axios.get('http://localhost:8080/api/usuario/',{headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            this.setState({
+                usuarios: response.data
+            });
+        })
+    }
+    
     render(){
         return(
             <div>
@@ -22,7 +47,7 @@ export default class ComentarioTabla extends Component {
                                         <td scope="col">{comentario.id_comentario}</td>
                                         <td>{comentario.texto}</td>
                                         <td>{comentario.id_requerimiento}</td>
-                                        <td>{comentario.id_usuario}</td>
+                                        <td>{this.buscarUsuario(comentario.id_usuario)}</td>
                                         <td>{comentario.fecha_ingreso}</td>
                                         <td>
                                             <button type="button" className="btn btn-warning" data-toggle="modal" data-target="#modalEditar" onClick={() => this.props.obtenerComentario(comentario)}>Editar</button> &nbsp;

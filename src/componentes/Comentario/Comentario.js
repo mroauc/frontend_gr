@@ -1,7 +1,9 @@
 import axios from 'axios';
 import React, { Component } from 'react'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import Menu from '../Menu/Menu';
 import '../vistaCrud.css'
+import './Comentario.css'
 import ModalComentario from './ComentarioModal'
 import TablaComentario from './ComentarioTabla'
 
@@ -36,7 +38,20 @@ export default class Comentario extends Component {
         });
     }
 
-    cambiarEstadoInsertar = () => {
+    cambiarEstadoInsertar = async () => {
+        const token = localStorage.getItem('token');
+        await axios.get(`http://localhost:8080/api/usuario/${localStorage.getItem('email')}/`,{headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            this.setState({
+                comentario: {
+                    id_comentario: '',
+                    texto: '',
+                    id_requerimiento : '',
+                    fecha_ingreso: '',
+                    id_usuario: response.data.id
+                }
+            });
+        });
         this.setState({
             modalInsertar : !this.state.modalInsertar,
         });
@@ -86,35 +101,37 @@ export default class Comentario extends Component {
 
     render(){
         return(
-            
-            <div className="comentario col-10">
-                <div className="Encabezado"><p>Comentario</p></div>
-                <button type="button" className="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Ingresar Comentario</button>
-                
-                <TablaComentario 
-                    comentarios={this.state.data}
-                    obtenerComentario = {this.obtenerComentario}
-                    eliminarComentario = {this.eliminarComentario}
-                    cambiarEstadoEliminar = {this.cambiarEstadoEliminar}
-                />
-                <ModalComentario
-                    comentario = {this.state.comentario}
-                    getComentarios = {this.getComentarios}
-                    estadoEditar = {this.state.modalEditar} 
-                    estadoInsertar = {this.state.modalInsertar}
-                    cambiarEstadoInsertar = {this.cambiarEstadoInsertar}
-                    cambiarEstadoEditar = {this.cambiarEstadoEditar}
-                />
+            <React.Fragment>
+                <Menu/>
+                <div className="comentario col-10">
+                    <div className="Encabezado"><p>Comentario</p></div>
+                    <button type="button" className="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Ingresar Comentario</button>
+                    
+                    <TablaComentario 
+                        comentarios={this.state.data}
+                        obtenerComentario = {this.obtenerComentario}
+                        eliminarComentario = {this.eliminarComentario}
+                        cambiarEstadoEliminar = {this.cambiarEstadoEliminar}
+                    />
+                    <ModalComentario
+                        comentario = {this.state.comentario}
+                        getComentarios = {this.getComentarios}
+                        estadoEditar = {this.state.modalEditar} 
+                        estadoInsertar = {this.state.modalInsertar}
+                        cambiarEstadoInsertar = {this.cambiarEstadoInsertar}
+                        cambiarEstadoEditar = {this.cambiarEstadoEditar}
+                    />
 
-                <Modal isOpen={this.state.modalEliminar}>
-                    <ModalHeader></ModalHeader>
-                    <ModalBody>Estas seguro que quiere eliminar el comentario</ModalBody>
-                    <ModalFooter>
-                        <button className="btn btn-danger" onClick ={() => {this.eliminarComentario(); this.setState({comentario : ''})}}>SI</button>
-                        <button className="btn btn-secunday" onClick={() => this.setState({modalEliminar : false})}>NO</button>
-                    </ModalFooter>
-                </Modal>
-            </div>
+                    <Modal isOpen={this.state.modalEliminar}>
+                        <ModalHeader></ModalHeader>
+                        <ModalBody>Estas seguro que quiere eliminar el comentario</ModalBody>
+                        <ModalFooter>
+                            <button className="btn btn-danger" onClick ={() => {this.eliminarComentario(); this.setState({comentario : ''})}}>SI</button>
+                            <button className="btn btn-secunday" onClick={() => this.setState({modalEliminar : false})}>NO</button>
+                        </ModalFooter>
+                    </Modal>
+                </div>
+            </React.Fragment>
             
         );
     }

@@ -86,37 +86,39 @@ export default class Glosario extends Component {
     
     render(){
         return(
-            <div className="glosario col-10">
+            <React.Fragment>
                 <Menu/>
-                <div className="Encabezado"><p>Glosario</p></div>
-                <button type="button" class="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Ingresar Glosario</button>
+                <div className="glosario col-10">
+                    <div className="Encabezado"><p>Glosario</p></div>
+                    <button type="button" class="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Ingresar Glosario</button>
 
-                <TablaGlosario
-                    glosarios={this.state.data}
-                    obtenerGlosario = {this.obtenerGlosario}
-                    eliminarGlosario = {this.eliminarGlosario}
-                    cambiarEstadoEliminar = {this.cambiarEstadoEliminar}
-                />
+                    <TablaGlosario
+                        glosarios={this.state.data}
+                        obtenerGlosario = {this.obtenerGlosario}
+                        eliminarGlosario = {this.eliminarGlosario}
+                        cambiarEstadoEliminar = {this.cambiarEstadoEliminar}
+                    />
 
-                <ModalGlosario
-                    glosario = {this.state.glosario}
-                    getGlosarios = {this.getGlosarios}
-                    estadoEditar = {this.state.modalEditar} 
-                    estadoInsertar = {this.state.modalInsertar}
-                    cambiarEstadoInsertar = {this.cambiarEstadoInsertar}
-                    cambiarEstadoEditar = {this.cambiarEstadoEditar}
-                />
+                    <ModalGlosario
+                        glosario = {this.state.glosario}
+                        getGlosarios = {this.getGlosarios}
+                        estadoEditar = {this.state.modalEditar} 
+                        estadoInsertar = {this.state.modalInsertar}
+                        cambiarEstadoInsertar = {this.cambiarEstadoInsertar}
+                        cambiarEstadoEditar = {this.cambiarEstadoEditar}
+                    />
 
-                <Modal isOpen={this.state.modalEliminar}>
-                    <ModalHeader></ModalHeader>
-                    <ModalBody>Estas seguro que quiere eliminar el glosario de palabras</ModalBody>
-                    <ModalFooter>
-                        <button className="btn btn-danger" onClick ={() => {this.eliminarGlosario(); this.setState({glosario : ''})}}>SI</button>
-                        <button className="btn btn-secunday" onClick={() => this.setState({modalEliminar : false})}>NO</button>
-                    </ModalFooter>
-                </Modal>
+                    <Modal isOpen={this.state.modalEliminar}>
+                        <ModalHeader></ModalHeader>
+                        <ModalBody>Estas seguro que quiere eliminar el glosario de palabras</ModalBody>
+                        <ModalFooter>
+                            <button className="btn btn-danger" onClick ={() => {this.eliminarGlosario(); this.setState({glosario : ''})}}>SI</button>
+                            <button className="btn btn-secunday" onClick={() => this.setState({modalEliminar : false})}>NO</button>
+                        </ModalFooter>
+                    </Modal>
 
-            </div>
+                </div>
+            </React.Fragment>
         );
     }
 }
