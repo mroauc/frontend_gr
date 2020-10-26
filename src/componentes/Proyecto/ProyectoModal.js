@@ -1,6 +1,7 @@
 import Axios from 'axios';
 import React, { Component } from 'react'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import ChipsProyecto from './ChipsProyecto';
 
 class ProyectoModal extends Component{
     state={
@@ -98,14 +99,8 @@ class ProyectoModal extends Component{
                             <label htmlFor="id_usuario">Jefe de Proyecto</label>
                             <input className="form-control" type="text" name="id_usuario" id="id_usuario" value={this.state.proyecto.id_usuario} readOnly/>
                             <br/>
-                            <label htmlFor="id_empresa">Empresas Asociadas</label>
-                            <select className="form-control" name="id_empresa" id="id_empresa" value={this.state.id_empresa} onChange={(e)=>this.setState({id_empresa: e.target.value})}>
-                                {this.state.empresas.map(empresa=>{
-                                    return(
-                                        <option value={empresa.id_empresa}>{empresa.razon_social}</option>
-                                    )
-                                })}
-                            </select>
+                            {/* <label htmlFor="id_empresa">Empresas Asociadas</label> */}
+                            <ChipsProyecto empresas = {this.state.empresas}/>
                             <br/>
                             <label htmlFor="fecha_inicio">Fecha de Inicio</label>
                             <input className="form-control" type="date" name="fecha_inicio" id="fecha_inicio" onChange={this.changeHandler} value={this.state.proyecto.fecha_inicio} />
