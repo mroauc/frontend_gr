@@ -19,13 +19,25 @@ class UsuarioModal extends Component{
     }
 
     guardar=async()=>{
-        await Axios.post('http://localhost:8080/api/usuario/guardar/',{
+        /*await Axios.post('http://localhost:8080/api/usuario/guardar/',{
             estado: this.state.usuario.estado,
             nombre: this.state.usuario.nombre,
             password: this.state.usuario.password,
             rol: this.state.usuario.rol,
             email: this.state.usuario.email
         })
+        .then(response=>{
+            this.props.modalInsertar();
+            this.props.index();
+        })*/
+        const token = localStorage.getItem('token');
+        await Axios.post('http://localhost:8080/auth/nuevo/',{
+            nombre: this.state.usuario.nombre,
+            email: this.state.usuario.email,
+            estado: this.state.usuario.estado,
+            password: this.state.usuario.password,
+            roles: [this.state.usuario.rol]
+        },{headers:{"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.props.modalInsertar();
             this.props.index();
@@ -60,22 +72,13 @@ class UsuarioModal extends Component{
                             <label htmlFor="id_usuario">ID</label>
                             <input className="form-control" type="text" name="id_usuario" id="id_usuario" value={this.state.usuario.id_usuario} readOnly/>
                             <br/>
-                            <label htmlFor="nombre">Nombre</label>
+                            <label htmlFor="nombre">Nombre del usuario</label>
                             <input className="form-control" type="text" name="nombre" id="nombre" onChange={this.changeHandler} value={this.state.usuario.nombre} />
                             <br/>
-                            <label htmlFor="email">Email</label>
+                            <label htmlFor="email">Email del usuario</label>
                             <input className="form-control" type="text" name="email" id="email" onChange={this.changeHandler} value={this.state.usuario.email} />
                             <br/>
-                            <label htmlFor="password">Password</label>
-                            <input className="form-control" type="text" name="password" id="password" onChange={this.changeHandler} value={this.state.usuario.password} />
-                            <br/>
-                            <label htmlFor="estado">Estado</label>
-                                <select name="estado" id="estado" className="form-control" value={this.state.usuario.estado} onChange={this.changeHandler}>
-                                    <option value="Activo" selected>Activo</option>
-                                    <option value="Inactivo">Inactivo</option>
-                                </select>
-                            <br/>
-                            <label htmlFor="rol">Rol</label>
+                            <label htmlFor="rol">Tipo de usuario</label>
                             <select name="rol" id="rol" className="form-control" value={this.state.usuario.rol} onChange={this.changeHandler}>
                                 <option value="Analista">Analista</option>
                                 <option value="Lider de subproyecto">Lider de subproyecto</option>
@@ -83,6 +86,15 @@ class UsuarioModal extends Component{
                                 <option value="Cliente">Cliente</option>
                                 <option value="Administrador del Sistema">Administrador del Sistema</option>
                             </select>
+                            <br/>
+                            <label htmlFor="estado">Estado de usuario</label>
+                                <select name="estado" id="estado" className="form-control" value={this.state.usuario.estado} onChange={this.changeHandler}>
+                                    <option value="Activo" selected>Activo</option>
+                                    <option value="Inactivo">Inactivo</option>
+                                </select>
+                            <br/>
+                            <label htmlFor="password">Contraseña</label>
+                            <input className="form-control" type="password" name="password" id="password" onChange={this.changeHandler} value={this.state.usuario.password} />
                             <br/>
                         </div>
                     </ModalBody>

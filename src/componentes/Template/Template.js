@@ -2,9 +2,11 @@ import Axios from 'axios';
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import Menu from '../Menu/Menu';
 import TablaTemplate from './TablaTemplate';
 import TemplateModal from './TemplateModal';
 import VistaTemplate from './VistaTemplate';
+import './Template.css';
 
 class Template extends Component{
 
@@ -94,10 +96,10 @@ class Template extends Component{
     render(){
         return(
             <React.Fragment>
-            <div className="templates col-10">
+                <Menu/>
+            <div className="template col-10">
+                <div className="Encabezado"><p>Templates</p></div>
                 <button type="button" class="btn btn-success" onClick={() => this.modalInsertar()}>Insertar</button>
-                <Link to="/index" className="btn btn-outline-primary">Volver</Link>
-                <Link to="/logout" className="btn btn-outline-primary">Cerrar Sesion</Link>
 
                 <TablaTemplate
                     templates={this.state.templates}

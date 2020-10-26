@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 
 class TablaUsuario extends Component{
+
     render(){
         return(
             <div>

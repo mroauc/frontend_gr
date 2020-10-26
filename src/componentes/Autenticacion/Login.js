@@ -29,6 +29,7 @@ export default class Login extends Component{
         })
         .then(token=>{
             localStorage.setItem('token',token.token);
+            localStorage.setItem('email',token.email);
             console.log(token.authorities);
             if(token.authorities.length === 1){
                 localStorage.setItem('rol',token.authorities[0].authority);

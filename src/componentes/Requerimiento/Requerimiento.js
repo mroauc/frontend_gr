@@ -2,8 +2,10 @@ import Axios from 'axios';
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import Menu from '../Menu/Menu';
 import RequerimientoModal from './RequerimientoModal';
 import TablaRequerimiento from './TablaRequerimiento';
+import './Requerimiento.css';
 
 class Requerimiento extends Component{
 
@@ -101,11 +103,12 @@ class Requerimiento extends Component{
 
     render(){
         return(
-            <div className="requerimientos col-10">
+            <React.Fragment>
+            <Menu />
+            <div className="requerimiento col-10">
                 <div className="Encabezado"><p>Requerimientos</p></div>
                 <button type="button" class="btn btn-success" onClick={() => this.modalInsertar()}>Insertar</button>
-                <Link to="/index" className="btn btn-outline-primary">Volver</Link>
-
+                
                 <TablaRequerimiento
                     requerimientos={this.state.requerimientos}
                     editar={this.editar}
@@ -130,6 +133,7 @@ class Requerimiento extends Component{
                     </ModalFooter>
                 </Modal>
             </div>
+            </React.Fragment>
         );
     }
 }

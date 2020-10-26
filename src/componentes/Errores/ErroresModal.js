@@ -55,14 +55,12 @@ export class ErroresModal extends Component{
                     </ModalHeader>
                     <ModalBody>
                         <div className="form-group">
-                            <label htmlFor="id_error">ID</label>
-                            <input className="form-control" type="text" name="id_error" id="id_error" value={this.state.dataError.id_error} readOnly/>
+                            <input className="form-control" type="text" name="id_error" id="id_error" value={this.state.dataError.id_error} readOnly hidden/>
                             <br/>
-                            <label htmlFor="contenido">Contenido</label>
+                            <label htmlFor="contenido">Contenido del Error</label>
                             <input className="form-control" type="text" name="contenido" id="contenido" onChange={this.changeHandler} value={this.state.dataError.contenido}/>
                             <br/>
-                            <label htmlFor="id_usuario">ID Usuario</label>
-                            <input className="form-control" type="text" name="id_usuario" id="id_usuario" value={this.state.dataError.id_usuario} readOnly/>
+                            <input className="form-control" type="text" name="id_usuario" id="id_usuario" value={this.state.dataError.id_usuario} readOnly hidden/>
                         </div>
                     </ModalBody>
                     <ModalFooter>

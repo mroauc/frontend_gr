@@ -10,14 +10,14 @@ class Navigation extends Component {
         <div className="Navigation">
             <nav class="navbar navbar-expand-lg navi">
                 <div style={{width : '10%', textAlign : 'center', marginRight : '16px'}}>
-                    <Link className="navbar-brand sistema" to="/">Sistema</Link>
+                    <Link className="navbar-brand sistema" to="/index">Sistema</Link>
                 </div>
                 
 
                 <div class="collapse navbar-collapse" style={{marginLeft : 0}} id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <Link className="nav-link" to="/">Home</Link>
+                        <Link className="nav-link" to="/index">Home</Link>
                     </li>
                     
                     {this.props.celdas.map(celda => {

@@ -1,9 +1,11 @@
 import Axios from 'axios';
 import React, {Component} from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import Menu from '../Menu/Menu';
 import PropuestaCambioModal from './PropuestaCambioModal';
 import TablaPropuestaCambio from './TablaPropuestaCambio';
 import VistaPropuestaCambioModal from './VistaPropuestaCambioModal';
+import './PropuestaCambio.css';
 
 class PropuestaCambio extends Component{
 
@@ -116,7 +118,9 @@ class PropuestaCambio extends Component{
 
     render(){
         return(
-            <div className="propuestasCambio col-10">
+            <React.Fragment>
+                <Menu />
+            <div className="propuestaCambio col-10">
                 <div className="Encabezado"><p>Propuestas de Cambio</p></div>
                 <button type="button" class="btn btn-success" onClick={() => this.modalInsertar()}>Insertar</button>
 
@@ -150,8 +154,8 @@ class PropuestaCambio extends Component{
                         <button className="btn btn-secundary" onClick={()=>this.setState({modalEliminar:false})}>No</button>
                     </ModalFooter>
                 </Modal>
-                
             </div>
+            </React.Fragment>
         );
     }
 }

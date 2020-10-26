@@ -90,7 +90,7 @@ class PropuestaCambioModal extends Component{
                             <input className="form-control" type="text" name="descripcion" id="descripcion" onChange={this.changeHandler} value={this.state.propuestaCambio.descripcion} />
                             <br/>
                             <label htmlFor="justificacion">Justificacion</label>
-                            <input className="form-control" type="number" name="justificacion" id="justificacion" onChange={this.changeHandler} value={this.state.propuestaCambio.justificacion} />
+                            <input className="form-control" type="text" name="justificacion" id="justificacion" onChange={this.changeHandler} value={this.state.propuestaCambio.justificacion} />
                             <br/>
                             <label htmlFor="alternativas">Alternativas</label>
                             <input className="form-control" type="text" name="alternativas" id="alternativas" onChange={this.changeHandler} value={this.state.propuestaCambio.alternativas} />

@@ -1,8 +1,10 @@
 import Axios from 'axios';
 import React, {Component} from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import Menu from '../Menu/Menu';
 import TablaUsuario from './TablaUsuario';
 import UsuarioModal from './UsuarioModal';
+import './Usuarios.css';
 
 class Usuario extends Component{
 
@@ -22,7 +24,14 @@ class Usuario extends Component{
     }
 
     index=()=>{
-        Axios.get('http://localhost:8080/api/usuario/')
+        /*Axios.get('http://localhost:8080/api/usuario/')
+        .then(response=>{
+            this.setState({
+                usuarios: response.data
+            });
+        })*/
+        const token = localStorage.getItem('token');
+        Axios.get('http://localhost:8080/api/usuario/',{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 usuarios: response.data
@@ -74,6 +83,8 @@ class Usuario extends Component{
 
     render(){
         return(
+            <React.Fragment>
+            <Menu />
             <div className="usuarios col-10">
                 <div className="Encabezado"><p>Usuarios</p></div>
                 <button type="button" class="btn btn-success" onClick={() => this.modalInsertar()}>Insertar</button>
@@ -102,6 +113,7 @@ class Usuario extends Component{
                     </ModalFooter>
                 </Modal>
             </div>
+            </React.Fragment>
         );
     }
 }

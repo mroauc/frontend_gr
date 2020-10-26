@@ -22,9 +22,9 @@ const Routes=()=>(
     <Router>
         <Switch>
             <Route exact path="/" component={Login} />
-            <Route path="/index" component={Dashboard} />
+            <PrivateRoute path="/index" component={Dashboard} />
             <PrivateRoute path="/templates" component={Template} />
-            <PrivateRoute path="/error" component={Errores} />
+            <PrivateRoute path="/errores" component={Errores} />
             <PrivateRoute path="/cliente" component={Cliente} />
             <PrivateRoute path="/comentario" component={Comentario} />
             <PrivateRoute path="/empresa" component={Empresa} />
@@ -37,7 +37,8 @@ const Routes=()=>(
             <PrivateRoute path="/subProyecto" component={SubProyecto} />
             <PrivateRoute path="/template" component={Template} />
             <PrivateRoute path="/usuario" component={Usuario} />
-        
+            <PrivateRoute path="/propuestaCambio" component={PropuestaCambio} />
+
             <Route exact path="/logout" component={Logout} />
         </Switch>
     </Router>
