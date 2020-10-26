@@ -1,9 +1,10 @@
 import Axios from 'axios';
 import React, { Component } from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import DashboardCliente from '../Dashboard/Cliente/DashboardCliente';
+import Menu from '../Menu/Menu';
 import ErroresModal from './ErroresModal';
 import TablaErrores from './TablaErrores';
+import './Errores.css';
 
 class Errores extends Component{
 
@@ -87,9 +88,7 @@ class Errores extends Component{
     render(){
         return(
             <React.Fragment>
-                {localStorage.getItem('rol')==="ROLE_CLIENTE"?(
-                    <DashboardCliente/>
-                ):''}
+                <Menu/>
             <div className="errores col-10">
                 <div className="Encabezado"><p>Errores</p></div>
                 <button type="button" class="btn btn-success" onClick={() => this.modalInsertar()}>Insertar</button>

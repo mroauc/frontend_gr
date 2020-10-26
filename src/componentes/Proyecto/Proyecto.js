@@ -1,9 +1,10 @@
 import Axios from 'axios';
 import React, {Component} from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import DashboardCliente from '../Dashboard/Cliente/DashboardCliente';
+import Menu from '../Menu/Menu';
 import ProyectoModal from './ProyectoModal';
 import TablaProyecto from './TablaProyecto';
+import './Proyecto.css';
 
 class Proyecto extends Component{
 
@@ -90,11 +91,9 @@ class Proyecto extends Component{
     render(){
         return(
             <React.Fragment>
-                {localStorage.getItem('rol')==="ROLE_CLIENTE"?(
-                    <DashboardCliente/>
-                ): ''}
+                <Menu/>
             <div className="proyecto col-10">
-                <div className="encabezado"><p>Proyectos</p></div>
+                <div className="Encabezado"><p>Proyectos</p></div>
                 <button type="button" class="btn btn-success" onClick={() => this.modalInsertar()}>Insertar</button>
 
                 <TablaProyecto

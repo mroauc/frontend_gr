@@ -10,7 +10,7 @@ function Menu(){
                 {nombre : "Empresas", url : "/empresa"},
                 {nombre : "Clientes", url : "/cliente"},
                 {nombre : "Usuarios", url : "/usuario"},
-                {nombre : "Envio de Errores", url : "/errores"}
+                {nombre : "Envio de Errores", url : "/errores"},
             ]}
         />
     }
@@ -30,10 +30,6 @@ function Menu(){
         return <Navigation
             celdas = {[ 
                 {nombre : "Proyectos", url : "/proyecto"},
-                {nombre : "Templates", url : "/templates"},
-                {nombre : "Empresas", url : "/empresa"},
-                {nombre : "Clientes", url : "/cliente"},
-                {nombre : "Usuarios", url : "/usuario"},
                 {nombre : "Envio de Errores", url : "/errores"}
             ]}
         />

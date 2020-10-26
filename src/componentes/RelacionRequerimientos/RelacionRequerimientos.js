@@ -1,8 +1,10 @@
 import Axios from 'axios';
 import React, { Component } from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import Menu from '../Menu/Menu';
 import RelacionRequerimientosModal from './RelacionRequerimientosModal';
 import TablaRelacionRequerimientos from './TablaRelacionRequerimientos';
+import './RelacionRequerimientos.css';
 
 class RelacionRequerimientos extends Component{
 
@@ -72,7 +74,9 @@ class RelacionRequerimientos extends Component{
 
     render(){
         return(
-            <div className="relaciones col-10">
+            <React.Fragment>
+            <Menu />
+            <div className="RelacionRequerimientos col-10">
                 <div className="Encabezado"><p>Relacion entre Requerimientos</p></div>
                 <button type="button" class="btn btn-success" onClick={() => this.modalInsertar()}>Insertar</button>
 
@@ -100,6 +104,7 @@ class RelacionRequerimientos extends Component{
                     </ModalFooter>
                 </Modal>
             </div>
+            </React.Fragment>
         );
     }
 }

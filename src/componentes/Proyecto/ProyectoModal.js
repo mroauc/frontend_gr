@@ -11,15 +11,28 @@ class ProyectoModal extends Component{
             fecha_fin: '',
             id_usuario: '',
             fecha_creacion: ''
-        }
+        },
+        id_empresa: 0,
+        empresas: []
     }
 
     componentWillReceiveProps(next_props){
         this.setState({proyecto: this.props.proyecto});
     }
 
+    componentDidMount(){
+        const token = localStorage.getItem('token');
+        Axios.get('http://localhost:8080/api/empresa/',{headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            this.setState({
+                empresas: response.data
+            });
+        })
+    }
+
     guardar=async()=>{
         const token = localStorage.getItem('token');
+        var id_act_proyecto;
         await Axios.post('http://localhost:8080/api/proyecto/guardar/',{
             nombre: this.state.proyecto.nombre,
             fecha_inicio: this.state.proyecto.fecha_inicio,
@@ -28,9 +41,26 @@ class ProyectoModal extends Component{
             fecha_creacion: new Date().toLocaleString()
         },{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
-            this.props.modalInsertar();
-            this.props.index();
+           this.props.modalInsertar();
+           this.props.index();
+           this.obtenerIdProyecto();
         })
+    }
+    
+    obtenerIdProyecto=async()=>{
+        const token = localStorage.getItem('token');
+        await Axios.get(`http://localhost:8080/api/proyecto/nombre/${this.state.proyecto.nombre}`,{headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            this.proyectoEmpresa(response.data.id_proyecto);
+        })
+    }
+
+    proyectoEmpresa=async(id_proyecto)=>{
+        const token = localStorage.getItem('token');
+        await Axios.post('http://localhost:8080/api/proyecto_empresa/guardar/',{
+            id_empresa: this.state.id_empresa,
+            id_proyecto: id_proyecto
+        },{headers:{"Authorization": `Bearer ${token}`}})
     }
     
     guardarActualizacion=()=>{
@@ -62,18 +92,28 @@ class ProyectoModal extends Component{
                             <label htmlFor="id_proyecto">ID</label>
                             <input className="form-control" type="text" name="id_proyecto" id="id_proyecto" value={this.state.proyecto.id_proyecto} readOnly/>
                             <br/>
-                            <label htmlFor="nombre">Nombre</label>
-                            <input className="form-control" type="text" name="nombre" id="nombre" onChange={this.changeHandler} value={this.state.proyecto.nombre} />
+                            <label htmlFor="nombre">Nombre de Proyecto</label>
+                            <input className="form-control" type="text" name="nombre" id="nombre" placeholder="Ingrese el nombre que desea asignar al proyecto" onChange={this.changeHandler} value={this.state.proyecto.nombre} />
+                            <br/>
+                            <label htmlFor="id_usuario">Jefe de Proyecto</label>
+                            <input className="form-control" type="text" name="id_usuario" id="id_usuario" value={this.state.proyecto.id_usuario} readOnly/>
+                            <br/>
+                            <label htmlFor="id_empresa">Empresas Asociadas</label>
+                            <select className="form-control" name="id_empresa" id="id_empresa" value={this.state.id_empresa} onChange={(e)=>this.setState({id_empresa: e.target.value})}>
+                                {this.state.empresas.map(empresa=>{
+                                    return(
+                                        <option value={empresa.id_empresa}>{empresa.razon_social}</option>
+                                    )
+                                })}
+                            </select>
                             <br/>
                             <label htmlFor="fecha_inicio">Fecha de Inicio</label>
                             <input className="form-control" type="date" name="fecha_inicio" id="fecha_inicio" onChange={this.changeHandler} value={this.state.proyecto.fecha_inicio} />
                             <br/>
-                            <label htmlFor="fecha_fin">Fecha de Fin</label>
+                            <label htmlFor="fecha_fin">Fecha de Finalizacion</label>
                             <input className="form-control" type="date" name="fecha_fin" id="fecha_fin" onChange={this.changeHandler} value={this.state.proyecto.fecha_fin} />
                             <br/>
-                            <label htmlFor="id_usuario">ID Usuario</label>
-                            <input className="form-control" type="text" name="id_usuario" id="id_usuario" value={this.state.proyecto.id_usuario} readOnly/>
-                            <br/>
+                            
                         </div>
                     </ModalBody>
                     <ModalFooter>
