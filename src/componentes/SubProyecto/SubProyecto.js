@@ -5,6 +5,7 @@ import axios from 'axios'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 import ModalsubProyecto from './subProyectoModal'
 import TablasubProyecto from './subProyectoTabla'
+import Menu from '../Menu/Menu'
 
 const url="http://localhost:8080/api/subProyecto/";
 
@@ -40,7 +41,22 @@ export default class SubProyecto extends Component{
         })
     }
 
-    cambiarEstadoInsertar = () => {
+    cambiarEstadoInsertar = async () => {
+        const token = localStorage.getItem('token');
+        await axios.get(`http://localhost:8080/api/usuario/${localStorage.getItem('email')}/`,{headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            this.setState({
+                subProyecto: {
+                    id_subProyecto : '',
+                    nombre_subProyecto :'',
+                    fecha_inicio : '',
+                    fecha_fin : '',
+                    id_proyecto : '',
+                    tipo_subProyecto : '',
+                    id_usuario : response.data.id
+                }
+            });
+        });
         this.setState({
             modalInsertar : !this.state.modalInsertar,
         });
@@ -94,7 +110,8 @@ export default class SubProyecto extends Component{
 
     render(){
         return(
-            <div>
+            <React.Fragment>
+                <Menu/>
                 <div className="subProyecto col-10">
                     <div className="Encabezado"><p>SubProyecto</p></div>
 
@@ -128,7 +145,7 @@ export default class SubProyecto extends Component{
 
                 </div>
 
-            </div>
+            </React.Fragment>
         )
 }
 }

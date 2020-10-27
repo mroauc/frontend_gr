@@ -1,6 +1,32 @@
+import Axios from 'axios';
 import React, { Component } from 'react'
+import SubProyecto from './SubProyecto';
 
 export default class subProyectoTabla extends Component {
+    
+    state={
+        usuarios: []
+    }
+
+    buscarUsuario=(id_usuario)=>{
+        for (let index = 0; index < this.state.usuarios.length; index++) {
+            if(this.state.usuarios[index].id===id_usuario){
+                return this.state.usuarios[index].nombre;
+            }
+        }
+        return '';
+    }
+
+    componentDidMount(){
+        const token = localStorage.getItem('token');
+        Axios.get('http://localhost:8080/api/usuario/',{headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            this.setState({
+                usuarios: response.data
+            });
+        })
+    }
+    
     render(){
         return(
             <div>
@@ -28,7 +54,7 @@ export default class subProyectoTabla extends Component {
                                         <td>{subProyecto.fecha_fin}</td>
                                         <td>{subProyecto.id_proyecto}</td>
                                         <td>{subProyecto.tipo_subProyecto}</td>
-                                        <td>{subProyecto.id_usuario}</td>
+                                        <td>{this.buscarUsuario(subProyecto.id_usuario)}</td>
                                         <td>
                                             <button type="button" className="btn btn-warning" data-toggle="modal" data-target="#modalEditar" onClick={() => this.props.obtenerSubProyecto(subProyecto)}>Editar</button> &nbsp;
                                             <button type="button" className="btn btn-danger" data-toggle="modal" data-target="#modalEditar" onClick={() => this.props.cambiarEstadoEliminar(subProyecto)}>Eliminar</button>

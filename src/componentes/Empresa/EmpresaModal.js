@@ -50,7 +50,7 @@ export default class EmpresaModal extends Component {
             <React.Fragment>
                 <Modal isOpen = {this.props.estadoInsertar || this.props.estadoEditar} >
                     <ModalHeader style={{display : 'block'}}>
-                        <span>{(this.props.estadoInsertar) ? 'Ingresar Comentario' :'Editar Comentario'}</span>
+                        <span>{(this.props.estadoInsertar) ? 'Ingresar Empresa' :'Editar Empresa'}</span>
                         
                         <span style={{cursor : 'pointer' , float : 'right'}} onClick={() => {(this.props.estadoEditar) ? this.props.cambiarEstadoEditar() : this.props.cambiarEstadoInsertar()}}>x</span>
                     </ModalHeader>

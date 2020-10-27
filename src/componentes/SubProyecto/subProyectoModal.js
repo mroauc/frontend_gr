@@ -109,14 +109,7 @@ export default class subProyectoModal extends Component {
                             <input className="form-control" type="text" name="tipo_subProyecto" id="tipo_subProyecto" onChange={this.changeHandler} value={this.state.subProyecto.tipo_subProyecto}/>
                             <br/>
                             <label htmlFor="id_proyecto">ID Usuario</label>
-                            <select className="form-control" type="text" name="id_usuario" id="id_usuario" onChange={this.changeHandler} value={this.state.subProyecto.id_usuario}>
-                                <option>Selecciona un Usuario</option>
-                                {this.state.usuarios.map(usuario => {
-                                    return(
-                                    <option value={usuario.id}>{usuario.id + " - " + usuario.nombre}</option>
-                                    )
-                                })}
-                            </select>                            
+                            <input className="form-control" type="text" name="id_usuario" id="id_usuario" onChange={this.changeHandler} value={this.state.subProyecto.id_usuario} readOnly />                       
                         </div>
                     </ModalBody>
                     <ModalFooter>

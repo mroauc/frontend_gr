@@ -5,6 +5,7 @@ import axios from 'axios'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 import ModalEmpresa from './EmpresaModal'
 import TablaEmpresa from './EmpresaTabla'
+import Menu from '../Menu/Menu'
 
 const url="http://localhost:8080/api/empresa/";
 
@@ -74,22 +75,6 @@ export default class Empresa extends Component{
         this.cambiarEstadoEditar();
     }
 
-    // insertarEmpresa = async (empresa) => {
-    //     var urlGuardar = url + 'guardar';
-    //     console.log(urlGuardar);
-    //     console.log(empresa);
-        
-    //     await axios.post(urlGuardar, empresa)
-    //     .then(response => {
-    //         (this.state.modalEditar) ? this.cambiarEstadoEditar() : this.cambiarEstadoInsertar();
-    //         this.getEmpresas();
-    //         console.log(response);
-    //     })
-    //     .catch(error => {
-    //         console.log(error)
-    //     })
-    // }
-
     eliminarEmpresa = () => {
         const token = localStorage.getItem('token');
 
@@ -104,36 +89,39 @@ export default class Empresa extends Component{
 
     render(){
         return(
-            <div className="empresa col-10">
-                <div className="Encabezado"><p>Empresa</p></div>
+            <React.Fragment>
+                <Menu/>
+                <div className="empresa col-10">
+                    <div className="Encabezado"><p>Empresa</p></div>
 
-                <button type="button" className="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Ingresar Empresa</button>
+                    <button type="button" className="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Ingresar Empresa</button>
 
-                <TablaEmpresa
-                    empresas={this.state.data}
-                    obtenerEmpresa = {this.obtenerEmpresa}
-                    eliminarEmpresa = {this.eliminarEmpresa}
-                    cambiarEstadoEliminar = {this.cambiarEstadoEliminar}
-                />
+                    <TablaEmpresa
+                        empresas={this.state.data}
+                        obtenerEmpresa = {this.obtenerEmpresa}
+                        eliminarEmpresa = {this.eliminarEmpresa}
+                        cambiarEstadoEliminar = {this.cambiarEstadoEliminar}
+                    />
 
-                <ModalEmpresa
-                    empresa = {this.state.empresa}
-                    getEmpresas = {this.getEmpresas}
-                    estadoEditar = {this.state.modalEditar} 
-                    estadoInsertar = {this.state.modalInsertar}
-                    cambiarEstadoInsertar = {this.cambiarEstadoInsertar}
-                    cambiarEstadoEditar = {this.cambiarEstadoEditar}
-                />
+                    <ModalEmpresa
+                        empresa = {this.state.empresa}
+                        getEmpresas = {this.getEmpresas}
+                        estadoEditar = {this.state.modalEditar} 
+                        estadoInsertar = {this.state.modalInsertar}
+                        cambiarEstadoInsertar = {this.cambiarEstadoInsertar}
+                        cambiarEstadoEditar = {this.cambiarEstadoEditar}
+                    />
 
-                <Modal isOpen={this.state.modalEliminar}>
-                    <ModalHeader></ModalHeader>
-                    <ModalBody>Estas seguro que quiere eliminar el comentario</ModalBody>
-                    <ModalFooter>
-                        <button className="btn btn-danger" onClick ={() => {this.eliminarEmpresa(); this.setState({empresa : ''})}}>SI</button>
-                        <button className="btn btn-secunday" onClick={() => this.setState({modalEliminar : false})}>NO</button>
-                    </ModalFooter>
-                </Modal>
-            </div>
+                    <Modal isOpen={this.state.modalEliminar}>
+                        <ModalHeader></ModalHeader>
+                        <ModalBody>Estas seguro que quiere eliminar el comentario</ModalBody>
+                        <ModalFooter>
+                            <button className="btn btn-danger" onClick ={() => {this.eliminarEmpresa(); this.setState({empresa : ''})}}>SI</button>
+                            <button className="btn btn-secunday" onClick={() => this.setState({modalEliminar : false})}>NO</button>
+                        </ModalFooter>
+                    </Modal>
+                </div>
+            </React.Fragment>
         )
 }
 }

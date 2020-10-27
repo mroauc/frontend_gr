@@ -13,16 +13,15 @@ export default class ComentarioModal extends Component {
             id_empresa: '',
             id_user: ''
         },
-        empresas: [],
-        usuarios: []
+        empresas: []
     }
 
     componentDidMount(){
         this.getEmpresas();
-        this.getUsuarios();
     }
 
     componentWillReceiveProps(next_props) {
+        console.log(this.props.cliente);
         this.setState({ cliente: this.props.cliente});
     }
 
@@ -49,17 +48,6 @@ export default class ComentarioModal extends Component {
               ...this.state.cliente, [e.target.name]: e.target.value
             }
           });
-    }
-
-    getUsuarios = async () => {
-        const token = localStorage.getItem('token');
-
-        await axios.get("http://localhost:8080/api/usuario/",{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
-            this.setState({
-                usuarios: response.data
-            })
-        });
-        console.log(this.state.usuarios);
     }
     
     getEmpresas = async () => {
@@ -102,14 +90,8 @@ export default class ComentarioModal extends Component {
                                 </select>
                                 <br/>
                                 <label htmlFor="id_user">ID User</label>
-                                <select className="form-control" type="text" name="id_user" id="id_user" onChange={this.changeHandler} value={this.state.cliente.id_user}>
-                                <option>Selecciona un Usuario</option>
-                                {this.state.usuarios.map(usuario => {
-                                    return(
-                                    <option value={usuario.id_usuario}>{usuario.id_usuario + " - " + usuario.nombre}</option>
-                                    )
-                                })}
-                            </select>
+                                <input className="form-control" type="text" name="id_user" id="id_user" onChange={this.changeHandler} value={this.state.cliente.id_user} readOnly/>
+
                             </div>
                     </ModalBody>
                     <ModalFooter>

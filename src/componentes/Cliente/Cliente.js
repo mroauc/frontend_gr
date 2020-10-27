@@ -5,6 +5,8 @@ import axios from 'axios'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 import ClienteTabla from './ClienteTabla'
 import ClienteModal from './ClienteModal'
+import Menu from '../Menu/Menu'
+import Axios from 'axios'
 
 
 const url="http://localhost:8080/api/cliente/";
@@ -37,9 +39,21 @@ export default class Cliente extends Component{
         })
     }
 
-    cambiarEstadoInsertar = () => {
+    cambiarEstadoInsertar = async () => {
+        const token = localStorage.getItem('token');
+        await Axios.get(`http://localhost:8080/api/usuario/${localStorage.getItem('email')}/`,{headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            this.setState({
+                cliente: {
+                    id_cliente: '',
+                    celular: '',
+                    id_empresa: '',
+                    id_user: response.data.id
+                }
+            });
+        });
         this.setState({
-            modalInsertar : !this.state.modalInsertar,
+            modalInsertar : !this.state.modalInsertar
         });
     }
 
@@ -87,7 +101,8 @@ export default class Cliente extends Component{
 
     render(){
         return(
-            <div>
+            <React.Fragment>
+                <Menu/>
                 <div className="cliente col-10">
                     <div className="Encabezado"><p>Cliente</p></div>
 
@@ -121,7 +136,7 @@ export default class Cliente extends Component{
                     
                    
 
-            </div>
+            </React.Fragment>
         )
 }
 }

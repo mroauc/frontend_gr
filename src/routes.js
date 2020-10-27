@@ -17,6 +17,8 @@ import Requerimiento from './componentes/Requerimiento/Requerimiento';
 import SubProyecto from './componentes/SubProyecto/SubProyecto';
 import Usuario from './componentes/Usuario/Usuario';
 import Dashboard from './componentes/Dashboard/Dashboard';
+import error from './componentes/error';
+
 
 const Routes=()=>(
     <Router>
@@ -38,6 +40,7 @@ const Routes=()=>(
             <PrivateRoute path="/template" component={Template} />
             <PrivateRoute path="/usuario" component={Usuario} />
             <PrivateRoute path="/propuestaCambio" component={PropuestaCambio} />
+            <PrivateRoute path="/noAutorizado" component={error} />
 
             <Route exact path="/logout" component={Logout} />
         </Switch>

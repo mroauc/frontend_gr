@@ -5,6 +5,7 @@ import axios from 'axios'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 import ModalPalabra from './PalabraModal'
 import TablaPalabra from './PalabraTabla'
+import Menu from '../Menu/Menu'
 
 const url="http://localhost:8080/api/palabra/";
 
@@ -35,6 +36,9 @@ export default class Palabra extends Component{
             this.setState({
                 data: response.data
             });
+        })
+        .catch(()=>{
+            this.props.history.push('/noAutorizado');
         })
     }
 
@@ -88,37 +92,39 @@ export default class Palabra extends Component{
 
     render(){
         return(
-            
-            <div className="palabra col-10">
-                <div className="Encabezado"><p>Palabra</p></div>
-                <button type="button" className="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Ingresar Palabra</button>
+            <React.Fragment>
+                <Menu/>
+                <div className="palabra col-10">
+                    <div className="Encabezado"><p>Palabra</p></div>
+                    <button type="button" className="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Ingresar Palabra</button>
 
-                <TablaPalabra
-                    palabras={this.state.data}
-                    obtenerPalabra= {this.obtenerPalabra}
-                    eliminarPalabra = {this.eliminarPalabra}
-                    cambiarEstadoEliminar = {this.cambiarEstadoEliminar}
-                />
+                    <TablaPalabra
+                        palabras={this.state.data}
+                        obtenerPalabra= {this.obtenerPalabra}
+                        eliminarPalabra = {this.eliminarPalabra}
+                        cambiarEstadoEliminar = {this.cambiarEstadoEliminar}
+                    />
 
-                <ModalPalabra
-                    palabra = {this.state.palabra}
-                    getPalabras = {this.getPalabras}
-                    estadoEditar = {this.state.modalEditar} 
-                    estadoInsertar = {this.state.modalInsertar}
-                    cambiarEstadoInsertar = {this.cambiarEstadoInsertar}
-                    cambiarEstadoEditar = {this.cambiarEstadoEditar}    
-                />
+                    <ModalPalabra
+                        palabra = {this.state.palabra}
+                        getPalabras = {this.getPalabras}
+                        estadoEditar = {this.state.modalEditar} 
+                        estadoInsertar = {this.state.modalInsertar}
+                        cambiarEstadoInsertar = {this.cambiarEstadoInsertar}
+                        cambiarEstadoEditar = {this.cambiarEstadoEditar}    
+                    />
 
-                <Modal isOpen={this.state.modalEliminar}>
-                    <ModalHeader></ModalHeader>
-                    <ModalBody>Estas seguro que quiere eliminar la palabra</ModalBody>
-                    <ModalFooter>
-                        <button className="btn btn-danger" onClick ={() => {this.eliminarPalabra(); this.setState({palabra : ''})}}>SI</button>
-                        <button className="btn btn-secunday" onClick={() => this.setState({modalEliminar : false})}>NO</button>
-                    </ModalFooter>
-                </Modal>
+                    <Modal isOpen={this.state.modalEliminar}>
+                        <ModalHeader></ModalHeader>
+                        <ModalBody>Estas seguro que quiere eliminar la palabra</ModalBody>
+                        <ModalFooter>
+                            <button className="btn btn-danger" onClick ={() => {this.eliminarPalabra(); this.setState({palabra : ''})}}>SI</button>
+                            <button className="btn btn-secunday" onClick={() => this.setState({modalEliminar : false})}>NO</button>
+                        </ModalFooter>
+                    </Modal>
 
-            </div>
+                </div>
+            </React.Fragment>
         )
 }
 }
