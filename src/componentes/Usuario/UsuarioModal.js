@@ -19,22 +19,12 @@ class UsuarioModal extends Component{
     }
 
     guardar=async()=>{
-        /*await Axios.post('http://localhost:8080/api/usuario/guardar/',{
-            estado: this.state.usuario.estado,
-            nombre: this.state.usuario.nombre,
-            password: this.state.usuario.password,
-            rol: this.state.usuario.rol,
-            email: this.state.usuario.email
-        })
-        .then(response=>{
-            this.props.modalInsertar();
-            this.props.index();
-        })*/
         const token = localStorage.getItem('token');
         await Axios.post('http://localhost:8080/auth/nuevo/',{
             nombre: this.state.usuario.nombre,
             email: this.state.usuario.email,
             estado: this.state.usuario.estado,
+            tipo: this.state.usuario.rol,
             password: this.state.usuario.password,
             roles: [this.state.usuario.rol]
         },{headers:{"Authorization": `Bearer ${token}`}})

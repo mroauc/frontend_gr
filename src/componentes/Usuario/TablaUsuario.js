@@ -24,7 +24,7 @@ class TablaUsuario extends Component{
                                     <td>{index+1}</td>
                                     <td>{usuario.nombre}</td>
                                     <td>{usuario.email}</td>
-                                    <td>{usuario.rol}</td>
+                                    <td>{usuario.tipo}</td>
                                     <td>{usuario.estado}</td>
                                     <td>
                                         <button className="btn btn-warning" onClick={()=>this.props.editar(usuario)}>Editar</button>
