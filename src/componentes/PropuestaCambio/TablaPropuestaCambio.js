@@ -12,9 +12,8 @@ class TablaPropuestaCambio extends Component{
                             <th scope="col">Fecha Peticion</th>
                             <th scope="col">Modulo</th>
                             <th scope="col">Estado</th>
-                            <th scope="col">Ver</th>
-                            <th scope="col">Editar</th>
-                            <th scope="col">Eliminar</th>
+                            <th scope="col">Acciones</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -27,13 +26,9 @@ class TablaPropuestaCambio extends Component{
                                     <td>{propuesta.id_modulo}</td>
                                     <td>{propuesta.estado}</td>
                                     <td>
-                                        <button className="btn btn-success" onClick={()=>this.props.verPropuesta(propuesta)}>Ver</button>
-                                    </td>
-                                    <td>
-                                        <button className="btn btn-warning" onClick={()=>this.props.editar(propuesta)}>Editar</button>
-                                    </td>
-                                    <td>
-                                        <button className="btn btn-danger" onClick={()=>this.props.modalEliminar(propuesta)}>Eliminar</button>
+                                        <button className="btn btn-success" onClick={()=>this.props.verPropuesta(propuesta)}>Ver</button> &nbsp;
+                                        <button className="btn btn-warning" onClick={()=>this.props.editar(propuesta)}>Editar</button> &nbsp;
+                                        <button className="btn btn-danger" onClick={()=>this.props.modalEliminar(propuesta)}>Eliminar</button> &nbsp;
                                     </td>
                                 </tr>
                             )

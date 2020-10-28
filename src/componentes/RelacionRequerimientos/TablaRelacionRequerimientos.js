@@ -10,8 +10,7 @@ class TablaRelacionRequerimientos extends Component{
                             <th scope="col">#</th>
                             <th scope="col">ID Requerimiento A</th>
                             <th scope="col">ID Requerimiento B</th>
-                            <th scope="col">Editar</th>
-                            <th scope="col">Eliminar</th>
+                            <th scope="col">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -22,9 +21,7 @@ class TablaRelacionRequerimientos extends Component{
                                     <td>{relacion.id_requerimiento_a}</td>
                                     <td>{relacion.id_requerimiento_b}</td>
                                     <td>
-                                        <button className="btn btn-warning" onClick={()=>this.props.editar(relacion)}>Editar</button>
-                                    </td>
-                                    <td>
+                                        <button className="btn btn-warning" onClick={()=>this.props.editar(relacion)}>Editar</button> &nbsp;
                                         <button className="btn btn-danger" onClick={()=>this.props.modalEliminar(relacion)}>Eliminar</button>
                                     </td>
                                 </tr>

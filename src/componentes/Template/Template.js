@@ -34,6 +34,9 @@ class Template extends Component{
                 templates: response.data
             });
         })
+        .catch(()=>{
+            this.props.history.push('/noAutorizado');
+        })
     }
 
     componentDidMount(){

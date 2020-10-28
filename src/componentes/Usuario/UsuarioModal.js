@@ -70,11 +70,11 @@ class UsuarioModal extends Component{
                             <br/>
                             <label htmlFor="rol">Tipo de usuario</label>
                             <select name="rol" id="rol" className="form-control" value={this.state.usuario.rol} onChange={this.changeHandler}>
-                                <option value="Analista">Analista</option>
-                                <option value="Lider de subproyecto">Lider de subproyecto</option>
-                                <option value="Jefe de proyecto">Jefe de proyecto</option>
-                                <option value="Cliente">Cliente</option>
-                                <option value="Administrador del Sistema">Administrador del Sistema</option>
+                                <option value="analista">Analista</option>
+                                <option value="lider">Lider de subproyecto</option>
+                                <option value="jefe">Jefe de proyecto</option>
+                                <option value="cliente">Cliente</option>
+                                <option value="admin">Administrador del Sistema</option>
                             </select>
                             <br/>
                             <label htmlFor="estado">Estado de usuario</label>

@@ -8,8 +8,6 @@ class DashboardAdmin extends Component{
         return(
             <div>
                 <Menu/>
-                
-            
             </div>
         );
     }

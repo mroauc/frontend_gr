@@ -36,8 +36,7 @@ export class TablaErrores extends Component{
                             <th scope="col">Error</th>
                             <th scope="col">Usuario</th>
                             <th scope="col">Fecha Creacion</th>
-                            <th scope="col">Editar</th>
-                            <th scope="col">Eliminar</th>
+                            <th scope="col">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -49,9 +48,7 @@ export class TablaErrores extends Component{
                                     <td>{this.buscarUsuario(singleError.id_usuario)}</td>
                                     <td>{singleError.fecha}</td>
                                     <td>
-                                        <button className="btn btn-warning" onClick={()=>this.props.editar(singleError)}>Editar</button>
-                                    </td>
-                                    <td>
+                                        <button className="btn btn-warning" onClick={()=>this.props.editar(singleError)}>Editar</button> &nbsp;
                                         <button className="btn btn-danger" onClick={()=>this.props.modalEliminar(singleError)}>Eliminar</button>
                                     </td>
                                 </tr>

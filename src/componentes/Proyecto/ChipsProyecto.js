@@ -3,8 +3,6 @@ import { Chip, Avatar } from '@material-ui/core';
 import './ChipsProyecto.css';
 
 export default class ChipsProyecto extends Component{
-    
-    
 
     state={
         empresas: [],
@@ -21,6 +19,8 @@ export default class ChipsProyecto extends Component{
         this.setState({
             arregloChips : filtrado
         });
+
+        this.props.eliminarChip(empresa);
     }
 
     changeInputEmpresa = (e) => {
@@ -29,22 +29,21 @@ export default class ChipsProyecto extends Component{
           });
     }
 
-    
-
     crearChip = async () => {
         if(this.state.empresa === '')
             return;
-        
+
         if(!this.state.arregloChips.includes(this.state.empresa)){
             await this.setState({
                 arregloChips: [ ...this.state.arregloChips, this.state.empresa], /// PUSH AL ARREGLO CHIPS LA OPCION SELECCIONADA
               });
+
+            this.props.insertarChip(this.state.empresa);
         }
         
     }
 
-    render(){
-        
+    render(){   
         return(
             <React.Fragment>
                 <label style={{marginRight: '10px' }}>Empresas Asociadas</label>
@@ -69,8 +68,6 @@ export default class ChipsProyecto extends Component{
                             )
                         })
                         }
-                        
-                        
                     </div>
                 </div>     
             </React.Fragment>

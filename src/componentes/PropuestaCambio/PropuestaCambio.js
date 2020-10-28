@@ -39,6 +39,9 @@ class PropuestaCambio extends Component{
                 propuestas: response.data
             });
         })
+        .catch(()=>{
+            this.props.history.push('/noAutorizado');
+        })
     }
 
     componentDidMount(){

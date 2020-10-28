@@ -18,24 +18,21 @@ class Usuario extends Component{
             estado: 'Activo',
             nombre: '',
             password: '',
-            rol: 'Analista',
+            rol: 'analista',
             email:''
         }
     }
 
     index=()=>{
-        /*Axios.get('http://localhost:8080/api/usuario/')
-        .then(response=>{
-            this.setState({
-                usuarios: response.data
-            });
-        })*/
         const token = localStorage.getItem('token');
         Axios.get('http://localhost:8080/api/usuario/',{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 usuarios: response.data
             });
+        })
+        .catch(()=>{
+            this.props.history.push('/noAutorizado');
         })
     }
 
@@ -76,7 +73,7 @@ class Usuario extends Component{
     eliminar=()=>{
         Axios.delete(`http://localhost:8080/api/usuario/eliminar/${this.state.usuario.id_usuario}`)
         .then(response=>{
-            this.setState({modalEliminar:false, usuario:'', usuario: {estado:'Activo',rol:'Analista'},});
+            this.setState({modalEliminar:false, usuario:'', usuario: {estado:'Activo',rol:'analista'},});
             this.index();
         })
     }

@@ -13,7 +13,7 @@ class ProyectoModal extends Component{
             id_usuario: '',
             fecha_creacion: ''
         },
-        id_empresa: 0,
+        empresasSeleccionadas: [],
         empresas: []
     }
 
@@ -26,7 +26,8 @@ class ProyectoModal extends Component{
         Axios.get('http://localhost:8080/api/empresa/',{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
-                empresas: response.data
+                empresas: response.data,
+                empresasSeleccionadas: []
             });
         })
     }
@@ -58,10 +59,30 @@ class ProyectoModal extends Component{
 
     proyectoEmpresa=async(id_proyecto)=>{
         const token = localStorage.getItem('token');
-        await Axios.post('http://localhost:8080/api/proyecto_empresa/guardar/',{
-            id_empresa: this.state.id_empresa,
-            id_proyecto: id_proyecto
-        },{headers:{"Authorization": `Bearer ${token}`}})
+
+        for (let index = 0; index < this.state.empresasSeleccionadas.length; index++) {
+            await Axios.post('http://localhost:8080/api/proyecto_empresa/guardar/',{
+                id_empresa: this.state.empresasSeleccionadas[index],
+                id_proyecto: id_proyecto
+            },{headers:{"Authorization": `Bearer ${token}`}})            
+        }
+        this.setState({
+            empresasSeleccionadas: []
+        });
+
+    }
+
+    insertarChip=(empresa)=>{
+        this.setState({
+            empresasSeleccionadas: [ ...this.state.empresasSeleccionadas, empresa],
+        });
+    }
+
+    eliminarChip=(empresa)=>{
+        const filtrado = this.state.empresasSeleccionadas.filter(item => item!==empresa);        
+        this.setState({
+            empresasSeleccionadas : filtrado
+        });
     }
     
     guardarActualizacion=()=>{
@@ -100,7 +121,11 @@ class ProyectoModal extends Component{
                             <input className="form-control" type="text" name="id_usuario" id="id_usuario" value={this.state.proyecto.id_usuario} readOnly/>
                             <br/>
                             {/* <label htmlFor="id_empresa">Empresas Asociadas</label> */}
-                            <ChipsProyecto empresas = {this.state.empresas}/>
+                            <ChipsProyecto
+                                empresas = {this.state.empresas}
+                                insertarChip = {this.insertarChip}
+                                eliminarChip = {this.eliminarChip}
+                            />
                             <br/>
                             <label htmlFor="fecha_inicio">Fecha de Inicio</label>
                             <input className="form-control" type="date" name="fecha_inicio" id="fecha_inicio" onChange={this.changeHandler} value={this.state.proyecto.fecha_inicio} />

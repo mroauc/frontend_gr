@@ -31,6 +31,9 @@ class Proyecto extends Component{
                 proyectos: response.data
             });
         })
+        .catch(()=>{
+            this.props.history.push('/noAutorizado');
+        })
     }
 
     componentDidMount(){
@@ -38,11 +41,6 @@ class Proyecto extends Component{
     }
 
     modalInsertar=async()=>{
-        /*this.setState({
-            proyecto: '',
-            modalInsertar: !this.state.modalInsertar,
-            tipoModal: 'insertar'
-        });*/
         const token = localStorage.getItem('token');
         await Axios.get(`http://localhost:8080/api/usuario/${localStorage.getItem('email')}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
@@ -94,7 +92,7 @@ class Proyecto extends Component{
                 <Menu/>
             <div className="proyecto col-10">
                 <div className="Encabezado"><p>Proyectos</p></div>
-                <button type="button" class="btn btn-success" onClick={() => this.modalInsertar()}>Insertar</button>
+                <button type="button" class="btn btn-success" onClick={() => this.modalInsertar()}>Nuevo Proyecto</button>
 
                 <TablaProyecto
                     proyectos={this.state.proyectos}
