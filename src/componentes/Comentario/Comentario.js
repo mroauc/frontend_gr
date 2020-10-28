@@ -35,6 +35,9 @@ export default class Comentario extends Component {
             this.setState({
                 data: response.data
             })
+        })
+        .catch(()=>{
+            this.props.history.push('/noAutorizado');
         });
     }
 

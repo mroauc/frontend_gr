@@ -1,7 +1,18 @@
 .navi{
-    background-color: rgba(134, 186, 221, 0.137);
+    /* background-color: rgba(134, 186, 221, 0.137); */
+    background-color: rgba(156, 156, 156, 0.336);
     border-bottom: 1px solid rgba(0,0,0,.15);
     padding: 0 16px;
+    list-style: none;
+    color: black;
+}
+
+a{
+    color: rgb(70, 70, 70);
+}
+
+a:hover{
+    color: rgb(0, 0, 0);
 }
 
 li{
@@ -11,10 +22,22 @@ li{
 }
 
 li:hover{
-    background-color: rgba(224, 224, 224, 0.651);
+    /* background-color: rgba(224, 224, 224, 0.651); */
+    background-color: rgba(88, 88, 88, 0.336);
 }
 
 
 .sistema{
     margin: 0 auto;
+}
+
+.desplegable{
+    position: absolute;
+    right: 5px;
+}
+
+.subMenu{
+    position: absolute; 
+    right: 0;
+    left: auto;
 }

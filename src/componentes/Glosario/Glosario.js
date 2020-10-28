@@ -35,6 +35,9 @@ export default class Glosario extends Component {
                 data: response.data
             });
         })
+        .catch(()=>{
+            this.props.history.push('/noAutorizado');
+        });
     }
     
     cambiarEstadoInsertar = () => {

@@ -1,9 +1,21 @@
 import React, { Component } from 'react';
 import './Navigation.css';
 import {Link} from 'react-router-dom';
+import ModalCambioContraseña from '../Usuario/cambiarContraseña';
+
+import Axios from 'axios';
 
 class Navigation extends Component {
 
+    state={
+        estadoCambioContraseña: false
+    }
+    
+    cambiarEstadoModalContraseña = () => {
+        this.setState({
+            estadoCambioContraseña : !this.state.estadoCambioContraseña
+        })
+    }
    
     render(){
       return(
@@ -29,12 +41,25 @@ class Navigation extends Component {
                     })}
                    
                     </ul>
-                    <div className="text-center" style={{position:'absolute', right:'10px'}}>
-                        <Link to="/logout" className="btn btn-outline-primary">Cerrar Sesion</Link>
-                    </div>  
-                    
                 </div>
-                </nav>
+
+                <div className="desplegable text-center" >
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {localStorage.getItem('nombre')}
+                        </a>
+                        <div class="subMenu dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#" onClick={this.cambiarEstadoModalContraseña}>Cambiar Contraseña</a>
+                            <Link className="dropdown-item" to="/logout">Cerrar Sesión</Link>
+                        </div>
+                    </li> 
+                </div> 
+            </nav>
+                    
+            <ModalCambioContraseña
+                estadoCambioContraseña = {this.state.estadoCambioContraseña}
+                cambiarEstadoContraseña = {this.cambiarEstadoModalContraseña}
+            />
         </div>
         
       );

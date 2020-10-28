@@ -1,3 +1,4 @@
+import Axios from "axios";
 import React, { Component } from "react";
 import { Alert, Button, Form, FormGroup, Input, Label } from "reactstrap";
 
@@ -8,6 +9,14 @@ export default class Login extends Component{
         this.state={
             message: this.props.location.state?this.props.location.state.message:'',
         };
+    }
+
+    getUsuario = (token) => {
+        Axios.get(`http://localhost:8080/api/usuario/${token.email}`,{headers: {"Authorization": `Bearer  ${token.token}`}})
+            .then(response=>{
+                localStorage.setItem('id',response.data.id);
+                localStorage.setItem('nombre',response.data.nombre);
+        })
     }
 
     signIn = () =>{
@@ -30,6 +39,9 @@ export default class Login extends Component{
         .then(token=>{
             localStorage.setItem('token',token.token);
             localStorage.setItem('email',token.email);
+
+            this.getUsuario(token);
+            
             console.log(token.authorities);
             if(token.authorities.length === 1){
                 localStorage.setItem('rol',token.authorities[0].authority);
@@ -64,6 +76,7 @@ export default class Login extends Component{
                         <Alert color="danger" className="text-center">{this.state.message}</Alert>
                     ): ''
                 }
+
                 <Form>
                     <FormGroup>
                         <Label for="email">Email</Label>

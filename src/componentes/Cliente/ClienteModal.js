@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { Component } from 'react'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import './Cliente.css'
 
 const url="http://localhost:8080/api/cliente/";
 
@@ -65,11 +66,11 @@ export default class ComentarioModal extends Component {
     render(){
         return(
             <React.Fragment>
-                <Modal isOpen = {this.props.estadoInsertar || this.props.estadoEditar} >
+                <Modal dialogClassName="modalcito" isOpen = {this.props.estadoInsertar || this.props.estadoEditar} >
                     <ModalHeader style={{display : 'block'}}>
                         <span>{(this.props.estadoInsertar) ? 'Ingresar Cliente' :'Editar Cliente'}</span>
                         
-                        <span style={{cursor : 'pointer' , float : 'right'}} onClick={() => {(this.props.estadoEditar) ? this.props.cambiarEstadoEditar() : this.props.cambiarEstadoInsertar()}}>x</span>
+                        <span style={{cursor : 'pointer' , float : 'right'}} onClick={() => {(this.props.estadoEditar) ? this.props.cambiarEstadoEditar() : this.props.cambiarEstadoInsertar()}}>X</span>
                     </ModalHeader>
                     <ModalBody>
                         <div className="form-group">
@@ -95,7 +96,7 @@ export default class ComentarioModal extends Component {
                             </div>
                     </ModalBody>
                     <ModalFooter>
-                    <button className="btn btn-success" onClick={() => this.guardarCliente(this.state.cliente)} >Guardar Cambios</button>
+                        <button className="btn btn-success" onClick={() => this.guardarCliente(this.state.cliente)}> {(this.props.estadoInsertar)? "Insertar" : "Actualizar"} </button>
                         <button className="btn btn-danger" onClick={() => {(this.props.estadoInsertar) ? this.props.cambiarEstadoInsertar() : this.props.cambiarEstadoEditar()}} >Cancelar</button>
                     </ModalFooter>
                 </Modal>

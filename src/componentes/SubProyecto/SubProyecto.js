@@ -39,6 +39,9 @@ export default class SubProyecto extends Component{
                 data: response.data
             });
         })
+        .catch(()=>{
+            this.props.history.push('/noAutorizado');
+        });
     }
 
     cambiarEstadoInsertar = async () => {

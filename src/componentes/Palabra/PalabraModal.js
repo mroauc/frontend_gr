@@ -66,7 +66,7 @@ export default class PalabraModal extends Component {
                     <ModalHeader style={{display : 'block'}}>
                         <span>{(this.props.estadoInsertar) ? 'Ingresar Palabra' :'Editar Palabra'}</span>
                         
-                        <span style={{cursor : 'pointer' , float : 'right'}} onClick={() => {(this.props.estadoEditar) ? this.props.cambiarEstadoEditar() : this.props.cambiarEstadoInsertar()}}>x</span>
+                        <span style={{cursor : 'pointer' , float : 'right'}} onClick={() => {(this.props.estadoEditar) ? this.props.cambiarEstadoEditar() : this.props.cambiarEstadoInsertar()}}>X</span>
                     </ModalHeader>
                     <ModalBody>
                         <div className="form-group">
@@ -91,7 +91,7 @@ export default class PalabraModal extends Component {
                         </div>
                     </ModalBody>
                     <ModalFooter>
-                        <button className="btn btn-success" onClick={() => this.guardarPalabra(this.state.palabra)} >Guardar Cambios</button>
+                        <button className="btn btn-success" onClick={() => this.guardarPalabra(this.state.palabra)}> {(this.props.estadoInsertar)? "Insertar" : "Actualizar"}</button>
                         <button className="btn btn-danger" onClick={() => {(this.props.estadoInsertar) ? this.props.cambiarEstadoInsertar() : this.props.cambiarEstadoEditar()}} >Cancelar</button>
                     </ModalFooter>
                 </Modal>

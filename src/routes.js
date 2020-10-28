@@ -9,6 +9,7 @@ import Cliente from './componentes/Cliente/Cliente';
 import Comentario from './componentes/Comentario/Comentario';
 import Empresa from './componentes/Empresa/Empresa';
 import Glosario from './componentes/Glosario/Glosario'
+import unGlosario from './componentes/Glosario/unGlosario/unGlosario'
 import Palabra from './componentes/Palabra/Palabra';
 import PropuestaCambio from './componentes/PropuestaCambio/PropuestaCambio';
 import Proyecto from './componentes/Proyecto/Proyecto';
@@ -31,6 +32,7 @@ const Routes=()=>(
             <PrivateRoute path="/comentario" component={Comentario} />
             <PrivateRoute path="/empresa" component={Empresa} />
             <PrivateRoute path="/glosario" component={Glosario} />
+            <PrivateRoute path="/glosario/:id_glosario" component={unGlosario} />
             <PrivateRoute path="/palabra" component={Palabra} />
             <PrivateRoute path="/cambio" component={PropuestaCambio} />
             <PrivateRoute path="/proyecto" component={Proyecto} />

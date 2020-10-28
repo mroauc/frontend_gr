@@ -49,7 +49,7 @@ export class ErroresModal extends Component{
     render(){
         return(
             <React.Fragment>
-                <Modal isOpen={this.props.estadoModalInsertar}>
+                <Modal isOpen={this.props.estadoModalInsertar} size="lg">
                     <ModalHeader style={{display:'block'}}>
                         <span style={{cursor:'pointer', float:'right'}} onClick={()=>this.props.modalInsertar()}>X</span>
                     </ModalHeader>
@@ -58,7 +58,8 @@ export class ErroresModal extends Component{
                             <input className="form-control" type="text" name="id_error" id="id_error" value={this.state.dataError.id_error} readOnly hidden/>
                             <br/>
                             <label htmlFor="contenido">Contenido del Error</label>
-                            <input className="form-control" type="text" name="contenido" id="contenido" onChange={this.changeHandler} value={this.state.dataError.contenido}/>
+                            <p><textarea className="form-control" type="text" name="contenido" id="contenido" rows="10" onChange={this.changeHandler} value={this.state.dataError.contenido}></textarea></p>
+                            {/* <input className="form-control" type="text" name="contenido" id="contenido" onChange={this.changeHandler} value={this.state.dataError.contenido}/> */}
                             <br/>
                             <input className="form-control" type="text" name="id_usuario" id="id_usuario" value={this.state.dataError.id_usuario} readOnly hidden/>
                         </div>

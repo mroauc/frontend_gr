@@ -83,7 +83,7 @@ export default class ComentarioModal extends Component {
                     <ModalHeader style={{display : 'block'}}>
                         <span>{(this.props.estadoInsertar) ? 'Ingresar Comentario' :'Editar Comentario'}</span>
                         
-                        <span style={{cursor : 'pointer' , float : 'right'}} onClick={() => {(this.props.estadoEditar) ? this.props.cambiarEstadoEditar() : this.props.cambiarEstadoInsertar()}}>x</span>
+                        <span style={{cursor : 'pointer' , float : 'right'}} onClick={() => {(this.props.estadoEditar) ? this.props.cambiarEstadoEditar() : this.props.cambiarEstadoInsertar()}}>X</span>
                     </ModalHeader>
                     <ModalBody>
                         <div className="form-group">
@@ -108,7 +108,7 @@ export default class ComentarioModal extends Component {
                         </div>
                     </ModalBody>
                     <ModalFooter>
-                        <button className="btn btn-success" onClick={() => this.guardarComentario(this.state.comentario)} >Guardar Cambios</button>
+                        <button className="btn btn-success" onClick={() => this.guardarComentario(this.state.comentario)}> {(this.props.estadoInsertar)? "Insertar" : "Actualizar"} </button>
                         <button className="btn btn-danger" onClick={() => {(this.props.estadoInsertar) ? this.props.cambiarEstadoInsertar() : this.props.cambiarEstadoEditar()}} >Cancelar</button>
                     </ModalFooter>
                 </Modal>

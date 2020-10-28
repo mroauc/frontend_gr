@@ -37,6 +37,9 @@ export default class Cliente extends Component{
                 data: response.data
             });
         })
+        .catch(()=>{
+            this.props.history.push('/noAutorizado');
+        })
     }
 
     cambiarEstadoInsertar = async () => {
