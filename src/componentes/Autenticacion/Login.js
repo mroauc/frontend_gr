@@ -11,8 +11,8 @@ export default class Login extends Component{
         };
     }
 
-    getUsuario = (token) => {
-        Axios.get(`http://localhost:8080/api/usuario/${token.email}`,{headers: {"Authorization": `Bearer  ${token.token}`}})
+    getUsuario = async(token) => {
+        await Axios.get(`http://localhost:8080/api/usuario/${token.email}`,{headers: {"Authorization": `Bearer  ${token.token}`}})
             .then(response=>{
                 localStorage.setItem('id',response.data.id);
                 localStorage.setItem('nombre',response.data.nombre);
@@ -36,13 +36,12 @@ export default class Login extends Component{
             }
             throw new Error("login invalido");
         })
-        .then(token=>{
+        .then(async token=>{
             localStorage.setItem('token',token.token);
             localStorage.setItem('email',token.email);
 
-            this.getUsuario(token);
+            await this.getUsuario(token);
             
-            console.log(token.authorities);
             if(token.authorities.length === 1){
                 localStorage.setItem('rol',token.authorities[0].authority);
             }
@@ -55,7 +54,6 @@ export default class Login extends Component{
             if(token.authorities.length === 5){
                 localStorage.setItem('rol' , 'ROLE_ADMIN')
             }
-            console.log(localStorage.getItem('rol'));
             this.props.history.push("/index");
             return;
         })

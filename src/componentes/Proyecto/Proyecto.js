@@ -5,6 +5,7 @@ import Menu from '../Menu/Menu';
 import ProyectoModal from './ProyectoModal';
 import TablaProyecto from './TablaProyecto';
 import './Proyecto.css';
+import '../vistaCrud.css';
 
 class Proyecto extends Component{
 
@@ -92,7 +93,7 @@ class Proyecto extends Component{
                 <Menu/>
             <div className="proyecto col-10">
                 <div className="Encabezado"><p>Proyectos</p></div>
-                <button type="button" class="btn btn-success" onClick={() => this.modalInsertar()}>Nuevo Proyecto</button>
+                <button type="button" class="btn boton" onClick={() => this.modalInsertar()}>Nuevo Proyecto</button>
 
                 <TablaProyecto
                     proyectos={this.state.proyectos}

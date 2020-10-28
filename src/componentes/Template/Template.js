@@ -1,6 +1,5 @@
 import Axios from 'axios';
 import React, {Component} from 'react';
-import { Link } from 'react-router-dom';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import Menu from '../Menu/Menu';
 import TablaTemplate from './TablaTemplate';
@@ -102,7 +101,7 @@ class Template extends Component{
                 <Menu/>
             <div className="template col-10">
                 <div className="Encabezado"><p>Templates</p></div>
-                <button type="button" class="btn btn-success" onClick={() => this.modalInsertar()}>Insertar</button>
+                <button type="button" class="btn boton" onClick={() => this.modalInsertar()}>Insertar</button>
 
                 <TablaTemplate
                     templates={this.state.templates}

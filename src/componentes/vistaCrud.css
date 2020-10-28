@@ -12,6 +12,7 @@
 
 table{
     margin: 30px auto;
+    text-align: center;
 }
 
 .paginado{
@@ -19,6 +20,6 @@ table{
 }
 
 .boton{
-    background-color: rgba(147, 212, 255, 0.137);
+    background-color: rgb(255, 255, 255);
     border: 1px solid rgba(0, 0, 0, 0.342);
 }

@@ -57,7 +57,7 @@ class TablaProyecto extends Component{
             <div>
                 <table className="table table-hover">
                 <thead>
-                    <tr style={{textAlign:'center'}}>
+                    <tr>
                         <th scope="col">#</th>
                         <th scope="col">Nombre</th>
                         <th scope="col">Jefe de Proyecto</th>
@@ -69,7 +69,7 @@ class TablaProyecto extends Component{
                 <tbody>
                     {this.props.proyectos.map((proyecto,index)=>{
                         return(
-                            <tr key={proyecto.id_proyecto} style={{textAlign:'center'}}>
+                            <tr key={proyecto.id_proyecto}>
                                 <td>{index+1}</td>
                                 <td>{proyecto.nombre}</td>
                                 <td>{this.buscarUsuario(proyecto.id_usuario)}</td>
