@@ -34,7 +34,9 @@ export default class SubProyecto extends Component{
     getSubProyectos = () => {
         const token = localStorage.getItem('token');
 
-        axios.get(url,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
+        const id_proy = this.props.match.params.id_proyecto;
+
+        axios.get(`http://localhost:8080/api/subProyecto/pertenecientes/${id_proy}`,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.setState({
                 data: response.data
             });
@@ -114,7 +116,7 @@ export default class SubProyecto extends Component{
     render(){
         return(
             <React.Fragment>
-                <Menu/>
+                <Menu />
                 <div className="subProyecto col-10">
                     <div className="Encabezado"><p>SubProyecto</p></div>
 

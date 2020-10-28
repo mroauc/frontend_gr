@@ -29,6 +29,9 @@ class Errores extends Component{
                 errores: response.data
             });
         })
+        .catch(()=>{
+            this.props.history.push('/noAutorizado');
+        })
     }
 
     componentDidMount(){
@@ -36,11 +39,6 @@ class Errores extends Component{
     }
 
     modalInsertar=async()=>{
-        /*this.setState({
-            dataError: '',
-            modalInsertar: !this.state.modalInsertar,
-            tipoModal: 'insertar'
-        });*/
         const token = localStorage.getItem('token');
         await Axios.get(`http://localhost:8080/api/usuario/${localStorage.getItem('email')}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{

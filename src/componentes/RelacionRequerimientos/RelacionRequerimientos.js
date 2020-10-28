@@ -28,6 +28,9 @@ class RelacionRequerimientos extends Component{
                 relacionesRequerimientos: response.data
             });
         })
+        .catch(()=>{
+            this.props.history.push('/noAutorizado');
+        })
     }
 
     componentDidMount(){

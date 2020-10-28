@@ -12,9 +12,7 @@ class TablaTemplate extends Component{
                             <th scope="col">Nombre</th>
                             <th scope="col">Tipo</th>
                             <th scope="col">Fecha de Creacion</th>
-                            <th scope="col">Ver</th>
-                            <th scope="col">Editar</th>
-                            <th scope="col">Eliminar</th>
+                            <th scope="col">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -26,12 +24,8 @@ class TablaTemplate extends Component{
                                     <td>{template.tipo}</td>
                                     <td>{template.fecha}</td>
                                     <td>
-                                        <button className="btn btn-success" onClick={()=>this.props.verTemplate(template)}>Ver</button>
-                                    </td>
-                                    <td>
-                                        <button className="btn btn-warning" onClick={()=>this.props.editar(template)}>Editar</button>
-                                    </td>
-                                    <td>
+                                        <button className="btn btn-success" onClick={()=>this.props.verTemplate(template)}>Ver</button> &nbsp;
+                                        <button className="btn btn-warning" onClick={()=>this.props.editar(template)}>Editar</button> &nbsp;
                                         <button className="btn btn-danger" onClick={()=>this.props.modalEliminar(template)}>Eliminar</button>
                                     </td>
                                 </tr>

@@ -13,8 +13,7 @@ class TablaUsuario extends Component{
                             <th scope="col">Email</th>
                             <th scope="col">Tipo</th>
                             <th scope="col">Estado</th>
-                            <th scope="col">Editar</th>
-                            <th scope="col">Eliminar</th>
+                            <th scope="col">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -24,12 +23,10 @@ class TablaUsuario extends Component{
                                     <td>{index+1}</td>
                                     <td>{usuario.nombre}</td>
                                     <td>{usuario.email}</td>
-                                    <td>{usuario.rol}</td>
+                                    <td>{usuario.tipo}</td>
                                     <td>{usuario.estado}</td>
                                     <td>
-                                        <button className="btn btn-warning" onClick={()=>this.props.editar(usuario)}>Editar</button>
-                                    </td>
-                                    <td>
+                                        <button className="btn btn-warning" onClick={()=>this.props.editar(usuario)}>Editar</button> &nbsp;
                                         <button className="btn btn-danger" onClick={()=>this.props.modalEliminar(usuario)}>Eliminar</button>
                                     </td>
                                 </tr>

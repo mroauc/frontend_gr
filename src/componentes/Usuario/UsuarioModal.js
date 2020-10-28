@@ -19,22 +19,12 @@ class UsuarioModal extends Component{
     }
 
     guardar=async()=>{
-        /*await Axios.post('http://localhost:8080/api/usuario/guardar/',{
-            estado: this.state.usuario.estado,
-            nombre: this.state.usuario.nombre,
-            password: this.state.usuario.password,
-            rol: this.state.usuario.rol,
-            email: this.state.usuario.email
-        })
-        .then(response=>{
-            this.props.modalInsertar();
-            this.props.index();
-        })*/
         const token = localStorage.getItem('token');
         await Axios.post('http://localhost:8080/auth/nuevo/',{
             nombre: this.state.usuario.nombre,
             email: this.state.usuario.email,
             estado: this.state.usuario.estado,
+            tipo: this.state.usuario.rol,
             password: this.state.usuario.password,
             roles: [this.state.usuario.rol]
         },{headers:{"Authorization": `Bearer ${token}`}})
@@ -80,11 +70,11 @@ class UsuarioModal extends Component{
                             <br/>
                             <label htmlFor="rol">Tipo de usuario</label>
                             <select name="rol" id="rol" className="form-control" value={this.state.usuario.rol} onChange={this.changeHandler}>
-                                <option value="Analista">Analista</option>
-                                <option value="Lider de subproyecto">Lider de subproyecto</option>
-                                <option value="Jefe de proyecto">Jefe de proyecto</option>
-                                <option value="Cliente">Cliente</option>
-                                <option value="Administrador del Sistema">Administrador del Sistema</option>
+                                <option value="analista">Analista</option>
+                                <option value="lider">Lider de subproyecto</option>
+                                <option value="jefe">Jefe de proyecto</option>
+                                <option value="cliente">Cliente</option>
+                                <option value="admin">Administrador del Sistema</option>
                             </select>
                             <br/>
                             <label htmlFor="estado">Estado de usuario</label>

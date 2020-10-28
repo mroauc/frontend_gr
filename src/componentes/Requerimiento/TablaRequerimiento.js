@@ -16,8 +16,7 @@ class TablaRequerimiento extends Component{
                             <th scope="col">Estado</th>
                             <th scope="col">Categoria</th>
                             <th scope="col">ID Template</th>
-                            <th scope="col">Editar</th>
-                            <th scope="col">Eliminar</th>
+                            <th scope="col">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -34,9 +33,7 @@ class TablaRequerimiento extends Component{
                                     <td>{requerimiento.categoria}</td>
                                     <td>{requerimiento.id_template}</td>
                                     <td>
-                                        <button className="btn btn-warning" onClick={()=>this.props.editar(requerimiento)}>Editar</button>
-                                    </td>
-                                    <td>
+                                        <button className="btn btn-warning" onClick={()=>this.props.editar(requerimiento)}>Editar</button> &nbsp;
                                         <button className="btn btn-danger" onClick={()=>this.props.modalEliminar(requerimiento)}>Eliminar</button>
                                     </td>
                                 </tr>

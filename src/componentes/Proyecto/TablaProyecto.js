@@ -1,11 +1,15 @@
 import Axios from 'axios';
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { Button } from 'reactstrap';
+import SubProyecto from '../SubProyecto/SubProyecto';
 
 class TablaProyecto extends Component{
 
     state={
         usuarios: [],
-        subProyectos: []
+        subProyectos: [],
+        verSubProyecto: false
     }
 
     componentDidMount(){
@@ -44,42 +48,44 @@ class TablaProyecto extends Component{
         return count;
     }
 
+    verSubProyectos=(id_proyecto)=>{
+
+    }
+
     render(){
         return(
             <div>
                 <table className="table table-hover">
-                    <thead>
-                        <tr style={{textAlign:'center'}}>
-                            <th scope="col">#</th>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Jefe de Proyecto</th>
-                            <th scope="col">Fecha de Creacion</th>
-                            <th scope="col">Subproyectos Ingresados</th>
-                            <th scope="col">Editar</th>
-                            <th scope="col">Eliminar</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.props.proyectos.map((proyecto,index)=>{
-                            return(
-                                <tr key={proyecto.id_proyecto} style={{textAlign:'center'}}>
-                                    <td>{index+1}</td>
-                                    <td>{proyecto.nombre}</td>
-                                    <td>{this.buscarUsuario(proyecto.id_usuario)}</td>
-                                    <td>{proyecto.fecha_creacion}</td>
-                                    <td>{this.cantidadSubProyectos(proyecto.id_proyecto)}</td>
-                                    <td>
-                                        <button className="btn btn-warning" onClick={()=>this.props.editar(proyecto)}>Editar</button>
-                                    </td>
-                                    <td>
-                                        <button className="btn btn-danger" onClick={()=>this.props.modalEliminar(proyecto)}>Eliminar</button>
-                                    </td>
-                                </tr>
-                            )
-                        })}
-                    </tbody>
-                </table>
-            </div>
+                <thead>
+                    <tr style={{textAlign:'center'}}>
+                        <th scope="col">#</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Jefe de Proyecto</th>
+                        <th scope="col">Fecha de Creacion</th>
+                        <th scope="col">Subproyectos Ingresados</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {this.props.proyectos.map((proyecto,index)=>{
+                        return(
+                            <tr key={proyecto.id_proyecto} style={{textAlign:'center'}}>
+                                <td>{index+1}</td>
+                                <td>{proyecto.nombre}</td>
+                                <td>{this.buscarUsuario(proyecto.id_usuario)}</td>
+                                <td>{proyecto.fecha_creacion}</td>
+                                <td>{this.cantidadSubProyectos(proyecto.id_proyecto)}</td>
+                                <td>
+                                    <button className="btn btn-warning" onClick={()=>this.props.editar(proyecto)}>Editar</button> &nbsp;
+                                    <button className="btn btn-danger" onClick={()=>this.props.modalEliminar(proyecto)}>Eliminar</button> &nbsp;
+                                    <Link to={"/subProyecto/"+proyecto.id_proyecto}><Button type="button" className="btn btn-info">Ver</Button></Link>
+                                </td>
+                            </tr>
+                        )
+                    })}
+                </tbody>
+            </table>                
+        </div>
         );
     }
 }
