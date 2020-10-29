@@ -4,10 +4,11 @@ import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
 class PropuestaCambioModal extends Component{
     state={
+        subProyectos: [],
         propuestaCambio: {
             id_propuestaCambio: 0,
             nombre: '',
-            id_modulo: 0,
+            id_subproyecto: 0,
             fecha_peticion: 0,
             id_usuario: '',
             descripcion: '',
@@ -24,11 +25,28 @@ class PropuestaCambioModal extends Component{
         this.setState({propuestaCambio: this.props.propuestaCambio});
     }
 
+    componentDidMount(){
+        this.index();
+    }
+
+    index=async()=>{
+        const token = localStorage.getItem('token');
+        const id_p = this.props.id_proyecto;
+        await Axios.get(`http://localhost:8080/api/subProyecto/pertenecientes/${id_p}`,{headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            this.setState({
+                subProyectos: response.data
+            });
+        })
+        //console.log(this.props.id_proyecto);
+        //console.log(this.state.subProyectos);
+    }
+
     guardar=async()=>{
         const token = localStorage.getItem('token');
         await Axios.post('http://localhost:8080/api/propuestacambio/guardar/',{
             nombre: this.state.propuestaCambio.nombre,
-            id_modulo: this.state.propuestaCambio.id_modulo,
+            id_subproyecto: this.state.propuestaCambio.id_subproyecto,
             fecha_peticion: this.state.propuestaCambio.fecha_peticion,
             id_usuario: this.state.propuestaCambio.id_usuario,
             descripcion: this.state.propuestaCambio.descripcion,
@@ -78,7 +96,13 @@ class PropuestaCambioModal extends Component{
                             <input className="form-control" type="text" name="nombre" id="nombre" onChange={this.changeHandler} value={this.state.propuestaCambio.nombre} />
                             <br/>
                             <label htmlFor="id_modulo">ID Modulo</label>
-                            <input className="form-control" type="text" name="id_modulo" id="id_modulo" onChange={this.changeHandler} value={this.state.propuestaCambio.id_modulo} />
+                            <select name="id_subproyecto" id="id_subproyecto" className="form-control" value={this.state.propuestaCambio.id_subproyecto} onChange={this.changeHandler}>
+                                {this.state.subProyectos.map(subp=>{
+                                    return(
+                                        <option value={subp.id_subProyecto}>{subp.nombre_subProyecto}</option>
+                                    );
+                                })}
+                            </select>
                             <br/>
                             <label htmlFor="fecha_peticion">Fecha de Peticion</label>
                             <input className="form-control" type="date" name="fecha_peticion" id="fecha_peticion" onChange={this.changeHandler} value={this.state.propuestaCambio.fecha_peticion} />

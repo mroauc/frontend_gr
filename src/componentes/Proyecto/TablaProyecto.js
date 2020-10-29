@@ -2,7 +2,6 @@ import Axios from 'axios';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from 'reactstrap';
-import SubProyecto from '../SubProyecto/SubProyecto';
 
 class TablaProyecto extends Component{
 

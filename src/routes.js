@@ -41,7 +41,7 @@ const Routes=()=>(
             <PrivateRoute path="/subProyecto/:id_proyecto" component={SubProyecto} />
             <PrivateRoute path="/template" component={Template} />
             <PrivateRoute path="/usuario" component={Usuario} />
-            <PrivateRoute path="/propuestaCambio" component={PropuestaCambio} />
+            <PrivateRoute path="/propuestaCambio/:id_proyecto" component={PropuestaCambio} />
             <PrivateRoute path="/noAutorizado" component={error} />
 
             <Route exact path="/logout" component={Logout} />
