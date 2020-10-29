@@ -89,8 +89,43 @@ class ProyectoModal extends Component{
         const token = localStorage.getItem('token');
         Axios.post('http://localhost:8080/api/proyecto/editar/',this.state.proyecto, {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
+            //console.log(this.state.empresasSeleccionadas);
             this.props.modalInsertar();
             this.props.index();
+            this.actualizarProyectoEmpresa();
+        })
+    }
+
+    actualizarProyectoEmpresa=()=>{
+        const token = localStorage.getItem('token');
+        var existentes = [];
+        var original = [];
+        Axios.get(`http://localhost:8080/api/proyecto_empresa/obtener/${this.state.proyecto.id_proyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            original = response.data;
+            for (let index = 0; index < response.data.length; index++) {
+                existentes= [...existentes, response.data[index].id_empresa.toString()];
+            }
+
+            //eliminar
+            for (let index = 0; index < existentes.length; index++) {
+                if(!this.state.empresasSeleccionadas.includes(existentes[index])){
+                    Axios.delete(`http://localhost:8080/api/proyecto_empresa/eliminar/${original[index].id_proyecto_empresa}`,{headers: {"Authorization": `Bearer ${token}`}})
+                    .then(response=>{
+                    });
+                } 
+            }
+
+            //insertar
+            for (let index = 0; index < this.state.empresasSeleccionadas.length; index++) {
+                if(!existentes.includes(this.state.empresasSeleccionadas[index])){
+                    //console.log(this.state.proyecto.id_proyecto);
+                    Axios.post('http://localhost:8080/api/proyecto_empresa/guardar/',{
+                        id_empresa: this.state.empresasSeleccionadas[index],
+                        id_proyecto: this.state.proyecto.id_proyecto,
+                    },{headers: {"Authorization": `Bearer ${token}`}});
+                }             
+            }
         })
     }
 
@@ -105,7 +140,7 @@ class ProyectoModal extends Component{
     render(){
         return(
             <React.Fragment>
-                <Modal isOpen={this.props.estadoModalInsertar}>
+                <Modal isOpen={this.props.estadoModalInsertar} toggle={()=>this.props.modalInsertar()}>
                     <ModalHeader style={{display:'block'}}>
                         <span style={{cursor:'pointer', float:'right'}} onClick={()=>this.props.modalInsertar()}>X</span>
                     </ModalHeader>
@@ -120,11 +155,12 @@ class ProyectoModal extends Component{
                             <label htmlFor="id_usuario">Jefe de Proyecto</label>
                             <input className="form-control" type="text" name="id_usuario" id="id_usuario" value={this.state.proyecto.id_usuario} readOnly/>
                             <br/>
-                            {/* <label htmlFor="id_empresa">Empresas Asociadas</label> */}
                             <ChipsProyecto
+                                id_proyecto = {this.state.proyecto.id_proyecto}
                                 empresas = {this.state.empresas}
                                 insertarChip = {this.insertarChip}
                                 eliminarChip = {this.eliminarChip}
+                                seleccionadas = {this.state.empresasSeleccionadas}
                             />
                             <br/>
                             <label htmlFor="fecha_inicio">Fecha de Inicio</label>

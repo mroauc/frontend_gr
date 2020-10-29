@@ -6,6 +6,7 @@ import TablaTemplate from './TablaTemplate';
 import TemplateModal from './TemplateModal';
 import VistaTemplate from './VistaTemplate';
 import './Template.css';
+import '../vistaCrud.css';
 
 class Template extends Component{
 

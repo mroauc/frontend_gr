@@ -6,6 +6,7 @@ import PropuestaCambioModal from './PropuestaCambioModal';
 import TablaPropuestaCambio from './TablaPropuestaCambio';
 import VistaPropuestaCambioModal from './VistaPropuestaCambioModal';
 import './PropuestaCambio.css';
+import '../vistaCrud.css';
 
 class PropuestaCambio extends Component{
 
@@ -125,7 +126,7 @@ class PropuestaCambio extends Component{
                 <Menu />
             <div className="propuestaCambio col-10">
                 <div className="Encabezado"><p>Propuestas de Cambio</p></div>
-                <button type="button" class="btn btn-success" onClick={() => this.modalInsertar()}>Insertar</button>
+                <button type="button" class="btn boton" onClick={() => this.modalInsertar()}>Insertar</button>
 
                 <TablaPropuestaCambio
                     propuestas={this.state.propuestas}

@@ -54,7 +54,6 @@ class Proyecto extends Component{
             modalInsertar: !this.state.modalInsertar,
             tipoModal: 'insertar'
         })
-
     }
 
     editar=async(proyecto)=>{
@@ -91,7 +90,7 @@ class Proyecto extends Component{
         return(
             <React.Fragment>
                 <Menu/>
-            <div className="proyecto col-10">
+                <div className="proyecto col-10">
                 <div className="Encabezado"><p>Proyectos</p></div>
                 <button type="button" class="btn boton" onClick={() => this.modalInsertar()}>Nuevo Proyecto</button>
 

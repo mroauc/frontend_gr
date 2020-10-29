@@ -6,6 +6,7 @@ import Menu from '../Menu/Menu';
 import RequerimientoModal from './RequerimientoModal';
 import TablaRequerimiento from './TablaRequerimiento';
 import './Requerimiento.css';
+import '../vistaCrud.css';
 
 class Requerimiento extends Component{
 
@@ -104,7 +105,7 @@ class Requerimiento extends Component{
             <Menu />
             <div className="requerimiento col-10">
                 <div className="Encabezado"><p>Requerimientos</p></div>
-                <button type="button" class="btn btn-success" onClick={() => this.modalInsertar()}>Insertar</button>
+                <button type="button" class="btn boton" onClick={() => this.modalInsertar()}>Insertar</button>
                 
                 <TablaRequerimiento
                     requerimientos={this.state.requerimientos}
