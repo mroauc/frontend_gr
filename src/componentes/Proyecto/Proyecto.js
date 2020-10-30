@@ -91,7 +91,7 @@ class Proyecto extends Component{
             <React.Fragment>
                 <Menu/>
                 <div className="proyecto col-10">
-                <div className="Encabezado"><p>Proyectos</p></div>
+                <div className="Encabezado"><p>Listado de Proyectos</p></div>
                 <button type="button" class="btn boton" onClick={() => this.modalInsertar()}>Nuevo Proyecto</button>
 
                 <TablaProyecto

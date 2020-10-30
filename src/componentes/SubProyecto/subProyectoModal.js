@@ -18,13 +18,8 @@ export default class subProyectoModal extends Component {
             tipo_subProyecto : '',
             id_usuario : ''
         },
-<<<<<<< HEAD
-        proyectos : [],
         usuarios: [],
         usuariosSeleccionados : []
-=======
-        usuarios: []
->>>>>>> 00bb283357c644f5ac372b5a96c939ee60b9987a
     }
 
     componentDidMount(){
@@ -67,18 +62,6 @@ export default class subProyectoModal extends Component {
         });
     }
 
-<<<<<<< HEAD
-    getProyectos = async () => {
-        const token = localStorage.getItem('token');
-
-        await axios.get("http://localhost:8080/api/proyecto/",{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
-            this.setState({
-                proyectos: response.data
-            })
-        });
-    }
-
-
     insertarChip=(usuario)=>{
         this.setState({
             usuariosSeleccionados: [ ...this.state.usuariosSeleccionados, usuario],
@@ -105,8 +88,6 @@ export default class subProyectoModal extends Component {
         this.setState({usuariosSeleccionados: []});
     }
 
-=======
->>>>>>> 00bb283357c644f5ac372b5a96c939ee60b9987a
     changeHandler = async (e) => {
         await this.setState({
             subProyecto : {

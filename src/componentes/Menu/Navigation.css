@@ -26,11 +26,11 @@ li:hover{
 }
 
 .seleccionado{
-    background-color: rgba(88, 88, 88, 0.536);
+    background-color: rgba(122, 122, 122, 0.411);
 }
 
 .seleccionado:hover{
-    background-color: rgba(88, 88, 88, 0.636);
+    background-color: rgba(88, 88, 88, 0.336);
 }
 
 .seleccionado > a{

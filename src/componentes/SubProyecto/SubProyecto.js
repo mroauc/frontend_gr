@@ -25,11 +25,22 @@ export default class SubProyecto extends Component{
         },
         modalInsertar: false,
         modalEditar: false,
-        modalEliminar : false
+        modalEliminar : false,
+        nombre_proyecto: ''
     }
 
     componentDidMount(){
+        this.getProyectos();
         this.getSubProyectos();
+    }
+
+    getProyectos = async() =>{
+        const token = localStorage.getItem('token');
+        await axios.get(`http://localhost:8080/api/proyecto/${this.props.match.params.id_proyecto}`,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
+            this.setState({
+                nombre_proyecto: response.data.nombre
+            })
+        })
     }
 
     getSubProyectos = () => {
@@ -130,14 +141,17 @@ export default class SubProyecto extends Component{
             <React.Fragment>
                 <Menu />
                 <div className="subProyecto col-10">
-                    <div className="Encabezado"><p>SubProyecto</p></div>
+                    <div className="Encabezado"><p>Subproyectos del proyecto: {this.state.nombre_proyecto}</p></div>
 
                     <button type="button" className="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Nuevo Subproyecto</button>
 
-                    <Link to={"/propuestaCambio/"+this.props.match.params.id_proyecto}><button type="button" className="btn boton float-right">Propuestas de cambio</button></Link>
+                   
 
-                    <div style={{float: "right"}}>
+                    <div style={{float: "right" , textDecoration: 'none'}}>
                         <Link to= {`/palabra/${this.props.match.params.id_proyecto}`}><button type="button" className="btn boton">Ver Glosario</button> </Link>
+                        <Link to={"/propuestaCambio/"+this.props.match.params.id_proyecto}><button type="button" className="btn boton" >Propuestas de cambio</button></Link>
+                        
+
                     </div>
 
                     <TablasubProyecto
