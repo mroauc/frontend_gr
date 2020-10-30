@@ -25,7 +25,7 @@ class Navigation extends Component {
 
     menu = (nombre) => {
         if(localStorage.getItem("celda").includes(nombre)){
-            console.log("queeeee");
+            console.log(nombre);
             return "seleccionado"
         } 
         else{
@@ -37,8 +37,8 @@ class Navigation extends Component {
       return(
         <div className="Navigation">
             <nav class="navbar navbar-expand-lg navi">
-                <div style={{width : '10%', textAlign : 'center', marginRight : '16px'}}>
-                    <Link className="navbar-brand sistema" to="/index">Sistema</Link>
+                <div style={{width : '10%', textAlign : 'center', marginRight : '16px'}} onClick={() => {this.seleccionarCelda("Home")}}>
+                    <Link className= {"navbar-brand sistema "+ this.menu("Sistema")} to="/index">Sistema</Link>
                 </div>
                 
 
