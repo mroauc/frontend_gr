@@ -49,7 +49,7 @@ export class ErroresModal extends Component{
     render(){
         return(
             <React.Fragment>
-                <Modal isOpen={this.props.estadoModalInsertar} size="lg">
+                <Modal isOpen={this.props.estadoModalInsertar} size="lg" toggle={()=>this.props.modalInsertar()}>
                     <ModalHeader style={{display:'block'}}>
                         <span style={{cursor:'pointer', float:'right'}} onClick={()=>this.props.modalInsertar()}>X</span>
                     </ModalHeader>

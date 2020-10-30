@@ -18,14 +18,18 @@ export default class subProyectoModal extends Component {
             tipo_subProyecto : '',
             id_usuario : ''
         },
+<<<<<<< HEAD
         proyectos : [],
         usuarios: [],
         usuariosSeleccionados : []
+=======
+        usuarios: []
+>>>>>>> 00bb283357c644f5ac372b5a96c939ee60b9987a
     }
 
     componentDidMount(){
         this.getUsuarios();
-        this.getProyectos();
+        //this.getProyectos();
     }
 
     componentWillReceiveProps(next_props) {
@@ -63,6 +67,7 @@ export default class subProyectoModal extends Component {
         });
     }
 
+<<<<<<< HEAD
     getProyectos = async () => {
         const token = localStorage.getItem('token');
 
@@ -100,6 +105,8 @@ export default class subProyectoModal extends Component {
         this.setState({usuariosSeleccionados: []});
     }
 
+=======
+>>>>>>> 00bb283357c644f5ac372b5a96c939ee60b9987a
     changeHandler = async (e) => {
         await this.setState({
             subProyecto : {
@@ -146,14 +153,7 @@ export default class subProyectoModal extends Component {
                             <input className="form-control" type="date" name="fecha_fin" id="fecha_fin" onChange={this.changeHandler} value={this.state.subProyecto.fecha_fin}/>
                             <br/>
                             <label htmlFor="id_proyecto">ID Proyecto</label>
-                            <select className="form-control" type="text" name="id_proyecto" id="id_proyecto" onChange={this.changeHandler} value={this.state.subProyecto.id_proyecto}>
-                                <option>Selecciona un Proyecto</option>
-                                {this.state.proyectos.map(proyecto => {
-                                    return(
-                                    <option value={proyecto.id_proyecto}>{proyecto.id_proyecto + " - " + proyecto.nombre}</option>
-                                    )
-                                })}
-                            </select>
+                            <input className="form-control" type="text" name="id_proyecto" id="id_proyecto" value={this.state.subProyecto.id_proyecto} readOnly />
                             <br/>
                             <label htmlFor="id_proyecto">Tipo SubProyecto</label>
                             <input className="form-control" type="text" name="tipo_subProyecto" id="tipo_subProyecto" onChange={this.changeHandler} value={this.state.subProyecto.tipo_subProyecto}/>

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Chip, Avatar } from '@material-ui/core';
 import './ChipsProyecto.css';
+import Axios from 'axios';
 
 export default class ChipsProyecto extends Component{
 
@@ -11,6 +12,18 @@ export default class ChipsProyecto extends Component{
     }
 
     componentDidMount(){
+        if(this.props.id_proyecto !== 0){
+            const token = localStorage.getItem('token');
+            Axios.get(`http://localhost:8080/api/proyecto_empresa/obtener/${this.props.id_proyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
+            .then(response=>{
+                for (let index = 0; index < response.data.length; index++) {
+                    this.setState({
+                        arregloChips: [ ...this.state.arregloChips, response.data[index].id_empresa.toString()]
+                    });
+                    this.props.insertarChip(response.data[index].id_empresa.toString());
+                }
+            })
+        }
     }
 
     handleDelete = (empresa) => {
@@ -35,12 +48,11 @@ export default class ChipsProyecto extends Component{
 
         if(!this.state.arregloChips.includes(this.state.empresa)){
             await this.setState({
-                arregloChips: [ ...this.state.arregloChips, this.state.empresa], /// PUSH AL ARREGLO CHIPS LA OPCION SELECCIONADA
+                arregloChips: [ ...this.state.arregloChips, this.state.empresa],
               });
 
             this.props.insertarChip(this.state.empresa);
-        }
-        
+        }               
     }
 
     render(){   

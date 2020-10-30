@@ -23,7 +23,7 @@ class TablaPropuestaCambio extends Component{
                                     <td>{index+1}</td>
                                     <td>{propuesta.nombre}</td>
                                     <td>{propuesta.fecha_peticion}</td>
-                                    <td>{propuesta.id_modulo}</td>
+                                    <td>{propuesta.id_subproyecto}</td>
                                     <td>{propuesta.estado}</td>
                                     <td>
                                         <button className="btn btn-success" onClick={()=>this.props.verPropuesta(propuesta)}>Ver</button> &nbsp;

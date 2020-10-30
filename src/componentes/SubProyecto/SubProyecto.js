@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import './SubProyecto.css'
 import '../vistaCrud.css'
 import axios from 'axios'
-import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 import ModalsubProyecto from './subProyectoModal'
 import TablasubProyecto from './subProyectoTabla'
 import Menu from '../Menu/Menu'
@@ -39,7 +39,16 @@ export default class SubProyecto extends Component{
 
         axios.get(`http://localhost:8080/api/subProyecto/pertenecientes/${id_proy}`,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.setState({
-                data: response.data
+                data: response.data,
+                subProyecto:{
+                    id_subProyecto : '',
+                    nombre_subProyecto :'',
+                    fecha_inicio : '',
+                    fecha_fin : '',
+                    id_proyecto : id_proy,
+                    tipo_subProyecto : '',
+                    id_usuario : ''
+                }
             });
         })
         .catch(()=>{
@@ -49,6 +58,7 @@ export default class SubProyecto extends Component{
 
     cambiarEstadoInsertar = async () => {
         const token = localStorage.getItem('token');
+        const id_proy = this.props.match.params.id_proyecto;
         await axios.get(`http://localhost:8080/api/usuario/${localStorage.getItem('email')}/`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
@@ -57,7 +67,7 @@ export default class SubProyecto extends Component{
                     nombre_subProyecto :'',
                     fecha_inicio : '',
                     fecha_fin : '',
-                    id_proyecto : '',
+                    id_proyecto : id_proy,
                     tipo_subProyecto : '',
                     id_usuario : response.data.id
                 }
@@ -69,6 +79,7 @@ export default class SubProyecto extends Component{
     }
 
     cambiarEstadoEditar = async () => {
+        const id_proy = this.props.match.params.id_proyecto;
         await this.setState({
             modalEditar : !this.state.modalEditar
         });
@@ -80,7 +91,7 @@ export default class SubProyecto extends Component{
                     nombre_subProyecto :'',
                     fecha_inicio : '',
                     fecha_fin : '',
-                    id_proyecto : '',
+                    id_proyecto : id_proy,
                     tipo_subProyecto : '',
                     id_usuario : ''
                 }
@@ -121,7 +132,9 @@ export default class SubProyecto extends Component{
                 <div className="subProyecto col-10">
                     <div className="Encabezado"><p>SubProyecto</p></div>
 
-                    <button type="button" className="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Ingresar SubProyecto</button>
+                    <button type="button" className="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Nuevo Subproyecto</button>
+
+                    <Link to={"/propuestaCambio/"+this.props.match.params.id_proyecto}><button type="button" className="btn boton float-right">Propuestas de cambio</button></Link>
 
                     <div style={{float: "right"}}>
                         <Link to= {`/palabra/${this.props.match.params.id_proyecto}`}><button type="button" className="btn boton">Ver Glosario</button> </Link>
@@ -141,6 +154,7 @@ export default class SubProyecto extends Component{
                         estadoInsertar = {this.state.modalInsertar}
                         cambiarEstadoInsertar = {this.cambiarEstadoInsertar}
                         cambiarEstadoEditar = {this.cambiarEstadoEditar}
+                        id_proyecto = {this.props.match.params.id_proyecto}
                     />
 
                     <Modal isOpen={this.state.modalEliminar} toggle= {() => this.setState({modalEliminar : false})}>

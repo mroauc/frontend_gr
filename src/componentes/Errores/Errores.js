@@ -5,6 +5,7 @@ import Menu from '../Menu/Menu';
 import ErroresModal from './ErroresModal';
 import TablaErrores from './TablaErrores';
 import './Errores.css';
+import '../vistaCrud.css';
 
 class Errores extends Component{
 
@@ -89,7 +90,7 @@ class Errores extends Component{
                 <Menu/>
             <div className="errores col-10">
                 <div className="Encabezado"><p>Errores</p></div>
-                <button type="button" class="btn btn-success" onClick={() => this.modalInsertar()}>Insertar</button>
+                <button type="button" class="btn boton" onClick={() => this.modalInsertar()}>Insertar</button>
 
                 <TablaErrores
                     errores={this.state.errores}

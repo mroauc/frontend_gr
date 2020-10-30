@@ -5,6 +5,7 @@ import Menu from '../Menu/Menu';
 import TablaUsuario from './TablaUsuario';
 import UsuarioModal from './UsuarioModal';
 import './Usuarios.css';
+import '../vistaCrud.css';
 
 class Usuario extends Component{
 
@@ -84,7 +85,7 @@ class Usuario extends Component{
             <Menu />
             <div className="usuarios col-10">
                 <div className="Encabezado"><p>Usuarios</p></div>
-                <button type="button" class="btn btn-success" onClick={() => this.modalInsertar()}>Insertar</button>
+                <button type="button" class="btn boton" onClick={() => this.modalInsertar()}>Insertar</button>
 
                 <TablaUsuario
                     usuarios={this.state.usuarios}
