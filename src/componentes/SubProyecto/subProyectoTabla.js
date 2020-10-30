@@ -45,10 +45,10 @@ export default class subProyectoTabla extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {this.props.subProyectos.map(subProyecto => {
+                            {this.props.subProyectos.map((subProyecto, index) => {
                                 return(
-                                    <tr>
-                                        <td scope="col">{subProyecto.id_subProyecto}</td>
+                                    <tr key={subProyecto.id_subProyecto}>
+                                        <td scope="col">{index+1}</td>
                                         <td>{subProyecto.nombre_subProyecto}</td>
                                         <td>{subProyecto.fecha_inicio}</td>
                                         <td>{subProyecto.fecha_fin}</td>

@@ -11,13 +11,9 @@ export default class PalabraModal extends Component {
             id_palabra: '',
             palabra: '',
             significado : '',
-            id_glosario: ''
+            id_proyecto: ''
         },
-        glosarios: []
-    }
-
-    componentDidMount(){
-        this.getGlosarios();
+        proyectos: []
     }
 
     componentWillReceiveProps(next_props) {
@@ -48,21 +44,10 @@ export default class PalabraModal extends Component {
           });
     }
 
-    getGlosarios = async () => {
-        const token = localStorage.getItem('token');
-
-        await axios.get("http://localhost:8080/api/glosario/" ,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
-            this.setState({
-                glosarios: response.data
-            })
-        });
-        console.log(this.state.glosarios);
-    }
-
     render(){
         return(
             <React.Fragment>
-                <Modal isOpen = {this.props.estadoInsertar || this.props.estadoEditar} >
+                <Modal isOpen = {this.props.estadoInsertar || this.props.estadoEditar} toggle={() => {(this.props.estadoInsertar) ? this.props.cambiarEstadoInsertar() : this.props.cambiarEstadoEditar()}}>
                     <ModalHeader style={{display : 'block'}}>
                         <span>{(this.props.estadoInsertar) ? 'Ingresar Palabra' :'Editar Palabra'}</span>
                         
@@ -79,15 +64,8 @@ export default class PalabraModal extends Component {
                             <label htmlFor="significado">Significado</label>
                             <input className="form-control" type="text" name="significado" id="significado" onChange={this.changeHandler} value={this.state.palabra.significado}/>
                             <br/>
-                            <label htmlFor="id_glosario">Id Glosario</label>
-                            <select className="form-control" type="text" name="id_glosario" id="id_glosario" onChange={this.changeHandler} value={this.state.palabra.id_glosario}>
-                                <option>Seleccione un Glosario</option>
-                                {this.state.glosarios.map(glosario => {
-                                    return(
-                                    <option value={glosario.id_glosario}>{glosario.id_glosario}</option>
-                                    )
-                                })}
-                            </select>
+                            <label htmlFor="id_proyecto">Id Proyecto</label>
+                            <input className="form-control" type="text" name="id_proyecto" id="id_proyecto" onChange={this.changeHandler} value={this.state.palabra.id_proyecto} readOnly/>
                         </div>
                     </ModalBody>
                     <ModalFooter>

@@ -66,7 +66,7 @@ export default class ComentarioModal extends Component {
     render(){
         return(
             <React.Fragment>
-                <Modal dialogClassName="modalcito" isOpen = {this.props.estadoInsertar || this.props.estadoEditar} >
+                <Modal isOpen = {this.props.estadoInsertar || this.props.estadoEditar} toggle={() => {(this.props.estadoInsertar) ? this.props.cambiarEstadoInsertar() : this.props.cambiarEstadoEditar()}} >
                     <ModalHeader style={{display : 'block'}}>
                         <span>{(this.props.estadoInsertar) ? 'Ingresar Cliente' :'Editar Cliente'}</span>
                         

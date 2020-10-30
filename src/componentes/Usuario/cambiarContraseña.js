@@ -109,10 +109,10 @@ export default class cambiarContraseña extends Component {
     
     render(){
         return(
-            <Modal isOpen={this.props.estadoCambioContraseña}>
+            <Modal isOpen={this.props.estadoCambioContraseña} toggle={() => {this.initErrors();this.initDatos();this.props.cambiarEstadoContraseña()}}>
                 <ModalHeader style={{display : 'block'}}>
                     <span>Cambiar Contraseña</span>
-                    <span style={{cursor : 'pointer' , float : 'right'}} onClick={this.props.cambiarEstadoContraseña}>X</span>
+                    <span style={{cursor : 'pointer' , float : 'right'}} onClick={() => {this.initErrors();this.initDatos();this.props.cambiarEstadoContraseña()}}>X</span>
                 </ModalHeader>
                 
                 <ModalBody>

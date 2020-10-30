@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
-import Menu from '../Menu/Menu'
+import Menu from '../Menu/Menu';
 
 class DashboardAdmin extends Component{
 

@@ -48,7 +48,7 @@ export default class EmpresaModal extends Component {
     render(){
         return(
             <React.Fragment>
-                <Modal isOpen = {this.props.estadoInsertar || this.props.estadoEditar} >
+                <Modal isOpen = {this.props.estadoInsertar || this.props.estadoEditar} toggle={() => {(this.props.estadoInsertar) ? this.props.cambiarEstadoInsertar() : this.props.cambiarEstadoEditar()}}>
                     <ModalHeader style={{display : 'block'}}>
                         <span>{(this.props.estadoInsertar) ? 'Ingresar Empresa' :'Editar Empresa'}</span>
                         

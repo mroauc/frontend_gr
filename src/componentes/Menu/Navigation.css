@@ -18,12 +18,23 @@ a:hover{
 li{
     padding: 8px 16px;
     border-left: 1px solid rgba(0,0,0,.15);
-    
 }
 
 li:hover{
     /* background-color: rgba(224, 224, 224, 0.651); */
-    background-color: rgba(88, 88, 88, 0.336);
+    background-color: rgba(88, 88, 88, 0.236);
+}
+
+.seleccionado{
+    background-color: rgba(88, 88, 88, 0.536);
+}
+
+.seleccionado:hover{
+    background-color: rgba(88, 88, 88, 0.636);
+}
+
+.seleccionado > a{
+    color: rgb(0, 0, 0);
 }
 
 

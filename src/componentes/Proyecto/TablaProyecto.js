@@ -32,8 +32,6 @@ class TablaProyecto extends Component{
         for (let index = 0; index < this.state.usuarios.length; index++) {
             if(this.state.usuarios[index].id===id_usuario){
                 return this.state.usuarios[index].nombre;
-            }else{
-                return '';
             }
         }
     }
@@ -46,10 +44,6 @@ class TablaProyecto extends Component{
             }
         }
         return count;
-    }
-
-    verSubProyectos=(id_proyecto)=>{
-
     }
 
     render(){

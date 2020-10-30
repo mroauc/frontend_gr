@@ -41,10 +41,10 @@ export default class ComentarioTabla extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {this.props.comentarios.map(comentario => {
+                            {this.props.comentarios.map((comentario,index) => {
                                 return(
-                                    <tr>
-                                        <td scope="col">{comentario.id_comentario}</td>
+                                    <tr key={comentario.id_comentario}>
+                                        <td scope="col">{index+1}</td>
                                         <td>{comentario.texto}</td>
                                         <td>{comentario.id_requerimiento}</td>
                                         <td>{this.buscarUsuario(comentario.id_usuario)}</td>

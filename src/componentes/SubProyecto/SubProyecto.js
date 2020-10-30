@@ -6,6 +6,7 @@ import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 import ModalsubProyecto from './subProyectoModal'
 import TablasubProyecto from './subProyectoTabla'
 import Menu from '../Menu/Menu'
+import { Link } from 'react-router-dom'
 
 const url="http://localhost:8080/api/subProyecto/";
 
@@ -122,6 +123,10 @@ export default class SubProyecto extends Component{
 
                     <button type="button" className="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Ingresar SubProyecto</button>
 
+                    <div style={{float: "right"}}>
+                        <Link to= {`/palabra/${this.props.match.params.id_proyecto}`}><button type="button" className="btn boton">Ver Glosario</button> </Link>
+                    </div>
+
                     <TablasubProyecto
                         subProyectos={this.state.data}
                         obtenerSubProyecto = {this.obtenerSubProyecto}
@@ -138,7 +143,7 @@ export default class SubProyecto extends Component{
                         cambiarEstadoEditar = {this.cambiarEstadoEditar}
                     />
 
-                    <Modal isOpen={this.state.modalEliminar}>
+                    <Modal isOpen={this.state.modalEliminar} toggle= {() => this.setState({modalEliminar : false})}>
                         <ModalHeader></ModalHeader>
                         <ModalBody>Estas seguro que quiere eliminar el Sub-Proyecto</ModalBody>
                         <ModalFooter>

@@ -127,7 +127,7 @@ export default class Cliente extends Component{
                         cambiarEstadoEditar = {this.cambiarEstadoEditar}
                     />
 
-                    <Modal isOpen={this.state.modalEliminar}>
+                    <Modal isOpen={this.state.modalEliminar} toggle={() => this.setState({modalEliminar : false})}>
                         <ModalHeader></ModalHeader>
                         <ModalBody>Estas seguro que quiere eliminar el Sub-Proyecto</ModalBody>
                         <ModalFooter>

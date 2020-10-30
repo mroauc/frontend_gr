@@ -39,6 +39,7 @@ export default class Login extends Component{
         .then(async token=>{
             localStorage.setItem('token',token.token);
             localStorage.setItem('email',token.email);
+            localStorage.setItem('celda','Home');
 
             await this.getUsuario(token);
             

@@ -18,7 +18,7 @@ export default class Palabra extends Component{
             id_palabra: '',
             palabra: '',
             significado : '',
-            id_glosario: ''
+            id_proyecto: this.props.match.params.id_proyecto
         },
         modalInsertar: false,
         modalEditar: false,
@@ -31,8 +31,9 @@ export default class Palabra extends Component{
 
     getPalabras = () => {
         const token = localStorage.getItem('token');
+        const url_f = url + "consulta/" + this.props.match.params.id_proyecto
 
-        axios.get(url,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
+        axios.get(url_f,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.setState({
                 data: response.data
             });
@@ -58,7 +59,7 @@ export default class Palabra extends Component{
                     id_palabra: '',
                     palabra: '',
                     significado : '',
-                    id_glosario: ''
+                    id_proyecto: this.props.match.params.id_proyecto
                 }
             });
         }
@@ -114,7 +115,7 @@ export default class Palabra extends Component{
                         cambiarEstadoEditar = {this.cambiarEstadoEditar}    
                     />
 
-                    <Modal isOpen={this.state.modalEliminar}>
+                    <Modal isOpen={this.state.modalEliminar} toggle={() => this.setState({modalEliminar : false})}>
                         <ModalHeader></ModalHeader>
                         <ModalBody>Estas seguro que quiere eliminar la palabra</ModalBody>
                         <ModalFooter>

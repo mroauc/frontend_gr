@@ -14,13 +14,14 @@ export default class GlosarioTabla extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.props.glosarios.map(glosario => {
+                        {this.props.glosarios.map((glosario, index) => {
                             return(
-                                <tr>
-                                    <td scope="col">{glosario.id_glosario}</td>
+                                <tr key={glosario.id_glosario}>
+                                    <td scope="col">{index+1}</td>
                                     <td>{glosario.id_proyecto}</td>
                                     <td >
-                                        <Link to={"/glosario/"+glosario.id_glosario} ><button className="btn btn-success" >Ver Definiciones</button></Link> &nbsp;
+                                        {console.log("/glosario/"+glosario.id_glosario)}
+                                        <Link to={"/glosario_/"+glosario.id_glosario} ><button className="btn btn-success" >Ver Definiciones</button></Link> &nbsp;
                                         <button type="button" className="btn btn-warning" data-toggle="modal" data-target="#modalEditar" onClick={() => this.props.obtenerGlosario(glosario)}>Editar</button> &nbsp;
                                         <button type="button" className="btn btn-danger" data-toggle="modal" data-target="#modalEditar" onClick={() => this.props.cambiarEstadoEliminar(glosario)}>Eliminar</button>
                                         

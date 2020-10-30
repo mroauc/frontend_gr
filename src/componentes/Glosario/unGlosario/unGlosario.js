@@ -26,6 +26,7 @@ export default class unGlosario extends Component {
     }
 
     componentDidMount(){
+        console.log("hola amigo");
         this.getPalabras();
     }
 

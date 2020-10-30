@@ -43,17 +43,13 @@ class ProyectoModal extends Component{
             fecha_creacion: new Date().toLocaleString()
         },{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
+           console.log(response); 
+        //    this.obtenerIdProyecto();
+        //    this.crearGlosario(response.data.id_proyecto);
+           this.proyectoEmpresa(response.data.id_proyecto);
            this.props.modalInsertar();
            this.props.index();
-           this.obtenerIdProyecto();
-        })
-    }
-    
-    obtenerIdProyecto=async()=>{
-        const token = localStorage.getItem('token');
-        await Axios.get(`http://localhost:8080/api/proyecto/nombre/${this.state.proyecto.nombre}`,{headers: {"Authorization": `Bearer ${token}`}})
-        .then(response=>{
-            this.proyectoEmpresa(response.data.id_proyecto);
+           
         })
     }
 

@@ -15,10 +15,10 @@ export default class EmpresaTabla extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {this.props.empresas.map(empresa => {
+                            {this.props.empresas.map((empresa, index) => {
                                 return(
-                                    <tr>
-                                        <td scope="col">{empresa.id_empresa}</td>
+                                    <tr key={empresa.id_empresa}>
+                                        <td scope="col">{index+1}</td>
                                         <td>{empresa.razon_social}</td>
                                         <td>{empresa.rut_empresa}</td>
                                         <td>{empresa.representante}</td>

@@ -115,7 +115,7 @@ export default class Empresa extends Component{
                         cambiarEstadoEditar = {this.cambiarEstadoEditar}
                     />
 
-                    <Modal isOpen={this.state.modalEliminar}>
+                    <Modal isOpen={this.state.modalEliminar} toggle={() => this.setState({modalEliminar : false})}>
                         <ModalHeader></ModalHeader>
                         <ModalBody>Estas seguro que quiere eliminar el comentario</ModalBody>
                         <ModalFooter>

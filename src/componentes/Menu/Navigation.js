@@ -8,6 +8,7 @@ import Axios from 'axios';
 class Navigation extends Component {
 
     state={
+        celdaSeleccionada: 'Home',
         estadoCambioContraseña: false
     }
     
@@ -15,6 +16,21 @@ class Navigation extends Component {
         this.setState({
             estadoCambioContraseña : !this.state.estadoCambioContraseña
         })
+    }
+
+    seleccionarCelda = (nombre_celda) => {
+        console.log(nombre_celda);
+        localStorage.setItem("celda",nombre_celda);
+    }
+
+    menu = (nombre) => {
+        if(localStorage.getItem("celda").includes(nombre)){
+            console.log("queeeee");
+            return "seleccionado"
+        } 
+        else{
+            return ""
+        }
     }
    
     render(){
@@ -28,15 +44,20 @@ class Navigation extends Component {
 
                 <div class="collapse navbar-collapse" style={{marginLeft : 0}} id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <Link className="nav-link" to="/index">Home</Link>
-                    </li>
-                    
+
+                    <Link style={{textDecoration: 'none'}} to="/index" onClick={() => {this.seleccionarCelda("Home")}}>
+                        <li class={"nav-item active " + this.menu("Home")}>
+                            <a className="nav-link" to="/index">Home</a>
+                        </li> 
+                    </Link>
+                     
                     {this.props.celdas.map(celda => {
                         return(
-                            <li class="nav-item">
-                                <Link class="nav-link" to={celda.url}>{celda.nombre}</Link>
-                            </li>
+                            <Link style={{textDecoration: 'none'}} to={celda.url}>
+                                <li style={{zIndex:100}} class={"nav-item " + this.menu(celda.nombre)} id={celda.nombre} onClick={() => {this.seleccionarCelda(celda.nombre)}}>
+                                    <a class="nav-link" to={celda.url}>{celda.nombre}</a>
+                                </li>
+                            </Link>
                         )
                     })}
                    

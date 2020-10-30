@@ -1,6 +1,8 @@
+
 import axios from 'axios';
 import React, { Component } from 'react'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import ChipsSubProyectoUsuario from './ChipsSubProyectoUsuario';
 
 const url="http://localhost:8080/api/subProyecto/";
 
@@ -17,7 +19,8 @@ export default class subProyectoModal extends Component {
             id_usuario : ''
         },
         proyectos : [],
-        usuarios: []
+        usuarios: [],
+        usuariosSeleccionados : []
     }
 
     componentDidMount(){
@@ -35,7 +38,13 @@ export default class subProyectoModal extends Component {
         
         await axios.post(urlGuardar, subProyecto,{headers: {"Authorization": `Bearer  ${token}`}})
         .then(response => {
-            (this.props.estadoEditar) ? this.props.cambiarEstadoEditar() : this.props.cambiarEstadoInsertar();
+            if(this.props.estadoEditar){
+                this.props.cambiarEstadoEditar();
+            }
+            else{
+                this.insertar_usuariosSubProyecto(response.data.id_subProyecto);
+                this.props.cambiarEstadoInsertar();
+            }
             this.props.getSubProyectos();
             console.log(response);
         })
@@ -64,6 +73,33 @@ export default class subProyectoModal extends Component {
         });
     }
 
+
+    insertarChip=(usuario)=>{
+        this.setState({
+            usuariosSeleccionados: [ ...this.state.usuariosSeleccionados, usuario],
+        });
+    }
+
+    eliminarChip=(usuario)=>{
+        const filtrado = this.state.usuariosSeleccionados.filter(item => item!==usuario);
+        console.log(filtrado);        
+        this.setState({
+            usuariosSeleccionados : filtrado
+        });
+    }
+
+    insertar_usuariosSubProyecto = async (id_subProyecto) => {
+        const token = localStorage.getItem('token');
+        for (let i = 0; i < this.state.usuariosSeleccionados.length; i++) {
+            await axios.post("http://localhost:8080/api/encargadosubproyecto/guardar",{id_subProyecto: id_subProyecto, id_usuario: this.state.usuariosSeleccionados[i]},{headers: {"Authorization": `Bearer  ${token}`}})        
+        }
+    }
+
+    cerrarModal = () => {
+        (this.props.estadoInsertar) ? this.props.cambiarEstadoInsertar() : this.props.cambiarEstadoEditar(); 
+        this.setState({usuariosSeleccionados: []});
+    }
+
     changeHandler = async (e) => {
         await this.setState({
             subProyecto : {
@@ -75,11 +111,11 @@ export default class subProyectoModal extends Component {
     render(){
         return(
             <React.Fragment>
-                <Modal isOpen = {this.props.estadoInsertar || this.props.estadoEditar} >
+                <Modal isOpen = {this.props.estadoInsertar || this.props.estadoEditar} toggle= {this.cerrarModal} >
                     <ModalHeader style={{display : 'block'}}>
                         <span>{(this.props.estadoInsertar) ? 'Ingresar Sub-Proyecto' :'Editar Sub-Proyecto'}</span>
                         
-                        <span style={{cursor : 'pointer' , float : 'right'}} onClick={() => {(this.props.estadoEditar) ? this.props.cambiarEstadoEditar() : this.props.cambiarEstadoInsertar()}}>X</span>
+                        <span style={{cursor : 'pointer' , float : 'right'}} onClick={this.cerrarModal}>X</span>
                     </ModalHeader>
                     <ModalBody>
                         <div className="form-group">
@@ -88,6 +124,20 @@ export default class subProyectoModal extends Component {
                             <br/>
                             <label htmlFor="subProyecto">SubProyecto</label>
                             <input className="form-control" type="text" name="nombre_subProyecto" id="nombre_subProyecto" onChange={this.changeHandler} value={this.state.subProyecto.nombre_subProyecto}/>
+                            <br/>
+                            <ChipsSubProyectoUsuario
+                                tipo="Clientes"
+                                usuarios = {this.state.usuarios.filter(usuario => usuario.tipo === "cliente")}
+                                ingresarChip = {this.insertarChip}
+                                eliminarChip = {this.eliminarChip}
+                            />
+                            <br/>
+                            <ChipsSubProyectoUsuario
+                                tipo="Analistas"
+                                usuarios = {this.state.usuarios.filter(usuario => usuario.tipo === "analista")}
+                                ingresarChip = {this.insertarChip}
+                                eliminarChip = {this.eliminarChip}
+                            />
                             <br/>
                             <label htmlFor="fecha_inicio">Fecha Inicio</label>
                             <input className="form-control" type="date" name="fecha_inicio" id="fecha_inicio" onChange={this.changeHandler} value={this.state.subProyecto.fecha_inicio}/>
@@ -114,7 +164,7 @@ export default class subProyectoModal extends Component {
                     </ModalBody>
                     <ModalFooter>
                         <button className="btn btn-success" onClick={() => this.guardarSubproyecto(this.state.subProyecto)} > {(this.props.estadoInsertar)? "Insertar" : "Actualizar"} </button>
-                        <button className="btn btn-danger" onClick={() => {(this.props.estadoInsertar) ? this.props.cambiarEstadoInsertar() : this.props.cambiarEstadoEditar()}} >Cancelar</button>
+                        <button className="btn btn-danger" onClick={this.cerrarModal} >Cancelar</button>
                     </ModalFooter>
                 </Modal>
 

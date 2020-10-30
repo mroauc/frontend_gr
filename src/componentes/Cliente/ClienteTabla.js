@@ -41,10 +41,10 @@ export default class ClienteTabla extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {this.props.clientes.map(cliente => {
+                            {this.props.clientes.map((cliente,index) => {
                                 return(
-                                    <tr>
-                                        <td scope="col">{cliente.id_cliente}</td>
+                                    <tr key={cliente.id_cliente}>
+                                        <td scope="col">{index+1}</td>
                                         <td>{cliente.celular}</td>
                                         <td>{cliente.id_empresa}</td>
                                         <td>{this.buscarUsuario(cliente.id_user)}</td>
