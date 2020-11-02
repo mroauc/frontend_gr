@@ -8,15 +8,20 @@ export default class ClienteTabla extends Component {
     }
 
     buscarUsuario=(id_usuario)=>{
+        console.log("Usuarios");
+        console.log(this.state.usuarios.length)
         for (let index = 0; index < this.state.usuarios.length; index++) {
             if(this.state.usuarios[index].id===id_usuario){
                 return this.state.usuarios[index].nombre;
+            }
+            if(index === this.state.usuarios.length-1){
+                this.getUsuarios();
             }
         }
         return '';
     }
 
-    componentDidMount(){
+    getUsuarios = () =>{
         const token = localStorage.getItem('token');
         Axios.get('http://localhost:8080/api/usuario/',{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
@@ -25,6 +30,12 @@ export default class ClienteTabla extends Component {
             });
         })
     }
+
+    componentDidMount(){
+       this.getUsuarios();
+    }
+
+    
 
     
     render(){
@@ -47,7 +58,7 @@ export default class ClienteTabla extends Component {
                                         <td scope="col">{index+1}</td>
                                         <td>{cliente.celular}</td>
                                         <td>{cliente.id_empresa}</td>
-                                        <td>{this.buscarUsuario(cliente.id_user)}</td>
+                                        <td>{this.buscarUsuario(cliente.id_user)}</td> 
                                         <td>
                                             <button type="button" className="btn btn-warning" data-toggle="modal" data-target="#modalEditar" onClick={() => this.props.obtenerCliente(cliente)}>Editar</button> &nbsp;
                                             <button type="button" className="btn btn-danger" data-toggle="modal" data-target="#modalEditar" onClick={() => this.props.cambiarEstadoEliminar(cliente)}>Eliminar</button>

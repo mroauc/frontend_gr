@@ -22,6 +22,7 @@ class TemplateModal extends Component{
 
     guardar=async()=>{
         const token = localStorage.getItem('token');
+        console.log(this.state.template.template)
         await Axios.post('http://localhost:8080/api/template/guardar/',{
             prefijo: this.state.template.prefijo,
             nombre: this.state.template.nombre,
