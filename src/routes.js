@@ -37,7 +37,7 @@ const Routes=()=>(
             <PrivateRoute path="/cambio" component={PropuestaCambio} />
             <PrivateRoute path="/proyecto" component={Proyecto} />
             <PrivateRoute path="/relacion_requerimiento" component={RelacionRequerimientos} />
-            <PrivateRoute path="/requerimiento" component={Requerimiento} />
+            <PrivateRoute path="/requerimiento/:id_subproyecto" component={Requerimiento} />
             <PrivateRoute path="/subProyecto/:id_proyecto" component={SubProyecto} />
             <PrivateRoute path="/template" component={Template} />
             <PrivateRoute path="/usuario" component={Usuario} />

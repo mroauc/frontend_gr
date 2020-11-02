@@ -19,13 +19,11 @@ class Navigation extends Component {
     }
 
     seleccionarCelda = (nombre_celda) => {
-        console.log(nombre_celda);
         localStorage.setItem("celda",nombre_celda);
     }
 
     menu = (nombre) => {
         if(localStorage.getItem("celda").includes(nombre)){
-            console.log(nombre);
             return "seleccionado"
         } 
         else{

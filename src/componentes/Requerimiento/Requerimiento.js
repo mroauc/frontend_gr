@@ -19,7 +19,7 @@ class Requerimiento extends Component{
             id_requerimiento: 0,
             descripcion: '',
             id_usuario: 0,
-            id_subProyecto: 0,
+            id_subProyecto: this.props.match.params.id_subproyecto,
             fecha_creacion: '',
             prioridad: 'Baja',
             estado: 'Creado',
@@ -29,8 +29,10 @@ class Requerimiento extends Component{
     }
 
     index=()=>{
+        const id_subp = this.props.match.params.id_subproyecto;
         const token = localStorage.getItem('token');
-        Axios.get('http://localhost:8080/api/requerimiento/',{headers: {"Authorization": `Bearer ${token}`}})
+
+        Axios.get(`http://localhost:8080/api/requerimiento/obtener/${id_subp}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 requerimientos: response.data
@@ -54,7 +56,7 @@ class Requerimiento extends Component{
                     id_requerimiento: 0,
                     descripcion: '',
                     id_usuario: response.data.id,
-                    id_subProyecto: 0,
+                    id_subProyecto: this.props.match.params.id_subproyecto,
                     fecha_creacion: '',
                     prioridad: 'Baja',
                     estado: 'Creado',

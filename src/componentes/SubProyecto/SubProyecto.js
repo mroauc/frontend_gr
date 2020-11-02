@@ -15,7 +15,7 @@ export default class SubProyecto extends Component{
     state ={
         data:[],
         subProyecto: {
-            id_subProyecto : '',
+            id_subProyecto : 0,
             nombre_subProyecto :'',
             fecha_inicio : '',
             fecha_fin : '',
@@ -52,7 +52,7 @@ export default class SubProyecto extends Component{
             this.setState({
                 data: response.data,
                 subProyecto:{
-                    id_subProyecto : '',
+                    id_subProyecto : 0,
                     nombre_subProyecto :'',
                     fecha_inicio : '',
                     fecha_fin : '',
@@ -74,7 +74,7 @@ export default class SubProyecto extends Component{
         .then(response=>{
             this.setState({
                 subProyecto: {
-                    id_subProyecto : '',
+                    id_subProyecto : 0,
                     nombre_subProyecto :'',
                     fecha_inicio : '',
                     fecha_fin : '',
@@ -98,7 +98,7 @@ export default class SubProyecto extends Component{
         if(!this.state.modalEditar){
             this.setState({
                 subProyecto: {
-                    id_subProyecto : '',
+                    id_subProyecto : 0,
                     nombre_subProyecto :'',
                     fecha_inicio : '',
                     fecha_fin : '',
@@ -145,13 +145,9 @@ export default class SubProyecto extends Component{
 
                     <button type="button" className="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Nuevo Subproyecto</button>
 
-                   
-
                     <div style={{float: "right" , textDecoration: 'none'}}>
                         <Link to= {`/palabra/${this.props.match.params.id_proyecto}`}><button type="button" className="btn boton">Ver Glosario</button> </Link>
                         <Link to={"/propuestaCambio/"+this.props.match.params.id_proyecto}><button type="button" className="btn boton" >Propuestas de cambio</button></Link>
-                        
-
                     </div>
 
                     <TablasubProyecto

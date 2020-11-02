@@ -9,7 +9,7 @@ class UsuarioModal extends Component{
             estado: '',
             nombre: '',
             password: '',
-            rol: '',
+            tipo: '',
             email: ''
         }
     }
@@ -55,6 +55,8 @@ class UsuarioModal extends Component{
             <React.Fragment>
                 <Modal isOpen={this.props.estadoModalInsertar} toggle={()=>this.props.modalInsertar()}>
                     <ModalHeader style={{display:'block'}}>
+                        <span>{(this.props.tipoModal==='insertar') ? 'Ingresar Usuario' :'Editar Usuario'}</span>
+
                         <span style={{cursor:'pointer', float:'right'}} onClick={()=>this.props.modalInsertar()}>X</span>
                     </ModalHeader>
                     <ModalBody>
@@ -69,7 +71,7 @@ class UsuarioModal extends Component{
                             <input className="form-control" type="text" name="email" id="email" onChange={this.changeHandler} value={this.state.usuario.email} />
                             <br/>
                             <label htmlFor="rol">Tipo de usuario</label>
-                            <select name="rol" id="rol" className="form-control" value={this.state.usuario.rol} onChange={this.changeHandler}>
+                            <select name="rol" id="rol" className="form-control" value={this.state.usuario.tipo} onChange={this.changeHandler}>
                                 <option value="analista">Analista</option>
                                 <option value="lider">Lider de subproyecto</option>
                                 <option value="jefe">Jefe de proyecto</option>
