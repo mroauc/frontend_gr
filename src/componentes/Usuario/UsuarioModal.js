@@ -1,3 +1,4 @@
+import { useRadioGroup } from '@material-ui/core';
 import Axios from 'axios';
 import React, { Component } from 'react'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
@@ -11,11 +12,24 @@ class UsuarioModal extends Component{
             password: '',
             rol: '',
             email: ''
-        }
+        },
+        cliente: {
+            id_cliente: '',
+            celular: '',
+            id_empresa: '',
+            id_user: ''
+        },
+        empresas: []
+    }
+
+    componentDidMount(){
+        this.getEmpresas();
     }
 
     componentWillReceiveProps(next_props){
         this.setState({usuario: this.props.usuario});
+        console.log("ENTRO AQUIIII");
+        this.getCliente(this.props.usuario);
     }
 
     guardar=async()=>{
@@ -42,6 +56,51 @@ class UsuarioModal extends Component{
         })
     }
 
+    esUsuario = () => {
+        
+        if(this.state.usuario.tipo === "cliente"){
+            
+            return (
+            <div>
+                <label htmlFor="razon_social">Celular</label>
+                <input className="form-control" type="text" name="celular" id="celular" onChange={this.changeHandler2} value={this.state.cliente.celular}/>
+                <br/>
+                <label htmlFor="id_empresa">ID Empresa</label>
+                <select className="form-control" type="text" name="id_empresa" id="id_empresa" onChange={this.changeHandler2} value={this.state.cliente.empresa}>
+                    <option>Selecciona un Empresa</option>
+                    {this.state.empresas.map(empresa => {
+                        return(
+                        <option value={empresa.id_empresa}>{empresa.id_empresa + " - " + empresa.razon_social}</option>
+                        )
+                    })}
+                </select>
+                <br/>
+            </div>);
+        }
+    }
+
+    getCliente = (usuario) => {
+        if(usuario.id === "cliente"){
+            const token = localStorage.getItem('token');
+            Axios.get(`http://localhost:8080/api/cliente/id_usuario/${usuario.id}`,{headers: {"Authorization": `Bearer  ${token}`}})
+            .then(response => {
+                this.setState({
+                    cliente: response.data
+                })
+            })
+        }
+    }
+    
+    getEmpresas = async () => {
+        const token = localStorage.getItem('token');
+        
+        await Axios.get("http://localhost:8080/api/empresa/",{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
+            this.setState({
+                empresas: response.data
+            })
+        });
+    }
+
     changeHandler=async(e)=>{
         await this.setState({
             usuario:{
@@ -50,9 +109,25 @@ class UsuarioModal extends Component{
         });
     }
 
+    changeHandler2=async(e)=>{
+        await this.setState({
+            cliente:{
+                ...this.state.cliente, [e.target.name]: e.target.value
+            }
+        });
+    }
+
+    changeRol=async(e)=>{
+        const copiaUsuario = {...this.state.usuario};
+        copiaUsuario.rol = e.target.value;
+        copiaUsuario.tipo = e.target.value;
+        await this.setState({usuario: copiaUsuario});
+        console.log(copiaUsuario)
+    }
+
     render(){
         return(
-            <React.Fragment>
+            <React.Fragment>    
                 <Modal isOpen={this.props.estadoModalInsertar} toggle={()=>this.props.modalInsertar()}>
                     <ModalHeader style={{display:'block'}}>
                         <span style={{cursor:'pointer', float:'right'}} onClick={()=>this.props.modalInsertar()}>X</span>
@@ -69,7 +144,7 @@ class UsuarioModal extends Component{
                             <input className="form-control" type="text" name="email" id="email" onChange={this.changeHandler} value={this.state.usuario.email} />
                             <br/>
                             <label htmlFor="rol">Tipo de usuario</label>
-                            <select name="rol" id="rol" className="form-control" value={this.state.usuario.rol} onChange={this.changeHandler}>
+                            <select name="rol" id="rol" className="form-control" value={this.state.usuario.tipo} onChange={this.changeRol}>
                                 <option value="analista">Analista</option>
                                 <option value="lider">Lider de subproyecto</option>
                                 <option value="jefe">Jefe de proyecto</option>
@@ -86,6 +161,7 @@ class UsuarioModal extends Component{
                             <label htmlFor="password">Contraseña</label>
                             <input className="form-control" type="password" name="password" id="password" onChange={this.changeHandler} value={this.state.usuario.password} />
                             <br/>
+                            {this.esUsuario()}
                         </div>
                     </ModalBody>
                     <ModalFooter>

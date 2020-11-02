@@ -42,28 +42,36 @@ export default class Cliente extends Component{
         })
     }
 
-    cambiarEstadoInsertar = async () => {
+    getUsuarioCliente = () => {
         const token = localStorage.getItem('token');
-        await Axios.get(`http://localhost:8080/api/usuario/${localStorage.getItem('email')}/`,{headers: {"Authorization": `Bearer ${token}`}})
-        .then(response=>{
-            this.setState({
-                cliente: {
-                    id_cliente: '',
-                    celular: '',
-                    id_empresa: '',
-                    id_user: response.data.id
-                }
-            });
-        });
+        axios.get("http://localhost:8080/api/usuario/tipo/cliente",{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
+            console.log(response.data);
+        })
+        .catch(()=>{
+            this.props.history.push('/noAutorizado');
+        })
+    }
+
+
+    cambiarEstadoInsertar = async () => { /// Cambios
+        
         this.setState({
             modalInsertar : !this.state.modalInsertar
         });
     }
 
-    cambiarEstadoEditar = async () => {
+    cambiarEstadoEditar = async () => { //// AQUIIII
         await this.setState({
             modalEditar : !this.state.modalEditar
         });
+        
+        // if(this.state.modalEditar){
+        //     const token = localStorage.getItem('token');
+        //     await axios.get(`http://localhost:8080/api/usuario/id/${this.state.cliente.id_user}`,{headers: {"Authorization": `Bearer ${token}`}})
+        //     .then(response=>{
+        //         console.log(response.data)
+        //     })
+        // }
 
         if(!this.state.modalEditar){
             this.setState({

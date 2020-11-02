@@ -144,7 +144,7 @@ export default class subProyectoModal extends Component {
                         </div>
                     </ModalBody>
                     <ModalFooter>
-                        <button className="btn btn-success" onClick={() => this.guardarSubproyecto(this.state.subProyecto)} > {(this.props.estadoInsertar)? "Insertar" : "Actualizar"} </button>
+                        <button className="btn btn-success" onClick={() => this.guardarSubproyecto(this.state.subProyecto)}> {(this.props.estadoInsertar)? "Insertar" : "Actualizar"} </button>
                         <button className="btn btn-danger" onClick={this.cerrarModal} >Cancelar</button>
                     </ModalFooter>
                 </Modal>

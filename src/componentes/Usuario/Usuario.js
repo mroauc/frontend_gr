@@ -69,10 +69,11 @@ class Usuario extends Component{
             modalEliminar:true,
             usuario: usuario
         });
+        console.log(usuario);
     }
 
     eliminar=()=>{
-        Axios.delete(`http://localhost:8080/api/usuario/eliminar/${this.state.usuario.id_usuario}`)
+        Axios.delete(`http://localhost:8080/api/usuario/eliminar/${this.state.usuario.id}`)
         .then(response=>{
             this.setState({modalEliminar:false, usuario:'', usuario: {estado:'Activo',rol:'analista'},});
             this.index();
