@@ -20,6 +20,7 @@ import Usuario from './componentes/Usuario/Usuario';
 import Dashboard from './componentes/Dashboard/Dashboard';
 import error from './componentes/error';
 import Navigation from './componentes/Menu/Navigation';
+import Manager from './componentes/Manager/Manager';
 
 
 const Routes=()=>(
@@ -43,6 +44,7 @@ const Routes=()=>(
             <PrivateRoute path="/usuario" component={Usuario} />
             <PrivateRoute path="/propuestaCambio/:id_proyecto" component={PropuestaCambio} />
             <PrivateRoute path="/noAutorizado" component={error} />
+            <PrivateRoute path="/manager" component={Manager} />
 
             <Route exact path="/logout" component={Logout} />
         </Switch>

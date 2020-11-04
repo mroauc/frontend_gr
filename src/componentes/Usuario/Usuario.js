@@ -21,7 +21,7 @@ class Usuario extends Component{
             password: '',
             rol: 'analista',
             email:''
-        }
+        },
     }
 
     index=()=>{
@@ -72,8 +72,16 @@ class Usuario extends Component{
         console.log(usuario);
     }
 
-    eliminar=()=>{
-        Axios.delete(`http://localhost:8080/api/usuario/eliminar/${this.state.usuario.id}`)
+    eliminar= async ()=>{
+        const token = localStorage.getItem('token');
+        if(this.state.usuario.tipo === 'cliente'){
+            await Axios.get(`http://localhost:8080/api/cliente/id_usuario/${this.state.usuario.id}`, {headers: {"Authorization": `Bearer  ${token}`}})
+            .then(async response => {
+                await Axios.delete(`http://localhost:8080/api/cliente/eliminar/${response.data.id_cliente}`, {headers: {"Authorization": `Bearer  ${token}`}})
+            })
+        }
+
+        await Axios.delete(`http://localhost:8080/api/usuario/eliminar/${this.state.usuario.id}`, {headers: {"Authorization": `Bearer  ${token}`}})
         .then(response=>{
             this.setState({modalEliminar:false, usuario:'', usuario: {estado:'Activo',rol:'analista'},});
             this.index();

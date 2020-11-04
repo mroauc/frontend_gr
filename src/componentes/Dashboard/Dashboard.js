@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import Menu from '../Menu/Menu';
 import ImagenUCM from '../../imgs/fotoUCM.PNG'
+import '../../App.css'
  
 class DashboardAdmin extends Component{
 
@@ -9,7 +10,7 @@ class DashboardAdmin extends Component{
         return(
             <div>
                 <Menu/>
-                <img style={{width: '100%', height: '94vh'}} src={ImagenUCM}></img>
+                <img style={{height: '94vh', width: '100%'}} src={ImagenUCM}></img>
             </div>
         );
     }

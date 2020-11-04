@@ -28,8 +28,22 @@ class UsuarioModal extends Component{
 
     componentWillReceiveProps(next_props){
         this.setState({usuario: this.props.usuario});
-        console.log("ENTRO AQUIIII");
         this.getCliente(this.props.usuario);
+    }
+
+    getUsuarioByEmail = async () => {
+        const token = localStorage.getItem('token');
+        await Axios.get(`http://localhost:8080/api/usuario/${this.state.usuario.email}`,{headers: {"Authorization": `Bearer  ${token}`}})
+            .then(async response => {
+                await this.setState({
+                    cliente:{
+                        id_cliente: this.state.cliente.id_cliente,
+                        celular: this.state.cliente.celular,
+                        id_empresa: this.state.cliente.id_empresa,
+                        id_user: response.data.id
+                    }
+                });
+            })
     }
 
     guardar=async()=>{
@@ -42,31 +56,53 @@ class UsuarioModal extends Component{
             password: this.state.usuario.password,
             roles: [this.state.usuario.rol]
         },{headers:{"Authorization": `Bearer ${token}`}})
-        .then(response=>{
+        .then(async response=>{
+
+            if(this.state.usuario.tipo === "cliente"){
+                await this.getUsuarioByEmail();
+                await Axios.post("http://localhost:8080/api/cliente/guardar", this.state.cliente,{headers: {"Authorization": `Bearer  ${token}`}})
+            }
+
             this.props.modalInsertar();
             this.props.index();
         })
     }
 
     guardarActualizacion=()=>{
-        Axios.post('http://localhost:8080/api/usuario/editar/',this.state.usuario)
+        
+        const token = localStorage.getItem('token');
+
+        console.log(this.state.usuario);
+        Axios.post('http://localhost:8080/api/usuario/editar/',this.state.usuario,{headers: {"Authorization": `Bearer  ${token}`}})
         .then(response=>{
             this.props.modalInsertar();
             this.props.index();
-        })
+        });
     }
+
+    // getCliente = (id) => {
+    //     if(id){
+    //         const token = localStorage.getItem('token');
+    //         console.log(id);
+    //         axios.get(`http://localhost:8080/api/usuario/id/${id}`,{headers: {"Authorization": `Bearer  ${token}`}})
+    //         .then(response => {
+    //             this.setState({
+    //                 usuario: response.data
+    //             })
+    //         })
+    //     }
+    // }
 
     esUsuario = () => {
         
         if(this.state.usuario.tipo === "cliente"){
-            
             return (
             <div>
                 <label htmlFor="razon_social">Celular</label>
                 <input className="form-control" type="text" name="celular" id="celular" onChange={this.changeHandler2} value={this.state.cliente.celular}/>
                 <br/>
                 <label htmlFor="id_empresa">ID Empresa</label>
-                <select className="form-control" type="text" name="id_empresa" id="id_empresa" onChange={this.changeHandler2} value={this.state.cliente.empresa}>
+                <select className="form-control" type="text" name="id_empresa" id="id_empresa" onChange={this.changeHandler2} value={this.state.cliente.id_empresa}>
                     <option>Selecciona un Empresa</option>
                     {this.state.empresas.map(empresa => {
                         return(
@@ -80,8 +116,9 @@ class UsuarioModal extends Component{
     }
 
     getCliente = (usuario) => {
-        if(usuario.id === "cliente"){
+        if(usuario.tipo === "cliente"){
             const token = localStorage.getItem('token');
+            console.log(usuario);
             Axios.get(`http://localhost:8080/api/cliente/id_usuario/${usuario.id}`,{headers: {"Authorization": `Bearer  ${token}`}})
             .then(response => {
                 this.setState({
@@ -122,7 +159,6 @@ class UsuarioModal extends Component{
         copiaUsuario.rol = e.target.value;
         copiaUsuario.tipo = e.target.value;
         await this.setState({usuario: copiaUsuario});
-        console.log(copiaUsuario)
     }
 
     render(){

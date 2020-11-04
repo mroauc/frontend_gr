@@ -6,7 +6,6 @@ import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 import ClienteTabla from './ClienteTabla'
 import ClienteModal from './ClienteModal'
 import Menu from '../Menu/Menu'
-import Axios from 'axios'
 
 
 const url="http://localhost:8080/api/cliente/";
@@ -99,10 +98,15 @@ export default class Cliente extends Component{
         this.cambiarEstadoEditar();
     }
 
-    eliminarCliente = () => {
+    eliminarCliente = async () => {
         const token = localStorage.getItem('token');
         var urlEliminar = url + 'eliminar/' + this.state.cliente.id_cliente;
-        axios.delete(urlEliminar,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
+        console.log(urlEliminar);
+        console.log(this.state.cliente);
+
+        await axios.delete(`http://localhost:8080/api/usuario/eliminar/${this.state.cliente.id_user}`,{headers: {"Authorization": `Bearer  ${token}`}});
+
+        await axios.delete(urlEliminar,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.getClientes();
         });
         this.setState({

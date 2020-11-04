@@ -67,12 +67,6 @@ export default class ChipsSubProyectoUsuario extends Component{
                             )
                         })
                     }
-                        {/* {this.state.arregloChips.map(id_usuario => {
-                            return(
-                                <Chip key={id_usuario} label={id_usuario} onDelete={() => this.handleDelete(id_usuario)}/>   
-                            )
-                        })
-                        } */}
                     </div>
                 </div>     
             </React.Fragment>

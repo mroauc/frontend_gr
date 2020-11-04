@@ -51,17 +51,50 @@ export default class ClienteModal extends Component {
     guardarCliente = async () => {
         const token = localStorage.getItem('token');
         var urlGuardar = url + 'guardar';
-        
-        await axios.post(`http://localhost:8080/auth/nuevo`, {
-            nombre: this.state.usuario.nombre,
-            email: this.state.usuario.email,
-            estado: this.state.usuario.estado,
-            tipo: this.state.usuario.rol,
-            password: this.state.usuario.password,
-            roles: [this.state.usuario.rol]
-        },{headers: {"Authorization": `Bearer  ${token}`}})
-        .then(async response => {
-            await axios.get(`http://localhost:8080/api/usuario/${this.state.usuario.email}`,{headers: {"Authorization": `Bearer  ${token}`}})
+        // tipo = rol
+        if(this.props.estadoInsertar){
+            await axios.post(`http://localhost:8080/auth/nuevo`, {
+                nombre: this.state.usuario.nombre,
+                email: this.state.usuario.email,
+                estado: this.state.usuario.estado,
+                tipo: this.state.usuario.rol,
+                password: this.state.usuario.password,
+                roles: [this.state.usuario.rol]
+            },{headers: {"Authorization": `Bearer  ${token}`}})
+            .then(async response => {
+                await this.getUsuarioByEmail();
+            })
+        }
+        else{
+            await axios.post(`http://localhost:8080/api/usuario/editar`, {
+                id: this.state.usuario.id,
+                email: this.state.usuario.email,
+                estado: this.state.usuario.estado,
+                nombre: this.state.usuario.nombre,
+                password: this.state.usuario.password,
+                tipo: 'cliente'
+            },{headers: {"Authorization": `Bearer  ${token}`}})
+            .then(async response => {
+                const copiaCliente = {...this.state.cliente};
+                copiaCliente.id_user = response.data.id;
+                this.setState({cliente: copiaCliente});
+            })
+        }
+
+        axios.post(urlGuardar, this.state.cliente,{headers: {"Authorization": `Bearer  ${token}`}})
+        .then(response => {
+            (this.props.estadoEditar) ? this.props.cambiarEstadoEditar() : this.props.cambiarEstadoInsertar();
+            this.props.getClientes();
+            console.log(response);
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    }
+
+        getUsuarioByEmail = async () => {
+        const token = localStorage.getItem('token');
+        await axios.get(`http://localhost:8080/api/usuario/${this.state.usuario.email}`,{headers: {"Authorization": `Bearer  ${token}`}})
             .then(async response => {
                 await this.setState({
                     cliente:{
@@ -72,17 +105,6 @@ export default class ClienteModal extends Component {
                     }
                 });
             })
-        })
-        
-        axios.post(urlGuardar, this.state.cliente,{headers: {"Authorization": `Bearer  ${token}`}})
-        .then(response => {
-            (this.props.estadoEditar) ? this.props.cambiarEstadoEditar() : this.props.cambiarEstadoInsertar();
-            this.props.getClientes();
-            console.log(response);
-        })
-        .catch(error => {
-            console.log(error)
-        })
     }
 
     changeHandler = async (e) => {
@@ -116,7 +138,6 @@ export default class ClienteModal extends Component {
     render(){
         return(
             <React.Fragment>
-                {this.props.cliente.id_user}
                 <Modal isOpen = {this.props.estadoInsertar || this.props.estadoEditar} toggle={() => {(this.props.estadoInsertar) ? this.props.cambiarEstadoInsertar() : this.props.cambiarEstadoEditar()}} >
                     <ModalHeader style={{display : 'block'}}>
                         <span>{(this.props.estadoInsertar) ? 'Ingresar Cliente' :'Editar Cliente'}</span>
@@ -153,9 +174,6 @@ export default class ClienteModal extends Component {
                                     <option value="Inactivo">Inactivo</option>
                                 </select>
                                 <br/>
-                                {/* <label htmlFor="password">Contraseña</label>
-                                <input className="form-control" type="password" name="password" id="password" onChange={this.changeHandler2} value={this.state.usuario.password} />
-                                <br/> */}
                                 <label htmlFor="id_user">ID User</label>
                                 <input className="form-control" type="text" name="id_user" id="id_user" onChange={this.changeHandler} value={this.state.cliente.id_user} readOnly/>
 
