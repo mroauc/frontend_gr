@@ -14,7 +14,19 @@ class RequerimientoModal extends Component{
             estado: '',
             categoria: '',
             id_template: ''
-        }
+        },
+        templates : []
+    }
+
+    componentDidMount(){
+        const token = localStorage.getItem('token');
+
+        Axios.get('http://localhost:8080/api/template/',{headers: {"Authorization" : `Bearer ${token}`}})
+        .then(response=>{
+            this.setState({
+                templates: response.data
+            });
+        })
     }
 
     componentWillReceiveProps(next_props){
@@ -95,7 +107,14 @@ class RequerimientoModal extends Component{
                             <input className="form-control" type="text" name="categoria" id="categoria" onChange={this.changeHandler} value={this.state.requerimiento.categoria} />
                             <br/>
                             <label htmlFor="id_template">ID Template</label>
-                            <input className="form-control" type="text" name="id_template" id="id_template" onChange={this.changeHandler} value={this.state.requerimiento.id_template} />
+                            <select className="form-control" name="id_template" id="id_template" value={this.state.requerimiento.id_template} onChange={this.changeHandler}>
+                                <option value="">Seleccione un Template</option>
+                                {this.state.templates.map(template=>{
+                                    return(
+                                        <option value={template.id_template}>{template.nombre}</option>
+                                    )
+                                })}
+                            </select>
                             <br/>
                         </div>
                     </ModalBody>

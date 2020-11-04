@@ -33,8 +33,9 @@ class TablaRequerimiento extends Component{
                                     <td>{requerimiento.categoria}</td>
                                     <td>{requerimiento.id_template}</td>
                                     <td>
+                                        <button className="btn btn-success" onClick={()=>this.props.redactar(requerimiento)}>Redactar</button> &nbsp;
                                         <button className="btn btn-warning" onClick={()=>this.props.editar(requerimiento)}>Editar</button> &nbsp;
-                                        <button className="btn btn-danger" onClick={()=>this.props.modalEliminar(requerimiento)}>Eliminar</button>
+                                        <button className="btn btn-danger" onClick={()=>this.props.modalEliminar(requerimiento)}>X</button>
                                     </td>
                                 </tr>
                             )
