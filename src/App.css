@@ -1,5 +1,13 @@
 .App {
-  text-align: center;
+ 
+  /* background-color: rgba(143, 143, 143, 0.233);
+  height: 100vh; */
+
+}
+
+.imagen {
+  background-image: url('./imgs/fotoUCM.PNG');
+  background-size: 100% 100vh;
 }
 
 .App-logo {

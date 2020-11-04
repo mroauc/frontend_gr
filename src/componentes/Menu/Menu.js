@@ -11,6 +11,7 @@ function Menu(){
                 {nombre : "Clientes", url : "/cliente"},
                 {nombre : "Usuarios", url : "/usuario"},
                 {nombre : "Envio de Errores", url : "/errores"},
+                {nombre : "Manager", url : "/manager"}
             ]}
         />
     }
