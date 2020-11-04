@@ -88,7 +88,7 @@ class Errores extends Component{
         return(
             <React.Fragment>
                 <Menu/>
-            <div className="errores col-10">
+                <div className="errores col-10">
                 <div className="Encabezado"><p>Errores</p></div>
                 <button type="button" class="btn boton" onClick={() => this.modalInsertar()}>Insertar</button>
 

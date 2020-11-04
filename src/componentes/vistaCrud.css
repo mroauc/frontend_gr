@@ -23,6 +23,12 @@ table{
     border: 1px solid rgba(0, 0, 0, 0.342);
 }
 
+.botonpurple{
+    background-color: rgb(87, 35, 100);
+    color: #fff;
+}
+
+
 .boton:hover{
     text-decoration: none;
     background-color: #888;

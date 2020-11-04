@@ -1,5 +1,6 @@
 import Axios from 'axios';
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom';
 import SubProyecto from './SubProyecto';
 
 export default class subProyectoTabla extends Component {
@@ -56,6 +57,7 @@ export default class subProyectoTabla extends Component {
                                         <td>{subProyecto.tipo_subProyecto}</td>
                                         <td>{this.buscarUsuario(subProyecto.id_usuario)}</td>
                                         <td>
+                                            <Link to= {`/requerimiento/${subProyecto.id_subProyecto}`}><button type="button" className="btn botonpurple">Requerimientos</button> </Link>
                                             <button type="button" className="btn btn-warning" data-toggle="modal" data-target="#modalEditar" onClick={() => this.props.obtenerSubProyecto(subProyecto)}>Editar</button> &nbsp;
                                             <button type="button" className="btn btn-danger" data-toggle="modal" data-target="#modalEditar" onClick={() => this.props.cambiarEstadoEliminar(subProyecto)}>Eliminar</button>
                                         </td>

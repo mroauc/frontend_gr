@@ -44,8 +44,6 @@ class ProyectoModal extends Component{
         },{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
            console.log(response); 
-        //    this.obtenerIdProyecto();
-        //    this.crearGlosario(response.data.id_proyecto);
            this.proyectoEmpresa(response.data.id_proyecto);
            this.props.modalInsertar();
            this.props.index();
@@ -65,7 +63,6 @@ class ProyectoModal extends Component{
         this.setState({
             empresasSeleccionadas: []
         });
-
     }
 
     insertarChip=(empresa)=>{
@@ -85,7 +82,6 @@ class ProyectoModal extends Component{
         const token = localStorage.getItem('token');
         Axios.post('http://localhost:8080/api/proyecto/editar/',this.state.proyecto, {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
-            //console.log(this.state.empresasSeleccionadas);
             this.props.modalInsertar();
             this.props.index();
             this.actualizarProyectoEmpresa();
@@ -115,7 +111,6 @@ class ProyectoModal extends Component{
             //insertar
             for (let index = 0; index < this.state.empresasSeleccionadas.length; index++) {
                 if(!existentes.includes(this.state.empresasSeleccionadas[index])){
-                    //console.log(this.state.proyecto.id_proyecto);
                     Axios.post('http://localhost:8080/api/proyecto_empresa/guardar/',{
                         id_empresa: this.state.empresasSeleccionadas[index],
                         id_proyecto: this.state.proyecto.id_proyecto,
@@ -138,6 +133,8 @@ class ProyectoModal extends Component{
             <React.Fragment>
                 <Modal isOpen={this.props.estadoModalInsertar} toggle={()=>this.props.modalInsertar()}>
                     <ModalHeader style={{display:'block'}}>
+                        <span>{(this.props.tipoModal==='insertar') ? 'Ingresar Proyecto' :'Editar Proyecto'}</span>
+
                         <span style={{cursor:'pointer', float:'right'}} onClick={()=>this.props.modalInsertar()}>X</span>
                     </ModalHeader>
                     <ModalBody>

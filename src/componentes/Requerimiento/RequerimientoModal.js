@@ -75,7 +75,7 @@ class RequerimientoModal extends Component{
                             <input className="form-control" type="text" name="id_usuario" id="id_usuario" value={this.state.requerimiento.id_usuario} readOnly/>
                             <br/>
                             <label htmlFor="id_subProyecto">ID Sub-Proyecto</label>
-                            <input className="form-control" type="text" name="id_subProyecto" id="id_subProyecto" onChange={this.changeHandler} value={this.state.requerimiento.id_subProyecto} />
+                            <input className="form-control" type="text" name="id_subProyecto" id="id_subProyecto" value={this.state.requerimiento.id_subProyecto} readOnly />
                             <br/>
                             <label htmlFor="prioridad">Prioridad</label>
                             <select className="form-control" name="prioridad" id="prioridad" value={this.state.requerimiento.prioridad} onChange={this.changeHandler}>

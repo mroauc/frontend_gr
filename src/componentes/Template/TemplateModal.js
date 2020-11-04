@@ -84,6 +84,8 @@ class TemplateModal extends Component{
             <React.Fragment>
                 <Modal isOpen={this.props.estadoModalInsertar} size="lg" toggle={()=>this.props.modalInsertar()}>
                     <ModalHeader style={{display: 'block'}}>
+                        <span>{(this.props.tipoModal==='insertar') ? 'Ingresar Template' :'Editar Template'}</span>
+
                         <span style={{cursor:'pointer', float:'right'}} onClick={()=>{this.props.modalInsertar()}}>X</span>
                     </ModalHeader>
                     <ModalBody>

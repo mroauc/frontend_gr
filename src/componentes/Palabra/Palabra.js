@@ -31,7 +31,7 @@ export default class Palabra extends Component{
 
     getPalabras = () => {
         const token = localStorage.getItem('token');
-        const url_f = url + "consulta/" + this.props.match.params.id_proyecto
+        const url_f = url + "consulta/" + this.props.match.params.id_proyecto;
 
         axios.get(url_f,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.setState({

@@ -1,4 +1,5 @@
 
+import Axios from 'axios';
 import axios from 'axios';
 import React, { Component } from 'react'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
@@ -10,7 +11,7 @@ export default class subProyectoModal extends Component {
     
     state ={
         subProyecto: {
-            id_subProyecto : '',
+            id_subProyecto : 0,
             nombre_subProyecto :'',
             fecha_inicio : '',
             fecha_fin : '',
@@ -39,16 +40,48 @@ export default class subProyectoModal extends Component {
         .then(response => {
             if(this.props.estadoEditar){
                 this.props.cambiarEstadoEditar();
+                this.guardarActualizacion(response.data.id_subProyecto);
             }
             else{
                 this.insertar_usuariosSubProyecto(response.data.id_subProyecto);
                 this.props.cambiarEstadoInsertar();
             }
             this.props.getSubProyectos();
-            console.log(response);
         })
         .catch(error => {
             console.log(error)
+        })
+    }
+
+    guardarActualizacion=(id_subProyecto)=>{
+        var existentes = [];
+        var original = [];
+        const token = localStorage.getItem('token');
+        Axios.get(`http://localhost:8080/api/encargadosubproyecto/obtener/${id_subProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            original = response.data;
+            for (let index = 0; index < original.length; index++) {
+                existentes = [...existentes, response.data[index].id_usuario.toString()];
+            }
+
+            //eliminar
+            for (let index = 0; index < existentes.length; index++) {
+                if(!this.state.usuariosSeleccionados.includes(existentes[index])){
+                    Axios.delete(`http://localhost:8080/api/encargadosubproyecto/eliminar/${original[index].id_encargadoSubProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
+                    .then(response=>{
+                    });
+                }
+            }
+
+            //agregar
+            for (let index = 0; index < this.state.usuariosSeleccionados.length; index++) {
+                if(!existentes.includes(this.state.usuariosSeleccionados[index])){
+                    Axios.post("http://localhost:8080/api/encargadosubproyecto/guardar",{
+                        id_subProyecto: id_subProyecto,
+                        id_usuario: this.state.usuariosSeleccionados[index],
+                    }, {headers: {"Authorization": `Bearer ${token}`}})
+                }
+            }
         })
     }
 
@@ -70,7 +103,6 @@ export default class subProyectoModal extends Component {
 
     eliminarChip=(usuario)=>{
         const filtrado = this.state.usuariosSeleccionados.filter(item => item!==usuario);
-        console.log(filtrado);        
         this.setState({
             usuariosSeleccionados : filtrado
         });
@@ -118,6 +150,7 @@ export default class subProyectoModal extends Component {
                                 usuarios = {this.state.usuarios.filter(usuario => usuario.tipo === "cliente")}
                                 ingresarChip = {this.insertarChip}
                                 eliminarChip = {this.eliminarChip}
+                                id_subProyecto = {this.state.subProyecto.id_subProyecto}
                             />
                             <br/>
                             <ChipsSubProyectoUsuario
@@ -125,6 +158,7 @@ export default class subProyectoModal extends Component {
                                 usuarios = {this.state.usuarios.filter(usuario => usuario.tipo === "analista")}
                                 ingresarChip = {this.insertarChip}
                                 eliminarChip = {this.eliminarChip}
+                                id_subProyecto = {this.state.subProyecto.id_subProyecto}
                             />
                             <br/>
                             <label htmlFor="fecha_inicio">Fecha Inicio</label>

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Chip, Avatar } from '@material-ui/core';
 import '../Chips.css';
+import Axios from 'axios';
 
 export default class ChipsSubProyectoUsuario extends Component{
 
@@ -11,6 +12,31 @@ export default class ChipsSubProyectoUsuario extends Component{
     }
 
     componentDidMount(){
+        if(this.props.id_subProyecto !== 0){
+            var existentes = [];    //usuarios del tipo correspondiente disponibles
+            var yaInsertados = [];  //usuarios ya ingresados del tipo
+
+            for (let index = 0; index < this.props.usuarios.length; index++) {
+                existentes= [...existentes, this.props.usuarios[index].id];
+            }
+
+            const token = localStorage.getItem('token');
+            Axios.get(`http://localhost:8080/api/encargadosubproyecto/obtener/${this.props.id_subProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
+            .then(response=>{
+                for (let index = 0; index < response.data.length; index++) {
+                    if(existentes.includes(response.data[index].id_usuario)){
+                        yaInsertados = [...yaInsertados, response.data[index].id_usuario];
+                    }
+                }
+                for (let index = 0; index < yaInsertados.length; index++) {
+                    this.setState({
+                        arregloChips: [ ...this.state.arregloChips, yaInsertados[index].toString()], /// PUSH AL ARREGLO CHIPS LA OPCION SELECCIONADA
+                        });
+        
+                    this.props.ingresarChip(yaInsertados[index].toString());
+                }
+            })
+        }
     }
 
     handleDelete = async (usuario) => {

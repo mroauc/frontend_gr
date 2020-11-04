@@ -85,6 +85,8 @@ class PropuestaCambioModal extends Component{
             <React.Fragment>
                 <Modal isOpen={this.props.estadoModalInsertar} toggle={()=>this.props.modalInsertar()}>
                     <ModalHeader style={{display:'block'}}>
+                        <span>{(this.props.tipoModal==='insertar') ? 'Ingresar Propuesta de Cambio' :'Editar Propuesta de Cambio'}</span>
+
                         <span style={{cursor:'pointer', float:'right'}} onClick={()=>{this.props.modalInsertar()}}>X</span>
                     </ModalHeader>
                     <ModalBody>
