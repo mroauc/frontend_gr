@@ -1,33 +1,29 @@
 import Axios from 'axios';
 import { extend } from 'jquery'
 import React, { Component } from 'react'
+import TemplateTextEditor from '../Template/TemplateTextEditor';
 import Tabs from './Tabs/Tabs';
 import './Tabs/Tabs.css'
 
 export default class TablaVista extends Component {
 
-    getRequerimientos =  async() => {
-        const token = localStorage.getItem("token");
-        await Axios.get("http://localhost:8080/api/requerimiento/", {headers: {"Authorization": `Bearer  ${token}`}})
-        .then(async response => {
-            await this.setState({
-                requerimientos: response.data
-            });
-        })
+    obtener=()=>{
+        
     }
-
     
-
     generarTabs = () => {
         return(
             <React.Fragment>
                 {
                     this.props.tabs.map((reqID) => {
-                        
+                        var filtrado = this.props.requerimientos.filter(requerimiento => requerimiento.nombre === reqID);
+                        console.log(filtrado[0]);
                         return(
                             <div label={reqID}>
-                                <h1>{reqID}</h1>
-                                
+                                <TemplateTextEditor
+                                    template = {filtrado[0].descripcion}
+                                    obtenerTemplate = {this.obtener}
+                                />                                
                             </div>
                         )
                     })

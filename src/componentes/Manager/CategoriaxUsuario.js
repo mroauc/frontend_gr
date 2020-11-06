@@ -18,10 +18,10 @@ export default class CategoriaxUsuario extends Component {
             <div className="Categoria">
                 <div className="titulo" onClick={this.cambiarEstadoClick}> <i id="f">{this.state.estadoClick ? "◤" : "◣"}</i> 📁 Requerimientos de {this.props.tipo}</div>
                 {this.props.requerimientos.filter(requerimiento => requerimiento.categoria === this.props.categoria).map((requerimiento)=>{
-                    const requerimiento_ID = requerimiento.categoria + requerimiento.id_requerimiento;
+                    //const requerimiento_ID = requerimiento.categoria + requerimiento.id_requerimiento;
                     return(
-                        <div style={{paddingLeft: '35px', cursor: 'pointer'}} className={this.state.estadoClick ? "mostrar req-tabla" : "ocultar req-tabla"} onClick={() => {this.props.agregarReqATab(requerimiento_ID)}}>
-                            🔓{requerimiento_ID}
+                        <div style={{paddingLeft: '35px', cursor: 'pointer'}} className={this.state.estadoClick ? "mostrar req-tabla" : "ocultar req-tabla"} onClick={() => {this.props.agregarReqATab(requerimiento.nombre)}}>
+                            🔓{requerimiento.nombre}
                         </div>
                     );
                 })}

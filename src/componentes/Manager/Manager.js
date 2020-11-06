@@ -59,6 +59,7 @@ export default class Manager extends Component {
                     <TablaVista
                         tabs = {this.state.reqsTab}
                         eliminarReqDeTab = {this.eliminarReqDeTab}
+                        requerimientos = {this.state.requerimientos}
                     />
                 </div>
             </React.Fragment>
