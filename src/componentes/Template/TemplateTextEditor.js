@@ -4,6 +4,7 @@ import CKEditor from '@ckeditor/ckeditor5-react';
 
 
 class TemplateTextEditor extends Component{
+    
     render(){
         return(
             <div className="editor">
@@ -15,6 +16,7 @@ class TemplateTextEditor extends Component{
                         const data= editor.getData();
                         this.props.obtenerTemplate(data);
                     }}
+                    disabled={this.props.soloLeer}
                 />
             </div>
         );

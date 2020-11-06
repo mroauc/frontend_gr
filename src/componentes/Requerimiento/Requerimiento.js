@@ -7,6 +7,7 @@ import RequerimientoModal from './RequerimientoModal';
 import TablaRequerimiento from './TablaRequerimiento';
 import './Requerimiento.css';
 import '../vistaCrud.css';
+import RedactarReqModal from './RedactarReqModal';
 
 class Requerimiento extends Component{
 
@@ -14,9 +15,11 @@ class Requerimiento extends Component{
         requerimientos: [],
         modalInsertar: false,
         modalEliminar: false,
+        modalRedactar: false,
         tipoModal: '',
         requerimiento: {
             id_requerimiento: 0,
+            nombre: '',
             descripcion: '',
             id_usuario: 0,
             id_subProyecto: this.props.match.params.id_subproyecto,
@@ -54,6 +57,7 @@ class Requerimiento extends Component{
             this.setState({
                 requerimiento:{
                     id_requerimiento: 0,
+                    nombre: '',
                     descripcion: '',
                     id_usuario: response.data.id,
                     id_subProyecto: this.props.match.params.id_subproyecto,
@@ -101,6 +105,19 @@ class Requerimiento extends Component{
         })
     }
 
+    redactar=async(requerimiento)=>{
+        await this.setState({
+            requerimiento: requerimiento
+        });
+        this.modalRedactar();
+    }
+
+    modalRedactar=()=>{
+        this.setState({
+            modalRedactar : !this.state.modalRedactar
+        });
+    }
+
     render(){
         return(
             <React.Fragment>
@@ -111,6 +128,7 @@ class Requerimiento extends Component{
                 
                 <TablaRequerimiento
                     requerimientos={this.state.requerimientos}
+                    redactar={this.redactar}
                     editar={this.editar}
                     modalEliminar={this.modalEliminar}
                 />
@@ -121,6 +139,13 @@ class Requerimiento extends Component{
                     tipoModal={this.state.tipoModal}
                     estadoModalInsertar={this.state.modalInsertar}
                     modalInsertar={this.modalInsertar}
+                />
+
+                <RedactarReqModal
+                    requerimiento={this.state.requerimiento}
+                    index={this.index}
+                    estadoModalRedactar={this.state.modalRedactar}
+                    modalRedactar={this.modalRedactar}
                 />
 
                 <Modal isOpen={this.state.modalEliminar}>

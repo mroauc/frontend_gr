@@ -8,7 +8,7 @@ class TablaRequerimiento extends Component{
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Descripcion</th>
+                            <th scope="col">Nombre</th>
                             <th scope="col">ID Usuario</th>
                             <th scope="col">ID Sub-Proyecto</th>
                             <th scope="col">Fecha de Creacion</th>
@@ -24,7 +24,7 @@ class TablaRequerimiento extends Component{
                             return(
                                 <tr key={requerimiento.id_requerimiento}>
                                     <td>{index+1}</td>
-                                    <td>{requerimiento.descripcion}</td>
+                                    <td>{requerimiento.nombre}</td>
                                     <td>{requerimiento.id_usuario}</td>
                                     <td>{requerimiento.id_subProyecto}</td>
                                     <td>{requerimiento.fecha_creacion}</td>
@@ -33,8 +33,9 @@ class TablaRequerimiento extends Component{
                                     <td>{requerimiento.categoria}</td>
                                     <td>{requerimiento.id_template}</td>
                                     <td>
+                                        <button className="btn btn-success" onClick={()=>this.props.redactar(requerimiento)}>Redactar</button> &nbsp;
                                         <button className="btn btn-warning" onClick={()=>this.props.editar(requerimiento)}>Editar</button> &nbsp;
-                                        <button className="btn btn-danger" onClick={()=>this.props.modalEliminar(requerimiento)}>Eliminar</button>
+                                        <button className="btn btn-danger" onClick={()=>this.props.modalEliminar(requerimiento)}>X</button>
                                     </td>
                                 </tr>
                             )

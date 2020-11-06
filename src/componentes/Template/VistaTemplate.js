@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 import parse from 'html-react-parser';
+import TemplateTextEditor from './TemplateTextEditor';
 
 class VistaTemplate extends Component{
+
     state={
         template: {
             id_template: 0,
@@ -18,10 +20,13 @@ class VistaTemplate extends Component{
         this.setState({template: this.props.template});
     }
 
+    obtenerTemplate=()=>{
+    }
+
     render(){
         return(
             <React.Fragment>
-                <Modal isOpen={this.props.modalVista}>
+                <Modal isOpen={this.props.modalVista} toggle={()=>this.props.estadoModalVista()}>
                     <ModalHeader style={{display: 'block'}}>
                         <span style={{cursor:'pointer', float:'right'}} onClick={()=>{this.props.estadoModalVista()}}>X</span>
                     </ModalHeader>
@@ -39,9 +44,12 @@ class VistaTemplate extends Component{
                             <label htmlFor="tipo">Tipo</label>
                             <input className="form-control" type="text" name="tipo" id="tipo" value={this.state.template.tipo} readOnly/>
                             <br/>
-                            <label htmlFor="template">Template</label>
-                            <div>{parse(this.state.template.template)}</div>
-                            <br/>                            
+                            <TemplateTextEditor
+                                template = {this.state.template.template}
+                                obtenerTemplate={this.obtenerTemplate}
+                                soloLeer={true}
+                            />
+                
                         </div>
                     </ModalBody>
                 </Modal>

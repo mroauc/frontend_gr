@@ -38,14 +38,7 @@ class TemplateModal extends Component{
 
     guardarActualizacion=()=>{
         const token = localStorage.getItem('token');
-        const requestInfo = {
-            method: 'POST',
-            body: JSON.stringify(this.state.template),
-            headers: new Headers({
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            })
-        };
+
         Axios.post('http://localhost:8080/api/template/editar/',this.state.template, {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.props.modalInsertar();

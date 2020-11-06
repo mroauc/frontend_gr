@@ -40,7 +40,7 @@ export default class subProyectoTabla extends Component {
                             <th scope="col">Fecha de Termino</th>
                             <th scope="col">ID Proyecto</th>
                             <th scope="col">Tipo Proyecto</th>
-                            <th scope="col">ID Usuario</th>
+                            <th scope="col">Usuario</th>
                             <th scope="col">Acciones</th>
 
                             </tr>
