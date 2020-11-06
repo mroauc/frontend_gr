@@ -19,6 +19,7 @@ class Requerimiento extends Component{
         tipoModal: '',
         requerimiento: {
             id_requerimiento: 0,
+            nombre: '',
             descripcion: '',
             id_usuario: 0,
             id_subProyecto: this.props.match.params.id_subproyecto,
@@ -56,6 +57,7 @@ class Requerimiento extends Component{
             this.setState({
                 requerimiento:{
                     id_requerimiento: 0,
+                    nombre: '',
                     descripcion: '',
                     id_usuario: response.data.id,
                     id_subProyecto: this.props.match.params.id_subproyecto,

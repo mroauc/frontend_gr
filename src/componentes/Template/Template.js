@@ -60,6 +60,12 @@ class Template extends Component{
     }
 
     modalVer=()=>{
+        if(this.state.modalVista===true){
+            this.setState({
+                template: '',
+                template:{template:''},
+            });
+        }
         this.setState({
             modalVista: !this.state.modalVista
         });

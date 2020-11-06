@@ -8,7 +8,7 @@ class TablaRequerimiento extends Component{
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Descripcion</th>
+                            <th scope="col">Nombre</th>
                             <th scope="col">ID Usuario</th>
                             <th scope="col">ID Sub-Proyecto</th>
                             <th scope="col">Fecha de Creacion</th>
@@ -24,7 +24,7 @@ class TablaRequerimiento extends Component{
                             return(
                                 <tr key={requerimiento.id_requerimiento}>
                                     <td>{index+1}</td>
-                                    <td>{requerimiento.descripcion}</td>
+                                    <td>{requerimiento.nombre}</td>
                                     <td>{requerimiento.id_usuario}</td>
                                     <td>{requerimiento.id_subProyecto}</td>
                                     <td>{requerimiento.fecha_creacion}</td>

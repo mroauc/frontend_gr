@@ -6,6 +6,7 @@ class RequerimientoModal extends Component{
     state={
         requerimiento:{
             id_requerimiento: 0,
+            nombre: '',
             descripcion: '',
             id_usuario: '',
             id_subProyecto: '',
@@ -46,14 +47,38 @@ class RequerimientoModal extends Component{
             id_template: this.state.requerimiento.id_template
         }, {headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
+            //this.props.modalInsertar();
+            //this.props.index();
+            this.insertarNombre(response.data.id_requerimiento);
+        })
+    }
+
+    insertarNombre=async(id_requerimiento)=>{
+        const token = localStorage.getItem('token');
+        await Axios.get(`http://localhost:8080/api/requerimiento/${id_requerimiento}`,{headers: {"Authorization" : `Bearer ${token}`}})
+        .then(response=>{
+            var data = response.data;
+            var categoria = data.categoria;
+            var nombre = categoria.concat(data.id_requerimiento);
+            data.nombre = nombre;
+            this.ejecutarNombre(data);
+        })
+    }
+
+    ejecutarNombre=(data)=>{
+        const token = localStorage.getItem('token');
+        Axios.post('http://localhost:8080/api/requerimiento/editar/',data, {headers: {"Authorization" : `Bearer ${token}`}})
+        .then(response=>{
             this.props.modalInsertar();
             this.props.index();
         })
     }
 
     guardarActualizacion=()=>{
+        const actual = this.state.requerimiento;
+        actual.nombre = actual.categoria.concat(actual.id_requerimiento);
         const token = localStorage.getItem('token');
-        Axios.post('http://localhost:8080/api/requerimiento/editar/',this.state.requerimiento, {headers: {"Authorization" : `Bearer ${token}`}})
+        Axios.post('http://localhost:8080/api/requerimiento/editar/',actual, {headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             this.props.modalInsertar();
             this.props.index();
@@ -80,8 +105,8 @@ class RequerimientoModal extends Component{
                             <label htmlFor="id_requerimiento">ID</label>
                             <input className="form-control" type="text" name="id_requerimiento" id="id_requerimiento" value={this.state.requerimiento.id_requerimiento} readOnly/>
                             <br/>
-                            <label htmlFor="descripcion">Descripcion</label>
-                            <input className="form-control" type="text" name="descripcion" id="descripcion" onChange={this.changeHandler} value={this.state.requerimiento.descripcion} />
+                            <label htmlFor="nombre">Nombre</label>
+                            <input className="form-control" type="text" name="nombre" id="nombre" value={this.state.requerimiento.nombre} readOnly/>
                             <br/>
                             <label htmlFor="id_usuario">ID Usuario</label>
                             <input className="form-control" type="text" name="id_usuario" id="id_usuario" value={this.state.requerimiento.id_usuario} readOnly/>
@@ -104,7 +129,14 @@ class RequerimientoModal extends Component{
                             </select>
                             <br/>
                             <label htmlFor="categoria">Categoría</label>
-                            <input className="form-control" type="text" name="categoria" id="categoria" onChange={this.changeHandler} value={this.state.requerimiento.categoria} />
+                            <select className="form-control" name="categoria" id="categoria" value={this.state.requerimiento.categoria} onChange={this.changeHandler}>
+                                <option value="">Seleccione una categoría</option>
+                                <option value="RUSA">Requerimiento Analista</option>
+                                <option value="RUSL">Requerimiento Lider de subproyecto</option>
+                                <option value="RUSJ">Requerimiento Jefe de proyecto</option>
+                                <option value="RUSC">Requerimiento Cliente</option>
+                                <option value="RUSS">Requerimiento Administrador</option>
+                            </select>
                             <br/>
                             <label htmlFor="id_template">ID Template</label>
                             <select className="form-control" name="id_template" id="id_template" value={this.state.requerimiento.id_template} onChange={this.changeHandler}>

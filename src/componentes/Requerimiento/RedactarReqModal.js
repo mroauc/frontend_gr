@@ -7,6 +7,7 @@ class RedactarReqModal extends Component{
     state={
         requerimiento: {
             id_requerimiento: 0,
+            nombre: '',
             descripcion: '',
             id_usuario: '',
             id_subProyecto: '',
@@ -43,7 +44,26 @@ class RedactarReqModal extends Component{
         await this.setState({
             dataRequerimiento: e
         });
-        console.log(this.state.dataRequerimiento);
+        //console.log(this.state.dataRequerimiento);
+
+        /*const actual = this.state.requerimiento;
+        actual.descripcion= e;
+        await this.setState({
+            template: actual
+        });*/
+    }
+
+    insertar=()=>{
+        const actual = this.state.requerimiento;
+        actual.descripcion = this.state.dataRequerimiento;
+        this.setState({requerimiento: actual});
+        const token = localStorage.getItem('token');
+        Axios.post('http://localhost:8080/api/requerimiento/editar/',this.state.requerimiento, {headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            this.props.modalRedactar();
+            this.props.index();
+        })
+
     }
 
     render(){
@@ -58,8 +78,8 @@ class RedactarReqModal extends Component{
                             <label htmlFor="id_requerimiento">ID</label>
                             <input className="form-control" type="text" name="id_requerimiento" id="id_requerimiento" value={this.state.requerimiento.id_requerimiento} readOnly/>
                             <br/>
-                            <label htmlFor="descripcion">Descripcion</label>
-                            <input className="form-control" type="text" name="descripcion" id="descripcion" value={this.state.requerimiento.descripcion} readOnly/>
+                            <label htmlFor="descripcion">Nombre</label>
+                            <input className="form-control" type="text" name="nombre" id="nombre" value={this.state.requerimiento.nombre} readOnly/>
                             <br/>
                             <TemplateTextEditor 
                                 template={this.state.template}
@@ -68,7 +88,7 @@ class RedactarReqModal extends Component{
                         </div>
                     </ModalBody>
                     <ModalFooter>
-                        <button className="btn btn-success">Insertar</button>
+                        <button className="btn btn-success" onClick={()=>this.insertar()}>Insertar</button>
                         <button className="btn btn-danger" onClick={()=>this.props.modalRedactar()}>Cancelar</button>
                     </ModalFooter>
                 </Modal>
