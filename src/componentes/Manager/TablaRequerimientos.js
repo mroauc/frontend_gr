@@ -6,37 +6,40 @@ import './Manager.css';
 export default class TablaRequerimiento extends Component {
     render(){
         return(
-            <div className="col-2" style={{height: '100%', display:'inline-block',padding: 0}}>
+            <div className="col-3" style={{height: '100%', display:'inline-block',padding: 0}}>
                 <div className="tabla-req">
                     <div style={{width:'100%', display:'flex'}}>
                         <input className="form-control form-mio" placeholder="Filtrar"></input>
                     </div>
-                    {/* <button style={{height: '30px', width: '20px'}}>🔎</button>
-                    <button style={{height: '30px',  width: '20px'}}>✖️</button> */}
                     <CategoriaxUsuario
                         tipo = "Analista"
                         categoria = "RUSA"
-                        requerimientos = {this.props.requerimientos}     
+                        requerimientos = {this.props.requerimientos}
+                        agregarReqATab = {this.props.agregarReqATab}     
                     />
                     <CategoriaxUsuario
                         tipo = "Jefe"
                         categoria = "RUSJ"
                         requerimientos = {this.props.requerimientos}     
+                        agregarReqATab = {this.props.agregarReqATab}     
                     />
                     <CategoriaxUsuario
                         tipo = "Cliente"
                         categoria = "RUSC"
                         requerimientos = {this.props.requerimientos}     
+                        agregarReqATab = {this.props.agregarReqATab}     
                     />
                     <CategoriaxUsuario
                         tipo = "Administrador"
                         categoria = "RUSS"
                         requerimientos = {this.props.requerimientos}     
+                        agregarReqATab = {this.props.agregarReqATab}     
                     />
                     <CategoriaxUsuario
                         tipo = "Lider"
                         categoria = "RUSL"
                         requerimientos = {this.props.requerimientos}     
+                        agregarReqATab = {this.props.agregarReqATab}     
                     />
                     
                 </div>

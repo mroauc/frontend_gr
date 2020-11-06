@@ -1,0 +1,47 @@
+.tab-list {  
+    border-bottom: 1px solid  #ccc;
+    padding-left: 15px;
+}
+  
+.tab-list-item {
+    display: inline-block;
+    margin: 4px 5px 5px 5px;
+    border-radius: 3px;
+    list-style: none;
+    margin-bottom: -1px;
+    padding: 4px 8px 4px 10px;
+    cursor: pointer;
+    border: 1px;
+}
+
+.tab-list-item:hover{
+    background-color: rgba(97, 97, 97, 0.096);
+}
+
+.tab-list-active {
+    background-color: white;
+    border: solid #ccc;
+    border-width: 1px 1px 0 1px;
+    margin-bottom: -1px;
+}
+
+.tab-list-active:hover{
+    background-color: white;
+}
+
+.tab-content {
+    padding: 10px;
+    background-color: #fff;
+    height: 100%;
+}
+
+.equis{
+    color: rgba(80, 80, 80, 0.918);
+    display: initial;
+    z-index: 1000;
+
+}
+
+.equis:hover{
+    color: rgb(0, 0, 0);
+}

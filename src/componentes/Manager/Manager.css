@@ -59,6 +59,10 @@
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
+.req-tabla:hover{
+    background-color: rgba(54, 54, 54, 0.089);
+}
+
 /* .tabla-sm{
     flex: 0 0 32%;
     max-width: 32%;

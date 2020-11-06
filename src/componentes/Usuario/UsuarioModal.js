@@ -182,11 +182,7 @@ class UsuarioModal extends Component{
                             <input className="form-control" type="text" name="email" id="email" onChange={this.changeHandler} value={this.state.usuario.email} />
                             <br/>
                             <label htmlFor="rol">Tipo de usuario</label>
-<<<<<<< HEAD
-                            <select name="rol" id="rol" className="form-control" value={this.state.usuario.tipo} onChange={this.changeHandler}>
-=======
                             <select name="rol" id="rol" className="form-control" value={this.state.usuario.tipo} onChange={this.changeRol}>
->>>>>>> cd6c778774796185bc99a8fbf99ba0d4875ae6d2
                                 <option value="analista">Analista</option>
                                 <option value="lider">Lider de subproyecto</option>
                                 <option value="jefe">Jefe de proyecto</option>
