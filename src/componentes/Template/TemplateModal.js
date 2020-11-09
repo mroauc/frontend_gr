@@ -95,6 +95,7 @@ class TemplateModal extends Component{
                             <label htmlFor="tipo">Tipo</label>
                             <input className="form-control" type="text" name="tipo" id="tipo" onChange={this.changeHandler} value={this.state.template.tipo} />
                             <br/>
+                            <label htmlFor="tipo">Template</label>
                             <TemplateTextEditor
                                 template={this.state.template.template}
                                 obtenerTemplate={this.obtenerTemplate}

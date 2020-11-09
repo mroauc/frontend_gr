@@ -17,40 +17,17 @@ class RedactarReqModal extends Component{
             categoria: '',
             id_template: ''
         },
-        template: '',   //template para escribir el requerimiento
         dataRequerimiento: ''   //redaccion del requerimiento
-    }
-
-    componentDidMount(){
-        this.buscarTemplate();
     }
 
     componentWillReceiveProps(next_props){
         this.setState({requerimiento: this.props.requerimiento});
     }
 
-    buscarTemplate=async()=>{
-        const token = localStorage.getItem('token');
-
-        await Axios.get(`http://localhost:8080/api/template/${this.state.requerimiento.id_template}`, {headers: {"Authorization": `Bearer ${token}`}})
-        .then(response=>{
-            this.setState({
-                template: response.data[0].template
-            });
-        })
-    }
-
     obtenerTemplate=async(e)=>{
         await this.setState({
             dataRequerimiento: e
         });
-        //console.log(this.state.dataRequerimiento);
-
-        /*const actual = this.state.requerimiento;
-        actual.descripcion= e;
-        await this.setState({
-            template: actual
-        });*/
     }
 
     insertar=()=>{
@@ -63,7 +40,6 @@ class RedactarReqModal extends Component{
             this.props.modalRedactar();
             this.props.index();
         })
-
     }
 
     render(){
@@ -81,8 +57,9 @@ class RedactarReqModal extends Component{
                             <label htmlFor="descripcion">Nombre</label>
                             <input className="form-control" type="text" name="nombre" id="nombre" value={this.state.requerimiento.nombre} readOnly/>
                             <br/>
+                            <label htmlFor="tipo">Template</label>
                             <TemplateTextEditor 
-                                template={this.state.template}
+                                template={this.state.requerimiento.descripcion}
                                 obtenerTemplate={this.obtenerTemplate}
                             />
                         </div>

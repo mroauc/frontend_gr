@@ -106,7 +106,7 @@ class Template extends Component{
         return(
             <React.Fragment>
                 <Menu/>
-            <div className="template col-10">
+                <div className="template col-10">
                 <div className="Encabezado"><p>Templates</p></div>
                 <button type="button" class="btn boton" onClick={() => this.modalInsertar()}>Insertar</button>
 

@@ -47,27 +47,25 @@ class RequerimientoModal extends Component{
             id_template: this.state.requerimiento.id_template
         }, {headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
-            //this.props.modalInsertar();
-            //this.props.index();
-            this.insertarNombre(response.data.id_requerimiento);
+            this.completarDatos(response.data);
         })
     }
 
-    insertarNombre=async(id_requerimiento)=>{
+    completarDatos=(requerimiento)=>{
         const token = localStorage.getItem('token');
-        await Axios.get(`http://localhost:8080/api/requerimiento/${id_requerimiento}`,{headers: {"Authorization" : `Bearer ${token}`}})
+
+        Axios.get(`http://localhost:8080/api/template/${requerimiento.id_template}`,{headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
-            var data = response.data;
-            var categoria = data.categoria;
-            var nombre = categoria.concat(data.id_requerimiento);
-            data.nombre = nombre;
-            this.ejecutarNombre(data);
+            var req = requerimiento;
+            req.nombre = requerimiento.categoria.concat(requerimiento.id_requerimiento);
+            req.descripcion = response.data.template;
+            this.ejecutarCompletacionDatos(req);
         })
     }
 
-    ejecutarNombre=(data)=>{
+    ejecutarCompletacionDatos=(req)=>{
         const token = localStorage.getItem('token');
-        Axios.post('http://localhost:8080/api/requerimiento/editar/',data, {headers: {"Authorization" : `Bearer ${token}`}})
+        Axios.post('http://localhost:8080/api/requerimiento/editar/', req, {headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             this.props.modalInsertar();
             this.props.index();
@@ -136,6 +134,8 @@ class RequerimientoModal extends Component{
                                 <option value="RUSJ">Requerimiento Jefe de proyecto</option>
                                 <option value="RUSC">Requerimiento Cliente</option>
                                 <option value="RUSS">Requerimiento Administrador</option>
+                                <option value="REQF">Requerimiento Funcional</option>
+                                <option value="RENF">Requerimiento No Funcional</option>
                             </select>
                             <br/>
                             <label htmlFor="id_template">ID Template</label>

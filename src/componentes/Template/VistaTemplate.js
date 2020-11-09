@@ -44,6 +44,7 @@ class VistaTemplate extends Component{
                             <label htmlFor="tipo">Tipo</label>
                             <input className="form-control" type="text" name="tipo" id="tipo" value={this.state.template.tipo} readOnly/>
                             <br/>
+                            <label htmlFor="tipo">Template</label>
                             <TemplateTextEditor
                                 template = {this.state.template.template}
                                 obtenerTemplate={this.obtenerTemplate}

@@ -3,12 +3,26 @@ import { extend } from 'jquery'
 import React, { Component } from 'react'
 import TemplateTextEditor from '../Template/TemplateTextEditor';
 import Tabs from './Tabs/Tabs';
-import './Tabs/Tabs.css'
+import './Tabs/Tabs.css';
+import '../vistaCrud.css';
 
 export default class TablaVista extends Component {
 
-    obtener=()=>{
-        
+    state={
+        dataRequerimiento : ''
+    }
+
+    obtener=async(e)=>{
+        await this.setState({
+            dataRequerimiento: e
+        });
+    }
+
+    insertar=(requerimiento)=>{
+        var act = requerimiento;
+        act.descripcion = this.state.dataRequerimiento;
+        const token = localStorage.getItem('token');
+        Axios.post('http://localhost:8080/api/requerimiento/editar/',act, {headers: {"Authorization": `Bearer ${token}`}})
     }
     
     generarTabs = () => {
@@ -17,9 +31,9 @@ export default class TablaVista extends Component {
                 {
                     this.props.tabs.map((reqID) => {
                         var filtrado = this.props.requerimientos.filter(requerimiento => requerimiento.nombre === reqID);
-                        console.log(filtrado[0]);
                         return(
                             <div label={reqID}>
+                                <button className="btn boton" onClick={()=>this.insertar(filtrado[0])}>Guardar</button>
                                 <TemplateTextEditor
                                     template = {filtrado[0].descripcion}
                                     obtenerTemplate = {this.obtener}

@@ -8,7 +8,6 @@ class TemplateTextEditor extends Component{
     render(){
         return(
             <div className="editor">
-                <label htmlFor="template">Template</label>
                 <CKEditor
                     editor={ClassicEditor}
                     data={this.props.template}
