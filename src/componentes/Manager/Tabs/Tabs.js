@@ -1,25 +1,35 @@
 import React, { Component } from 'react';
 import Tab from './Tab';
+import '../Manager.css';
 
 export default class Tabs extends Component{
 
-    // state = {
-    //     activeTab: ''
-    // }
-
-    // componentDidMount(){
-    //     this.setState({
-    //         activeTab: this.props.children[0].props.label
-    //     })
-    // }
+    state={
+        clickTab: ''
+    }
 
     constructor(props) {
         super(props);
-    
         this.state = {
-          activeTab: this.props.children[0].props.label,
+            activeTab: this.props.children[0].props.label,
         };
-      }
+    }
+
+    componentWillReceiveProps(next_props) {
+        this.activeTabForClick();
+    }
+
+    activeTabForClick = async () => {
+        let tabActivo = this.props.consultaTabActivo();
+        await tabActivo.then(response => {
+            if(response !== ""){    
+                this.setState({activeTab : response})
+            }
+            else{
+                this.state = { activeTab: this.props.children[0].props.label}
+            }
+        });
+    }
 
     onClickTabItem = (tab) => {
         this.setState({ activeTab: tab });
@@ -33,13 +43,9 @@ export default class Tabs extends Component{
     render(){
         return(
             
-            <div>
-                {console.log(this.props)}
+            <React.Fragment>
                <div className="tabs">
                     <ol className="tab-list">
-                    {console.log(this.props)}
-
-                    
                     <Tab
                         activeTab={this.state.activeTab}
                         key={this.props.children[0].props.label}
@@ -79,7 +85,7 @@ export default class Tabs extends Component{
                     </div>
 
                 </div>
-            </div>
+            </React.Fragment>
         );
     }
 }

@@ -10,7 +10,8 @@ export default class Manager extends Component {
 
     state = {
         requerimientos: [],
-        reqsTab: []
+        reqsTab: [],
+        clickTab:""
     }
 
     componentDidMount () {
@@ -30,19 +31,24 @@ export default class Manager extends Component {
     agregarReqATab = async (req) => {
         if(!this.state.reqsTab.includes(req)){
             await this.setState({
-                reqsTab : [ ...this.state.reqsTab, req]
+                reqsTab : [ ...this.state.reqsTab, req],
+                clickTab: req
             })
         }
         else{
-            console.log("ya existe bro");
-        }
-        console.log(this.state.reqsTab);   
+            await this.setState({clickTab: req});
+        }   
+    }
+
+    consultaTabActivo = async () => {
+        return this.state.clickTab;
     }
 
     eliminarReqDeTab = async (req) => {
         const filtrado = this.state.reqsTab.filter(item => item !== req);
-        this.setState({
-            reqsTab : filtrado
+        await this.setState({
+            reqsTab : filtrado,
+            clickTab : ""
         })
     }
 
@@ -60,6 +66,7 @@ export default class Manager extends Component {
                         tabs = {this.state.reqsTab}
                         eliminarReqDeTab = {this.eliminarReqDeTab}
                         requerimientos = {this.state.requerimientos}
+                        clickTab = {this.consultaTabActivo}
                     />
                 </div>
             </React.Fragment>

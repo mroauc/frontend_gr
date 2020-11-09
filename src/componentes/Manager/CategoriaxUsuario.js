@@ -14,18 +14,24 @@ export default class CategoriaxUsuario extends Component {
 
 
     render(){
-        return(
-            <div className="Categoria">
-                <div className="titulo" onClick={this.cambiarEstadoClick}> <i id="f">{this.state.estadoClick ? "◤" : "◣"}</i> 📁 Requerimientos de {this.props.tipo}</div>
-                {this.props.requerimientos.filter(requerimiento => requerimiento.categoria === this.props.categoria).map((requerimiento)=>{
-                    //const requerimiento_ID = requerimiento.categoria + requerimiento.id_requerimiento;
-                    return(
-                        <div style={{paddingLeft: '35px', cursor: 'pointer'}} className={this.state.estadoClick ? "mostrar req-tabla" : "ocultar req-tabla"} onClick={() => {this.props.agregarReqATab(requerimiento.nombre)}}>
-                            🔓{requerimiento.nombre}
-                        </div>
-                    );
-                })}
-            </div>
-        );
+        const filtrado = this.props.requerimientos.filter(requerimiento => requerimiento.categoria === this.props.categoria);
+        
+        if(filtrado.length !== 0){
+            return(
+                <div className="Categoria">
+                    <div className="titulo" onClick={this.cambiarEstadoClick}> <i id="f">{this.state.estadoClick ? "◤" : "◣"}</i> 📁 Requerimientos de {this.props.tipo}</div>
+                    {filtrado.map((requerimiento)=>{
+                        return(
+                            <div style={{paddingLeft: '35px', cursor: 'pointer'}} className={this.state.estadoClick ? "mostrar req-tabla" : "ocultar req-tabla"} onClick={() => {this.props.agregarReqATab(requerimiento.nombre)}}>
+                                🔓{requerimiento.nombre}
+                            </div>
+                        );
+                    })}
+                </div>
+            );
+        }
+        else
+            return("");
+        
     }
 }

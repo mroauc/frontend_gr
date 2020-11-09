@@ -8,7 +8,7 @@ class DashboardAdmin extends Component{
 
     render(){
         return(
-            <div>
+            <div style={{overflow:'hidden', height:'100vh'}}>
                 <Menu/>
                 <img style={{height: '94vh', width: '100%'}} src={ImagenUCM}></img>
             </div>
