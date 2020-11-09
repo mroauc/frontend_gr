@@ -8,6 +8,30 @@
     border-left-style: hidden;
 }
 
+.editReq{
+   height: 40%;
+   width: 100%;
+   overflow: hidden; 
+}
+
+.tabs-inferior{
+    height: 60%;
+}
+
+.tab-content-inferior{
+    height: 90%;
+}
+
+.barraDivisora{
+    width: calc(100% + 22px);
+    margin-left: -11px;
+    height: 7px;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgba(54, 54, 54, 0.4);
+    border-left: 0px;
+    border-right: 0px;
+}
+
 .tabla-req{
     padding-left: 0px;
     background-color: snow;
@@ -34,7 +58,8 @@
     background-color: snow;
     border: 1px solid rgba(54, 54, 54, 0.4);
     border-radius: 3px;
-    display: table;
+    display: block;
+    /* overflow: hidden; */
 }
 
 .ocultar{
@@ -63,13 +88,14 @@
     background-color: rgba(54, 54, 54, 0.089);
 }
 
-/* .tabla-sm{
-    flex: 0 0 32%;
-    max-width: 32%;
-} */
+.editor{
+    width: 100%;
+}
 
-/* 
-.tabla-sm{
-    flex: 0 0 22%;
-    max-width: 22%;
-} */
+.ck.ck-editor{
+    width: 100%;
+}
+
+.ck.ck-editor__main{
+    width: 100%;
+}
