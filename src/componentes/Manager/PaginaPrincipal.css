@@ -1,0 +1,22 @@
+.tablaPagPrincipal {
+    width: 90%;
+    margin-top: 15px;
+    border: 1px solid black;
+    border-radius: 7px;
+    border-spacing: 0px;
+    z-index: 100;
+}
+
+.tablaPagPrincipal > thead >tr > th{
+    width: 20%;
+    background-color: rgb(222, 222, 222);
+    height: 20px;
+    vertical-align: top;
+    border: 1px solid rgba(54, 54, 54, 0.4);
+    border-spacing: 0;
+}
+
+.tablaPagPrincipal > tbody > tr > td{
+    border: 1px solid rgba(54, 54, 54, 0.4);
+    border-spacing: 0;
+}

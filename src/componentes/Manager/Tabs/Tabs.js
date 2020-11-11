@@ -42,7 +42,6 @@ export default class Tabs extends Component{
 
     render(){
         return(
-            
             <React.Fragment>
                <div className="tabs">
                     <ol className="tab-list">
@@ -75,13 +74,17 @@ export default class Tabs extends Component{
                     </ol>
 
                     <div className="tab-content">
-                        {this.props.children[1].props.children.map((child) => {
-                            if(child.props !== undefined){
-                                if (child.props.label !== this.state.activeTab) return undefined;
-                                return child.props.children;
-                            }
-                            
-                        })}
+                        
+                        { this.state.activeTab !== "Página Principal" ? 
+                            this.props.children[1].props.children.map((child) => {
+                                if(child.props !== undefined){
+                                    if (child.props.label !== this.state.activeTab) return undefined;
+                                    return child.props.children;
+                                }
+                                
+                            })
+                        : this.props.children[0].props.children
+                        }
                     </div>
 
                 </div>

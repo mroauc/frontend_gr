@@ -7,6 +7,7 @@ import Tabs from './Tabs/Tabs';
 import './Tabs/Tabs.css';
 import '../vistaCrud.css';
 import './Manager.css';
+import PaginaPrincipal from './PaginaPrincipal';
 
 export default class TablaVista extends Component {
 
@@ -60,7 +61,9 @@ export default class TablaVista extends Component {
                 <div className="tabla-vista">
                     <Tabs eliminarReqDeTab={this.props.eliminarReqDeTab} consultaTabActivo={this.props.clickTab}>
                         <div label="Página Principal"> 
-                            <h1>Cuerpo de la pagina</h1> 
+                            <PaginaPrincipal
+                                requerimientos = {this.props.requerimientos}
+                            /> 
                         </div>
 
                         {this.generarTabs()}
