@@ -1,0 +1,83 @@
+.body{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url('../../imgs/fotoUCM.PNG');
+    background-position: right;
+    background-size: cover;
+    background-repeat: no-repeat;
+    font-family: myriad pro;
+}
+
+.login-form{
+    background: #0f1420a3;
+    width: 260px;
+    height: 450px;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    position: relative;
+}
+
+.tittle{
+    margin-top: 50px;
+    font-size: 2.5em;
+    color: #e1dce2;
+}
+
+.text-boxes{
+    position: relative;
+    margin-top: 30px;
+}
+
+.text-box{
+    margin: 20px;
+    position: relative;
+}
+
+.text-box input{
+    width: 100%;
+    height: 30px;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    background: #7a7c88a3;  
+    text-align: center;
+    color: #e1dce2;
+}
+
+.text-box span::after{
+    content: attr(data-placeholder);
+    position: absolute;
+    top: 5px;
+    left: 85px;
+    color: #e1dce2;
+    pointer-events: none;
+}
+
+.input-login::placeholder{
+    color: #e1dce2;
+    pointer-events: none;
+}
+
+.button{
+    position: relative;
+    margin-top: 40px;
+    margin: 20px;
+}
+
+.button-login{
+    width: 85%;
+    height: 30px;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    background: #b5b6c0;
+    text-align: center;
+    color: #4c4b58;
+    cursor: pointer;
+    transition: .5s;
+}

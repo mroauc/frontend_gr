@@ -27,7 +27,6 @@ class ProyectoModal extends Component{
         .then(response=>{
             this.setState({
                 empresas: response.data,
-                empresasSeleccionadas: []
             });
         })
     }

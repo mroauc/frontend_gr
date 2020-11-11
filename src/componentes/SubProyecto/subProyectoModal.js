@@ -25,7 +25,6 @@ export default class subProyectoModal extends Component {
 
     componentDidMount(){
         this.getUsuarios();
-        //this.getProyectos();
     }
 
     componentWillReceiveProps(next_props) {

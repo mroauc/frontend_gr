@@ -37,18 +37,8 @@ class PropuestaCambio extends Component{
         const id_proy = this.props.match.params.id_proyecto;
         await Axios.get(`http://localhost:8080/api/subProyecto/pertenecientes/${id_proy}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
-            //var subp = response.data
             this.cargarPropuestas(response.data);
         })
-        /*Axios.get('http://localhost:8080/api/propuestacambio/',{headers: {"Authorization": `Bearer ${token}`}})
-        .then(response=>{
-            this.setState({
-                propuestas: response.data
-            });
-        })
-        .catch(()=>{
-            this.props.history.push('/noAutorizado');
-        })*/
     }
 
     cargarPropuestas=async(subproy)=>{
@@ -58,9 +48,6 @@ class PropuestaCambio extends Component{
             propuestas: [],
         });
 
-        //console.log(this.state.subProyectos);
-
-
         for (let index = 0; index < subproy.length; index++) {
             await Axios.get(`http://localhost:8080/api/propuestacambio/obtener/${subproy[index].id_subProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
             .then(response=>{
@@ -68,10 +55,8 @@ class PropuestaCambio extends Component{
                 this.setState({
                     propuestas: datos.concat(response.data)
                 });
-                //console.log(response.data);
             })
         }
-        //console.log(this.state.propuestas);
     }
 
     componentDidMount(){

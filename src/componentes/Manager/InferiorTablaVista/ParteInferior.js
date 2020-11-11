@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import TabsEstaticos from './TabsEstaticos/TabsEstaticos';
 import Comentario from './Comentario'
+import Propiedades from './Propiedades';
+import PropuestaCambio from './PropuestaCambio';
 
 export default class ParteInferior extends Component {
     render(){
@@ -13,13 +15,17 @@ export default class ParteInferior extends Component {
                         />
                     </div>
                     <div label="Propiedades">
-                        <h1>Propiedades</h1>
+                        <Propiedades
+                            requerimiento = {this.props.requerimiento}
+                        />
                     </div>
                     <div label="Permisos">
                         <h1>Permisos</h1>
                     </div>
                     <div label="Propuesta de cambio">
-                        <h1>Propuesta de cambio</h1>
+                        <PropuestaCambio
+                            requerimiento = {this.props.requerimiento}
+                        />
                     </div>
                 </TabsEstaticos>
                 

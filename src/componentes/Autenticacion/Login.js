@@ -1,6 +1,7 @@
 import Axios from "axios";
 import React, { Component } from "react";
 import { Alert, Button, Form, FormGroup, Input, Label } from "reactstrap";
+import './Login.css';
 
 export default class Login extends Component{
 
@@ -65,28 +66,35 @@ export default class Login extends Component{
 
     render(){
         return(
-            <div className="col-md-6" style={{width: '800px', margin: '0 auto'}}>
-                <header>
-                    <h1 className="text-center font-weight-bold">Bienvenido</h1>
-                </header>
+            <div className="body">
+            <div className="login-form">
+                <div className="tittle">
+                    Bienvenido
+                </div>
                 <hr className="my-3" />
                 {
                     this.state.message !==''?(
                         <Alert color="danger" className="text-center">{this.state.message}</Alert>
                     ): ''
                 }
-
+                <div className="text-boxes">
                 <Form>
+                    <div className="text-box">
                     <FormGroup>
-                        <Label for="email">Email</Label>
-                        <Input type="email" id="email" onChange={e=>this.email=e.target.value} placeholder="Ingrese su correo" />
+                        <Input className="input-login" type="email" id="email" onChange={e=>this.email=e.target.value} placeholder="Email" />
                     </FormGroup>
+                    </div>
+                    <div className="text-box">
                     <FormGroup>
-                        <Label for="password">Contraseña</Label>
-                        <Input type="password" id="password" onChange={e=>this.password=e.target.value} placeholder="Ingrese su contraseña" />
+                        <Input className="input-login" type="password" id="password" onChange={e=>this.password=e.target.value} placeholder="Password" />
                     </FormGroup>
-                    <Button color="primary" block onClick={this.signIn}>Entrar</Button>
+                    </div>
+                    <div className="button">
+                        <Button className="button-input" color="primary" block onClick={this.signIn}>Entrar</Button>
+                    </div>
                 </Form>
+                </div>
+            </div>
             </div>
         )
     }

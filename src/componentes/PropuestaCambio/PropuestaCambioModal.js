@@ -1,6 +1,7 @@
 import Axios from 'axios';
 import React, { Component } from 'react'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import ChipsImpactoDirecto from './ChipsImpactoDirecto';
 
 class PropuestaCambioModal extends Component{
     state={
@@ -18,7 +19,8 @@ class PropuestaCambioModal extends Component{
             fecha_resolucion: '',
             comentarios: '',
             estado: 'Pendiente'
-        }
+        },
+        requerimientosImpactoDirecto : []
     }
 
     componentWillReceiveProps(next_props){
@@ -38,8 +40,6 @@ class PropuestaCambioModal extends Component{
                 subProyectos: response.data
             });
         })
-        //console.log(this.props.id_proyecto);
-        //console.log(this.state.subProyectos);
     }
 
     guardar=async()=>{
@@ -60,7 +60,23 @@ class PropuestaCambioModal extends Component{
         .then(response=>{
             this.props.modalInsertar();
             this.props.index();
+            this.insertarImpactoDirecto(response.data.id_propuestaCambio);
         })
+    }
+
+    insertarImpactoDirecto=async(id_propuestaCambio)=>{
+        const token = localStorage.getItem('token');
+
+        for (let index = 0; index < this.state.requerimientosImpactoDirecto.length; index++) {
+            await Axios.post('http://localhost:8080/api/impacto_directo/guardar/',{
+                id_propuesta_cambio : id_propuestaCambio,
+                id_requerimiento : this.state.requerimientosImpactoDirecto[index]
+            },{headers:{"Authorization": `Bearer ${token}`}})
+        }
+
+        this.setState({
+            requerimientosImpactoDirecto: []
+        });
     }
 
     guardarActualizacion=()=>{
@@ -69,6 +85,39 @@ class PropuestaCambioModal extends Component{
         .then(response=>{
             this.props.modalInsertar();
             this.props.index();
+            this.actualizarImpactoDirecto();
+        })
+    }
+
+    actualizarImpactoDirecto=()=>{
+        const token = localStorage.getItem('token');
+        var existentes = [];
+        var original = [];
+        Axios.get(`http://localhost:8080/api/impacto_directo/obtener/${this.state.propuestaCambio.id_propuestaCambio}`, {headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            original = response.data;
+            for (let index = 0; index < response.data.length; index++) {
+                existentes = [...existentes, response.data[index].id_requerimiento.toString()];
+            }
+
+            //eliminar
+            for (let index = 0; index < existentes.length; index++) {
+                if(!this.state.requerimientosImpactoDirecto.includes(existentes[index])){
+                    Axios.delete(`http://localhost:8080/api/impacto_directo/eliminar/${original[index].id_impacto_directo}`, {headers: {"Authorization": `Bearer ${token}`}})
+                    .then(response=>{
+                    });
+                }
+            }
+
+            //insertar
+            for (let index = 0; index < this.state.requerimientosImpactoDirecto.length; index++) {
+                if(!existentes.includes(this.state.requerimientosImpactoDirecto[index])){
+                    Axios.post('http://localhost:8080/api/impacto_directo/guardar/',{
+                        id_propuesta_cambio : this.state.propuestaCambio.id_propuestaCambio,
+                        id_requerimiento : this.state.requerimientosImpactoDirecto[index]
+                    },{headers: {"Authorization": `Bearer ${token}`}})
+                }
+            }
         })
     }
 
@@ -77,6 +126,19 @@ class PropuestaCambioModal extends Component{
             propuestaCambio:{
                 ...this.state.propuestaCambio, [e.target.name]: e.target.value
             }
+        });
+    }
+
+    insertarChip=(requerimiento)=>{
+        this.setState({
+            requerimientosImpactoDirecto: [ ...this.state.requerimientosImpactoDirecto, requerimiento],
+        });
+    }
+
+    eliminarChip=(requerimiento)=>{
+        const filtrado = this.state.requerimientosImpactoDirecto.filter(item => item!==requerimiento);        
+        this.setState({
+            requerimientosImpactoDirecto : filtrado
         });
     }
 
@@ -99,6 +161,7 @@ class PropuestaCambioModal extends Component{
                             <br/>
                             <label htmlFor="id_modulo">ID Modulo</label>
                             <select name="id_subproyecto" id="id_subproyecto" className="form-control" value={this.state.propuestaCambio.id_subproyecto} onChange={this.changeHandler}>
+                                <option value="">Seleccione un SubProyecto</option>
                                 {this.state.subProyectos.map(subp=>{
                                     return(
                                         <option value={subp.id_subProyecto}>{subp.nombre_subProyecto}</option>
@@ -114,6 +177,13 @@ class PropuestaCambioModal extends Component{
                             <br/>
                             <label htmlFor="descripcion">Descripcion</label>
                             <input className="form-control" type="text" name="descripcion" id="descripcion" onChange={this.changeHandler} value={this.state.propuestaCambio.descripcion} />
+                            <br/>
+                            <ChipsImpactoDirecto
+                                id_propuestaCambio = {this.state.propuestaCambio.id_propuestaCambio}
+                                subProyectos = {this.state.subProyectos}
+                                insertarChip = {this.insertarChip}
+                                eliminarChip = {this.eliminarChip}
+                            />
                             <br/>
                             <label htmlFor="justificacion">Justificacion</label>
                             <input className="form-control" type="text" name="justificacion" id="justificacion" onChange={this.changeHandler} value={this.state.propuestaCambio.justificacion} />
