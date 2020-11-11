@@ -60,7 +60,7 @@ export default class ChipsSubProyectoUsuario extends Component{
         if(!this.state.arregloChips.includes(this.state.usuario)){
             await this.setState({
                 arregloChips: [ ...this.state.arregloChips, this.state.usuario], /// PUSH AL ARREGLO CHIPS LA OPCION SELECCIONADA
-              });
+            });
 
             this.props.ingresarChip(this.state.usuario);
         }

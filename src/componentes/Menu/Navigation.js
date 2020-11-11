@@ -34,17 +34,17 @@ class Navigation extends Component {
     render(){
       return(
         <div className="Navigation">
-            <nav class="navbar navbar-expand-lg navi">
+            <nav className="navbar navbar-expand-lg navi">
                 <div style={{width : '10%', textAlign : 'center', marginRight : '16px'}} onClick={() => {this.seleccionarCelda("Home")}}>
                     <Link className= {"navbar-brand sistema "+ this.menu("Sistema")} to="/index">Sistema</Link>
                 </div>
                 
 
-                <div class="collapse navbar-collapse" style={{marginLeft : 0}} id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
+                <div className="collapse navbar-collapse" style={{marginLeft : 0}} id="navbarSupportedContent">
+                    <ul className="navbar-nav mr-auto">
 
                     <Link style={{textDecoration: 'none'}} to="/index" onClick={() => {this.seleccionarCelda("Home")}}>
-                        <li class={"nav-item active " + this.menu("Home")}>
+                        <li className={"nav-item active " + this.menu("Home")}>
                             <a className="nav-link" to="/index">Home</a>
                         </li> 
                     </Link>
@@ -52,8 +52,8 @@ class Navigation extends Component {
                     {this.props.celdas.map(celda => {
                         return(
                             <Link style={{textDecoration: 'none'}} to={celda.url}>
-                                <li style={{zIndex:100}} class={"nav-item " + this.menu(celda.nombre)} id={celda.nombre} onClick={() => {this.seleccionarCelda(celda.nombre)}}>
-                                    <a class="nav-link" to={celda.url}>{celda.nombre}</a>
+                                <li style={{zIndex:100}} className={"nav-item " + this.menu(celda.nombre)} id={celda.nombre} onClick={() => {this.seleccionarCelda(celda.nombre)}}>
+                                    <a className="nav-link" to={celda.url}>{celda.nombre}</a>
                                 </li>
                             </Link>
                         )
@@ -63,12 +63,12 @@ class Navigation extends Component {
                 </div>
 
                 <div className="desplegable text-center" >
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <li className="nav-item dropdown">
+                        <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {localStorage.getItem('nombre')}
                         </a>
-                        <div class="subMenu dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#" onClick={this.cambiarEstadoModalContraseña}>Cambiar Contraseña</a>
+                        <div className="subMenu dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a className="dropdown-item" href="#" onClick={this.cambiarEstadoModalContraseña}>Cambiar Contraseña</a>
                             <Link className="dropdown-item" to="/logout">Cerrar Sesión</Link>
                         </div>
                     </li> 

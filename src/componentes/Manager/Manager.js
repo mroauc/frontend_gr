@@ -63,6 +63,7 @@ export default class Manager extends Component {
                         agregarReqATab = {this.agregarReqATab}
                     />
                     <TablaVista
+                        requerimientos = {this.state.requerimientos}
                         tabs = {this.state.reqsTab}
                         eliminarReqDeTab = {this.eliminarReqDeTab}
                         requerimientos = {this.state.requerimientos}
