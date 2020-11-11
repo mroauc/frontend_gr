@@ -100,7 +100,7 @@ class Propiedades extends Component{
                                 eliminarChip = {this.eliminarChip}
                            />
                     </div>
-                    <div className="col-3 cont-boton">
+                    <div className="col-3 cont-boton-prop">
                         <button className="btn btn-success btn-block" onClick={this.guardarChips}>Asignar Relacion</button>
                     </div>
                 </div>

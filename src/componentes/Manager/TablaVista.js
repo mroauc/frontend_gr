@@ -8,6 +8,7 @@ import './Tabs/Tabs.css';
 import '../vistaCrud.css';
 import './Manager.css';
 import PaginaPrincipal from './PaginaPrincipal';
+import swal from 'sweetalert'
 
 export default class TablaVista extends Component {
 
@@ -21,11 +22,24 @@ export default class TablaVista extends Component {
         });
     }
 
+    mostrarAlerta = () => {
+        swal({
+            title: "Guardado Correctamente",
+            icon: "success",
+            buttons: "Aceptar"
+        })
+    }
+
+
+
     insertar=(requerimiento)=>{
         var act = requerimiento;
         act.descripcion = this.state.dataRequerimiento;
         const token = localStorage.getItem('token');
         Axios.post('http://localhost:8080/api/requerimiento/editar/',act, {headers: {"Authorization": `Bearer ${token}`}})
+        .then(
+            this.mostrarAlerta()
+        )
     }
     
     generarTabs = () => {

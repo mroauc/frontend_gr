@@ -1,5 +1,5 @@
 .areaCrear{
-    height: 35%;
+    height: 30%;
     overflow: auto;
     display: flex;
     flex-wrap: wrap;
@@ -19,7 +19,7 @@
 }
 
 .muestraComentarios{
-    height: 55%;
+    height: 50%;
     overflow: auto;
 }
 

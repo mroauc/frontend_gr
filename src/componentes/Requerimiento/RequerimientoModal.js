@@ -16,7 +16,9 @@ class RequerimientoModal extends Component{
             categoria: '',
             id_template: ''
         },
-        templates : []
+        templates : [],
+        usuarios: [],
+        id_usuario_responsable : ''
     }
 
     componentDidMount(){
@@ -28,6 +30,8 @@ class RequerimientoModal extends Component{
                 templates: response.data
             });
         })
+
+        this.getUsuarios();
     }
 
     componentWillReceiveProps(next_props){
@@ -83,6 +87,16 @@ class RequerimientoModal extends Component{
         })
     }
 
+    getUsuarios=()=>{
+        const token = localStorage.getItem('token');
+
+        Axios.get(`http://localhost:8080/api/usuario/`,{headers: {"Authorization" : `Bearer ${token}`}})
+        .then(response=>{
+            this.setState({usuarios : response.data});
+            console.log(response.data);
+        })
+    }
+
     changeHandler=async(e)=>{
         await this.setState({
             requerimiento:{
@@ -111,6 +125,16 @@ class RequerimientoModal extends Component{
                             <br/>
                             <label htmlFor="id_subProyecto">ID Sub-Proyecto</label>
                             <input className="form-control" type="text" name="id_subProyecto" id="id_subProyecto" value={this.state.requerimiento.id_subProyecto} readOnly />
+                            <br/>
+                            <label htmlFor="id_responsable">Usuario Responsable</label>
+                            <select className="form-control" type="text" name="id_usuario_responsable" id="id_usuario_responsable" value={this.state.usuario_responsable} onChange={(e) => {this.setState({id_usuario_responsable : e.target.value})}}>
+                                {this.state.usuarios.map(usuario => {
+                                    return(
+                                        <option value={usuario.id}>{usuario.nombre}</option>
+                                    );
+                                    
+                                })}
+                            </select>
                             <br/>
                             <label htmlFor="prioridad">Prioridad</label>
                             <select className="form-control" name="prioridad" id="prioridad" value={this.state.requerimiento.prioridad} onChange={this.changeHandler}>

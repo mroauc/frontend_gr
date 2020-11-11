@@ -11,7 +11,7 @@
 .editReq{
    height: 40%;
    width: 100%;
-   overflow: hidden; 
+   overflow: auto; 
 }
 
 .tabs-inferior{

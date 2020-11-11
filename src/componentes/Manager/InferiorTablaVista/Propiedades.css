@@ -12,12 +12,12 @@
     margin-top: 0px;
 }
 
-.textComentario{
+/* .textComentario-prop{
     width: 100%;
     height: 95%;
-}
+} */
 
-.cont-boton{
+.cont-boton-prop{
     height: 105%;
     display: flex;
     align-items: center;
