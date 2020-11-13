@@ -1,0 +1,39 @@
+.formatoImprimir >.table{
+    width: 90%;
+    border: 1px solid #000;
+    margin: auto;
+  }
+.formatoImprimir > .table > table > tbody > tr{
+    width: 25%;
+}
+
+.formatoImprimir > .table > table > tbody > tr > td{
+  width: 25%;
+}
+
+.cabeceraImprimir{
+  height: 40px;
+  background-color: skyblue;
+  margin: -10px -10px 0 -10px;
+  padding: 10px;
+}
+
+.formatoImprimir{
+  border: 1px solid skyblue;
+  margin: 10px;
+  padding: 10px;
+}
+
+.cabeceraImprimirPrincipal{
+  height: 40px;
+  background-color: palegreen;
+  margin: -10px -10px 0 -10px;
+  padding: 5px;
+}
+
+.formatoImprimirPrincipal{
+  border: 1px solid palegreen;
+  margin: 10px;
+  padding: 10px;
+}
+/* etiqueta color es para color de letra */

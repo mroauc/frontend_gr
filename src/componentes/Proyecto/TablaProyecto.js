@@ -70,6 +70,7 @@ class TablaProyecto extends Component{
                                 <td>{proyecto.fecha_creacion}</td>
                                 <td>{this.cantidadSubProyectos(proyecto.id_proyecto)}</td>
                                 <td>
+                                    <button className="btn btn-secondary" onClick={()=>this.props.generarPDF(proyecto.id_proyecto)}>📄</button> &nbsp;
                                     <button className="btn btn-warning" onClick={()=>this.props.editar(proyecto)}>Editar</button> &nbsp;
                                     <button className="btn btn-danger" onClick={()=>this.props.modalEliminar(proyecto)}>Eliminar</button> &nbsp;
                                     <Link to={"/subProyecto/"+proyecto.id_proyecto}><Button type="button" className="btn btn-info">Ver</Button></Link>

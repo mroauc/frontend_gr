@@ -2,6 +2,7 @@ import Axios from 'axios';
 import React, {Component} from 'react';
 import ChipsPropiedades from './ChipsPropiedades';
 import'./Propiedades.css'
+import swal from 'sweetalert';
 
 
 class Propiedades extends Component{
@@ -27,6 +28,14 @@ class Propiedades extends Component{
         })
     }
 
+    mostrarAlerta = () => {
+        swal({
+            title: "Guardado Correctamente",
+            icon: "success",
+            buttons: "Aceptar"
+        })
+    }
+
     changeHandler=async(e)=>{
         await this.setState({
             requerimiento:{
@@ -48,10 +57,12 @@ class Propiedades extends Component{
         });
     }
 
-    guardarCambios=()=>{
+    guardarCambios=async()=>{
         const token = localStorage.getItem('token');
-        Axios.post('http://localhost:8080/api/requerimiento/editar/',this.state.requerimiento, {headers: {"Authorization": `Bearer ${token}`}})
-        .then(response=>{})
+        await Axios.post('http://localhost:8080/api/requerimiento/editar/',this.state.requerimiento, {headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            this.mostrarAlerta();
+        })
     }
 
     guardarChips=()=>{
@@ -84,6 +95,7 @@ class Propiedades extends Component{
                 }
             }
         })
+        this.mostrarAlerta();
     }
 
     render(){
