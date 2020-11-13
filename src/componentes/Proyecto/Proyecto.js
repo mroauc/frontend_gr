@@ -4,8 +4,10 @@ import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import Menu from '../Menu/Menu';
 import ProyectoModal from './ProyectoModal';
 import TablaProyecto from './TablaProyecto';
+import html2pdf from 'html2pdf.js';
 import './Proyecto.css';
 import '../vistaCrud.css';
+import './TablaPDF.css';
 
 class Proyecto extends Component{
 
@@ -86,6 +88,40 @@ class Proyecto extends Component{
         })
     }
 
+    generarPDF=async(id_proyecto)=>{
+        const token = localStorage.getItem('token');
+        await Axios.get(`http://localhost:8080/api/subProyecto/pertenecientes/${id_proyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            this.finalizarGeneracionPDF(response.data);
+        })
+    }
+
+    finalizarGeneracionPDF=async(subProyectos)=>{
+        const token = localStorage.getItem('token');
+        var requerimientos = [];
+        for (let index = 0; index < subProyectos.length; index++) {
+            await Axios.get(`http://localhost:8080/api/requerimiento/obtener/${subProyectos[index].id_subProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
+            .then(response=>{
+                for (let index = 0; index < response.data.length; index++) {
+                    var elemento = {nombre: response.data[index].nombre, descripcion: response.data[index].descripcion};
+                    requerimientos = [...requerimientos, elemento];
+                }
+            })
+
+            var imprimir = '<div class="formatoImprimirPrincipal"><div class="cabeceraImprimirPrincipal"><h4>Subproyecto</h4></div>';
+            imprimir = imprimir + '<div class="formatoImprimir">'; //primer div
+            var cabecera = '<div class="cabeceraImprimir"> <h5>Requerimiento analista</h5></div><br>';
+            imprimir = imprimir + cabecera;
+            for (let index = 0; index < requerimientos.length; index++) {
+                imprimir = imprimir + '<strong>' + requerimientos[index].nombre + '</strong><br><br>' + requerimientos[index].descripcion + '<br>';
+            }
+            imprimir = imprimir + '</div>'; //cierre primer div
+            imprimir = imprimir + '</div>'; //cierre div verde
+
+            html2pdf().set({filename: 'documentoSalida'}).from(imprimir).save();
+        }
+    }
+
     render(){
         return(
             <React.Fragment>
@@ -98,6 +134,7 @@ class Proyecto extends Component{
                     proyectos={this.state.proyectos}
                     editar={this.editar}
                     modalEliminar={this.modalEliminar}
+                    generarPDF={this.generarPDF}
                 />
 
                 <ProyectoModal
