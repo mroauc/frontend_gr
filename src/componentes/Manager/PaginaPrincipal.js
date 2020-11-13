@@ -22,7 +22,7 @@ export default class PaginaPrincipal extends Component{
         const token = localStorage.getItem("token");
         Axios.get("http://localhost:8080/api/requerimiento/tipo/")
         .then(response => {
-            console.log(response.data);
+            // console.log(response.data);
         })
     }
 
