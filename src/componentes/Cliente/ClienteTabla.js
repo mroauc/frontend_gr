@@ -8,8 +8,6 @@ export default class ClienteTabla extends Component {
     }
 
     buscarUsuario=(id_usuario)=>{
-        console.log("Usuarios");
-        console.log(this.state.usuarios.length)
         for (let index = 0; index < this.state.usuarios.length; index++) {
             if(this.state.usuarios[index].id===id_usuario){
                 return this.state.usuarios[index].nombre;

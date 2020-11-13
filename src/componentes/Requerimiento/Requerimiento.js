@@ -98,6 +98,10 @@ class Requerimiento extends Component{
 
     eliminar=()=>{
         const token = localStorage.getItem('token');
+        Axios.delete(`http://localhost:8080/api/usuarioactividad/eliminar/id_requerimiento/${this.state.requerimiento.id_requerimiento}`,{headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            console.log(response.data);    
+        })
         Axios.delete(`http://localhost:8080/api/requerimiento/eliminar/${this.state.requerimiento.id_requerimiento}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({modalEliminar:false, requerimiento:'', requerimiento:{prioridad:'Baja',estado:'Creado'},});

@@ -131,7 +131,6 @@ export default class ClienteModal extends Component {
                 empresas: response.data
             })
         });
-        console.log(this.state.empresas);
     }
     
 

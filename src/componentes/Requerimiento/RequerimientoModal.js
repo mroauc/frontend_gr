@@ -18,6 +18,7 @@ class RequerimientoModal extends Component{
         },
         templates : [],
         usuarios: [],
+        usuariosSubProyecto: [],
         id_usuario_responsable : ''
     }
 
@@ -30,12 +31,23 @@ class RequerimientoModal extends Component{
                 templates: response.data
             });
         })
-
         this.getUsuarios();
+        this.getUsuariosSubProyecto();
     }
 
     componentWillReceiveProps(next_props){
         this.setState({requerimiento: this.props.requerimiento});
+        const token = localStorage.getItem("token");
+        if(this.props.requerimiento.id_requerimiento !== undefined){
+            Axios.get('http://localhost:8080/api/usuarioactividad/id_requerimiento/'+this.props.requerimiento.id_requerimiento,{headers: {"Authorization" : `Bearer ${token}`}})
+            .then(response=>{
+                this.setState({
+                    id_usuario_responsable : response.data.id_usuario
+                });
+            })
+            .catch(console.log("error"));
+        }
+
     }
 
     guardar=async()=>{
@@ -52,7 +64,7 @@ class RequerimientoModal extends Component{
         }, {headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             this.completarDatos(response.data);
-        })
+        });
     }
 
     completarDatos=(requerimiento)=>{
@@ -64,7 +76,13 @@ class RequerimientoModal extends Component{
             req.nombre = requerimiento.categoria.concat(requerimiento.id_requerimiento);
             req.descripcion = response.data.template;
             this.ejecutarCompletacionDatos(req);
-        })
+        });
+        
+        Axios.post('http://localhost:8080/api/usuarioactividad/guardar',{
+            fecha: new Date().toLocaleString(),
+            id_requerimiento: requerimiento.id_requerimiento,
+            id_usuario: this.state.id_usuario_responsable
+        },{headers: {"Authorization" : `Bearer ${token}`}})
     }
 
     ejecutarCompletacionDatos=(req)=>{
@@ -80,6 +98,18 @@ class RequerimientoModal extends Component{
         const actual = this.state.requerimiento;
         actual.nombre = actual.categoria.concat(actual.id_requerimiento);
         const token = localStorage.getItem('token');
+        Axios.get('http://localhost:8080/api/usuarioactividad/id_requerimiento/'+ actual.id_requerimiento, {headers: {"Authorization" : `Bearer ${token}`}})
+        .then(response => {
+            console.log(response.data);
+            Axios.post('http://localhost:8080/api/usuarioactividad/guardar',{
+                id_usuarioActividad: response.data.id_usuarioActividad,
+                fecha: response.data.fecha,
+                id_requerimiento: actual.id_requerimiento,
+                id_usuario: this.state.id_usuario_responsable
+            }, {headers: {"Authorization" : `Bearer ${token}`}})
+            console.log(response.data)
+        })
+        
         Axios.post('http://localhost:8080/api/requerimiento/editar/',actual, {headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             this.props.modalInsertar();
@@ -89,12 +119,27 @@ class RequerimientoModal extends Component{
 
     getUsuarios=()=>{
         const token = localStorage.getItem('token');
-
         Axios.get(`http://localhost:8080/api/usuario/`,{headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             this.setState({usuarios : response.data});
             console.log(response.data);
         })
+    }
+
+    getUsuariosSubProyecto= async ()=>{
+        const token = localStorage.getItem('token');
+        await Axios.get(`http://localhost:8080/api/encargadosubproyecto/obtener/${this.props.requerimiento.id_subProyecto}`,{headers: {"Authorization" : `Bearer ${token}`}})
+        .then(response=>{
+            this.setState({usuariosSubProyecto: response.data})
+        })
+    }
+
+    obtenerNombreUsuario = (id_usuario) => {
+        console.log(this.state.usuarios)
+        if(this.state.usuarios.length !== 0){
+            const usuarioEncontrado = this.state.usuarios.find(usuario => usuario.id === id_usuario);
+            return usuarioEncontrado.nombre;    
+        }
     }
 
     changeHandler=async(e)=>{
@@ -127,10 +172,11 @@ class RequerimientoModal extends Component{
                             <input className="form-control" type="text" name="id_subProyecto" id="id_subProyecto" value={this.state.requerimiento.id_subProyecto} readOnly />
                             <br/>
                             <label htmlFor="id_responsable">Usuario Responsable</label>
-                            <select className="form-control" type="text" name="id_usuario_responsable" id="id_usuario_responsable" value={this.state.usuario_responsable} onChange={(e) => {this.setState({id_usuario_responsable : e.target.value})}}>
-                                {this.state.usuarios.map(usuario => {
+                            <select className="form-control" type="text" name="id_usuario_responsable" id="id_usuario_responsable" value={this.state.id_usuario_responsable} onChange={(e) => {this.setState({id_usuario_responsable : e.target.value})}}>
+                                <option value="">Seleccionar Usuario Responsable</option>
+                                {this.state.usuariosSubProyecto.map(usuario => {
                                     return(
-                                        <option value={usuario.id}>{usuario.nombre}</option>
+                                        <option value={usuario.id_usuario}>{this.obtenerNombreUsuario(usuario.id_usuario)}</option>
                                     );
                                     
                                 })}

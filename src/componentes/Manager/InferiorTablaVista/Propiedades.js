@@ -88,40 +88,46 @@ class Propiedades extends Component{
 
     render(){
         return(
-            <div style={{height: '98%', overflow: 'auto'}}>
+            <div style={{height: '78%', overflow: 'auto', paddingTop:'10px'}}>
 
-                <div className="areaCrear2">
-                    <div className="col-9" style={{paddingLeft: '0'}}>
-                        <label htmlFor="prioridad"><strong>Se relaciona con:</strong></label>
-                           <ChipsPropiedades
+                <label htmlFor="prioridad"><strong>Se relaciona con:</strong></label>
+                <div style={{width: '100%', marginBottom:'15px'}}>
+                    <div className="areaCrear2">
+                        <div className="col-9" style={{display:'flow-root', paddingLeft: '0'}}>
+                            
+                            <ChipsPropiedades
                                 id_requerimiento = {this.props.requerimiento.id_requerimiento}
                                 requerimientos = {this.state.requerimientos}
                                 insertarChip = {this.insertarChip}
                                 eliminarChip = {this.eliminarChip}
-                           />
-                    </div>
-                    <div className="col-3 cont-boton-prop">
-                        <button className="btn btn-success btn-block" onClick={this.guardarChips}>Asignar Relacion</button>
-                    </div>
-                </div>
-
-                <div className="areaCrear3">
-                    <div className="col-9" style={{paddingLeft: '0'}}>
-                        <label htmlFor="prioridad"><strong>Prioridad:</strong></label>
-                            <select className="form-control" name="prioridad" id="prioridad" value={this.state.requerimiento.prioridad} onChange={this.changeHandler}>
-                                <option value="Baja">Baja</option>
-                                <option value="Media">Media</option>
-                                <option value="Alta">Alta</option>
-                            </select>
-                    </div>
-                    <div className="col-3 cont-boton">
-                        <button className="btn btn-success btn-block" onClick={this.guardarCambios}>Cambiar Prioridad</button>
+                            />
+                        </div>
+                    
+                        <div className="col-3 cont-boton-prop">
+                            <button className="btn btn-success btn-block" onClick={this.guardarChips}>Asignar Relacion</button>
+                        </div>
                     </div>
                 </div>
 
+                <label htmlFor="prioridad"><strong>Prioridad:</strong></label>
+                <div style={{width:'100%', marginBottom:'15px'}}>
+                    <div className="areaCrear3">
+                        <div className="col-9" style={{paddingLeft: '0'}}>
+                                <select className="form-control" name="prioridad" id="prioridad" value={this.state.requerimiento.prioridad} onChange={this.changeHandler}>
+                                    <option value="Baja">Baja</option>
+                                    <option value="Media">Media</option>
+                                    <option value="Alta">Alta</option>
+                                </select>
+                        </div>
+                        <div className="col-3 cont-boton">
+                            <button className="btn btn-success btn-block" onClick={this.guardarCambios}>Cambiar Prioridad</button>
+                        </div>
+                    </div>
+                </div>
+
+                <label htmlFor="estado"><strong>Estado:</strong></label><br/>
                 <div className="areaCrear3">
                     <div className="col-9" style={{paddingLeft: '0'}}>
-                        <label htmlFor="estado"><strong>Estado:</strong></label><br/>
                             <select className="form-control" name="estado" id="estado" value={this.state.requerimiento.estado} onChange={this.changeHandler}>
                                 <option value="Creado">Creado</option>
                                 <option value="En Redaccion">En Redaccion</option>

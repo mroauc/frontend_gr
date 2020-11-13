@@ -7,7 +7,9 @@ var arregloOrdenado = [];
 export default class PaginaPrincipal extends Component{
 
     state = {
-        usuarios: []
+        usuarios: [],
+        usuario_actividad: []
+
     }
 
     constructor (props){
@@ -39,18 +41,32 @@ export default class PaginaPrincipal extends Component{
         })
     }
 
-    buscarUsuarioPorId = (id_usuario) => {
-        const usuarioEncontrado = this.state.usuarios.find(usuario => usuario.id === id_usuario)
-        if(usuarioEncontrado)
-        return usuarioEncontrado.nombre;
+    getDataUsuarioActividad = async () => {
+        const token = localStorage.getItem("token");
+        await Axios.get("http://localhost:8080/api/usuarioactividad/",{headers: {"Authorization": `Bearer  ${token}`}})
+        .then(response => {
+            this.setState({usuario_actividad : response.data});
+        });
+    }
+
+    buscarUsuarioPorId = (id_requerimiento) => {
+        const usuarioActividadEncontrado = this.state.usuario_actividad.find(item => item.id_requerimiento === id_requerimiento);
+        if(usuarioActividadEncontrado){
+            const usuarioEncontrado = this.state.usuarios.find(usuario => usuario.id === usuarioActividadEncontrado.id_usuario);
+            if(usuarioEncontrado)
+            return usuarioEncontrado.nombre;
+        }
+        
     }
 
     componentDidMount(){
         this.getUsuarios();
+        this.getDataUsuarioActividad();
     }
 
     render(){
         this.ordenarArregloReq();
+        // this.getDataUsuarioActividad();
         return(
             <div style={{marginTop: '20px'}}>
                 <h4 style={{marginLeft:'50px'}}>Prioridades de Requerimientos</h4>
@@ -71,7 +87,7 @@ export default class PaginaPrincipal extends Component{
                                     <td>{requerimiento.nombre}</td>
                                     <td>{requerimiento.prioridad}</td>
                                     <td>{requerimiento.estado}</td>
-                                    <td>{this.buscarUsuarioPorId(requerimiento.id_usuario)}</td>
+                                    <td>{this.buscarUsuarioPorId(requerimiento.id_requerimiento)}</td>
                                     <td>{requerimiento.fecha_creacion}</td>
                                 </tr>
                             );

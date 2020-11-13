@@ -3,6 +3,7 @@ import TabsEstaticos from './TabsEstaticos/TabsEstaticos';
 import Comentario from './Comentario'
 import Propiedades from './Propiedades';
 import PropuestaCambio from './PropuestaCambio';
+import Permisos from './Permisos';
 
 export default class ParteInferior extends Component {
     render(){
@@ -20,7 +21,9 @@ export default class ParteInferior extends Component {
                         />
                     </div>
                     <div label="Permisos">
-                        <h1>Permisos</h1>
+                        <Permisos
+                            requerimiento = {this.props.requerimiento}
+                        />
                     </div>
                     <div label="Propuesta de cambio">
                         <PropuestaCambio
