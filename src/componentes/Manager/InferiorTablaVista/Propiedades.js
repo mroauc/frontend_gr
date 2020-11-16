@@ -4,7 +4,6 @@ import ChipsPropiedades from './ChipsPropiedades';
 import'./Propiedades.css'
 import swal from 'sweetalert';
 
-
 class Propiedades extends Component{
 
     state={
@@ -23,8 +22,14 @@ class Propiedades extends Component{
         .then(response=>{
             this.setState({
                 requerimientos: response.data,
-                requerimiento: this.props.requerimiento,
+                //requerimiento: this.props.requerimiento,
             });
+            Axios.get(`http://localhost:8080/api/requerimiento/${this.props.requerimiento.id_requerimiento}`, {headers: {"Authorization": `Bearer ${token}`}})
+            .then(response=>{
+                this.setState({
+                    requerimiento : response.data
+                });
+            })
         })
     }
 
@@ -105,8 +110,8 @@ class Propiedades extends Component{
                 <label htmlFor="prioridad"><strong>Se relaciona con:</strong></label>
                 <div style={{width: '100%', marginBottom:'15px'}}>
                     <div className="areaCrear2">
+
                         <div className="col-9" style={{display:'flow-root', paddingLeft: '0'}}>
-                            
                             <ChipsPropiedades
                                 id_requerimiento = {this.props.requerimiento.id_requerimiento}
                                 requerimientos = {this.state.requerimientos}
@@ -118,6 +123,7 @@ class Propiedades extends Component{
                         <div className="col-3 cont-boton-prop">
                             <button className="btn btn-success btn-block" onClick={this.guardarChips}>Asignar Relacion</button>
                         </div>
+
                     </div>
                 </div>
 
@@ -150,7 +156,6 @@ class Propiedades extends Component{
                         <button className="btn btn-success btn-block" onClick={this.guardarCambios}>Cambiar Estado</button>
                     </div>
                 </div>
-
             </div>
         )
     }

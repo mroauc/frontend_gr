@@ -44,6 +44,12 @@ export class ErroresModal extends Component{
                 ...this.state.dataError, [e.target.name]: e.target.value
             }
         });
+        var caracteres_act = this.state.dataError.contenido.length;
+        if (caracteres_act < 1000){
+            document.getElementById("span_contador").innerHTML = '<span style="color: grey;">' + caracteres_act + '/1000</span>';
+        }else{
+            document.getElementById("span_contador").innerHTML = '<span style="color: red;">' + caracteres_act + '/1000</span>';
+        }
     }
 
     render(){
@@ -60,7 +66,12 @@ export class ErroresModal extends Component{
                             <input className="form-control" type="text" name="id_error" id="id_error" value={this.state.dataError.id_error} readOnly hidden/>
                             <br/>
                             <label htmlFor="contenido">Contenido del Error</label>
-                            <p><textarea className="form-control" type="text" name="contenido" id="contenido" rows="10" onChange={this.changeHandler} value={this.state.dataError.contenido}></textarea></p>
+                            <p><textarea className="form-control" type="text" name="contenido" id="contenido" rows="10" maxLength="1000" onChange={this.changeHandler} value={this.state.dataError.contenido}></textarea></p>
+                            {(this.props.tipoModal==='insertar')?
+                                <p id="span_contador" style={{float:'right'}}><span style={{color: 'gray'}}>0/1000</span></p>
+                                :
+                                <p id="span_contador" style={{float:'right'}}><span style={{color: 'gray'}}>{this.state.dataError.contenido.length}/1000</span></p>
+                            }
                             <br/>
                             <input className="form-control" type="text" name="id_usuario" id="id_usuario" value={this.state.dataError.id_usuario} readOnly hidden/>
                         </div>

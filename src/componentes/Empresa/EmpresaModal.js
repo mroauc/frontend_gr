@@ -4,7 +4,6 @@ import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
 const url="http://localhost:8080/api/empresa/";
 
-
 export default class EmpresaModal extends Component {
     state ={
         empresa: {
@@ -51,7 +50,6 @@ export default class EmpresaModal extends Component {
                 <Modal isOpen = {this.props.estadoInsertar || this.props.estadoEditar} toggle={() => {(this.props.estadoInsertar) ? this.props.cambiarEstadoInsertar() : this.props.cambiarEstadoEditar()}}>
                     <ModalHeader style={{display : 'block'}}>
                         <span>{(this.props.estadoInsertar) ? 'Ingresar Empresa' :'Editar Empresa'}</span>
-                        
                         <span style={{cursor : 'pointer' , float : 'right'}} onClick={() => {(this.props.estadoEditar) ? this.props.cambiarEstadoEditar() : this.props.cambiarEstadoInsertar()}}>X</span>
                     </ModalHeader>
                     <ModalBody>
