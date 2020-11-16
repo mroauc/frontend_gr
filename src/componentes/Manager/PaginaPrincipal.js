@@ -14,21 +14,25 @@ export default class PaginaPrincipal extends Component{
 
     constructor (props){
         super(props);
-        ///console.log(props);
     }
-
     
     getRequerimiento = () => {
         const token = localStorage.getItem("token");
         Axios.get("http://localhost:8080/api/requerimiento/tipo/")
         .then(response => {
-            // console.log(response.data);
         })
     }
 
     ordenarArregloReq = async () => {
+        const token = localStorage.getItem("token");
+
         const ordenamiento = {Alta: 1, Media: 2, Baja: 3};
-        arregloOrdenado = this.props.requerimientos;
+        
+        await Axios.get("http://localhost:8080/api/requerimiento/", {headers: {"Authorization": `Bearer  ${token}`}})
+        .then(async response => {
+            arregloOrdenado = response.data;
+        })
+
         await arregloOrdenado.sort((
             (a, b) => { return ordenamiento[a.prioridad] - ordenamiento[b.prioridad]}));
     }
@@ -55,8 +59,7 @@ export default class PaginaPrincipal extends Component{
             const usuarioEncontrado = this.state.usuarios.find(usuario => usuario.id === usuarioActividadEncontrado.id_usuario);
             if(usuarioEncontrado)
             return usuarioEncontrado.nombre;
-        }
-        
+        }  
     }
 
     componentDidMount(){
@@ -66,7 +69,6 @@ export default class PaginaPrincipal extends Component{
 
     render(){
         this.ordenarArregloReq();
-        // this.getDataUsuarioActividad();
         return(
             <div style={{marginTop: '20px'}}>
                 <h4 style={{marginLeft:'50px'}}>Prioridades de Requerimientos</h4>

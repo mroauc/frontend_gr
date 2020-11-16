@@ -16,6 +16,7 @@ class RequerimientoModal extends Component{
             categoria: '',
             id_template: ''
         },
+        template_actual : '',
         templates : [],
         usuarios: [],
         usuariosSubProyecto: [],
@@ -36,7 +37,7 @@ class RequerimientoModal extends Component{
     }
 
     componentWillReceiveProps(next_props){
-        this.setState({requerimiento: this.props.requerimiento});
+        this.setState({requerimiento: this.props.requerimiento, template_actual: this.props.requerimiento.id_template});
         const token = localStorage.getItem("token");
         if(this.props.requerimiento.id_requerimiento !== undefined){
             Axios.get('http://localhost:8080/api/usuarioactividad/id_requerimiento/'+this.props.requerimiento.id_requerimiento,{headers: {"Authorization" : `Bearer ${token}`}})
@@ -47,7 +48,6 @@ class RequerimientoModal extends Component{
             })
             .catch(console.log("error"));
         }
-
     }
 
     guardar=async()=>{
@@ -94,21 +94,27 @@ class RequerimientoModal extends Component{
         })
     }
 
-    guardarActualizacion=()=>{
+    guardarActualizacion=async()=>{
         const actual = this.state.requerimiento;
         actual.nombre = actual.categoria.concat(actual.id_requerimiento);
         const token = localStorage.getItem('token');
         Axios.get('http://localhost:8080/api/usuarioactividad/id_requerimiento/'+ actual.id_requerimiento, {headers: {"Authorization" : `Bearer ${token}`}})
         .then(response => {
-            console.log(response.data);
             Axios.post('http://localhost:8080/api/usuarioactividad/guardar',{
                 id_usuarioActividad: response.data.id_usuarioActividad,
                 fecha: response.data.fecha,
                 id_requerimiento: actual.id_requerimiento,
                 id_usuario: this.state.id_usuario_responsable
             }, {headers: {"Authorization" : `Bearer ${token}`}})
-            console.log(response.data)
         })
+
+        if(this.state.template_actual !== this.state.requerimiento.id_template){
+            await Axios.get(`http://localhost:8080/api/template/${this.state.requerimiento.id_template}`,{headers: {"Authorization" : `Bearer ${token}`}})
+            .then(response=>{
+                actual.descripcion = response.data.template;
+            });
+            console.log("nuevo template");
+        }
         
         Axios.post('http://localhost:8080/api/requerimiento/editar/',actual, {headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
@@ -122,7 +128,6 @@ class RequerimientoModal extends Component{
         Axios.get(`http://localhost:8080/api/usuario/`,{headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             this.setState({usuarios : response.data});
-            console.log(response.data);
         })
     }
 
@@ -135,7 +140,6 @@ class RequerimientoModal extends Component{
     }
 
     obtenerNombreUsuario = (id_usuario) => {
-        console.log(this.state.usuarios)
         if(this.state.usuarios.length !== 0){
             const usuarioEncontrado = this.state.usuarios.find(usuario => usuario.id === id_usuario);
             return usuarioEncontrado.nombre;    
@@ -155,6 +159,7 @@ class RequerimientoModal extends Component{
             <React.Fragment>
                 <Modal isOpen={this.props.estadoModalInsertar} toggle={()=>this.props.modalInsertar()}>
                     <ModalHeader style={{display:'block'}}>
+                        <span>{(this.props.tipoModal === 'insertar') ? 'Ingresar Requerimiento' :'Editar Requerimiento'}</span>
                         <span style={{cursor:'pointer', float:'right'}} onClick={()=>this.props.modalInsertar()}>X</span>
                     </ModalHeader>
                     <ModalBody>

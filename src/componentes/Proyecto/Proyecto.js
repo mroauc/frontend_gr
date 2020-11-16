@@ -103,28 +103,87 @@ class Proyecto extends Component{
 
     finalizarGeneracionPDF=async(subProyectos)=>{
         const token = localStorage.getItem('token');
-        var requerimientos = [];
+        var conjuntoImprimir = [];
+        var imprimir = '';
         for (let index = 0; index < subProyectos.length; index++) {
-            await Axios.get(`http://localhost:8080/api/requerimiento/obtener/${subProyectos[index].id_subProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
+            imprimir = imprimir + '<div class="formatoSubproyecto"><div class="cabeceraSubProyecto"><h4>Subproyecto <strong>'+ subProyectos[index].nombre_subProyecto +'</strong></h4></div>';
+            await Axios.get(`http://localhost:8080/api/requerimiento/obtener/${subProyectos[index].id_subProyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
             .then(response=>{
-                for (let index = 0; index < response.data.length; index++) {
-                    var elemento = {nombre: response.data[index].nombre, descripcion: response.data[index].descripcion};
-                    requerimientos = [...requerimientos, elemento];
+                var rusa = response.data.filter(req => req.categoria === 'RUSA');
+                var rusl = response.data.filter(req => req.categoria === 'RUSL');
+                var rusj = response.data.filter(req => req.categoria === 'RUSJ');
+                var rusc = response.data.filter(req => req.categoria === 'RUSC');
+                var russ = response.data.filter(req => req.categoria === 'RUSS');
+                var reqf = response.data.filter(req => req.categoria === 'REQF');
+                var renf = response.data.filter(req => req.categoria === 'RENF');
+                
+                if(rusa.length > 0){
+                    imprimir = imprimir + '<div class="formatoRequerimiento">'; //primer div (tabla celeste)
+                    imprimir = imprimir + '<div class="cabeceraRequerimiento"> <h5>Requerimientos de Analista</h5></div><br>'; //apertura y cierre cabecera celeste
+                    for (let index = 0; index < rusa.length; index++) {    
+                        imprimir = imprimir + '<strong>' + rusa[index].nombre + '</strong><br><br>' + rusa[index].descripcion + '<br>';
+                    }
+                    imprimir = imprimir + '</div>';
+                }
+
+                if(rusl.length > 0){
+                    imprimir = imprimir + '<div class="formatoRequerimiento">'; //primer div (tabla celeste)
+                    imprimir = imprimir + '<div class="cabeceraRequerimiento"> <h5>Requerimientos de Líder de Subproyecto</h5></div><br>'; //apertura y cierre cabecera celeste
+                    for (let index = 0; index < rusl.length; index++) {    
+                        imprimir = imprimir + '<strong>' + rusl[index].nombre + '</strong><br><br>' + rusl[index].descripcion + '<br>';
+                    }
+                    imprimir = imprimir + '</div>';
+                }
+
+                if(rusj.length > 0){
+                    imprimir = imprimir + '<div class="formatoRequerimiento">'; //primer div (tabla celeste)
+                    imprimir = imprimir + '<div class="cabeceraRequerimiento"> <h5>Requerimientos de Jefe de Proyecto</h5></div><br>'; //apertura y cierre cabecera celeste
+                    for (let index = 0; index < rusj.length; index++) {    
+                        imprimir = imprimir + '<strong>' + rusj[index].nombre + '</strong><br><br>' + rusj[index].descripcion + '<br>';
+                    }
+                    imprimir = imprimir + '</div>';
+                }
+
+                if(rusc.length > 0){
+                    imprimir = imprimir + '<div class="formatoRequerimiento">'; //primer div (tabla celeste)
+                    imprimir = imprimir + '<div class="cabeceraRequerimiento"> <h5>Requerimientos de Cliente</h5></div><br>'; //apertura y cierre cabecera celeste
+                    for (let index = 0; index < rusc.length; index++) {    
+                        imprimir = imprimir + '<strong>' + rusc[index].nombre + '</strong><br><br>' + rusc[index].descripcion + '<br>';
+                    }
+                    imprimir = imprimir + '</div>';
+                }
+
+                if(russ.length > 0){
+                    imprimir = imprimir + '<div class="formatoRequerimiento">'; //primer div (tabla celeste)
+                    imprimir = imprimir + '<div class="cabeceraRequerimiento"> <h5>Requerimientos de Administrador del Sistema</h5></div><br>'; //apertura y cierre cabecera celeste
+                    for (let index = 0; index < russ.length; index++) {    
+                        imprimir = imprimir + '<strong>' + russ[index].nombre + '</strong><br><br>' + russ[index].descripcion + '<br>';
+                    }
+                    imprimir = imprimir + '</div>';
+                }
+
+                if(reqf.length > 0){
+                    imprimir = imprimir + '<div class="formatoRequerimiento">'; //primer div (tabla celeste)
+                    imprimir = imprimir + '<div class="cabeceraRequerimiento"> <h5>Requerimientos Funcionales</h5></div><br>'; //apertura y cierre cabecera celeste
+                    for (let index = 0; index < reqf.length; index++) {    
+                        imprimir = imprimir + '<strong>' + reqf[index].nombre + '</strong><br><br>' + reqf[index].descripcion + '<br>';
+                    }
+                    imprimir = imprimir + '</div>';
+                }
+
+                if(renf.length > 0){
+                    imprimir = imprimir + '<div class="formatoRequerimiento">'; //primer div (tabla celeste)
+                    imprimir = imprimir + '<div class="cabeceraRequerimiento"> <h5>Requerimientos No Funcionales</h5></div><br>'; //apertura y cierre cabecera celeste
+                    for (let index = 0; index < renf.length; index++) {    
+                        imprimir = imprimir + '<strong>' + renf[index].nombre + '</strong><br><br>' + renf[index].descripcion + '<br>';
+                    }
+                    imprimir = imprimir + '</div>';
                 }
             })
-
-            var imprimir = '<div class="formatoImprimirPrincipal"><div class="cabeceraImprimirPrincipal"><h4>Subproyecto</h4></div>';
-            imprimir = imprimir + '<div class="formatoImprimir">'; //primer div
-            var cabecera = '<div class="cabeceraImprimir"> <h5>Requerimiento analista</h5></div><br>';
-            imprimir = imprimir + cabecera;
-            for (let index = 0; index < requerimientos.length; index++) {
-                imprimir = imprimir + '<strong>' + requerimientos[index].nombre + '</strong><br><br>' + requerimientos[index].descripcion + '<br>';
-            }
-            imprimir = imprimir + '</div>'; //cierre primer div
-            imprimir = imprimir + '</div>'; //cierre div verde
-
-            html2pdf().set({filename: 'documentoSalida'}).from(imprimir).save();
+            imprimir = imprimir + '</div><br>';
         }
+
+        html2pdf().set({filename: 'documentoSalida'}).from(imprimir).save();
     }
 
     render(){
