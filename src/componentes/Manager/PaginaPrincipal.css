@@ -5,6 +5,8 @@
     border-radius: 7px;
     border-spacing: 0px;
     z-index: 100;
+    text-align: center;
+    margin: 0 auto;
 }
 
 .tablaPagPrincipal > thead >tr > th{

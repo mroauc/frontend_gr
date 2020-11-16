@@ -131,9 +131,10 @@ export default class SubProyecto extends Component{
         axios.delete(urlEliminar,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.getSubProyectos();
         });
-        this.setState({
-            modalEliminar: false
-        })
+        // axios.delete(`http://localhost:8080/api/encargadosubproyecto/`)
+        // this.setState({
+        //     modalEliminar: false
+        // })
     }
 
     render(){

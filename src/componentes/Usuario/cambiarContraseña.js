@@ -2,6 +2,7 @@ import Axios from 'axios';
 import React, { Component } from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import password from '../../imgs/password.png';
+import swal from 'sweetalert'
 
 export default class cambiarContraseña extends Component {
     
@@ -97,6 +98,7 @@ export default class cambiarContraseña extends Component {
             if(this.state.ok) {
                 this.initErrors();
                 this.props.cambiarEstadoContraseña();
+                this.alertaGuardar();
             }
             else{
                 this.initErrors();
@@ -104,7 +106,16 @@ export default class cambiarContraseña extends Component {
                     actualError: "Contraseña Incorrecta. Intentelo nuevamente" 
                 })
             }
+
         }
+    }
+
+    alertaGuardar = () => {
+        swal({
+            title: "Cambio de contraseña exitosa!",
+            icon: "success",
+            buttons: "Aceptar"
+        })
     }
     
     render(){

@@ -17,6 +17,7 @@ export default class Login extends Component{
             .then(response=>{
                 localStorage.setItem('id',response.data.id);
                 localStorage.setItem('nombre',response.data.nombre);
+                localStorage.setItem('tipo', response.data.tipo);
         })
     }
 
@@ -77,6 +78,7 @@ export default class Login extends Component{
                         <Alert color="danger" className="text-center">{this.state.message}</Alert>
                     ): ''
                 }
+               
                 <div className="text-boxes">
                 <Form>
                     <div className="text-box">
