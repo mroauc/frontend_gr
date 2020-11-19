@@ -1,11 +1,12 @@
-import React, {Component} from 'react'
-import './Cliente.css'
-import '../vistaCrud.css'
-import axios from 'axios'
-import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
-import ClienteTabla from './ClienteTabla'
-import ClienteModal from './ClienteModal'
-import Menu from '../Menu/Menu'
+import React, {Component} from 'react';
+import './Cliente.css';
+import '../vistaCrud.css';
+import axios from 'axios';
+import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import ClienteTabla from './ClienteTabla';
+import ClienteModal from './ClienteModal';
+import Menu from '../Menu/Menu';
+import AppleIcon from '@material-ui/icons/Apple';
 
 
 const url="http://localhost:8080/api/cliente/";
@@ -63,14 +64,6 @@ export default class Cliente extends Component{
         await this.setState({
             modalEditar : !this.state.modalEditar
         });
-        
-        // if(this.state.modalEditar){
-        //     const token = localStorage.getItem('token');
-        //     await axios.get(`http://localhost:8080/api/usuario/id/${this.state.cliente.id_user}`,{headers: {"Authorization": `Bearer ${token}`}})
-        //     .then(response=>{
-        //         console.log(response.data)
-        //     })
-        // }
 
         if(!this.state.modalEditar){
             this.setState({
@@ -118,6 +111,7 @@ export default class Cliente extends Component{
         return(
             <React.Fragment>
                 <Menu/>
+                <AppleIcon />
                 <div className="cliente col-10">
                     <div className="Encabezado"><p>Cliente</p></div>
 

@@ -34,7 +34,7 @@ export default class subProyectoTabla extends Component {
                 <table className="table table-hover">
                         <thead>
                             <tr>
-                            <th scope="col">ID</th>
+                            <th scope="col">#</th>
                             <th scope="col">Nombre</th>
                             <th scope="col">Fecha de Inicio</th>
                             <th scope="col">Fecha de Termino</th>

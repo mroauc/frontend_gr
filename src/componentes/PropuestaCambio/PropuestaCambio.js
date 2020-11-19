@@ -5,6 +5,7 @@ import Menu from '../Menu/Menu';
 import PropuestaCambioModal from './PropuestaCambioModal';
 import TablaPropuestaCambio from './TablaPropuestaCambio';
 import VistaPropuestaCambioModal from './VistaPropuestaCambioModal';
+import { Link } from 'react-router-dom';
 import './PropuestaCambio.css';
 import '../vistaCrud.css';
 
@@ -140,7 +141,8 @@ class PropuestaCambio extends Component{
                 <Menu />
                 <div className="propuestaCambio col-10">
                 <div className="Encabezado"><p>Propuestas de Cambio</p></div>
-                <button type="button" class="btn boton" onClick={() => this.modalInsertar()}>Insertar</button>
+                <button type="button" className="btn boton" onClick={() => this.modalInsertar()}>Insertar</button> &nbsp;
+                <Link to={"/subProyecto/"+this.props.match.params.id_proyecto}><button type="button" className="btn boton">⬅ Volver</button></Link>
 
                 <TablaPropuestaCambio
                     propuestas={this.state.propuestas}

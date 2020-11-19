@@ -6,6 +6,8 @@ import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 import ModalPalabra from './PalabraModal'
 import TablaPalabra from './PalabraTabla'
 import Menu from '../Menu/Menu'
+import ModalVerPalabra from './ModalVerPalabra'
+import { Link } from 'react-router-dom';
 
 const url="http://localhost:8080/api/palabra/";
 
@@ -22,6 +24,7 @@ export default class Palabra extends Component{
         },
         modalInsertar: false,
         modalEditar: false,
+        modalVer: false,
         modalEliminar: false
     }
 
@@ -65,6 +68,22 @@ export default class Palabra extends Component{
         }
     }
 
+    cambiarEstadoVer=async()=>{
+        await this.setState({
+            modalVer: !this.state.modalVer
+        });
+        if(!this.state.modalVer){
+            this.setState({
+                palabra: {
+                    id_palabra: '',
+                    palabra: '',
+                    significado: '',
+                    id_proyecto: this.props.match.params.id_proyecto
+                }
+            });
+        }
+    }
+
     cambiarEstadoEliminar = (elemento) => {
         this.setState({
             palabra : elemento,
@@ -77,6 +96,13 @@ export default class Palabra extends Component{
             palabra : elemento
         });
         this.cambiarEstadoEditar();
+    }
+
+    verPalabra=async(elemento)=>{
+        await this.setState({
+            palabra: elemento
+        });
+        this.cambiarEstadoVer();
     }
 
     eliminarPalabra = () => {
@@ -97,13 +123,15 @@ export default class Palabra extends Component{
                 <Menu/>
                 <div className="palabra col-10">
                     <div className="Encabezado"><p>Palabra</p></div>
-                    <button type="button" className="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Ingresar Palabra</button>
+                    <button type="button" className="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Ingresar Palabra</button> &nbsp;
+                    <Link to={"/subProyecto/"+this.props.match.params.id_proyecto}><button type="button" className="btn boton">⬅ Volver</button></Link>
 
                     <TablaPalabra
                         palabras={this.state.data}
                         obtenerPalabra= {this.obtenerPalabra}
                         eliminarPalabra = {this.eliminarPalabra}
                         cambiarEstadoEliminar = {this.cambiarEstadoEliminar}
+                        verPalabra = {this.verPalabra}
                     />
 
                     <ModalPalabra
@@ -113,6 +141,12 @@ export default class Palabra extends Component{
                         estadoInsertar = {this.state.modalInsertar}
                         cambiarEstadoInsertar = {this.cambiarEstadoInsertar}
                         cambiarEstadoEditar = {this.cambiarEstadoEditar}    
+                    />
+
+                    <ModalVerPalabra
+                        palabra = {this.state.palabra}
+                        estadoVer = {this.state.modalVer}
+                        modalEstadoVer = {this.cambiarEstadoVer}
                     />
 
                     <Modal isOpen={this.state.modalEliminar} toggle={() => this.setState({modalEliminar : false})}>

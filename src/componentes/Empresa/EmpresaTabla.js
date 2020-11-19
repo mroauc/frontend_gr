@@ -7,7 +7,7 @@ export default class EmpresaTabla extends Component {
                 <table className="table table-hover"> 
                         <thead>
                             <tr>
-                            <th scope="col">ID</th>
+                            <th scope="col">#</th>
                             <th scope="col">Razon Social</th>
                             <th scope="col">RUT</th>
                             <th scope="col">representante</th>

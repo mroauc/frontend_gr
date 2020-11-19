@@ -66,8 +66,9 @@ export default class Comentario extends Component{
             <div style={{height:'98%'}}>
                 <div className="areaCrear">
                     <div className="col-9" style={{paddingLeft: '0'}}>
-                        <textarea className="textComentario" placeholder="Ingresar Comentario" rows="3" onChange={this.changeHandler} value={this.state.nuevo_comentario}></textarea>
+                        <textarea className="textComentario" placeholder="Ingresar Comentario&#10;(Máx. 255 carácteres)" rows="3" maxLength="255" onChange={this.changeHandler} value={this.state.nuevo_comentario}></textarea>
                     </div>
+
                     <div className="col-3 cont-boton">
                         <button className="btn btn-success btn-block" onClick={this.guardarComentario}>Comentar</button>
                     </div> 

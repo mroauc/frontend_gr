@@ -32,9 +32,6 @@ export default class ClienteTabla extends Component {
     componentDidMount(){
        this.getUsuarios();
     }
-
-    
-
     
     render(){
         return(
@@ -42,7 +39,7 @@ export default class ClienteTabla extends Component {
                 <table className="table table-hover">
                         <thead>
                             <tr>
-                                <th scope="col">ID</th>
+                                <th scope="col">#</th>
                                 <th scope="col">Celular</th>
                                 <th scope="col">ID Empresa</th>
                                 <th scope="col">User</th>
@@ -65,7 +62,6 @@ export default class ClienteTabla extends Component {
                                     </tr>
                                 )
                             })}
-                        
                         </tbody>
                     </table>
             </div>

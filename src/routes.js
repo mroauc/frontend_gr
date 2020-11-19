@@ -21,6 +21,7 @@ import Dashboard from './componentes/Dashboard/Dashboard';
 import error from './componentes/error';
 import Navigation from './componentes/Menu/Navigation';
 import Manager from './componentes/Manager/Manager';
+import MatrizRelacionReq from './componentes/Requerimiento/MatrizRelacionReq';
 
 
 const Routes=()=>(
@@ -39,6 +40,7 @@ const Routes=()=>(
             <PrivateRoute path="/proyecto" component={Proyecto} />
             <PrivateRoute path="/relacion_requerimiento" component={RelacionRequerimientos} />
             <PrivateRoute path="/requerimiento/:id_subproyecto" component={Requerimiento} />
+            <PrivateRoute path="/matrizRelacion/:id_subproyecto" component={MatrizRelacionReq} />
             <PrivateRoute path="/subProyecto/:id_proyecto" component={SubProyecto} />
             <PrivateRoute path="/template" component={Template} />
             <PrivateRoute path="/usuario" component={Usuario} />

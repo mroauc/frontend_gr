@@ -37,11 +37,23 @@ export default class PalabraModal extends Component {
     }
 
     changeHandler = async (e) => {
+        var x = 0;
+        if(e.target.name==='significado'){
+            x=1;
+        }
         await this.setState({
             palabra : {
               ...this.state.palabra, [e.target.name]: e.target.value
             }
-          });
+        });
+        if(x===1){
+            var caract = this.state.palabra.significado.length;
+            if(caract<500){
+                document.getElementById("span_contador").innerHTML = '<span style="color: grey;">' + caract + '/500</span>';
+            }else{
+                document.getElementById("span_contador").innerHTML = '<span style="color: red;">' + caract + '/500</span>';
+            }
+        }
     }
 
     render(){
@@ -62,7 +74,14 @@ export default class PalabraModal extends Component {
                             <input className="form-control" type="text" name="palabra" id="palabra" onChange={this.changeHandler} value={this.state.palabra.palabra}/>
                             <br/>
                             <label htmlFor="significado">Significado</label>
-                            <input className="form-control" type="text" name="significado" id="significado" onChange={this.changeHandler} value={this.state.palabra.significado}/>
+                            <p><textarea className="form-control" type="text" name="significado" id="significado" maxLength="500" onChange={this.changeHandler} value={this.state.palabra.significado}/></p>
+
+                            {(this.props.estadoInsertar)?
+                                <p id="span_contador" style={{float:'right'}}><span style={{color: 'gray'}}>0/500</span></p>
+                                :
+                                <p id="span_contador" style={{float:'right'}}><span style={{color: 'gray'}}>{this.state.palabra.significado.length}/500</span></p>
+                            }
+
                             <br/>
                             <label htmlFor="id_proyecto">Id Proyecto</label>
                             <input className="form-control" type="text" name="id_proyecto" id="id_proyecto" onChange={this.changeHandler} value={this.state.palabra.id_proyecto} readOnly/>

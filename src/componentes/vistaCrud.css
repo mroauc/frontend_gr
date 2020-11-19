@@ -9,6 +9,10 @@
     -webkit-text-stroke: 1px rgb(70, 70, 70);;
 }
 
+.cabeceraRR {
+    text-align: center;
+}
+
 .table{
     margin: 30px auto;
     text-align: center;

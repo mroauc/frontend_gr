@@ -28,7 +28,8 @@ class Requerimiento extends Component{
             estado: 'Creado',
             categoria: '',
             id_template: 0
-        }
+        },
+        id_proy : ''
     }
 
     index=()=>{
@@ -48,6 +49,13 @@ class Requerimiento extends Component{
 
     componentDidMount(){
         this.index();
+        const token = localStorage.getItem('token');
+        Axios.get(`http://localhost:8080/api/subProyecto/${this.props.match.params.id_subproyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            this.setState({
+                id_proy : response.data.id_proyecto
+            });
+        });
     }
 
     modalInsertar=async()=>{
@@ -128,7 +136,12 @@ class Requerimiento extends Component{
             <Menu />
             <div className="requerimiento col-10">
                 <div className="Encabezado"><p>Requerimientos</p></div>
-                <button type="button" class="btn boton" onClick={() => this.modalInsertar()}>Insertar</button>
+                <button type="button" className="btn boton" onClick={() => this.modalInsertar()}>Insertar</button> &nbsp;
+                <Link to={"/subProyecto/"+this.state.id_proy}><button type="button" className="btn boton">⬅ Volver</button></Link>
+                
+                <div style={{float:'right', textDecoration:'none'}}>
+                    <Link to={"/matrizRelacion/"+this.props.match.params.id_subproyecto}><button type="button" className="btn boton">Ver Relacion Requerimientos</button></Link>
+                </div>
                 
                 <TablaRequerimiento
                     requerimientos={this.state.requerimientos}

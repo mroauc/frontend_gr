@@ -7,9 +7,8 @@ export default class ComentarioTabla extends Component {
                 <table className="table table-hover">
                         <thead>
                             <tr>
-                            <th scope="col">ID</th>
+                            <th scope="col">#</th>
                             <th scope="col">Palabra</th>
-                            <th scope="col">Significado</th>
                             <th scope="col">ID Proyecto</th>
                             <th scope="col">Acciones</th>
                             </tr>
@@ -20,10 +19,10 @@ export default class ComentarioTabla extends Component {
                                     <tr key={palabra.id_palabra}>
                                         <td scope="col">{index+1}</td>
                                         <td>{palabra.palabra}</td>
-                                        <td>{palabra.significado}</td>
                                         <td>{palabra.id_proyecto}</td>
 
                                         <td>
+                                            <button type="button" className="btn btn-success" data-toggle="modal" data-target="#modalEditar" onClick={() => this.props.verPalabra(palabra)}>Ver</button> &nbsp;
                                             <button type="button" className="btn btn-warning" data-toggle="modal" data-target="#modalEditar" onClick={() => this.props.obtenerPalabra(palabra)}>Editar</button> &nbsp;
                                             <button type="button" className="btn btn-danger" data-toggle="modal" data-target="#modalEditar" onClick={() => this.props.cambiarEstadoEliminar(palabra)}>Eliminar</button>
                                         </td>

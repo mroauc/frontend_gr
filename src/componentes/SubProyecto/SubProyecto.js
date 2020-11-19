@@ -131,10 +131,6 @@ export default class SubProyecto extends Component{
         axios.delete(urlEliminar,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.getSubProyectos();
         });
-        // axios.delete(`http://localhost:8080/api/encargadosubproyecto/`)
-        // this.setState({
-        //     modalEliminar: false
-        // })
     }
 
     render(){
@@ -144,7 +140,8 @@ export default class SubProyecto extends Component{
                 <div className="subProyecto col-10">
                     <div className="Encabezado"><p>Subproyectos del proyecto: {this.state.nombre_proyecto}</p></div>
 
-                    <button type="button" className="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Nuevo Subproyecto</button>
+                    <button type="button" className="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Nuevo Subproyecto</button> &nbsp;
+                    <Link to={"/proyecto"}><button type="button" className="btn boton">⬅ Volver</button></Link>
 
                     <div style={{float: "right" , textDecoration: 'none'}}>
                         <Link to= {`/palabra/${this.props.match.params.id_proyecto}`}><button type="button" className="btn boton">Ver Glosario</button> </Link>
