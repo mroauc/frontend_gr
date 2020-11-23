@@ -27,7 +27,9 @@ export default class ClienteModal extends Component {
         errorInputNombre: '',
         errorInputEmail: '',
         errorInputCelular: '',
-        errorInputEmpresa: ''
+        errorInputEmpresa: '',
+        errorInputPassword: '',
+
     }
 
     componentDidMount(){
@@ -57,7 +59,8 @@ export default class ClienteModal extends Component {
             errorInputCelular: '',
             errorInputEmpresa: '',
             errorInputNombre: '',
-            errorInputEmail:''
+            errorInputEmail:'',
+            errorInputPassword: ''
         })
     }
 
@@ -79,6 +82,11 @@ export default class ClienteModal extends Component {
             this.setState({errorInputEmpresa: "Debe seleccionar una empresa"})
             salida = false;
         }
+        if(this.state.usuario.password === ""){
+            this.setState({errorInputPassword: "Debe ingresar una contraseña"})
+            salida = false;
+        }
+
 
         return salida;
         
@@ -223,6 +231,12 @@ export default class ClienteModal extends Component {
                                     <option value="Activo" selected>Activo</option>
                                     <option value="Inactivo">Inactivo</option>
                                 </select>
+                                <br/>
+                                <label htmlFor="password">Contraseña</label>
+                                <input className={ (this.state.errorInputPassword)? "form-control is-invalid" : "form-control"} type="password" name="password" id="password" onChange={this.changeHandler2} value={this.state.usuario.password} onClick={()=>{this.setState({errorInputPassword: ''})}} />
+                                <div className="invalid-feedback">
+                                    {this.state.errorInputPassword}
+                                </div>
                                 <br/>
                                 <label htmlFor="id_user">ID User</label>
                                 <input className="form-control" type="text" name="id_user" id="id_user" onChange={this.changeHandler} value={this.state.cliente.id_user} readOnly/>
