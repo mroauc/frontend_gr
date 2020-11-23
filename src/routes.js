@@ -22,11 +22,8 @@ import error from './componentes/error';
 import Navigation from './componentes/Menu/Navigation';
 import Manager from './componentes/Manager/Manager';
 import MatrizRelacionReq from './componentes/Requerimiento/MatrizRelacionReq';
-<<<<<<< HEAD
 import CDocumento from './componentes/Proyecto/ConstruccionDocumento';
-=======
 import GraficoRequerimiento from './componentes/Requerimiento/GraficoRequerimientos';
->>>>>>> 738c2efdd6f115d4ae9611a4546c374fb9721a71
 
 
 const Routes=()=>(
