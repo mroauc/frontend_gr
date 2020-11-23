@@ -1,5 +1,7 @@
 import Axios from 'axios';
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 export default class ClienteTabla extends Component {
     
@@ -37,33 +39,32 @@ export default class ClienteTabla extends Component {
         return(
             <div>
                 <table className="table table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Celular</th>
-                                <th scope="col">ID Empresa</th>
-                                <th scope="col">User</th>
-                                <th scope="col">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {this.props.clientes.map((cliente,index) => {
-                                return(
-                                    <tr key={cliente.id_cliente}>
-                                        <td scope="col">{index+1}</td>
-                                        <td>{cliente.celular}</td>
-                                        <td>{cliente.id_empresa}</td>
-                                        <td>{this.buscarUsuario(cliente.id_user)}</td> 
-                                        <td>
-                                            <button type="button" className="btn btn-warning" data-toggle="modal" data-target="#modalEditar" onClick={() => this.props.obtenerCliente(cliente)}>Editar</button> &nbsp;
-                                            <button type="button" className="btn btn-danger" data-toggle="modal" data-target="#modalEditar" onClick={() => this.props.cambiarEstadoEliminar(cliente)}>Eliminar</button>
-                                        </td>
-
-                                    </tr>
-                                )
-                            })}
-                        </tbody>
-                    </table>
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Celular</th>
+                            <th scope="col">ID Empresa</th>
+                            <th scope="col">User</th>
+                            <th scope="col">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.props.clientes.map((cliente,index) => {
+                            return(
+                                <tr key={cliente.id_cliente}>
+                                    <td scope="col">{index+1}</td>
+                                    <td>{cliente.celular}</td>
+                                    <td>{cliente.id_empresa}</td>
+                                    <td>{this.buscarUsuario(cliente.id_user)}</td> 
+                                    <td>
+                                        <button type="button" className="btn btn-warning" data-toggle="modal" data-target="#modalEditar" onClick={() => this.props.obtenerCliente(cliente)}><EditIcon/></button> &nbsp;
+                                        <button type="button" className="btn btn-danger" data-toggle="modal" data-target="#modalEditar" onClick={() => this.props.cambiarEstadoEliminar(cliente)}><DeleteIcon/></button>
+                                    </td>
+                                </tr>
+                            )
+                        })}
+                    </tbody>
+                </table>
             </div>
         );
     }

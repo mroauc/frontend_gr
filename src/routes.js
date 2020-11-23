@@ -22,7 +22,11 @@ import error from './componentes/error';
 import Navigation from './componentes/Menu/Navigation';
 import Manager from './componentes/Manager/Manager';
 import MatrizRelacionReq from './componentes/Requerimiento/MatrizRelacionReq';
+<<<<<<< HEAD
 import CDocumento from './componentes/Proyecto/ConstruccionDocumento';
+=======
+import GraficoRequerimiento from './componentes/Requerimiento/GraficoRequerimientos';
+>>>>>>> 738c2efdd6f115d4ae9611a4546c374fb9721a71
 
 
 const Routes=()=>(
@@ -42,6 +46,7 @@ const Routes=()=>(
             <PrivateRoute path="/relacion_requerimiento" component={RelacionRequerimientos} />
             <PrivateRoute path="/requerimiento/:id_subproyecto" component={Requerimiento} />
             <PrivateRoute path="/matrizRelacion/:id_subproyecto" component={MatrizRelacionReq} />
+            <PrivateRoute path="/graficoRequerimientos/:id_proyecto" component={GraficoRequerimiento} />
             <PrivateRoute path="/subProyecto/:id_proyecto" component={SubProyecto} />
             <PrivateRoute path="/template" component={Template} />
             <PrivateRoute path="/usuario" component={Usuario} />

@@ -3,6 +3,8 @@ import React, {Component} from 'react'
 import { Link } from 'react-router-dom';
 import Menu from '../Menu/Menu';
 import '../vistaCrud.css';
+import './MatrizRelacionReq.css';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 class MatrizRelacionReq extends Component{
 
@@ -63,43 +65,42 @@ class MatrizRelacionReq extends Component{
         return(
             <React.Fragment>
                 <Menu />
-                <div><br/>
-                    <div className="cabeceraRR">
-                        <h4>Listado de Relaciones entre Requerimientos</h4>
-                    </div>
+                    <div className="contenedor-matriz">
+                        <div className="titulo-matriz">
+                            <label>Listado de Relaciones entre Requerimientos</label>
+                        </div>
 
-                    <table className="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Requerimientos</th>
-                                {this.state.requerimientos.map(req=>{
+                        <table className="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Requerimientos</th>
+                                    {this.state.requerimientos.map(req=>{
+                                        return(
+                                            <th>{req.nombre}</th>
+                                        );
+                                    })}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {this.state.requerimientos.map((req, index)=>{
                                     return(
-                                        <th>{req.nombre}</th>
+                                        <tr>
+                                            <th>{req.nombre}</th>
+                                            {this.state.requerimientos.map((indiv, index2)=>{
+                                                return(
+                                                    <td>{this.evaluarRelacion(index,index2)}</td>
+                                                );
+                                            })}
+                                        </tr>
                                     );
                                 })}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {this.state.requerimientos.map((req, index)=>{
-                                return(
-                                    <tr>
-                                        <th>{req.nombre}</th>
-                                        {this.state.requerimientos.map((indiv, index2)=>{
-                                            return(
-                                                <td>{this.evaluarRelacion(index,index2)}</td>
-                                            );
-                                        })}
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </table>
-
-                    <div style={{marginLeft: '30px'}}>
-                        <Link to={"/requerimiento/"+this.props.match.params.id_subproyecto}><button type="button" className="btn boton">⬅ Volver</button></Link>
+                            </tbody>
+                        </table>
                     </div>
-
-                </div>
+                    <br/>
+                    <div style={{marginLeft: '110px'}}>
+                        <Link to={"/requerimiento/"+this.props.match.params.id_subproyecto}><button type="button" className="btn boton"><ArrowBackIcon/> Volver</button></Link>
+                    </div>
             </React.Fragment>
         );
     }

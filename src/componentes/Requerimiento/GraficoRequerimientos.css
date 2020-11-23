@@ -1,0 +1,19 @@
+.contenedor-grafico{
+    text-align: center;
+    width: 85%;
+    margin: 0 auto;
+    border: 1px solid rgb(0 0 0 / 29%);
+    margin-top: 50px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.titulo-grafico{
+    height: 40px;
+    background-color: rgb(222, 222, 222);
+    padding: 7px;
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, .15);
+    font-size: 18px;
+    font-family: sans-serif;
+}

@@ -1,4 +1,7 @@
 import React, { Component } from 'react'
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import ChatIcon from '@material-ui/icons/Chat';
 
 class TablaRequerimiento extends Component{
     render(){
@@ -33,9 +36,9 @@ class TablaRequerimiento extends Component{
                                     <td>{requerimiento.categoria}</td>
                                     <td>{requerimiento.id_template}</td>
                                     <td>
-                                        <button className="btn btn-success" onClick={()=>this.props.redactar(requerimiento)}>Redactar</button> &nbsp;
-                                        <button className="btn btn-warning" onClick={()=>this.props.editar(requerimiento)}>Editar</button> &nbsp;
-                                        <button className="btn btn-danger" onClick={()=>this.props.modalEliminar(requerimiento)}>X</button>
+                                        <button className="btn btn-success" onClick={()=>this.props.redactar(requerimiento)}><ChatIcon/></button> &nbsp;
+                                        <button className="btn btn-warning" onClick={()=>this.props.editar(requerimiento)}><EditIcon/></button> &nbsp;
+                                        <button className="btn btn-danger" onClick={()=>this.props.modalEliminar(requerimiento)}><DeleteIcon/></button>
                                     </td>
                                 </tr>
                             )

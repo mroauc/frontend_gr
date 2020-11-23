@@ -16,17 +16,17 @@ class Usuario extends Component{
         tipoModal: '',
         usuario: {
             id_usuario: 0,
-            estado: 'Activo',
+            estado: '',
             nombre: '',
             password: '',
-            rol: 'analista',
+            rol: '',
             email:''
         },
     }
 
-    index=()=>{
+    index=async()=>{
         const token = localStorage.getItem('token');
-        Axios.get('http://localhost:8080/api/usuario/',{headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.get('http://localhost:8080/api/usuario/',{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 usuarios: response.data
@@ -44,7 +44,7 @@ class Usuario extends Component{
     modalInsertar=()=>{
         this.setState({
             usuario: '',
-            usuario: {estado:'Activo',rol:'Analista'},
+            usuario: {estado: ""},
             modalInsertar: !this.state.modalInsertar,
             tipoModal: 'insertar'
         });
@@ -83,7 +83,7 @@ class Usuario extends Component{
 
         await Axios.delete(`http://localhost:8080/api/usuario/eliminar/${this.state.usuario.id}`, {headers: {"Authorization": `Bearer  ${token}`}})
         .then(response=>{
-            this.setState({modalEliminar:false, usuario:'', usuario: {estado:'Activo',rol:'analista'},});
+            this.setState({modalEliminar:false, usuario:''});
             this.index();
         })
     }

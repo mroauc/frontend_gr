@@ -2,6 +2,8 @@ import Axios from 'axios';
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
 import SubProyecto from './SubProyecto';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 export default class subProyectoTabla extends Component {
     
@@ -58,8 +60,8 @@ export default class subProyectoTabla extends Component {
                                         <td>{this.buscarUsuario(subProyecto.id_usuario)}</td>
                                         <td>
                                             <Link to= {`/requerimiento/${subProyecto.id_subProyecto}`}><button type="button" className="btn botonpurple">Requerimientos</button> </Link>
-                                            <button type="button" className="btn btn-warning" data-toggle="modal" data-target="#modalEditar" onClick={() => this.props.obtenerSubProyecto(subProyecto)}>Editar</button> &nbsp;
-                                            <button type="button" className="btn btn-danger" data-toggle="modal" data-target="#modalEditar" onClick={() => this.props.cambiarEstadoEliminar(subProyecto)}>Eliminar</button>
+                                            <button type="button" className="btn btn-warning" data-toggle="modal" data-target="#modalEditar" onClick={() => this.props.obtenerSubProyecto(subProyecto)}><EditIcon/></button> &nbsp;
+                                            <button type="button" className="btn btn-danger" data-toggle="modal" data-target="#modalEditar" onClick={() => this.props.cambiarEstadoEliminar(subProyecto)}><DeleteIcon/></button>
                                         </td>
 
                                     </tr>

@@ -50,7 +50,6 @@ export default class ChipsPropiedades extends Component{
             await this.setState({
                 arregloChips: [ ...this.state.arregloChips, this.state.requerimiento],
               });
-
             this.props.insertarChip(this.state.requerimiento);
         }               
     }

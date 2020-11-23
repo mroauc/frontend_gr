@@ -94,7 +94,6 @@ class Template extends Component{
 
     eliminar=()=>{
         const token = localStorage.getItem('token');
-        //const token = "123";
         Axios.delete(`http://localhost:8080/api/template/eliminar/${this.state.template.id_template}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({modalEliminar:false, template:'', template:{template:''}});

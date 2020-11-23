@@ -1,5 +1,7 @@
 import Axios from 'axios';
 import React, { Component } from 'react'
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 export class TablaErrores extends Component{
 
@@ -48,8 +50,8 @@ export class TablaErrores extends Component{
                                     <td>{this.buscarUsuario(singleError.id_usuario)}</td>
                                     <td>{singleError.fecha}</td>
                                     <td>
-                                        <button className="btn btn-warning" onClick={()=>this.props.editar(singleError)}>Editar</button> &nbsp;
-                                        <button className="btn btn-danger" onClick={()=>this.props.modalEliminar(singleError)}>Eliminar</button>
+                                        <button className="btn btn-warning" onClick={()=>this.props.editar(singleError)}><EditIcon/></button> &nbsp;
+                                        <button className="btn btn-danger" onClick={()=>this.props.modalEliminar(singleError)}><DeleteIcon/></button>
                                     </td>
                                 </tr>
                             )

@@ -8,6 +8,7 @@ import VistaPropuestaCambioModal from './VistaPropuestaCambioModal';
 import { Link } from 'react-router-dom';
 import './PropuestaCambio.css';
 import '../vistaCrud.css';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 class PropuestaCambio extends Component{
 
@@ -142,7 +143,7 @@ class PropuestaCambio extends Component{
                 <div className="propuestaCambio col-10">
                 <div className="Encabezado"><p>Propuestas de Cambio</p></div>
                 <button type="button" className="btn boton" onClick={() => this.modalInsertar()}>Insertar</button> &nbsp;
-                <Link to={"/subProyecto/"+this.props.match.params.id_proyecto}><button type="button" className="btn boton">⬅ Volver</button></Link>
+                <Link to={"/subProyecto/"+this.props.match.params.id_proyecto}><button type="button" className="btn boton"><ArrowBackIcon/></button></Link>
 
                 <TablaPropuestaCambio
                     propuestas={this.state.propuestas}
