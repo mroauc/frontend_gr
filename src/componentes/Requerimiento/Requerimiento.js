@@ -8,6 +8,7 @@ import TablaRequerimiento from './TablaRequerimiento';
 import './Requerimiento.css';
 import '../vistaCrud.css';
 import RedactarReqModal from './RedactarReqModal';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 class Requerimiento extends Component{
 
@@ -137,7 +138,7 @@ class Requerimiento extends Component{
             <div className="requerimiento col-10">
                 <div className="Encabezado"><p>Requerimientos</p></div>
                 <button type="button" className="btn boton" onClick={() => this.modalInsertar()}>Insertar</button> &nbsp;
-                <Link to={"/subProyecto/"+this.state.id_proy}><button type="button" className="btn boton">⬅ Volver</button></Link>
+                <Link to={"/subProyecto/"+this.state.id_proy}><button type="button" className="btn boton"><ArrowBackIcon/></button></Link>
                 
                 <div style={{float:'right', textDecoration:'none'}}>
                     <Link to={"/matrizRelacion/"+this.props.match.params.id_subproyecto}><button type="button" className="btn boton">Ver Relacion Requerimientos</button></Link>

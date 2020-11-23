@@ -1,4 +1,3 @@
-
 import Axios from 'axios';
 import axios from 'axios';
 import React, { Component } from 'react'
@@ -20,7 +19,10 @@ export default class subProyectoModal extends Component {
             id_usuario : ''
         },
         usuarios: [],
-        usuariosSeleccionados : []
+        usuariosSeleccionados : [],
+        msj_nombre_subp: "",
+        msj_fechaInicio: "",
+        msj_tipo_subp: ""
     }
 
     componentDidMount(){
@@ -31,62 +33,101 @@ export default class subProyectoModal extends Component {
         this.setState({subProyecto: this.props.subProyecto});
     }
 
+    validar=()=>{
+        let salida = true;
+        if(!this.state.subProyecto.nombre_subProyecto){
+            this.setState({
+                msj_nombre_subp: "Campo Vacio"
+            });
+            salida=false;
+        }
+        if(!this.state.subProyecto.fecha_inicio){
+            this.setState({
+                msj_fechaInicio: "Campo Vacio"
+            });
+            salida=false;
+        }
+        if(!this.state.subProyecto.tipo_subProyecto){
+            this.setState({
+                msj_tipo_subp: "Campo Vacio"
+            });
+            salida=false;
+        }
+        if(!this.state.usuariosSeleccionados){
+            salida=false;
+        }
+        return salida;
+    }
+
     guardarSubproyecto = async (subProyecto) => {
-        const token = localStorage.getItem('token');
-        var urlGuardar = url + 'guardar';
-        
-        await axios.post(urlGuardar, subProyecto,{headers: {"Authorization": `Bearer  ${token}`}})
-        .then(response => {
-            if(this.props.estadoEditar){
-                this.props.cambiarEstadoEditar();
-                this.guardarActualizacion(response.data.id_subProyecto);
-            }
-            else{
-                this.insertar_usuariosSubProyecto(response.data.id_subProyecto);
-                this.props.cambiarEstadoInsertar();
-            }
-            this.props.getSubProyectos();
-        })
-        .catch(error => {
-            console.log(error)
-        })
+        if(this.validar()){
+            const token = localStorage.getItem('token');
+            var urlGuardar = url + 'guardar';
+            await axios.post(urlGuardar, subProyecto,{headers: {"Authorization": `Bearer  ${token}`}})
+            .then(response => {
+                if(this.props.estadoEditar){
+                    this.props.cambiarEstadoEditar();
+                    this.guardarActualizacion(response.data.id_subProyecto);
+                }
+                else{
+                    this.insertar_usuariosSubProyecto(response.data.id_subProyecto);
+                    this.props.cambiarEstadoInsertar();
+                }
+                this.props.getSubProyectos();
+                this.setState({
+                    msj_nombre_subp: "",
+                    msj_fechaInicio: "",
+                    msj_tipo_subp: ""
+                });
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        }
     }
 
     guardarActualizacion=(id_subProyecto)=>{
-        var existentes = [];
-        var original = [];
-        const token = localStorage.getItem('token');
-        Axios.get(`http://localhost:8080/api/encargadosubproyecto/obtener/${id_subProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
-        .then(response=>{
-            original = response.data;
-            for (let index = 0; index < original.length; index++) {
-                existentes = [...existentes, response.data[index].id_usuario.toString()];
-            }
-
-            //eliminar
-            for (let index = 0; index < existentes.length; index++) {
-                if(!this.state.usuariosSeleccionados.includes(existentes[index])){
-                    Axios.delete(`http://localhost:8080/api/encargadosubproyecto/eliminar/${original[index].id_encargadoSubProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
-                    .then(response=>{
-                    });
+        if(this.validar()){
+            var existentes = [];
+            var original = [];
+            const token = localStorage.getItem('token');
+            Axios.get(`http://localhost:8080/api/encargadosubproyecto/obtener/${id_subProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
+            .then(response=>{
+                original = response.data;
+                for (let index = 0; index < original.length; index++) {
+                    existentes = [...existentes, response.data[index].id_usuario.toString()];
                 }
-            }
 
-            //agregar
-            for (let index = 0; index < this.state.usuariosSeleccionados.length; index++) {
-                if(!existentes.includes(this.state.usuariosSeleccionados[index])){
-                    Axios.post("http://localhost:8080/api/encargadosubproyecto/guardar",{
-                        id_subProyecto: id_subProyecto,
-                        id_usuario: this.state.usuariosSeleccionados[index],
-                    }, {headers: {"Authorization": `Bearer ${token}`}})
+                //eliminar
+                for (let index = 0; index < existentes.length; index++) {
+                    if(!this.state.usuariosSeleccionados.includes(existentes[index])){
+                        Axios.delete(`http://localhost:8080/api/encargadosubproyecto/eliminar/${original[index].id_encargadoSubProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
+                        .then(response=>{
+                        });
+                    }
                 }
-            }
-        })
+
+                //agregar
+                for (let index = 0; index < this.state.usuariosSeleccionados.length; index++) {
+                    if(!existentes.includes(this.state.usuariosSeleccionados[index])){
+                        Axios.post("http://localhost:8080/api/encargadosubproyecto/guardar",{
+                            id_subProyecto: id_subProyecto,
+                            id_usuario: this.state.usuariosSeleccionados[index],
+                        }, {headers: {"Authorization": `Bearer ${token}`}})
+                    }
+                }
+
+                this.setState({
+                    msj_nombre_subp: "",
+                    msj_fechaInicio: "",
+                    msj_tipo_subp: ""
+                });
+            })
+        }
     }
 
     getUsuarios = async () => {
         const token = localStorage.getItem('token');
-
         await axios.get("http://localhost:8080/api/usuario/",{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.setState({
                 usuarios: response.data
@@ -116,7 +157,12 @@ export default class subProyectoModal extends Component {
 
     cerrarModal = () => {
         (this.props.estadoInsertar) ? this.props.cambiarEstadoInsertar() : this.props.cambiarEstadoEditar(); 
-        this.setState({usuariosSeleccionados: []});
+        this.setState({
+            usuariosSeleccionados: [],
+            msj_nombre_subp: "",
+            msj_fechaInicio: "",
+            msj_tipo_subp: ""
+        });
     }
 
     changeHandler = async (e) => {
@@ -124,7 +170,7 @@ export default class subProyectoModal extends Component {
             subProyecto : {
               ...this.state.subProyecto, [e.target.name]: e.target.value
             }
-          });
+        });
     }
     
     render(){
@@ -133,7 +179,6 @@ export default class subProyectoModal extends Component {
                 <Modal isOpen = {this.props.estadoInsertar || this.props.estadoEditar} toggle= {this.cerrarModal} >
                     <ModalHeader style={{display : 'block'}}>
                         <span>{(this.props.estadoInsertar) ? 'Ingresar Sub-Proyecto' :'Editar Sub-Proyecto'}</span>
-                        
                         <span style={{cursor : 'pointer' , float : 'right'}} onClick={this.cerrarModal}>X</span>
                     </ModalHeader>
                     <ModalBody>
@@ -142,7 +187,10 @@ export default class subProyectoModal extends Component {
                             <input className="form-control" type="text" name="id_subProyecto" id="id_subProyecto" value={this.state.subProyecto.id_subProyecto} readOnly />
                             <br/>
                             <label htmlFor="subProyecto">SubProyecto</label>
-                            <input className="form-control" type="text" name="nombre_subProyecto" id="nombre_subProyecto" onChange={this.changeHandler} value={this.state.subProyecto.nombre_subProyecto}/>
+                            <input className={ (this.state.msj_nombre_subp)? "form-control is-invalid" : "form-control"} type="text" name="nombre_subProyecto" id="nombre_subProyecto" onChange={this.changeHandler} value={this.state.subProyecto.nombre_subProyecto} onClick={()=>{this.setState({msj_nombre_subp: ""})}} />
+                            <div className="invalid-feedback">
+                                {this.state.msj_nombre_subp}
+                            </div>
                             <br/>
                             <ChipsSubProyectoUsuario
                                 tipo="Clientes"
@@ -161,7 +209,10 @@ export default class subProyectoModal extends Component {
                             />
                             <br/>
                             <label htmlFor="fecha_inicio">Fecha Inicio</label>
-                            <input className="form-control" type="date" name="fecha_inicio" id="fecha_inicio" onChange={this.changeHandler} value={this.state.subProyecto.fecha_inicio}/>
+                            <input className={ (this.state.msj_fechaInicio)? "form-control is-invalid" : "form-control"} type="date" name="fecha_inicio" id="fecha_inicio" onChange={this.changeHandler} value={this.state.subProyecto.fecha_inicio} onClick={()=>{this.setState({msj_fechaInicio: ""})}} />
+                            <div className="invalid-feedback">
+                                {this.state.msj_fechaInicio}
+                            </div>
                             <br/>
                             <label htmlFor="id_usuario">Fecha Termino</label>
                             <input className="form-control" type="date" name="fecha_fin" id="fecha_fin" onChange={this.changeHandler} value={this.state.subProyecto.fecha_fin}/>
@@ -170,7 +221,10 @@ export default class subProyectoModal extends Component {
                             <input className="form-control" type="text" name="id_proyecto" id="id_proyecto" value={this.state.subProyecto.id_proyecto} readOnly />
                             <br/>
                             <label htmlFor="id_proyecto">Tipo SubProyecto</label>
-                            <input className="form-control" type="text" name="tipo_subProyecto" id="tipo_subProyecto" onChange={this.changeHandler} value={this.state.subProyecto.tipo_subProyecto}/>
+                            <input className={ (this.state.msj_tipo_subp)? "form-control is-invalid" : "form-control"} type="text" name="tipo_subProyecto" id="tipo_subProyecto" onChange={this.changeHandler} value={this.state.subProyecto.tipo_subProyecto} onClick={()=>{this.setState({msj_tipo_subp: ""})}} />
+                            <div className="invalid-feedback">
+                                {this.state.msj_tipo_subp}
+                            </div>
                             <br/>
                             <label htmlFor="id_proyecto">ID Usuario</label>
                             <input className="form-control" type="text" name="id_usuario" id="id_usuario" onChange={this.changeHandler} value={this.state.subProyecto.id_usuario} readOnly />                       

@@ -1,4 +1,6 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 class TablaUsuario extends Component{
 
@@ -26,8 +28,8 @@ class TablaUsuario extends Component{
                                     <td>{usuario.tipo}</td>
                                     <td>{usuario.estado}</td>
                                     <td>
-                                        <button className="btn btn-warning" onClick={()=>this.props.editar(usuario)}>Editar</button> &nbsp;
-                                        <button className="btn btn-danger" onClick={()=>this.props.modalEliminar(usuario)}>Eliminar</button>
+                                        <button className="btn btn-warning" onClick={()=>this.props.editar(usuario)}><EditIcon/></button> &nbsp;
+                                        <button className="btn btn-danger" onClick={()=>this.props.modalEliminar(usuario)}><DeleteIcon/></button>
                                     </td>
                                 </tr>
                             )

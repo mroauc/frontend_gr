@@ -19,7 +19,14 @@ class UsuarioModal extends Component{
             id_empresa: '',
             id_user: ''
         },
-        empresas: []
+        empresas: [],
+        msj_nombre: "",
+        msj_email: "",
+        msj_tipo: "",
+        msj_estado: "",
+        msj_password: "",
+        msj_celular: "",
+        msj_idempresa: ""
     }
 
     componentDidMount(){
@@ -34,75 +41,132 @@ class UsuarioModal extends Component{
     getUsuarioByEmail = async () => {
         const token = localStorage.getItem('token');
         await Axios.get(`http://localhost:8080/api/usuario/${this.state.usuario.email}`,{headers: {"Authorization": `Bearer  ${token}`}})
-            .then(async response => {
-                await this.setState({
-                    cliente:{
-                        id_cliente: this.state.cliente.id_cliente,
-                        celular: this.state.cliente.celular,
-                        id_empresa: this.state.cliente.id_empresa,
-                        id_user: response.data.id
-                    }
-                });
-            })
-    }
-
-    guardar=async()=>{
-        const token = localStorage.getItem('token');
-        await Axios.post('http://localhost:8080/auth/nuevo/',{
-            nombre: this.state.usuario.nombre,
-            email: this.state.usuario.email,
-            estado: this.state.usuario.estado,
-            tipo: this.state.usuario.rol,
-            password: this.state.usuario.password,
-            roles: [this.state.usuario.rol]
-        },{headers:{"Authorization": `Bearer ${token}`}})
-        .then(async response=>{
-
-            if(this.state.usuario.tipo === "cliente"){
-                await this.getUsuarioByEmail();
-                await Axios.post("http://localhost:8080/api/cliente/guardar", this.state.cliente,{headers: {"Authorization": `Bearer  ${token}`}})
-            }
-
-            this.props.modalInsertar();
-            this.props.index();
+        .then(async response => {
+            await this.setState({
+                cliente:{
+                    id_cliente: this.state.cliente.id_cliente,
+                    celular: this.state.cliente.celular,
+                    id_empresa: this.state.cliente.id_empresa,
+                    id_user: response.data.id
+                }
+            });
         })
     }
 
-    guardarActualizacion=()=>{
-        
-        const token = localStorage.getItem('token');
-
-        console.log(this.state.usuario);
-        Axios.post('http://localhost:8080/api/usuario/editar/',this.state.usuario,{headers: {"Authorization": `Bearer  ${token}`}})
-        .then(response=>{
-            this.props.modalInsertar();
-            this.props.index();
-        });
+    validar=()=>{
+        let salida=true;
+        if(!this.state.usuario.nombre){
+            this.setState({
+                msj_nombre: "Campo Vacio"
+            });
+            salida=false;
+        }
+        if(!this.state.usuario.email){
+            this.setState({
+                msj_email: "Campo Vacio"
+            });
+            salida=false;
+        }
+        if(!this.state.usuario.tipo){
+            this.setState({
+                msj_tipo: "Campo Vacio"
+            });
+            salida=false;
+        }else{
+            if(this.state.usuario.tipo==="cliente"){
+                if(!this.state.cliente.celular){
+                    this.setState({
+                        msj_celular: "Campo Vacio"
+                    });
+                    salida=false;
+                }
+                if(!this.state.cliente.id_empresa){
+                    this.setState({
+                        msj_idempresa: "Campo Vacio"
+                    });
+                    salida=false;
+                }
+            }
+        }
+        if(!this.state.usuario.estado){
+            this.setState({
+                msj_estado: "Campo Vacio"
+            });
+            salida=false;
+        }
+        if(!this.state.usuario.password){
+            this.setState({
+                msj_password: "Campo Vacio"
+            });
+            salida=false;
+        }
+        return salida;
     }
 
-    // getCliente = (id) => {
-    //     if(id){
-    //         const token = localStorage.getItem('token');
-    //         console.log(id);
-    //         axios.get(`http://localhost:8080/api/usuario/id/${id}`,{headers: {"Authorization": `Bearer  ${token}`}})
-    //         .then(response => {
-    //             this.setState({
-    //                 usuario: response.data
-    //             })
-    //         })
-    //     }
-    // }
+    guardar=async()=>{
+        if(this.validar()){
+            const token = localStorage.getItem('token');
+            await Axios.post('http://localhost:8080/auth/nuevo/',{
+                nombre: this.state.usuario.nombre,
+                email: this.state.usuario.email,
+                estado: this.state.usuario.estado,
+                tipo: this.state.usuario.rol,
+                password: this.state.usuario.password,
+                roles: [this.state.usuario.rol]
+            },{headers:{"Authorization": `Bearer ${token}`}})
+            .then(async response=>{
+                if(this.state.usuario.tipo === "cliente"){
+                    await this.getUsuarioByEmail();
+                    await Axios.post("http://localhost:8080/api/cliente/guardar", this.state.cliente,{headers: {"Authorization": `Bearer  ${token}`}})
+                }
+                this.props.modalInsertar();
+                this.props.index();
+                this.setState({
+                    msj_nombre: "",
+                    msj_email: "",
+                    msj_tipo: "",
+                    msj_estado: "",
+                    msj_password: "",
+                    msj_celular: "",
+                    msj_idempresa: ""
+                });
+            })
+        }
+    }
+
+    guardarActualizacion=()=>{
+        if(this.validar()){
+            const token = localStorage.getItem('token');
+            console.log(this.state.usuario);
+            Axios.post('http://localhost:8080/api/usuario/editar/',this.state.usuario,{headers: {"Authorization": `Bearer  ${token}`}})
+            .then(response=>{
+                this.props.modalInsertar();
+                this.props.index();
+                this.setState({
+                    msj_nombre: "",
+                    msj_email: "",
+                    msj_tipo: "",
+                    msj_estado: "",
+                    msj_password: "",
+                    msj_celular: "",
+                    msj_idempresa: ""
+                });
+            });
+        }
+    }
 
     esUsuario = () => {
-        
         if(this.state.usuario.tipo === "cliente"){
             return (
             <div>
                 <label htmlFor="razon_social">Celular</label>
-                <input className="form-control" type="text" name="celular" id="celular" onChange={this.changeHandler2} value={this.state.cliente.celular}/>
+                <input className={ (this.state.msj_celular)? "form-control is-invalid" : "form-control"} type="text" name="celular" id="celular" onChange={this.changeHandler2} value={this.state.cliente.celular} onClick={()=>{this.setState({msj_celular:""})}} />
+                <div className="invalid-feedback">
+                    {this.state.msj_celular}
+                </div>
                 <br/>
                 <label htmlFor="id_empresa">ID Empresa</label>
-                <select className="form-control" type="text" name="id_empresa" id="id_empresa" onChange={this.changeHandler2} value={this.state.cliente.id_empresa}>
+                <select className={ (this.state.msj_idempresa)? "form-control is-invalid" : "form-control"} type="text" name="id_empresa" id="id_empresa" onChange={this.changeHandler2} value={this.state.cliente.id_empresa} onClick={()=>{this.setState({msj_idempresa:""})}} >
                     <option>Selecciona un Empresa</option>
                     {this.state.empresas.map(empresa => {
                         return(
@@ -110,6 +174,9 @@ class UsuarioModal extends Component{
                         )
                     })}
                 </select>
+                <div className="invalid-feedback">
+                    {this.state.msj_idempresa}
+                </div>
                 <br/>
             </div>);
         }
@@ -130,7 +197,6 @@ class UsuarioModal extends Component{
     
     getEmpresas = async () => {
         const token = localStorage.getItem('token');
-        
         await Axios.get("http://localhost:8080/api/empresa/",{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.setState({
                 empresas: response.data
@@ -161,14 +227,27 @@ class UsuarioModal extends Component{
         await this.setState({usuario: copiaUsuario});
     }
 
+    cerrar=()=>{
+        this.setState({
+            msj_nombre: "",
+            msj_email: "",
+            msj_tipo: "",
+            msj_estado: "",
+            msj_password: "",
+            msj_celular: "",
+            msj_idempresa: ""
+        });
+        this.props.modalInsertar();
+    }
+
     render(){
         return(
             <React.Fragment>    
-                <Modal isOpen={this.props.estadoModalInsertar} toggle={()=>this.props.modalInsertar()}>
+                <Modal isOpen={this.props.estadoModalInsertar} toggle={()=>this.cerrar()}>
                     <ModalHeader style={{display:'block'}}>
                         <span>{(this.props.tipoModal==='insertar') ? 'Ingresar Usuario' :'Editar Usuario'}</span>
 
-                        <span style={{cursor:'pointer', float:'right'}} onClick={()=>this.props.modalInsertar()}>X</span>
+                        <span style={{cursor:'pointer', float:'right'}} onClick={()=>this.cerrar()}>X</span>
                     </ModalHeader>
                     <ModalBody>
                         <div className="form-group">
@@ -176,28 +255,45 @@ class UsuarioModal extends Component{
                             <input className="form-control" type="text" name="id_usuario" id="id_usuario" value={this.state.usuario.id_usuario} readOnly/>
                             <br/>
                             <label htmlFor="nombre">Nombre del usuario</label>
-                            <input className="form-control" type="text" name="nombre" id="nombre" onChange={this.changeHandler} value={this.state.usuario.nombre} />
+                            <input className={ (this.state.msj_nombre)? "form-control is-invalid" : "form-control"} type="text" name="nombre" id="nombre" onChange={this.changeHandler} value={this.state.usuario.nombre} onClick={()=>{this.setState({msj_nombre:""})}} />
+                            <div className="invalid-feedback">
+                                {this.state.msj_nombre}
+                            </div>
                             <br/>
                             <label htmlFor="email">Email del usuario</label>
-                            <input className="form-control" type="text" name="email" id="email" onChange={this.changeHandler} value={this.state.usuario.email} />
+                            <input className={ (this.state.msj_email)? "form-control is-invalid" : "form-control"} type="text" name="email" id="email" onChange={this.changeHandler} value={this.state.usuario.email} onClick={()=>{this.setState({msj_email:""})}} />
+                            <div className="invalid-feedback">
+                                {this.state.msj_email}
+                            </div>
                             <br/>
                             <label htmlFor="rol">Tipo de usuario</label>
-                            <select name="rol" id="rol" className="form-control" value={this.state.usuario.tipo} onChange={this.changeRol}>
+                            <select name="rol" id="rol" className={ (this.state.msj_tipo)? "form-control is-invalid" : "form-control"} value={this.state.usuario.tipo} onChange={this.changeRol} onClick={()=>{this.setState({msj_tipo:""})}} >
+                                <option selected value="">Seleccione un tipo</option>
                                 <option value="analista">Analista</option>
                                 <option value="lider">Lider de subproyecto</option>
                                 <option value="jefe">Jefe de proyecto</option>
                                 <option value="cliente">Cliente</option>
                                 <option value="admin">Administrador del Sistema</option>
                             </select>
+                            <div className="invalid-feedback">
+                                {this.state.msj_tipo}
+                            </div>
                             <br/>
                             <label htmlFor="estado">Estado de usuario</label>
-                                <select name="estado" id="estado" className="form-control" value={this.state.usuario.estado} onChange={this.changeHandler}>
-                                    <option value="Activo" selected>Activo</option>
-                                    <option value="Inactivo">Inactivo</option>
-                                </select>
+                            <select name="estado" id="estado" className={ (this.state.msj_estado)? "form-control is-invalid" : "form-control"} value={this.state.usuario.estado} onChange={this.changeHandler} onClick={()=>{this.setState({msj_estado:""})}} >
+                                <option selected value="">Seleccione un estado</option>
+                                <option value="Activo" selected>Activo</option>
+                                <option value="Inactivo">Inactivo</option>
+                            </select>
+                            <div className="invalid-feedback">
+                                {this.state.msj_estado}
+                            </div>
                             <br/>
                             <label htmlFor="password">Contraseña</label>
-                            <input className="form-control" type="password" name="password" id="password" onChange={this.changeHandler} value={this.state.usuario.password} />
+                            <input className={ (this.state.msj_password)? "form-control is-invalid" : "form-control"} type="password" name="password" id="password" onChange={this.changeHandler} value={this.state.usuario.password} onClick={()=>{this.setState({msj_password:""})}} />
+                            <div className="invalid-feedback">
+                                {this.state.msj_password}
+                            </div>
                             <br/>
                             {this.esUsuario()}
                         </div>
@@ -212,7 +308,7 @@ class UsuarioModal extends Component{
                                 Actualizar
                             </button>
                         }
-                            <button className="btn btn-danger" onClick={()=>this.props.modalInsertar()}>Cancelar</button>
+                            <button className="btn btn-danger" onClick={()=>this.cerrar()}>Cancelar</button>
                     </ModalFooter>
                 </Modal>
             </React.Fragment>

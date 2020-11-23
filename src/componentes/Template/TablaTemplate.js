@@ -1,4 +1,7 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 class TablaTemplate extends Component{
     
@@ -24,9 +27,9 @@ class TablaTemplate extends Component{
                                     <td>{template.tipo}</td>
                                     <td>{template.fecha}</td>
                                     <td>
-                                        <button className="btn btn-success" onClick={()=>this.props.verTemplate(template)}>Ver</button> &nbsp;
-                                        <button className="btn btn-warning" onClick={()=>this.props.editar(template)}>Editar</button> &nbsp;
-                                        <button className="btn btn-danger" onClick={()=>this.props.modalEliminar(template)}>Eliminar</button>
+                                        <button className="btn btn-success" onClick={()=>this.props.verTemplate(template)}><VisibilityIcon/></button> &nbsp;
+                                        <button className="btn btn-warning" onClick={()=>this.props.editar(template)}><EditIcon/></button> &nbsp;
+                                        <button className="btn btn-danger" onClick={()=>this.props.modalEliminar(template)}><DeleteIcon/></button>
                                     </td>
                                 </tr>
                             )

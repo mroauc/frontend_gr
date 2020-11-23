@@ -14,36 +14,73 @@ class TemplateModal extends Component{
             template: '',
             fecha: ''
         },
+        msj_prefijo: "",
+        msj_nombre: "",
+        msj_tipo: ""
     }
 
     componentWillReceiveProps(next_props){
         this.setState({template:this.props.template});
     }
 
+    validar=()=>{
+        let salida = true;
+        if(!this.state.template.prefijo){
+            this.setState({
+                msj_prefijo: "Campo Vacio"
+            });
+            salida = false;
+        }
+        if(!this.state.template.nombre){
+            this.setState({
+                msj_nombre: "Campo Vacio"
+            });
+            salida = false;
+        }
+        if(!this.state.template.tipo){
+            this.setState({
+                msj_tipo: "Campo Vacio"
+            });
+            salida = false;
+        }
+        if(!this.state.template.template){
+            salida = false;
+        }
+        return salida;
+    }
+
     guardar=async()=>{
-        const token = localStorage.getItem('token');
-        console.log(this.state.template.template)
-        await Axios.post('http://localhost:8080/api/template/guardar/',{
-            prefijo: this.state.template.prefijo,
-            nombre: this.state.template.nombre,
-            tipo: this.state.template.tipo,
-            template: this.state.template.template,
-            fecha: new Date().toLocaleString()
-        }, {headers: {"Authorization" : `Bearer ${token}`}})
-        .then(response=>{
-            this.props.modalInsertar();
-            this.props.index();
-        })
+        if(this.validar()){
+            const token = localStorage.getItem('token');
+            console.log(this.state.template.template)
+            await Axios.post('http://localhost:8080/api/template/guardar/',{
+                prefijo: this.state.template.prefijo,
+                nombre: this.state.template.nombre,
+                tipo: this.state.template.tipo,
+                template: this.state.template.template,
+                fecha: new Date().toLocaleString()
+            }, {headers: {"Authorization" : `Bearer ${token}`}})
+            .then(response=>{
+                this.setState({
+                    msj_prefijo: "",
+                    msj_nombre: "",
+                    msj_tipo: "",
+                });
+                this.props.modalInsertar();
+                this.props.index();
+            })
+        }
     }
 
     guardarActualizacion=()=>{
-        const token = localStorage.getItem('token');
-
-        Axios.post('http://localhost:8080/api/template/editar/',this.state.template, {headers: {"Authorization": `Bearer ${token}`}})
-        .then(response=>{
-            this.props.modalInsertar();
-            this.props.index();
-        })
+        if(this.validar()){
+            const token = localStorage.getItem('token');
+            Axios.post('http://localhost:8080/api/template/editar/',this.state.template, {headers: {"Authorization": `Bearer ${token}`}})
+            .then(response=>{
+                this.props.modalInsertar();
+                this.props.index();
+            })
+        }
     }
 
     changeHandler=async(e)=>{
@@ -68,6 +105,15 @@ class TemplateModal extends Component{
         });
     }
 
+    cerrar=()=>{
+        this.setState({
+            msj_prefijo: "",
+            msj_nombre: "",
+            msj_tipo: "",
+        });
+        this.props.modalInsertar();
+    }
+
     mostrar=()=>{
         console.log(this.state.template);
     }
@@ -75,11 +121,11 @@ class TemplateModal extends Component{
     render(){
         return(
             <React.Fragment>
-                <Modal isOpen={this.props.estadoModalInsertar} size="lg" toggle={()=>this.props.modalInsertar()}>
+                <Modal isOpen={this.props.estadoModalInsertar} size="lg" toggle={()=>this.cerrar()}>
                     <ModalHeader style={{display: 'block'}}>
                         <span>{(this.props.tipoModal==='insertar') ? 'Ingresar Template' :'Editar Template'}</span>
 
-                        <span style={{cursor:'pointer', float:'right'}} onClick={()=>{this.props.modalInsertar()}}>X</span>
+                        <span style={{cursor:'pointer', float:'right'}} onClick={()=>{this.cerrar()}}>X</span>
                     </ModalHeader>
                     <ModalBody>
                         <div className="form-group">
@@ -87,13 +133,22 @@ class TemplateModal extends Component{
                             <input className="form-control" type="text" name="id_template" id="id_template" value={this.state.template.id_template} readOnly/>
                             <br/>
                             <label htmlFor="prefijo">Prefijo</label>
-                            <input className="form-control" type="text" name="prefijo" id="prefijo" onChange={this.changeHandler} value={this.state.template.prefijo} />
+                            <input className={ (this.state.msj_prefijo)? "form-control is-invalid" : "form-control"} type="text" name="prefijo" id="prefijo" onChange={this.changeHandler} value={this.state.template.prefijo} onClick={()=>{this.setState({msj_prefijo:""})}} />
+                            <div className="invalid-feedback">
+                                {this.state.msj_prefijo}
+                            </div>
                             <br/>
                             <label htmlFor="nombre">Nombre</label>
-                            <input className="form-control" type="text" name="nombre" id="nombre" onChange={this.changeHandler} value={this.state.template.nombre} />
+                            <input className={ (this.state.msj_nombre)? "form-control is-invalid" : "form-control"} type="text" name="nombre" id="nombre" onChange={this.changeHandler} value={this.state.template.nombre} onClick={()=>{this.setState({msj_nombre:""})}} />
+                            <div className="invalid-feedback">
+                                {this.state.msj_nombre}
+                            </div>
                             <br/>
                             <label htmlFor="tipo">Tipo</label>
-                            <input className="form-control" type="text" name="tipo" id="tipo" onChange={this.changeHandler} value={this.state.template.tipo} />
+                            <input className={ (this.state.msj_tipo)? "form-control is-invalid" : "form-control"} type="text" name="tipo" id="tipo" onChange={this.changeHandler} value={this.state.template.tipo} onClick={()=>{this.setState({msj_tipo:""})}} />
+                            <div className="invalid-feedback">
+                                {this.state.msj_tipo}
+                            </div>
                             <br/>
                             <label htmlFor="tipo">Template</label>
                             <TemplateTextEditor
@@ -112,7 +167,7 @@ class TemplateModal extends Component{
                                 Actualizar
                             </button>
                         }
-                        <button className="btn btn-danger" onClick={()=>this.props.modalInsertar()}>Cancelar</button>
+                        <button className="btn btn-danger" onClick={()=>this.cerrar()}>Cancelar</button>
                     </ModalFooter>
                 </Modal>
             </React.Fragment>

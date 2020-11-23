@@ -7,6 +7,7 @@ import ModalsubProyecto from './subProyectoModal'
 import TablasubProyecto from './subProyectoTabla'
 import Menu from '../Menu/Menu'
 import { Link } from 'react-router-dom'
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const url="http://localhost:8080/api/subProyecto/";
 
@@ -141,9 +142,10 @@ export default class SubProyecto extends Component{
                     <div className="Encabezado"><p>Subproyectos del proyecto: {this.state.nombre_proyecto}</p></div>
 
                     <button type="button" className="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Nuevo Subproyecto</button> &nbsp;
-                    <Link to={"/proyecto"}><button type="button" className="btn boton">⬅ Volver</button></Link>
+                    <Link to={"/proyecto"}><button type="button" className="btn boton"><ArrowBackIcon/> Volver</button></Link>
 
                     <div style={{float: "right" , textDecoration: 'none'}}>
+                        <Link to={"/graficoRequerimientos/"+this.props.match.params.id_proyecto}><button type="button" className="btn boton" >Estado Requerimientos</button> </Link>
                         <Link to= {`/palabra/${this.props.match.params.id_proyecto}`}><button type="button" className="btn boton">Ver Glosario</button> </Link>
                         <Link to={"/propuestaCambio/"+this.props.match.params.id_proyecto}><button type="button" className="btn boton" >Propuestas de cambio</button></Link>
                     </div>

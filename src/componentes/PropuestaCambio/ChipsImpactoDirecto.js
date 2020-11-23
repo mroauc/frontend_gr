@@ -30,9 +30,9 @@ class ChipsImpactoDirecto extends Component{
         }
     }
 
-    obtenerExistentes=()=>{
+    obtenerExistentes=async()=>{
         const token = localStorage.getItem('token');
-        Axios.get(`http://localhost:8080/api/impacto_directo/obtener/${this.props.id_propuestaCambio}`,{headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.get(`http://localhost:8080/api/impacto_directo/obtener/${this.props.id_propuestaCambio}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             for (let index = 0; index < response.data.length; index++) {                
                 this.setState({
@@ -49,7 +49,7 @@ class ChipsImpactoDirecto extends Component{
           });
     }
 
-    crearChip = async () => {
+    crearChip=async()=>{
         if(this.state.requerimiento === '')
             return;
 
@@ -57,15 +57,14 @@ class ChipsImpactoDirecto extends Component{
             await this.setState({
                 arregloChips: [ ...this.state.arregloChips, this.state.requerimiento],
               });
-
             this.props.insertarChip(this.state.requerimiento);
         }               
     }
 
-    handleDelete = (requerimiento) => {
+    handleDelete=async(requerimiento)=>{
         const filtrado = this.state.arregloChips.filter(item => item !== requerimiento);
         
-        this.setState({
+        await this.setState({
             arregloChips : filtrado
         });
 

@@ -8,6 +8,7 @@ import TablaPalabra from './PalabraTabla'
 import Menu from '../Menu/Menu'
 import ModalVerPalabra from './ModalVerPalabra'
 import { Link } from 'react-router-dom';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const url="http://localhost:8080/api/palabra/";
 
@@ -124,7 +125,7 @@ export default class Palabra extends Component{
                 <div className="palabra col-10">
                     <div className="Encabezado"><p>Palabra</p></div>
                     <button type="button" className="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Ingresar Palabra</button> &nbsp;
-                    <Link to={"/subProyecto/"+this.props.match.params.id_proyecto}><button type="button" className="btn boton">⬅ Volver</button></Link>
+                    <Link to={"/subProyecto/"+this.props.match.params.id_proyecto}><button type="button" className="btn boton"><ArrowBackIcon/></button></Link>
 
                     <TablaPalabra
                         palabras={this.state.data}

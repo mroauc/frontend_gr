@@ -2,6 +2,10 @@ import Axios from 'axios';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from 'reactstrap';
+import DescriptionIcon from '@material-ui/icons/Description';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import ForwardIcon from '@material-ui/icons/Forward';
 
 class TablaProyecto extends Component{
 
@@ -69,10 +73,10 @@ class TablaProyecto extends Component{
                                 <td>{proyecto.fecha_creacion}</td>
                                 <td>{this.cantidadSubProyectos(proyecto.id_proyecto)}</td>
                                 <td>
-                                    <button className="btn btn-secondary" onClick={()=>this.props.generarPDF(proyecto.id_proyecto)}>📄</button> &nbsp;
-                                    <button className="btn btn-warning" onClick={()=>this.props.editar(proyecto)}>Editar</button> &nbsp;
-                                    <button className="btn btn-danger" onClick={()=>this.props.modalEliminar(proyecto)}>Eliminar</button> &nbsp;
-                                    <Link to={"/subProyecto/"+proyecto.id_proyecto}><Button type="button" className="btn btn-info">Ver</Button></Link>
+                                    <button className="btn btn-secondary" onClick={()=>this.props.generarPDF(proyecto.id_proyecto)}><DescriptionIcon/> </button> &nbsp;
+                                    <button className="btn btn-warning" onClick={()=>this.props.editar(proyecto)}><EditIcon/></button> &nbsp;
+                                    <button className="btn btn-danger" onClick={()=>this.props.modalEliminar(proyecto)}><DeleteIcon/></button> &nbsp;
+                                    <Link to={"/subProyecto/"+proyecto.id_proyecto}><Button type="button" className="btn btn-info"><ForwardIcon/></Button></Link>
                                 </td>
                             </tr>
                         )

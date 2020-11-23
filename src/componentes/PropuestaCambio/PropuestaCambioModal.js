@@ -20,6 +20,10 @@ class PropuestaCambioModal extends Component{
             comentarios: '',
             estado: 'Pendiente'
         },
+        msj_nombre: "",
+        msj_idsubproyecto: "",
+        msj_fechapeticion: "",
+        msj_descripcion: "",
         requerimientosImpactoDirecto : []
     }
 
@@ -42,26 +46,64 @@ class PropuestaCambioModal extends Component{
         })
     }
 
+    validar=()=>{
+        let salida=true;
+
+        if(!this.state.propuestaCambio.nombre){
+            this.setState({
+                msj_nombre: "Campo Vacio"
+            });
+            salida=false;
+        }
+        if(!this.state.propuestaCambio.id_subproyecto){
+            this.setState({
+                msj_idsubproyecto: "Campo Vacio"
+            });
+            salida=false;
+        }
+        if(!this.state.propuestaCambio.fecha_peticion){
+            this.setState({
+                msj_fechapeticion: "Campo Vacio"
+            });
+            salida=false;
+        }
+        if(!this.state.propuestaCambio.descripcion){
+            this.setState({
+                msj_descripcion: "Campo Vacio"
+            });
+            salida=false;
+        }
+        return salida;
+    }
+
     guardar=async()=>{
-        const token = localStorage.getItem('token');
-        await Axios.post('http://localhost:8080/api/propuestacambio/guardar/',{
-            nombre: this.state.propuestaCambio.nombre,
-            id_subproyecto: this.state.propuestaCambio.id_subproyecto,
-            fecha_peticion: this.state.propuestaCambio.fecha_peticion,
-            id_usuario: this.state.propuestaCambio.id_usuario,
-            descripcion: this.state.propuestaCambio.descripcion,
-            justificacion: this.state.propuestaCambio.justificacion,
-            alternativas: this.state.propuestaCambio.alternativas,
-            consecuencias_rechazo: this.state.propuestaCambio.consecuencias_rechazo,
-            fecha_resolucion: this.state.propuestaCambio.fecha_resolucion,
-            comentarios: this.state.propuestaCambio.comentarios,
-            estado: this.state.propuestaCambio.estado
-        },{headers: {"Authorization": `Bearer ${token}`}})
-        .then(response=>{
-            this.props.modalInsertar();
-            this.props.index();
-            this.insertarImpactoDirecto(response.data.id_propuestaCambio);
-        })
+        if(this.validar()){
+            const token = localStorage.getItem('token');
+            await Axios.post('http://localhost:8080/api/propuestacambio/guardar/',{
+                nombre: this.state.propuestaCambio.nombre,
+                id_subproyecto: this.state.propuestaCambio.id_subproyecto,
+                fecha_peticion: this.state.propuestaCambio.fecha_peticion,
+                id_usuario: this.state.propuestaCambio.id_usuario,
+                descripcion: this.state.propuestaCambio.descripcion,
+                justificacion: this.state.propuestaCambio.justificacion,
+                alternativas: this.state.propuestaCambio.alternativas,
+                consecuencias_rechazo: this.state.propuestaCambio.consecuencias_rechazo,
+                fecha_resolucion: this.state.propuestaCambio.fecha_resolucion,
+                comentarios: this.state.propuestaCambio.comentarios,
+                estado: this.state.propuestaCambio.estado
+            },{headers: {"Authorization": `Bearer ${token}`}})
+            .then(response=>{
+                this.setState({
+                    msj_nombre: "",
+                    msj_fechapeticion: "",
+                    msj_descripcion: "",
+                    msj_idsubproyecto: ""
+                });
+                this.props.modalInsertar();
+                this.props.index();
+                this.insertarImpactoDirecto(response.data.id_propuestaCambio);
+            })
+        }
     }
 
     insertarImpactoDirecto=async(id_propuestaCambio)=>{
@@ -79,21 +121,30 @@ class PropuestaCambioModal extends Component{
         });
     }
 
-    guardarActualizacion=()=>{
-        const token = localStorage.getItem('token');
-        Axios.post('http://localhost:8080/api/propuestacambio/editar/',this.state.propuestaCambio, {headers: {"Authorization": `Bearer ${token}`}})
-        .then(response=>{
-            this.props.modalInsertar();
-            this.props.index();
-            this.actualizarImpactoDirecto();
-        })
+    guardarActualizacion=async()=>{
+        if(this.validar()){
+
+            const token = localStorage.getItem('token');
+            await Axios.post('http://localhost:8080/api/propuestacambio/editar/',this.state.propuestaCambio, {headers: {"Authorization": `Bearer ${token}`}})
+            .then(response=>{
+                this.actualizarImpactoDirecto(this.state.propuestaCambio.id_propuestaCambio);
+                this.props.modalInsertar();
+                this.props.index();
+                this.setState({
+                    msj_nombre: "",
+                    msj_fechapeticion: "",
+                    msj_descripcion: "",
+                    msj_idsubproyecto: ""
+                });
+            })
+        }
     }
 
-    actualizarImpactoDirecto=()=>{
+    actualizarImpactoDirecto=async(id_propuestaCambio)=>{
         const token = localStorage.getItem('token');
         var existentes = [];
         var original = [];
-        Axios.get(`http://localhost:8080/api/impacto_directo/obtener/${this.state.propuestaCambio.id_propuestaCambio}`, {headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.get(`http://localhost:8080/api/impacto_directo/obtener/${this.state.propuestaCambio.id_propuestaCambio}`, {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             original = response.data;
             for (let index = 0; index < response.data.length; index++) {
@@ -104,8 +155,6 @@ class PropuestaCambioModal extends Component{
             for (let index = 0; index < existentes.length; index++) {
                 if(!this.state.requerimientosImpactoDirecto.includes(existentes[index])){
                     Axios.delete(`http://localhost:8080/api/impacto_directo/eliminar/${original[index].id_impacto_directo}`, {headers: {"Authorization": `Bearer ${token}`}})
-                    .then(response=>{
-                    });
                 }
             }
 
@@ -113,7 +162,7 @@ class PropuestaCambioModal extends Component{
             for (let index = 0; index < this.state.requerimientosImpactoDirecto.length; index++) {
                 if(!existentes.includes(this.state.requerimientosImpactoDirecto[index])){
                     Axios.post('http://localhost:8080/api/impacto_directo/guardar/',{
-                        id_propuesta_cambio : this.state.propuestaCambio.id_propuestaCambio,
+                        id_propuesta_cambio : id_propuestaCambio,
                         id_requerimiento : this.state.requerimientosImpactoDirecto[index]
                     },{headers: {"Authorization": `Bearer ${token}`}})
                 }
@@ -135,21 +184,31 @@ class PropuestaCambioModal extends Component{
         });
     }
 
-    eliminarChip=(requerimiento)=>{
+    eliminarChip=async(requerimiento)=>{
         const filtrado = this.state.requerimientosImpactoDirecto.filter(item => item!==requerimiento);        
-        this.setState({
+        await this.setState({
             requerimientosImpactoDirecto : filtrado
         });
+    }
+
+    cerrar=()=>{
+        this.setState({
+            msj_nombre: "",
+            msj_fechapeticion: "",
+            msj_descripcion: "",
+            msj_idsubproyecto: ""
+        });
+        this.props.modalInsertar();
     }
 
     render(){
         return(
             <React.Fragment>
-                <Modal isOpen={this.props.estadoModalInsertar} toggle={()=>this.props.modalInsertar()}>
+                <Modal isOpen={this.props.estadoModalInsertar} toggle={()=>this.cerrar()}>
                     <ModalHeader style={{display:'block'}}>
                         <span>{(this.props.tipoModal==='insertar') ? 'Ingresar Propuesta de Cambio' :'Editar Propuesta de Cambio'}</span>
 
-                        <span style={{cursor:'pointer', float:'right'}} onClick={()=>{this.props.modalInsertar()}}>X</span>
+                        <span style={{cursor:'pointer', float:'right'}} onClick={()=>{this.cerrar()}}>X</span>
                     </ModalHeader>
                     <ModalBody>
                         <div className="form-group">
@@ -157,10 +216,13 @@ class PropuestaCambioModal extends Component{
                             <input className="form-control" type="text" name="id_propuestaCambio" id="id_propuestaCambio" value={this.state.propuestaCambio.id_propuestaCambio} readOnly/>
                             <br/>
                             <label htmlFor="nombre">Nombre</label>
-                            <input className="form-control" type="text" name="nombre" id="nombre" onChange={this.changeHandler} value={this.state.propuestaCambio.nombre} />
+                            <input className={ (this.state.msj_nombre)? "form-control is-invalid" : "form-control"} type="text" name="nombre" id="nombre" onChange={this.changeHandler} value={this.state.propuestaCambio.nombre} onClick={()=>{this.setState({msj_nombre: ""})}} />
+                            <div className="invalid-feedback">
+                                {this.state.msj_nombre}
+                            </div>
                             <br/>
                             <label htmlFor="id_modulo">ID Modulo</label>
-                            <select name="id_subproyecto" id="id_subproyecto" className="form-control" value={this.state.propuestaCambio.id_subproyecto} onChange={this.changeHandler}>
+                            <select name="id_subproyecto" id="id_subproyecto" className={ (this.state.msj_idsubproyecto)? "form-control is-invalid" : "form-control"} value={this.state.propuestaCambio.id_subproyecto} onChange={this.changeHandler} onClick={()=>{this.setState({msj_idsubproyecto: ""})}}>
                                 <option value="">Seleccione un SubProyecto</option>
                                 {this.state.subProyectos.map(subp=>{
                                     return(
@@ -168,15 +230,24 @@ class PropuestaCambioModal extends Component{
                                     );
                                 })}
                             </select>
+                            <div className="invalid-feedback">
+                                {this.state.msj_idsubproyecto}
+                            </div>
                             <br/>
                             <label htmlFor="fecha_peticion">Fecha de Peticion</label>
-                            <input className="form-control" type="date" name="fecha_peticion" id="fecha_peticion" onChange={this.changeHandler} value={this.state.propuestaCambio.fecha_peticion} />
+                            <input className={ (this.state.msj_fechapeticion)? "form-control is-invalid" : "form-control"} type="date" name="fecha_peticion" id="fecha_peticion" onChange={this.changeHandler} value={this.state.propuestaCambio.fecha_peticion} onClick={()=>{this.setState({msj_fechapeticion: ""})}} />
+                            <div className="invalid-feedback">
+                                {this.state.msj_fechapeticion}
+                            </div>
                             <br/>
                             <label htmlFor="id_usuario">Autor</label>
                             <input className="form-control" type="number" name="id_usuario" id="id_usuario" value={this.state.propuestaCambio.id_usuario} readOnly/>
                             <br/>
                             <label htmlFor="descripcion">Descripcion</label>
-                            <input className="form-control" type="text" name="descripcion" id="descripcion" onChange={this.changeHandler} value={this.state.propuestaCambio.descripcion} />
+                            <input className={ (this.state.msj_descripcion)? "form-control is-invalid" : "form-control"} type="text" name="descripcion" id="descripcion" onChange={this.changeHandler} value={this.state.propuestaCambio.descripcion} onClick={()=>{this.setState({msj_descripcion: ""})}} />
+                            <div className="invalid-feedback">
+                                {this.state.msj_descripcion}
+                            </div>
                             <br/>
                             <ChipsImpactoDirecto
                                 id_propuestaCambio = {this.state.propuestaCambio.id_propuestaCambio}
@@ -215,7 +286,7 @@ class PropuestaCambioModal extends Component{
                                 Actualizar
                             </button>
                         }
-                        <button className="btn btn-danger" onClick={()=>{this.props.modalInsertar()}}>Cancelar</button>
+                        <button className="btn btn-danger" onClick={()=>{this.cerrar()}}>Cancelar</button>
                     </ModalFooter>
                 </Modal>
 
