@@ -74,7 +74,7 @@ class Requerimiento extends Component{
                     prioridad: '',
                     estado: '',
                     categoria: '',
-                    id_template: 0
+                    id_template: ''
                 }
             });
         })
