@@ -13,7 +13,6 @@ class TablaRequerimiento extends Component{
                             <th scope="col">#</th>
                             <th scope="col">Nombre</th>
                             <th scope="col">ID Usuario</th>
-                            <th scope="col">ID Sub-Proyecto</th>
                             <th scope="col">Fecha de Creacion</th>
                             <th scope="col">Prioridad</th>
                             <th scope="col">Estado</th>
@@ -29,7 +28,6 @@ class TablaRequerimiento extends Component{
                                     <td>{index+1}</td>
                                     <td>{requerimiento.nombre}</td>
                                     <td>{requerimiento.id_usuario}</td>
-                                    <td>{requerimiento.id_subProyecto}</td>
                                     <td>{requerimiento.fecha_creacion}</td>
                                     <td>{requerimiento.prioridad}</td>
                                     <td>{requerimiento.estado}</td>
