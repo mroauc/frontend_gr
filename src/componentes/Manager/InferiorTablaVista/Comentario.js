@@ -7,12 +7,20 @@ export default class Comentario extends Component{
     state = {
         comentarios: [],
         usuarios: [],
-        nuevo_comentario: ''
+        nuevo_comentario: '',
+        errorComentario : ''
     }
 
     componentDidMount(){
         this.getComentarios();
         this.getUsuarios();
+    }
+
+    validar = () => {
+        let salida = true;
+        if(this.state.nuevo_comentario === ''){
+            this.setState({errorComentario : "Debe ingresar un comentario"})
+        } 
     }
 
     getComentarios = async () => {
@@ -23,7 +31,6 @@ export default class Comentario extends Component{
             this.setState({
                 comentarios: response.data
             });
-            
         })
     } 
 
@@ -34,24 +41,24 @@ export default class Comentario extends Component{
             this.setState({
                 usuarios: response.data
             })
-            
         })
     }
 
     guardarComentario = async () => {
         const token = localStorage.getItem("token");
-        await Axios.post('http://localhost:8080/api/comentario/guardar',{
-            texto: this.state.nuevo_comentario,
-            id_requerimiento: this.props.requerimiento.id_requerimiento,
-            fecha_ingreso: new Date().toLocaleString(),
-            id_usuario: localStorage.getItem("id")
-        },{headers: {"Authorization": `Bearer  ${token}`}})
-        .then( () => {
-            
-            this.setState({nuevo_comentario: ''});
-            this.getComentarios();
+        if(this.validar()){
+            await Axios.post('http://localhost:8080/api/comentario/guardar',{
+                texto: this.state.nuevo_comentario,
+                id_requerimiento: this.props.requerimiento.id_requerimiento,
+                fecha_ingreso: new Date().toLocaleString(),
+                id_usuario: localStorage.getItem("id")
+            },{headers: {"Authorization": `Bearer  ${token}`}})
+            .then( () => {  
+                this.setState({nuevo_comentario: '', errorComentario: ''});
+                this.getComentarios();
+            }
+            );
         }
-        );
     }
     
     changeHandler = async (e) => {
@@ -66,11 +73,16 @@ export default class Comentario extends Component{
             <div style={{height:'98%'}}>
                 <div className="areaCrear">
                     <div className="col-9" style={{paddingLeft: '0'}}>
-                        <textarea className="textComentario" placeholder="Ingresar Comentario&#10;(Máx. 255 carácteres)" rows="3" maxLength="255" onChange={this.changeHandler} value={this.state.nuevo_comentario}></textarea>
+                        <textarea className={(this.state.errorComentario)? "textComentario invalid" : "textComentario"} placeholder="Ingresar Comentario&#10;(Máx. 255 carácteres)" rows="3" maxLength="255" onChange={this.changeHandler} value={this.state.nuevo_comentario} onClick={() => {this.setState({errorComentario : ''})}}></textarea>
                     </div>
 
                     <div className="col-3 cont-boton">
-                        <button className="btn btn-success btn-block" onClick={this.guardarComentario}>Comentar</button>
+                        <div style={{width: '100%'}}>
+                            <button className="btn btn-success btn-block" onClick={this.guardarComentario}>Comentar</button>
+                            <div class="invalid-feedback" style={{display: 'block'}}>
+                                {this.state.errorComentario}
+                            </div>
+                        </div>
                     </div> 
                 </div>
 

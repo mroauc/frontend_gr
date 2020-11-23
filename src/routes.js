@@ -22,6 +22,7 @@ import error from './componentes/error';
 import Navigation from './componentes/Menu/Navigation';
 import Manager from './componentes/Manager/Manager';
 import MatrizRelacionReq from './componentes/Requerimiento/MatrizRelacionReq';
+import CDocumento from './componentes/Proyecto/ConstruccionDocumento';
 
 
 const Routes=()=>(
@@ -47,6 +48,7 @@ const Routes=()=>(
             <PrivateRoute path="/propuestaCambio/:id_proyecto" component={PropuestaCambio} />
             <PrivateRoute path="/noAutorizado" component={error} />
             <PrivateRoute path="/manager" component={Manager} />
+            <PrivateRoute path="/c_documento/:id_proyecto" component={CDocumento} />
 
             <Route exact path="/logout" component={Logout} />
         </Switch>

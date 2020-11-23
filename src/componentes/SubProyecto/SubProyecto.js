@@ -126,7 +126,6 @@ export default class SubProyecto extends Component{
 
     eliminarSubProyecto = () => {
         const token = localStorage.getItem('token');
-
         var urlEliminar = url + 'eliminar/' + this.state.subProyecto.id_subProyecto;
         axios.delete(urlEliminar,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.getSubProyectos();
@@ -145,7 +144,8 @@ export default class SubProyecto extends Component{
 
                     <div style={{float: "right" , textDecoration: 'none'}}>
                         <Link to= {`/palabra/${this.props.match.params.id_proyecto}`}><button type="button" className="btn boton">Ver Glosario</button> </Link>
-                        <Link to={"/propuestaCambio/"+this.props.match.params.id_proyecto}><button type="button" className="btn boton" >Propuestas de cambio</button></Link>
+                        <Link to={"/propuestaCambio/"+this.props.match.params.id_proyecto}><button type="button" className="btn boton" >Propuestas de cambio</button> </Link>
+                        <Link to= {`/c_documento/${this.props.match.params.id_proyecto}`}><button type="button" className="btn boton">Construir Documento</button></Link>
                     </div>
 
                     <TablasubProyecto

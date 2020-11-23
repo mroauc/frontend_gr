@@ -19,13 +19,13 @@ class Requerimiento extends Component{
         tipoModal: '',
         requerimiento: {
             id_requerimiento: 0,
-            nombre: '',
+            nombre: '', 
             descripcion: '',
             id_usuario: 0,
             id_subProyecto: this.props.match.params.id_subproyecto,
             fecha_creacion: '',
-            prioridad: 'Baja',
-            estado: 'Creado',
+            prioridad: '',
+            estado: '',
             categoria: '',
             id_template: 0
         },
@@ -70,8 +70,8 @@ class Requerimiento extends Component{
                     id_usuario: response.data.id,
                     id_subProyecto: this.props.match.params.id_subproyecto,
                     fecha_creacion: '',
-                    prioridad: 'Baja',
-                    estado: 'Creado',
+                    prioridad: '',
+                    estado: '',
                     categoria: '',
                     id_template: 0
                 }

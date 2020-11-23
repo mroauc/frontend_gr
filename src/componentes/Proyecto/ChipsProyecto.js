@@ -61,7 +61,7 @@ export default class ChipsProyecto extends Component{
                 <label style={{marginRight: '10px' }}>Empresas Asociadas</label>
                 <div className="divf">
                     <div className="input-group">
-                        <select className="form-control" style={{width: '70%'}} onChange={this.changeInputEmpresa}>
+                        <select className="form-control" onChange={this.changeInputEmpresa}>
                             <option value="">Elige una Empresa</option>
                             {this.props.empresas.map( empresa => {
                                 return(

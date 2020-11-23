@@ -1,0 +1,43 @@
+.contenedor-construccion_d{
+    width: 61%;
+    margin: 0 auto;
+    border: 1px solid rgb(0 0 0 / 29%);
+	margin-top: 30px;
+    border-radius: 10px;
+    overflow: auto;
+}
+
+.titulo-construccion_d{
+	text-align: center;
+	height: 40px;
+    background-color: rgb(222, 222, 222);
+    padding: 7px;
+    width: 100%;
+	border-bottom: 1px solid rgba(0,0,0,.15);
+	font-size: 18px;
+	font-family: sans-serif;
+}
+
+.inferior-contruccion_d{
+    padding: 10px 15px;
+}
+
+.inputCrear{
+    width: 65%;
+    display: inline-flex;
+}
+
+.botonCrear{
+    width: 30%;
+    text-align: center;
+    margin-top: -6px;
+    margin-left: 5%;
+}
+
+.contenedor-construccion_d .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused){
+    height: 20vh;
+}
+
+.contenedor-construccion_d .ck-editor__editable.ck-rounded-corners{
+    height: 20vh;
+}

@@ -13,11 +13,34 @@ export default class PalabraModal extends Component {
             significado : '',
             id_proyecto: ''
         },
-        proyectos: []
+        errorInputPalabra: '',
+        errorInputSignificado: ''
     }
 
     componentWillReceiveProps(next_props) {
         this.setState({ palabra: this.props.palabra});
+    }
+
+    initErrores = () => {
+        this.setState({
+            errorInputPalabra: '',
+            errorInputSignificado: ''
+        })
+    }
+
+    validar = () => {
+        let salida = true;
+
+        if(this.state.palabra.palabra === ""){
+            this.setState({errorInputPalabra : "Debe ingresar un nombre de una nueva palabra"})
+            salida = false;
+        }
+        if(this.state.palabra.significado === ""){
+            this.setState({errorInputSignificado : "Debe ingresar un significado para la palabra"})
+            salida = false;
+        }
+
+        return salida;
     }
 
     guardarPalabra = async (palabra) => {
@@ -25,15 +48,15 @@ export default class PalabraModal extends Component {
         const token = localStorage.getItem('token');
         var urlGuardar = url + 'guardar';
         
-        await axios.post(urlGuardar, palabra, {headers: {"Authorization": `Bearer  ${token}`}})
-        .then(response => {
-            (this.props.estadoEditar) ? this.props.cambiarEstadoEditar() : this.props.cambiarEstadoInsertar();
-            this.props.getPalabras();
-            console.log(response);
-        })
-        .catch(error => {
-            console.log(error)
-        })
+        if(this.validar()){
+            await axios.post(urlGuardar, palabra, {headers: {"Authorization": `Bearer  ${token}`}})
+            .then(response => {
+                (this.props.estadoEditar) ? this.props.cambiarEstadoEditar() : this.props.cambiarEstadoInsertar();
+                this.props.getPalabras();
+                console.log(response);
+            })
+            this.initErrores();
+        }
     }
 
     changeHandler = async (e) => {
@@ -71,16 +94,22 @@ export default class PalabraModal extends Component {
                             <input className="form-control" type="text" name="id_palabra" id="id_palabra" value={this.state.palabra.id_palabra} readOnly />
                             <br/>
                             <label htmlFor="palabra">Palabra</label>
-                            <input className="form-control" type="text" name="palabra" id="palabra" onChange={this.changeHandler} value={this.state.palabra.palabra}/>
+                            <input className={(this.state.errorInputPalabra)? "form-control is-invalid" : "form-control"} type="text" name="palabra" id="palabra" onChange={this.changeHandler} value={this.state.palabra.palabra} onClick={() => {this.setState({errorInputPalabra : ''})}}/>
+                            <div class="invalid-feedback" style={{display: 'block'}}>
+                                {this.state.errorInputPalabra}
+                            </div>
                             <br/>
                             <label htmlFor="significado">Significado</label>
-                            <p><textarea className="form-control" type="text" name="significado" id="significado" maxLength="500" onChange={this.changeHandler} value={this.state.palabra.significado}/></p>
+                            <p><textarea className={(this.state.errorInputSignificado)? "form-control is-invalid" : "form-control"} type="text" name="significado" id="significado" maxLength="500" onChange={this.changeHandler} value={this.state.palabra.significado} onClick={() => {this.setState({errorInputSignificado : ''})}}/></p>
 
                             {(this.props.estadoInsertar)?
                                 <p id="span_contador" style={{float:'right'}}><span style={{color: 'gray'}}>0/500</span></p>
                                 :
                                 <p id="span_contador" style={{float:'right'}}><span style={{color: 'gray'}}>{this.state.palabra.significado.length}/500</span></p>
                             }
+                            <div class="invalid-feedback" style={{display: 'block'}}>
+                                {this.state.errorInputSignificado}
+                            </div>
 
                             <br/>
                             <label htmlFor="id_proyecto">Id Proyecto</label>
@@ -89,7 +118,7 @@ export default class PalabraModal extends Component {
                     </ModalBody>
                     <ModalFooter>
                         <button className="btn btn-success" onClick={() => this.guardarPalabra(this.state.palabra)}> {(this.props.estadoInsertar)? "Insertar" : "Actualizar"}</button>
-                        <button className="btn btn-danger" onClick={() => {(this.props.estadoInsertar) ? this.props.cambiarEstadoInsertar() : this.props.cambiarEstadoEditar()}} >Cancelar</button>
+                        <button className="btn btn-danger" onClick={() => {(this.props.estadoInsertar) ? this.props.cambiarEstadoInsertar() : this.props.cambiarEstadoEditar(); this.initErrores()}} >Cancelar</button>
                     </ModalFooter>
                 </Modal>
 

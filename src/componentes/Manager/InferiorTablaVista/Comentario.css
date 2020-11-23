@@ -11,6 +11,10 @@
     height: 95%;
 }
 
+.invalid{
+    border-color: #dc3545;
+}
+
 .cont-boton{
     height: 100%;
     display: flex;

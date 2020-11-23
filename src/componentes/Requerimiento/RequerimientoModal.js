@@ -16,11 +16,17 @@ class RequerimientoModal extends Component{
             categoria: '',
             id_template: ''
         },
+        id_usuario_responsable : '',
         template_actual : '',
         templates : [],
         usuarios: [],
         usuariosSubProyecto: [],
-        id_usuario_responsable : ''
+
+        errorInputUsuarioResponsable: '',
+        errorInputPrioridad: '',
+        errorInputEstado: '',
+        errorInputCategoria: '',
+        errorInputTemplate: ''        
     }
 
     componentDidMount(){
@@ -50,21 +56,61 @@ class RequerimientoModal extends Component{
         }
     }
 
+    validar = () => {
+        let salida= true;
+        
+        if(this.state.id_usuario_responsable === "" || this.state.id_usuario_responsable === undefined){
+            this.setState({errorInputUsuarioResponsable : "Debe seleccionar un usuario."});
+            salida = false;
+        }
+        if(this.state.requerimiento.prioridad === ""){
+            this.setState({errorInputPrioridad : "Debe seleccionar una prioridad al requerimiento."});
+            salida = false;
+        }
+        if(this.state.requerimiento.estado === ""){
+            this.setState({errorInputEstado : "Debe seleccionar un estado para el requerimiento."});
+            salida = false;
+        }
+        if(this.state.requerimiento.categoria === ""){
+            this.setState({errorInputCategoria : "Debe seleccionar una categoria para el requerimiento."});
+            salida = false;
+        }
+        if(this.state.requerimiento.id_template === ""){
+            this.setState({errorInputTemplate : "Debe seleccionar una categoria para el requerimiento."});
+            salida = false;
+        }
+
+        return salida;
+    }
+
+    initErrores = () => {
+        this.setState({
+            errorInputCategoria: '',
+            errorInputEstado: '',
+            errorInputPrioridad: '',
+            errorInputUsuarioResponsable: '',
+            errorInputTemplate:''
+        })
+    }
+
     guardar=async()=>{
         const token = localStorage.getItem('token');
-        await Axios.post('http://localhost:8080/api/requerimiento/guardar/',{
-            descripcion: this.state.requerimiento.descripcion,
-            id_usuario: this.state.requerimiento.id_usuario,
-            id_subProyecto: this.state.requerimiento.id_subProyecto,
-            fecha_creacion: new Date().toLocaleString(),
-            prioridad: this.state.requerimiento.prioridad,
-            estado: this.state.requerimiento.estado,
-            categoria: this.state.requerimiento.categoria,
-            id_template: this.state.requerimiento.id_template
-        }, {headers: {"Authorization" : `Bearer ${token}`}})
-        .then(response=>{
-            this.completarDatos(response.data);
-        });
+        if(this.validar()){
+            await Axios.post('http://localhost:8080/api/requerimiento/guardar/',{
+                descripcion: this.state.requerimiento.descripcion,
+                id_usuario: this.state.requerimiento.id_usuario,
+                id_subProyecto: this.state.requerimiento.id_subProyecto,
+                fecha_creacion: new Date().toLocaleString(),
+                prioridad: this.state.requerimiento.prioridad,
+                estado: this.state.requerimiento.estado,
+                categoria: this.state.requerimiento.categoria,
+                id_template: this.state.requerimiento.id_template
+            }, {headers: {"Authorization" : `Bearer ${token}`}})
+            .then(response=>{
+                this.completarDatos(response.data);
+            });
+            this.initErrores();
+        }
     }
 
     completarDatos=(requerimiento)=>{
@@ -95,32 +141,35 @@ class RequerimientoModal extends Component{
     }
 
     guardarActualizacion=async()=>{
-        const actual = this.state.requerimiento;
-        actual.nombre = actual.categoria.concat(actual.id_requerimiento);
-        const token = localStorage.getItem('token');
-        Axios.get('http://localhost:8080/api/usuarioactividad/id_requerimiento/'+ actual.id_requerimiento, {headers: {"Authorization" : `Bearer ${token}`}})
-        .then(response => {
-            Axios.post('http://localhost:8080/api/usuarioactividad/guardar',{
-                id_usuarioActividad: response.data.id_usuarioActividad,
-                fecha: response.data.fecha,
-                id_requerimiento: actual.id_requerimiento,
-                id_usuario: this.state.id_usuario_responsable
-            }, {headers: {"Authorization" : `Bearer ${token}`}})
-        })
+        if(this.validar()){
+            const actual = this.state.requerimiento;
+            actual.nombre = actual.categoria.concat(actual.id_requerimiento);
+            const token = localStorage.getItem('token');
+            Axios.get('http://localhost:8080/api/usuarioactividad/id_requerimiento/'+ actual.id_requerimiento, {headers: {"Authorization" : `Bearer ${token}`}})
+            .then(response => {
+                Axios.post('http://localhost:8080/api/usuarioactividad/guardar',{
+                    id_usuarioActividad: response.data.id_usuarioActividad,
+                    fecha: response.data.fecha,
+                    id_requerimiento: actual.id_requerimiento,
+                    id_usuario: this.state.id_usuario_responsable
+                }, {headers: {"Authorization" : `Bearer ${token}`}})
+            })
 
-        if(this.state.template_actual !== this.state.requerimiento.id_template){
-            await Axios.get(`http://localhost:8080/api/template/${this.state.requerimiento.id_template}`,{headers: {"Authorization" : `Bearer ${token}`}})
+            if(this.state.template_actual !== this.state.requerimiento.id_template){
+                await Axios.get(`http://localhost:8080/api/template/${this.state.requerimiento.id_template}`,{headers: {"Authorization" : `Bearer ${token}`}})
+                .then(response=>{
+                    actual.descripcion = response.data.template;
+                });
+                console.log("nuevo template");
+            }
+            
+            Axios.post('http://localhost:8080/api/requerimiento/editar/',actual, {headers: {"Authorization" : `Bearer ${token}`}})
             .then(response=>{
-                actual.descripcion = response.data.template;
-            });
-            console.log("nuevo template");
+                this.props.modalInsertar();
+                this.props.index();
+            })
+            this.initErrores();
         }
-        
-        Axios.post('http://localhost:8080/api/requerimiento/editar/',actual, {headers: {"Authorization" : `Bearer ${token}`}})
-        .then(response=>{
-            this.props.modalInsertar();
-            this.props.index();
-        })
     }
 
     getUsuarios=()=>{
@@ -177,7 +226,7 @@ class RequerimientoModal extends Component{
                             <input className="form-control" type="text" name="id_subProyecto" id="id_subProyecto" value={this.state.requerimiento.id_subProyecto} readOnly />
                             <br/>
                             <label htmlFor="id_responsable">Usuario Responsable</label>
-                            <select className="form-control" type="text" name="id_usuario_responsable" id="id_usuario_responsable" value={this.state.id_usuario_responsable} onChange={(e) => {this.setState({id_usuario_responsable : e.target.value})}}>
+                            <select className={(this.state.errorInputUsuarioResponsable)? "form-control is-invalid" : "form-control"} type="text" name="id_usuario_responsable" id="id_usuario_responsable" value={this.state.id_usuario_responsable} onChange={(e) => {this.setState({id_usuario_responsable : e.target.value})}} onClick={() => {this.setState({errorInputUsuarioResponsable : ''})}}>
                                 <option value="">Seleccionar Usuario Responsable</option>
                                 {this.state.usuariosSubProyecto.map(usuario => {
                                     return(
@@ -186,23 +235,34 @@ class RequerimientoModal extends Component{
                                     
                                 })}
                             </select>
+                            <div class="invalid-feedback" style={{display: 'block'}}>
+                                {this.state.errorInputUsuarioResponsable}
+                            </div>
                             <br/>
                             <label htmlFor="prioridad">Prioridad</label>
-                            <select className="form-control" name="prioridad" id="prioridad" value={this.state.requerimiento.prioridad} onChange={this.changeHandler}>
+                            <select className={(this.state.errorInputPrioridad)? "form-control is-invalid" : "form-control"} name="prioridad" id="prioridad" value={this.state.requerimiento.prioridad} onChange={this.changeHandler} onClick={() => {this.setState({errorInputPrioridad : ''})}}>
+                                <option value="" selected>Seleccione una prioridad</option>
                                 <option value="Baja">Baja</option>
                                 <option value="Media">Media</option>
                                 <option value="Alta">Alta</option>
                             </select>
+                            <div class="invalid-feedback" style={{display: 'block'}}>
+                                {this.state.errorInputPrioridad}
+                            </div>
                             <br/>
                             <label htmlFor="estado">Estado</label><br/>
-                            <select className="form-control" name="estado" id="estado" value={this.state.requerimiento.estado} onChange={this.changeHandler}>
+                            <select className={(this.state.errorInputEstado)? "form-control is-invalid" : "form-control"} name="estado" id="estado" value={this.state.requerimiento.estado} onChange={this.changeHandler} onClick={() => {this.setState({errorInputEstado : ''})}}>
+                                <option value="" selected>Seleccione un estado</option>
                                 <option value="Creado">Creado</option>
                                 <option value="En Redaccion">En Redaccion</option>
                                 <option value="Aprobado">Aprobado</option>
                             </select>
+                            <div class="invalid-feedback" style={{display: 'block'}}>
+                                {this.state.errorInputEstado}
+                            </div>
                             <br/>
                             <label htmlFor="categoria">Categoría</label>
-                            <select className="form-control" name="categoria" id="categoria" value={this.state.requerimiento.categoria} onChange={this.changeHandler}>
+                            <select className={(this.state.errorInputCategoria)? "form-control is-invalid" : "form-control"} name="categoria" id="categoria" value={this.state.requerimiento.categoria} onChange={this.changeHandler} onClick={() => {this.setState({errorInputCategoria : ''})}}>
                                 <option value="">Seleccione una categoría</option>
                                 <option value="RUSA">Requerimiento Analista</option>
                                 <option value="RUSL">Requerimiento Lider de subproyecto</option>
@@ -212,9 +272,12 @@ class RequerimientoModal extends Component{
                                 <option value="REQF">Requerimiento Funcional</option>
                                 <option value="RENF">Requerimiento No Funcional</option>
                             </select>
-                            <br/>
+                            <div class="invalid-feedback" style={{display: 'block'}}>
+                                {this.state.errorInputCategoria}
+                            </div>
+                            <br/> 
                             <label htmlFor="id_template">ID Template</label>
-                            <select className="form-control" name="id_template" id="id_template" value={this.state.requerimiento.id_template} onChange={this.changeHandler}>
+                            <select className={(this.state.errorInputTemplate)? "form-control is-invalid" : "form-control"} name="id_template" id="id_template" value={this.state.requerimiento.id_template} onChange={this.changeHandler} onClick={() => {this.setState({errorInputTemplate : ''})}}>
                                 <option value="">Seleccione un Template</option>
                                 {this.state.templates.map(template=>{
                                     return(
@@ -222,6 +285,9 @@ class RequerimientoModal extends Component{
                                     )
                                 })}
                             </select>
+                            <div class="invalid-feedback" style={{display: 'block'}}>
+                                {this.state.errorInputTemplate}
+                            </div>
                             <br/>
                         </div>
                     </ModalBody>
@@ -235,7 +301,7 @@ class RequerimientoModal extends Component{
                                 Actualizar
                             </button>
                         }
-                            <button className="btn btn-danger" onClick={()=>this.props.modalInsertar()}>Cancelar</button>
+                            <button className="btn btn-danger" onClick={()=>{this.props.modalInsertar();this.initErrores();}}>Cancelar</button>
                     </ModalFooter>
                 </Modal>
             </React.Fragment>

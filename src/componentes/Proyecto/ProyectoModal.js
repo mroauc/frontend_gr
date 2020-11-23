@@ -14,7 +14,11 @@ class ProyectoModal extends Component{
             fecha_creacion: ''
         },
         empresasSeleccionadas: [],
-        empresas: []
+        empresas: [],
+        errorInputNombre : '',
+        errorInputFechaInicio : '',
+        errorInputFechaFin : '',
+        errorEmpresasAsociadas : ''
     }
 
     componentWillReceiveProps(next_props){
@@ -34,20 +38,22 @@ class ProyectoModal extends Component{
     guardar=async()=>{
         const token = localStorage.getItem('token');
         var id_act_proyecto;
-        await Axios.post('http://localhost:8080/api/proyecto/guardar/',{
-            nombre: this.state.proyecto.nombre,
-            fecha_inicio: this.state.proyecto.fecha_inicio,
-            fecha_fin: this.state.proyecto.fecha_fin,
-            id_usuario: this.state.proyecto.id_usuario,
-            fecha_creacion: new Date().toLocaleString()
-        },{headers: {"Authorization": `Bearer ${token}`}})
-        .then(response=>{
-           console.log(response); 
-           this.proyectoEmpresa(response.data.id_proyecto);
-           this.props.modalInsertar();
-           this.props.index();
-           
-        })
+        if(this.validar()){
+            await Axios.post('http://localhost:8080/api/proyecto/guardar/',{
+                nombre: this.state.proyecto.nombre,
+                fecha_inicio: this.state.proyecto.fecha_inicio,
+                fecha_fin: this.state.proyecto.fecha_fin,
+                id_usuario: this.state.proyecto.id_usuario,
+                fecha_creacion: new Date().toLocaleString()
+            },{headers: {"Authorization": `Bearer ${token}`}})
+            .then(response=>{
+                console.log(response); 
+                this.proyectoEmpresa(response.data.id_proyecto);
+                this.props.modalInsertar();
+                this.props.index();
+            })
+        }
+        
     }
 
     proyectoEmpresa=async(id_proyecto)=>{
@@ -79,12 +85,14 @@ class ProyectoModal extends Component{
     
     guardarActualizacion=()=>{
         const token = localStorage.getItem('token');
-        Axios.post('http://localhost:8080/api/proyecto/editar/',this.state.proyecto, {headers: {"Authorization": `Bearer ${token}`}})
-        .then(response=>{
-            this.props.modalInsertar();
-            this.props.index();
-            this.actualizarProyectoEmpresa();
-        })
+        if(this.validar()){
+            Axios.post('http://localhost:8080/api/proyecto/editar/',this.state.proyecto, {headers: {"Authorization": `Bearer ${token}`}})
+            .then(response=>{
+                this.props.modalInsertar();
+                this.props.index();
+                this.actualizarProyectoEmpresa();
+            })
+        }
     }
 
     actualizarProyectoEmpresa=()=>{
@@ -119,12 +127,43 @@ class ProyectoModal extends Component{
         })
     }
 
+    initErrores = () => {
+        this.setState({
+            errorInputNombre : '',
+            errorEmpresasAsociadas: '',
+            errorInputFechaInicio: '',
+            errorInputFechaFin : ''
+        })
+    }
+
     changeHandler=async(e)=>{
         await this.setState({
             proyecto:{
                 ...this.state.proyecto, [e.target.name]: e.target.value
             }
         });
+    }
+
+    validar = () => {
+        let validacion = true;
+        if(this.state.proyecto.nombre === ""){
+            this.setState({errorInputNombre : 'Ingrese un nombre para el proyecto.'});
+            validacion = false;
+        }
+        if(this.state.proyecto.fecha_inicio === ""){
+            this.setState({errorInputFechaInicio : "Seleccione una fecha de inicio para el proyecto."});
+            validacion = false;
+        }
+        if(this.state.proyecto.fecha_fin === ""){
+            this.setState({errorInputFechaFin : "Seleccione una fecha de termino para el proyecto."});
+            validacion = false;
+        }
+        if(this.state.empresasSeleccionadas.length === 0){
+            this.setState({errorEmpresasAsociadas : "Debe seleccionar al menos una empresa asociada."});
+            validacion = false;
+        }
+
+        return validacion;
     }
 
     render(){
@@ -142,24 +181,38 @@ class ProyectoModal extends Component{
                             <input className="form-control" type="text" name="id_proyecto" id="id_proyecto" value={this.state.proyecto.id_proyecto} readOnly/>
                             <br/>
                             <label htmlFor="nombre">Nombre de Proyecto</label>
-                            <input className="form-control" type="text" name="nombre" id="nombre" placeholder="Ingrese el nombre que desea asignar al proyecto" onChange={this.changeHandler} value={this.state.proyecto.nombre} />
+                            <input className={(this.state.errorInputNombre)? "form-control is-invalid" : "form-control"} type="text" name="nombre" id="nombre" placeholder="Ingrese el nombre que desea asignar al proyecto" onChange={this.changeHandler} value={this.state.proyecto.nombre} onClick={() => {this.setState({errorInputNombre : ''})}} />
+                            <div class="invalid-feedback" style={{display: 'block'}}>
+                                {this.state.errorInputNombre}
+                            </div>
                             <br/>
                             <label htmlFor="id_usuario">Jefe de Proyecto</label>
                             <input className="form-control" type="text" name="id_usuario" id="id_usuario" value={this.state.proyecto.id_usuario} readOnly/>
                             <br/>
-                            <ChipsProyecto
-                                id_proyecto = {this.state.proyecto.id_proyecto}
-                                empresas = {this.state.empresas}
-                                insertarChip = {this.insertarChip}
-                                eliminarChip = {this.eliminarChip}
-                                seleccionadas = {this.state.empresasSeleccionadas}
-                            />
+                            <div id="ChipsEmpresasAsociadas" onClick={() => {this.setState({errorEmpresasAsociadas : ''})}}>
+                                <ChipsProyecto
+                                    id_proyecto = {this.state.proyecto.id_proyecto}
+                                    empresas = {this.state.empresas}
+                                    insertarChip = {this.insertarChip}
+                                    eliminarChip = {this.eliminarChip}
+                                    seleccionadas = {this.state.empresasSeleccionadas}
+                                />
+                            </div>
+                            <div class="invalid-feedback" style={{display: 'block'}}>
+                                {this.state.errorEmpresasAsociadas}
+                            </div>
                             <br/>
                             <label htmlFor="fecha_inicio">Fecha de Inicio</label>
-                            <input className="form-control" type="date" name="fecha_inicio" id="fecha_inicio" onChange={this.changeHandler} value={this.state.proyecto.fecha_inicio} />
+                            <input className={(this.state.errorInputFechaInicio)? "form-control is-invalid" : "form-control"} type="date" name="fecha_inicio" id="fecha_inicio" onChange={this.changeHandler} value={this.state.proyecto.fecha_inicio} onClick={() => {this.setState({errorInputFechaInicio : ''})}}/>
+                            <div class="invalid-feedback" style={{display: 'block'}}>
+                                {this.state.errorInputFechaInicio}
+                            </div>
                             <br/>
                             <label htmlFor="fecha_fin">Fecha de Finalizacion</label>
-                            <input className="form-control" type="date" name="fecha_fin" id="fecha_fin" onChange={this.changeHandler} value={this.state.proyecto.fecha_fin} />
+                            <input className={(this.state.errorInputFechaFin)? "form-control is-invalid" : "form-control"} type="date" name="fecha_fin" id="fecha_fin" onChange={this.changeHandler} value={this.state.proyecto.fecha_fin} onClick={() => {this.setState({errorInputFechaFin : ''})}} />
+                            <div class="invalid-feedback" style={{display: 'block'}}>
+                                {this.state.errorInputFechaFin}
+                            </div>
                             <br/>
                             
                         </div>
@@ -174,7 +227,7 @@ class ProyectoModal extends Component{
                                 Actualizar
                             </button>
                         }
-                            <button className="btn btn-danger" onClick={()=>this.props.modalInsertar()}>Cancelar</button>
+                            <button className="btn btn-danger" onClick={()=>{this.props.modalInsertar();this.initErrores()}}>Cancelar</button>
                     </ModalFooter>
                 </Modal>
             </React.Fragment>
