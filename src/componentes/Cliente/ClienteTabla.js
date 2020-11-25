@@ -2,11 +2,18 @@ import Axios from 'axios';
 import React, { Component } from 'react';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Paginacion from '../Paginacion'
 
 export default class ClienteTabla extends Component {
     
     state={
-        usuarios: []
+        usuarios: [],
+        paginaActual: 1,
+        cantidadPorPagina: 1
+    }
+
+    cambiarPaginaActual = (n_pagina) => {
+        this.setState({paginaActual: n_pagina});
     }
 
     buscarUsuario=(id_usuario)=>{
@@ -36,6 +43,11 @@ export default class ClienteTabla extends Component {
     }
     
     render(){
+
+        const ultimoDato = this.state.paginaActual * this.state.cantidadPorPagina;
+        const primerDato = ultimoDato - this.state.cantidadPorPagina;
+        const datosActuales = this.props.clientes.slice(primerDato, ultimoDato);
+
         return(
             <div>
                 <table className="table table-hover">
@@ -49,10 +61,10 @@ export default class ClienteTabla extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.props.clientes.map((cliente,index) => {
+                        {datosActuales.map((cliente,index) => {
                             return(
                                 <tr key={cliente.id_cliente}>
-                                    <td scope="col">{index+1}</td>
+                                    <td scope="col">{index+1 + (this.state.cantidadPorPagina * (this.state.paginaActual-1))}</td>
                                     <td>{cliente.celular}</td>
                                     <td>{cliente.id_empresa}</td>
                                     <td>{this.buscarUsuario(cliente.id_user)}</td> 
@@ -65,6 +77,18 @@ export default class ClienteTabla extends Component {
                         })}
                     </tbody>
                 </table>
+                {
+                    (this.props.clientes.length <= this.state.cantidadPorPagina)
+                    ?
+                        ""
+                    :
+                        <Paginacion
+                            cambiarPaginaActual = {this.cambiarPaginaActual}
+                            cantidadPorPagina = {this.state.cantidadPorPagina}
+                            cantidadDeDatos = {this.props.clientes.length}
+                            paginaActual = {this.state.paginaActual} 
+                        />
+                }
             </div>
         );
     }

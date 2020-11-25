@@ -52,7 +52,6 @@ class RequerimientoModal extends Component{
                     id_usuario_responsable : response.data.id_usuario
                 });
             })
-            .catch(console.log("error"));
         }
     }
 
@@ -206,10 +205,10 @@ class RequerimientoModal extends Component{
     render(){
         return(
             <React.Fragment>
-                <Modal isOpen={this.props.estadoModalInsertar} toggle={()=>this.props.modalInsertar()}>
+                <Modal isOpen={this.props.estadoModalInsertar} toggle={()=>{this.props.modalInsertar();this.initErrores();}}>
                     <ModalHeader style={{display:'block'}}>
                         <span>{(this.props.tipoModal === 'insertar') ? 'Ingresar Requerimiento' :'Editar Requerimiento'}</span>
-                        <span style={{cursor:'pointer', float:'right'}} onClick={()=>this.props.modalInsertar()}>X</span>
+                        <span style={{cursor:'pointer', float:'right'}} onClick={()=>{this.props.modalInsertar();this.initErrores();}}>X</span>
                     </ModalHeader>
                     <ModalBody>
                         <div className="form-group">
@@ -229,10 +228,13 @@ class RequerimientoModal extends Component{
                             <select className={(this.state.errorInputUsuarioResponsable)? "form-control is-invalid" : "form-control"} type="text" name="id_usuario_responsable" id="id_usuario_responsable" value={this.state.id_usuario_responsable} onChange={(e) => {this.setState({id_usuario_responsable : e.target.value})}} onClick={() => {this.setState({errorInputUsuarioResponsable : ''})}}>
                                 <option value="">Seleccionar Usuario Responsable</option>
                                 {this.state.usuariosSubProyecto.map(usuario => {
-                                    return(
-                                        <option value={usuario.id_usuario}>{this.obtenerNombreUsuario(usuario.id_usuario)}</option>
-                                    );
-                                    
+                                    const usuarioEncontrado = this.state.usuarios.find(posibleUsuario => posibleUsuario.id === usuario.id_usuario); 
+                                    if(usuarioEncontrado !== undefined){
+                                        if(usuarioEncontrado.tipo !== "cliente")
+                                            return(
+                                                <option value={usuario.id_usuario}>{this.obtenerNombreUsuario(usuario.id_usuario)}</option>
+                                        );
+                                    }
                                 })}
                             </select>
                             <div class="invalid-feedback" style={{display: 'block'}}>

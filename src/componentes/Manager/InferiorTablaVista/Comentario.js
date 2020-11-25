@@ -20,7 +20,9 @@ export default class Comentario extends Component{
         let salida = true;
         if(this.state.nuevo_comentario === ''){
             this.setState({errorComentario : "Debe ingresar un comentario"})
-        } 
+            salida= false;
+        }
+        return salida;
     }
 
     getComentarios = async () => {
@@ -46,6 +48,7 @@ export default class Comentario extends Component{
 
     guardarComentario = async () => {
         const token = localStorage.getItem("token");
+
         if(this.validar()){
             await Axios.post('http://localhost:8080/api/comentario/guardar',{
                 texto: this.state.nuevo_comentario,
@@ -53,7 +56,7 @@ export default class Comentario extends Component{
                 fecha_ingreso: new Date().toLocaleString(),
                 id_usuario: localStorage.getItem("id")
             },{headers: {"Authorization": `Bearer  ${token}`}})
-            .then( () => {  
+            .then( () => {
                 this.setState({nuevo_comentario: '', errorComentario: ''});
                 this.getComentarios();
             }
@@ -79,6 +82,7 @@ export default class Comentario extends Component{
                     <div className="col-3 cont-boton">
                         <div style={{width: '100%'}}>
                             <button className="btn btn-success btn-block" onClick={this.guardarComentario}>Comentar</button>
+                            {/* <p id="span_contador" style={{float:'right'}}><span style={{color: 'gray'}}>{}/1000</span></p> */}
                             <div class="invalid-feedback" style={{display: 'block'}}>
                                 {this.state.errorComentario}
                             </div>

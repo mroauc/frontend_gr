@@ -7,47 +7,47 @@
     color: black;
 }
 
-a{
+.Navigation a{
     color: rgb(70, 70, 70);
 }
 
-a:hover{
+.Navigation a:hover{
     color: rgb(0, 0, 0);
 }
 
-li{
+.Navigation li{
     padding: 8px 16px;
     border-left: 1px solid rgba(0,0,0,.15);
 }
 
-li:hover{
+.Navigation li:hover{
     /* background-color: rgba(224, 224, 224, 0.651); */
     background-color: rgba(88, 88, 88, 0.236);
 }
 
-.seleccionado{
+.Navigation .seleccionado{
     background-color: rgba(122, 122, 122, 0.411);
 }
 
-.seleccionado:hover{
+.Navigation .seleccionado:hover{
     background-color: rgba(88, 88, 88, 0.336);
 }
 
-.seleccionado > a{
+.Navigation .seleccionado > a{
     color: rgb(0, 0, 0);
 }
 
 
-.sistema{
+.Navigation .sistema{
     margin: 0 auto;
 }
 
-.desplegable{
+.Navigation .desplegable{
     position: absolute;
     right: 5px;
 }
 
-.subMenu{
+.Navigation .subMenu{
     position: absolute; 
     right: 0;
     left: auto;

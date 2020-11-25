@@ -28,9 +28,15 @@
 }
 
 .botonpurple{
-    background-color: rgb(87, 35, 100);
+    background-color: rgb(129, 53, 148);
     color: #fff;
 }
+
+.botonpurple:hover{
+    background-color: rgb(92, 38, 105);
+    color: #fff;
+}
+
 
 
 .boton:hover{

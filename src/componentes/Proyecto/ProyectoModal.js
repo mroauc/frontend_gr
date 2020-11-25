@@ -169,11 +169,11 @@ class ProyectoModal extends Component{
     render(){
         return(
             <React.Fragment>
-                <Modal isOpen={this.props.estadoModalInsertar} toggle={()=>this.props.modalInsertar()}>
+                <Modal isOpen={this.props.estadoModalInsertar} toggle={()=>{this.initErrores();this.props.modalInsertar()}}>
                     <ModalHeader style={{display:'block'}}>
                         <span>{(this.props.tipoModal==='insertar') ? 'Ingresar Proyecto' :'Editar Proyecto'}</span>
 
-                        <span style={{cursor:'pointer', float:'right'}} onClick={()=>this.props.modalInsertar()}>X</span>
+                        <span style={{cursor:'pointer', float:'right'}} onClick={()=>{this.initErrores();this.props.modalInsertar()}}>X</span>
                     </ModalHeader>
                     <ModalBody>
                         <div className="form-group">

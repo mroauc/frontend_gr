@@ -184,11 +184,11 @@ export default class ClienteModal extends Component {
     render(){
         return(
             <React.Fragment>
-                <Modal isOpen = {this.props.estadoInsertar || this.props.estadoEditar} toggle={() => {(this.props.estadoInsertar) ? this.props.cambiarEstadoInsertar() : this.props.cambiarEstadoEditar()}} >
+                <Modal isOpen = {this.props.estadoInsertar || this.props.estadoEditar} toggle={() => {(this.props.estadoInsertar) ? this.props.cambiarEstadoInsertar() : this.props.cambiarEstadoEditar(); this.initErrores()}} >
                     <ModalHeader style={{display : 'block'}}>
                         <span>{(this.props.estadoInsertar) ? 'Ingresar Cliente' :'Editar Cliente'}</span>
                         
-                        <span style={{cursor : 'pointer' , float : 'right'}} onClick={() => {(this.props.estadoEditar) ? this.props.cambiarEstadoEditar() : this.props.cambiarEstadoInsertar()}}>X</span>
+                        <span style={{cursor : 'pointer' , float : 'right'}} onClick={() => {(this.props.estadoInsertar) ? this.props.cambiarEstadoInsertar() : this.props.cambiarEstadoEditar(); this.initErrores()}}>X</span>
                     </ModalHeader>
                     <ModalBody>
                         <div className="form-group">

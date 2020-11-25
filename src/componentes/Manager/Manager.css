@@ -43,7 +43,7 @@
 }
 
 .titulo{
-    padding: 3px 0 3px 20px;
+    padding: 3px 0 3px 8px;
     cursor: pointer;
     user-select: none; 
 }
