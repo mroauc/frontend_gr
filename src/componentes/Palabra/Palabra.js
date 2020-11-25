@@ -125,7 +125,7 @@ export default class Palabra extends Component{
                 <div className="palabra col-10">
                     <div className="Encabezado"><p>Palabra</p></div>
                     <button type="button" className="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Ingresar Palabra</button> &nbsp;
-                    <Link to={"/subProyecto/"+this.props.match.params.id_proyecto}><button type="button" className="btn boton"><ArrowBackIcon/></button></Link>
+                    <Link to={"/subProyecto/"+this.props.match.params.id_proyecto}><button type="button" className="btn boton"><ArrowBackIcon/> Volver</button></Link>
 
                     <TablaPalabra
                         palabras={this.state.data}

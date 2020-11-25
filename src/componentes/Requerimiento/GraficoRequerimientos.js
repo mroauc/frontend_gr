@@ -1,6 +1,6 @@
 import Axios from 'axios';
 import React, {Component} from 'react';
-import { PieChart, Pie, Sector, Cell, Tooltip } from 'recharts';
+import { PieChart, Pie, Sector, Cell, Tooltip, ResponsiveContainer, BarChart, XAxis, YAxis, Legend, CartesianGrid, Bar } from 'recharts';
 import Menu from '../Menu/Menu';
 import {Link} from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -64,17 +64,17 @@ class GraficoRequerimiento extends Component{
 
         //tupla estado CREADO
         var creado = requerimientos.filter(req => req.estado === "Creado");
-        var tupla1 = {name: 'Creado', value: creado.length};
+        var tupla1 = {name: 'Creado', value: creado.length, frecuencia: creado.length};
         dataFinal.push(tupla1);
 
         //tupla estado EN REDACCION
         var enRedaccion = requerimientos.filter(req => req.estado === "En Redaccion");
-        var tupla2 = {name: 'En Redaccion', value: enRedaccion.length};
+        var tupla2 = {name: 'En Redaccion', value: enRedaccion.length, frecuencia: enRedaccion.length};
         dataFinal.push(tupla2);
 
         //tupla estado Aprobado
         var aprobado = requerimientos.filter(req => req.estado === "Aprobado");
-        var tupla3 = {name: 'Aprobado', value: aprobado.length};
+        var tupla3 = {name: 'Aprobado', value: aprobado.length, frecuencia: aprobado.length};
         dataFinal.push(tupla3);
 
         this.setState({
@@ -90,10 +90,11 @@ class GraficoRequerimiento extends Component{
                     <div className="titulo-grafico">
                         <label>Requerimientos Registrados en el Sistema</label>
                     </div>
-                    <PieChart width={700} height={300}>
+                    <div className="contenedor-dos-graficos">
+                    <PieChart width={500} height={300}>
                         <Pie
                             data={this.state.data}
-                            cx={600}
+                            cx={350}
                             cy={150}
                             labelLine={false}
                             label={renderCustomizedLabel}
@@ -107,6 +108,26 @@ class GraficoRequerimiento extends Component{
                         </Pie>
                         <Tooltip />
                     </PieChart>
+
+                    <BarChart
+                        width={500}
+                        height={300}
+                        data={this.state.data}
+                        margin={{
+                        top: 50, right: 30, left: -40, bottom: 5,
+                        }}
+                        barSize={20}
+                    >
+                        <XAxis dataKey="name" scale="point" padding={{ left: 10, right: 10 }} />
+                        <YAxis /> 
+                        <Tooltip />
+                        <Legend />
+                        <CartesianGrid strokeDasharray="3 3" />
+                    
+                        <Bar dataKey="frecuencia" fill="#8884d8" background={{ fill: '#eee' }} />
+                    </BarChart>
+                    </div>
+
                     <div style={{textAlign:'left', marginLeft:'20px'}}>
                         <label>-Requerimiento Creado</label><br/>
                         <label>-Requerimiento En Redaccion</label><br/>

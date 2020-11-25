@@ -1,4 +1,3 @@
-
 import Axios from 'axios';
 import React, { Component } from 'react'
 import Menu from '../Menu/Menu';
@@ -6,6 +5,8 @@ import './ConstruccionDocumento.css';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import swal from 'sweetalert';
+import {Link} from 'react-router-dom';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const initSeccion = {
     id_seccion: '',
@@ -179,8 +180,11 @@ export default class ConstruccionDocumento extends Component {
                                 }}
                             />
                         </div>
-
                     </div>
+                </div>
+                <br/>
+                <div style={{marginLeft:'280px'}}>
+                    <Link to={"/subProyecto/"+this.props.match.params.id_proyecto}><button type="button" className="btn boton"><ArrowBackIcon/> Volver</button></Link>
                 </div>
             </React.Fragment>
         );

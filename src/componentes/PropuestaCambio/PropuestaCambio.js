@@ -143,7 +143,7 @@ class PropuestaCambio extends Component{
                 <div className="propuestaCambio col-10">
                 <div className="Encabezado"><p>Propuestas de Cambio</p></div>
                 <button type="button" className="btn boton" onClick={() => this.modalInsertar()}>Insertar</button> &nbsp;
-                <Link to={"/subProyecto/"+this.props.match.params.id_proyecto}><button type="button" className="btn boton"><ArrowBackIcon/></button></Link>
+                <Link to={"/subProyecto/"+this.props.match.params.id_proyecto}><button type="button" className="btn boton"><ArrowBackIcon/> Volver</button></Link>
 
                 <TablaPropuestaCambio
                     propuestas={this.state.propuestas}

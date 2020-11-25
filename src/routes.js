@@ -24,6 +24,8 @@ import Manager from './componentes/Manager/Manager';
 import MatrizRelacionReq from './componentes/Requerimiento/MatrizRelacionReq';
 import CDocumento from './componentes/Proyecto/ConstruccionDocumento';
 import GraficoRequerimiento from './componentes/Requerimiento/GraficoRequerimientos';
+import Dragdrop from './componentes/DragNDrop/Dragdrop';
+import IndexDragdrop from './componentes/DragNDrop/IndexDragdrop';
 
 
 const Routes=()=>(
@@ -42,6 +44,7 @@ const Routes=()=>(
             <PrivateRoute path="/proyecto" component={Proyecto} />
             <PrivateRoute path="/relacion_requerimiento" component={RelacionRequerimientos} />
             <PrivateRoute path="/requerimiento/:id_subproyecto" component={Requerimiento} />
+            <PrivateRoute path="/dragdrop/:id_subproyecto" component={IndexDragdrop} />
             <PrivateRoute path="/matrizRelacion/:id_subproyecto" component={MatrizRelacionReq} />
             <PrivateRoute path="/graficoRequerimientos/:id_proyecto" component={GraficoRequerimiento} />
             <PrivateRoute path="/subProyecto/:id_proyecto" component={SubProyecto} />

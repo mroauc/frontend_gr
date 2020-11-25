@@ -97,14 +97,33 @@ class Proyecto extends Component{
         const token = localStorage.getItem('token');
         await Axios.get(`http://localhost:8080/api/subProyecto/pertenecientes/${id_proyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
-            this.finalizarGeneracionPDF(response.data);
+            this.finalizarGeneracionPDF(response.data, id_proyecto);
         })
     }
 
-    finalizarGeneracionPDF=async(subProyectos)=>{
+    finalizarGeneracionPDF=async(subProyectos, id_proyecto)=>{
         const token = localStorage.getItem('token');
-        var conjuntoImprimir = [];
         var imprimir = '';
+        var secciones = [];
+        var nombreProyecto = '';
+
+        await Axios.get(`http://localhost:8080/api/proyecto/${id_proyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            nombreProyecto = response.data.nombre;
+        })
+
+        await Axios.get(`http://localhost:8080/api/seccion/id_proyecto/${id_proyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            secciones = response.data;
+        });
+
+        imprimir = imprimir + '<div class="formatoProyecto"><div class="cabeceraProyecto"><h4>Proyecto <strong>'+ nombreProyecto +'</strong></h4></div>';
+        for (let index = 0; index < secciones.length; index++) {            
+            imprimir = imprimir+ '<strong>' + secciones[index].nombre_seccion + '</strong><br>' + secciones[index].contenido_seccion + '<br>';
+        }
+        imprimir = imprimir+'</div>';
+
+
         for (let index = 0; index < subProyectos.length; index++) {
             imprimir = imprimir + '<div class="formatoSubproyecto"><div class="cabeceraSubProyecto"><h4>Subproyecto <strong>'+ subProyectos[index].nombre_subProyecto +'</strong></h4></div>';
             await Axios.get(`http://localhost:8080/api/requerimiento/obtener/${subProyectos[index].id_subProyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
@@ -183,7 +202,14 @@ class Proyecto extends Component{
             imprimir = imprimir + '</div><br>';
         }
 
-        html2pdf().set({filename: 'documentoSalida'}).from(imprimir).save();
+        var opt = {
+            margin: 0.2,
+            filename: 'documento_' + nombreProyecto + '.pdf',
+            jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait', putOnlyUsedFonts: true}
+        };
+
+        //html2pdf().set({filename: 'documentoSalida'}).from(imprimir).save();
+        html2pdf().from(imprimir).set(opt).save();
     }
 
     render(){

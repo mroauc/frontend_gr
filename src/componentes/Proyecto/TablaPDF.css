@@ -38,4 +38,17 @@
   margin: 10px;
   padding: 10px;
 }
-/* etiqueta color es para color de letra */
+
+.cabeceraProyecto{
+  height: 40px;
+  background-color: navy;
+  margin: -10px -10px 0 -10px;
+  padding: 10px;
+  color: white;
+}
+
+.formatoProyecto{
+  border: 1px solid navy;
+  margin: 10px;
+  padding: 10px;
+}
