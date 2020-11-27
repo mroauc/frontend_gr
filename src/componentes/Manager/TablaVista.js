@@ -8,7 +8,8 @@ import './Tabs/Tabs.css';
 import '../vistaCrud.css';
 import './Manager.css';
 import PaginaPrincipal from './PaginaPrincipal';
-import swal from 'sweetalert'
+import swal from 'sweetalert';
+import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
 
 export default class TablaVista extends Component {
 
@@ -50,7 +51,7 @@ export default class TablaVista extends Component {
                         var filtrado = this.props.requerimientos.filter(requerimiento => requerimiento.nombre === reqID);
                         return(
                             <div label={reqID}>
-                                <button className="btn boton" onClick={()=>this.insertar(filtrado[0])}>Guardar</button>
+                                <button className="btn boton" style={{marginBottom:'10px'}} onClick={()=>this.insertar(filtrado[0])}><SaveOutlinedIcon/></button>
                                 <div className="editReq">
                                     <TemplateTextEditor
                                         template = {filtrado[0].descripcion}

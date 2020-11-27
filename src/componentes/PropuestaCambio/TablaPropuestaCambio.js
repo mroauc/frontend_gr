@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import { Link } from 'react-router-dom';
+import GraficoSVG from './GraficoSVG'
 
 class TablaPropuestaCambio extends Component{
     render(){
@@ -29,6 +31,7 @@ class TablaPropuestaCambio extends Component{
                                     <td>{propuesta.id_subproyecto}</td>
                                     <td>{propuesta.estado}</td>
                                     <td>
+                                        <Link to={`/analisisImpacto/${propuesta.id_propuestaCambio}`}><button className="btn btn-success" ><GraficoSVG/></button></Link> &nbsp;
                                         <button className="btn btn-success" onClick={()=>this.props.verPropuesta(propuesta)}><VisibilityIcon/></button> &nbsp;
                                         <button className="btn btn-warning" onClick={()=>this.props.editar(propuesta)}><EditIcon/></button> &nbsp;
                                         <button className="btn btn-danger" onClick={()=>this.props.modalEliminar(propuesta)}><DeleteIcon/></button> &nbsp;

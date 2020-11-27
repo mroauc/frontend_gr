@@ -2,7 +2,7 @@ import Axios from 'axios';
 import React, { Component } from 'react';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import Paginacion from '../Paginacion'
+import Paginacion from '../Paginacion';
 
 export default class ClienteTabla extends Component {
     

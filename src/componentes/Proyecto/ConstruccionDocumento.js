@@ -7,6 +7,7 @@ import CKEditor from '@ckeditor/ckeditor5-react';
 import swal from 'sweetalert';
 import {Link} from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const initSeccion = {
     id_seccion: '',
@@ -92,6 +93,23 @@ export default class ConstruccionDocumento extends Component {
         await this.getSecciones();
     }
 
+    eliminarSeccion = async() => {
+        const token = localStorage.getItem('token');
+        await Axios.delete(`http://localhost:8080/api/seccion/eliminar/${this.state.seccion.id_seccion}`,{headers: {"Authorization": `Bearer  ${token}`}})
+        .then(response => {
+            console.log(response.data);
+        })
+        this.setState({
+            seccion : {
+                id_seccion: '',
+                nombre_seccion: '',
+                contenido_seccion: '',
+                id_proyecto : this.props.match.params.id_proyecto
+            }
+        })
+        this.getSecciones();
+    }
+
     getSeccion = async (e) => {
         if(e.target.value !== ""){
 
@@ -160,7 +178,12 @@ export default class ConstruccionDocumento extends Component {
                         </div>
                         <br/>
                         <label htmlFor="EditarSeccion"><strong>Editar Sección</strong></label>
-                        <button type="button" className="btn boton" style={{display: this.state.seccion.contenido_seccion===""? 'none' : 'block', marginBottom:'.5rem'}} onClick={this.actualizarSeccion}>Guardar</button>
+
+                        <div style={{marginBottom:'.5rem'}}>
+                            <button type="button" className="btn boton" style={{display: this.state.seccion.id_seccion===""? 'none' : 'inline', marginRight:'.5rem'}} onClick={this.actualizarSeccion}>Guardar</button>
+                            <button className="btn btn-danger" style={{display: this.state.seccion.id_seccion===""? 'none' : 'inline'}} onClick={this.eliminarSeccion}><DeleteIcon/></button>
+                        </div>
+                        
                         <select className="form-control" type="text" name="id_seccion" id="id_seccion" onChange={this.getSeccion} value={this.state.seccion.id_seccion}>
                             <option value="">Selecciona una Sección</option>
                             {this.state.secciones.map(seccion => {

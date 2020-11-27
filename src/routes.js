@@ -26,6 +26,7 @@ import CDocumento from './componentes/Proyecto/ConstruccionDocumento';
 import GraficoRequerimiento from './componentes/Requerimiento/GraficoRequerimientos';
 import Dragdrop from './componentes/DragNDrop/Dragdrop';
 import IndexDragdrop from './componentes/DragNDrop/IndexDragdrop';
+import AnalisisDeImpacto from './componentes/AnalisisDeImpacto/AnalisisDeImpacto';
 
 
 const Routes=()=>(
@@ -54,6 +55,7 @@ const Routes=()=>(
             <PrivateRoute path="/noAutorizado" component={error} />
             <PrivateRoute path="/manager" component={Manager} />
             <PrivateRoute path="/c_documento/:id_proyecto" component={CDocumento} />
+            <PrivateRoute path="/analisisImpacto/:id_propuestaCambio" component={AnalisisDeImpacto} />
 
             <Route exact path="/logout" component={Logout} />
         </Switch>

@@ -127,13 +127,25 @@ class PropuestaCambio extends Component{
         });
     }
 
-    eliminar=()=>{
+    eliminar= async ()=>{
         const token = localStorage.getItem('token');
         Axios.delete(`http://localhost:8080/api/propuestacambio/eliminar/${this.state.propuesta.id_propuestaCambio}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({modalEliminar:false, propuesta:'', propuesta:{estado:'Pendiente'}});
             this.index();
         })
+
+        let impactoOld = '';
+        console.log(this.state.propuesta.id_propuestaCambio);
+
+        await Axios.get(`http://localhost:8080/api/impacto_directo/obtener/${this.state.propuesta.id_propuestaCambio}`,{headers:{"Authorization": `Bearer ${token}`}})
+        .then(response => {
+            impactoOld = response.data[0]
+        })
+
+        console.log(impactoOld);
+
+        Axios.delete(`http://localhost:8080/api/impacto_directo/eliminar/${impactoOld.id_impacto_directo}`,{headers:{"Authorization": `Bearer ${token}`}})
     }
 
     render(){

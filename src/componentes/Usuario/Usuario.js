@@ -21,7 +21,7 @@ class Usuario extends Component{
             password: '',
             rol: '',
             email:''
-        },
+        }
     }
 
     index=async()=>{
@@ -83,8 +83,17 @@ class Usuario extends Component{
 
         await Axios.delete(`http://localhost:8080/api/usuario/eliminar/${this.state.usuario.id}`, {headers: {"Authorization": `Bearer  ${token}`}})
         .then(response=>{
-            this.setState({modalEliminar:false, usuario:''});
             this.index();
+            this.setState({
+                modalEliminar:false, 
+                usuario:{
+                    id_usuario: 0,
+                    estado: '',
+                    nombre: '',
+                    password: '',
+                    rol: '',
+                    email:''
+                }});
         })
     }
 

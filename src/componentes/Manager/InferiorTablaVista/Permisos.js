@@ -50,6 +50,8 @@ export default class Permisos extends Component {
 
     obtenerNombreUsuario = (id_usuario) => {
         if(this.state.usuarios.length !== 0){
+            console.log(id_usuario)
+            console.log(this.state.usuarios)
             const usuarioEncontrado = this.state.usuarios.find(usuario => usuario.id === id_usuario)
             return usuarioEncontrado.nombre;    
         }

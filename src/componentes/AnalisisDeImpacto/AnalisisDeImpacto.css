@@ -1,0 +1,52 @@
+.node circle {
+	fill: rgb(199, 105, 82);
+	stroke:  rgb(255, 146, 146);
+	stroke-width: 20px;
+}
+
+.node text {
+	font-size: 11px;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	background-color: black;
+	fill: black;
+}
+
+.node {
+	cursor: auto;
+}
+
+path.link {
+	fill: none;
+	stroke: #2593B8;
+	stroke-width: 1.5px;
+}
+
+body {
+	background-color: white;
+	overflow: hidden;
+}
+
+
+
+text{
+    margin: 20px;
+}
+
+.contenedor-propuesta{
+	text-align: center;
+    width: 85%;
+    margin: 0 auto;
+    border: 1px solid rgb(0 0 0 / 29%);
+	margin-top: 30px;
+	border-radius: 10px;
+}
+
+.titulo-propuesta{
+	height: 40px;
+    background-color: rgb(222, 222, 222);
+    padding: 7px;
+    width: 100%;
+	border-bottom: 1px solid rgba(0,0,0,.15);
+	font-size: 18px;
+	font-family: sans-serif;
+}

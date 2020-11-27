@@ -48,3 +48,10 @@
 a:hover{
     text-decoration: none;
 }
+
+.input-filtrarTabla{
+    float: right;
+    width: 20%;
+    margin-top: -131px;
+    margin-bottom: 15px;
+}

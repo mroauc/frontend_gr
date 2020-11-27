@@ -213,6 +213,7 @@ class Proyecto extends Component{
     }
 
     render(){
+        console.log(this.state.proyectos)
         return(
             <React.Fragment>
                 <Menu/>
