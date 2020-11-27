@@ -6,23 +6,24 @@ import uuid from 'uuid/dist/v4';
 function Dragdrop(id_subproyecto) {
 
   //valores que se traen del backend y se mostraran en pantalla
-  var itemsFromBackend = [];
+  var itemsCreado = [];
+  var itemsEnRedaccion = [];
+  var itemsAprobado = [];
   const [columns, setColumns] = useState([]);
-  
 
   const columnsFromBackend =
     {
       [uuid()]:{
         name: 'Creado',
-        items: itemsFromBackend
+        items: itemsCreado
       },
       [uuid()]: {
         name: 'En Redaccion',
-        items: []
+        items: itemsEnRedaccion
       },
       [uuid()]: {
         name: 'Aprobado',
-        items: []
+        items: itemsAprobado
       }
     };
 
@@ -42,13 +43,20 @@ function Dragdrop(id_subproyecto) {
       const nuevo = {
         id: uuid(), content: requerimiento.nombre
       }
-      itemsFromBackend.push(nuevo);
+      if(requerimiento.estado==="Creado"){
+        itemsCreado.push(nuevo);
+      }
+      if(requerimiento.estado==="En Redaccion"){
+        itemsEnRedaccion.push(nuevo);
+      }
+      if(requerimiento.estado==="Aprobado"){
+        itemsAprobado.push(nuevo);
+      }
     })
-
     setColumns(columnsFromBackend);
   }
 
-  const onDragEnd = (result, columns, setColumns) => {
+  const onDragEnd = async(result, columns, setColumns) => {
     if (!result.destination) return;
     const { source, destination } = result;
     
@@ -70,6 +78,17 @@ function Dragdrop(id_subproyecto) {
           items: destItems
         }
       })
+
+      const token = localStorage.getItem('token');
+      var versionAntigua = '';
+
+      await Axios.get(`http://localhost:8080/api/requerimiento/nombre/${removed.content}`, {headers: {"Authorization": `Bearer  ${token}`}})
+      .then(response=>{
+        versionAntigua = response.data;
+        versionAntigua.estado = destColumn.name;
+        Axios.post('http://localhost:8080/api/requerimiento/editar/', versionAntigua, {headers: {"Authorization": `Bearer ${token}`}})
+      })
+
     }
     else{
       const column = columns[source.droppableId];
@@ -147,7 +166,7 @@ function Dragdrop(id_subproyecto) {
           )
         })}
       </DragDropContext>
-    </div>
+    </div>    
   );
 }
 

@@ -102,6 +102,7 @@ class PropuestaCambioModal extends Component{
                 this.props.modalInsertar();
                 this.props.index();
                 this.insertarImpactoDirecto(response.data.id_propuestaCambio);
+                this.notificar(response.data.id_subproyecto);
             })
         }
     }
@@ -119,6 +120,26 @@ class PropuestaCambioModal extends Component{
         this.setState({
             requerimientosImpactoDirecto: []
         });
+    }
+
+    notificar=(id_subproyecto)=>{
+        const token = localStorage.getItem('token');
+        var nombre_proy = '';
+        Axios.get(`http://localhost:8080/api/subProyecto/${id_subproyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            Axios.get(`http://localhost:8080/api/proyecto/${response.data.id_proyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
+            .then(response=>{
+                nombre_proy= response.data.nombre;
+                Axios.get(`http://localhost:8080/api/usuario/id/${response.data.id_usuario}`, {headers: {"Authorization": `Bearer ${token}`}})
+                .then(response=>{
+                    Axios.post('http://localhost:8080/api/email/enviar',{
+                        email: response.data.email,
+                        content: "Se ha registrado una nueva propuesta de cambio para el proyecto: <strong>"+nombre_proy+"</strong>",
+                        subject: "Nueva Propuesta de Cambio"
+                    }, {headers: {"Authorization": `Bearer ${token}`}})
+                })
+            })
+        })
     }
 
     guardarActualizacion=async()=>{

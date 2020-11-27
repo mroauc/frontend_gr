@@ -129,6 +129,9 @@ export default class SubProyecto extends Component{
         const token = localStorage.getItem('token');
         var urlEliminar = url + 'eliminar/' + this.state.subProyecto.id_subProyecto;
         axios.delete(urlEliminar,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
+            this.setState({
+                modalEliminar: !this.state.modalEliminar
+            })
             this.getSubProyectos();
         });
     }

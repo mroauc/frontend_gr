@@ -97,10 +97,11 @@ export class ErroresModal extends Component{
                             <br/>
                             <label htmlFor="contenido">Contenido del Error</label>
                             <p><textarea className={ (this.state.msj_contenido)? "form-control is-invalid" : "form-control"} type="text" name="contenido" id="contenido" rows="4" maxLength="1000" onChange={this.changeHandler} value={this.state.dataError.contenido} onClick={()=>{this.setState({contenido:""})}} /></p>
-                            {(this.props.tipoModal==='insertar')?
-                                <p id="span_contador" style={{float:'right'}}><span style={{color: 'gray'}}>0/1000</span></p>
+                            {(this.props.tipoModal==='actualizar')?
+                                    <p id="span_contador" style={{float:'right'}}><span style={{color: 'gray'}}>{this.state.dataError.contenido.length}/1000</span></p>
                                 :
-                                <p id="span_contador" style={{float:'right'}}><span style={{color: 'gray'}}>{this.state.dataError.contenido.length}/1000</span></p>
+                                    <p id="span_contador" style={{float:'right'}}><span style={{color: 'gray'}}>0/1000</span></p>
+
                             }
                             <div className="invalid-feedback" style={{display:'block'}}>
                                 {this.state.msj_contenido}

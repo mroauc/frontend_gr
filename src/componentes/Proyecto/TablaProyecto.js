@@ -6,13 +6,20 @@ import DescriptionIcon from '@material-ui/icons/Description';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import ForwardIcon from '@material-ui/icons/Forward';
+import Paginacion from '../Paginacion';
 
 class TablaProyecto extends Component{
 
     state={
         usuarios: [],
         subProyectos: [],
-        verSubProyecto: false
+        verSubProyecto: false,
+        paginaActual: 1,
+        cantidadPorPagina: 5
+    }
+
+    cambiarPaginaActual = (n_pagina) => {
+        this.setState({paginaActual: n_pagina});
     }
 
     componentDidMount(){
@@ -50,6 +57,10 @@ class TablaProyecto extends Component{
     }
 
     render(){
+        const ultimoDato = this.state.paginaActual * this.state.cantidadPorPagina;
+        const primerDato = ultimoDato - this.state.cantidadPorPagina;
+        const datosActuales = this.props.proyectos.slice(primerDato, ultimoDato);
+
         return(
             <div>
                 <table className="table table-hover">
@@ -64,10 +75,10 @@ class TablaProyecto extends Component{
                     </tr>
                 </thead>
                 <tbody>
-                    {this.props.proyectos.map((proyecto,index)=>{
+                    {datosActuales.map((proyecto,index)=>{
                         return(
                             <tr key={proyecto.id_proyecto}>
-                                <td>{index+1}</td>
+                                <td>{index+1 + (this.state.cantidadPorPagina * (this.state.paginaActual-1))}</td>
                                 <td>{proyecto.nombre}</td>
                                 <td>{this.buscarUsuario(proyecto.id_usuario)}</td>
                                 <td>{proyecto.fecha_creacion}</td>
@@ -82,7 +93,19 @@ class TablaProyecto extends Component{
                         )
                     })}
                 </tbody>
-            </table>                
+            </table>   
+            {
+                (this.props.proyectos.length <= this.state.cantidadPorPagina)
+                ?
+                    ""
+                :
+                    <Paginacion
+                        cambiarPaginaActual = {this.cambiarPaginaActual}
+                        cantidadPorPagina = {this.state.cantidadPorPagina}
+                        cantidadDeDatos = {this.props.proyectos.length}
+                        paginaActual = {this.state.paginaActual} 
+                    />
+            }             
         </div>
         );
     }

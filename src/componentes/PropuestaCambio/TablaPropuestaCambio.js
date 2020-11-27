@@ -2,9 +2,24 @@ import React, { Component } from 'react';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import Paginacion from '../Paginacion';
 
 class TablaPropuestaCambio extends Component{
+
+    state={
+        paginaActual: 1,
+        cantidadPorPagina: 5
+    }
+
+    cambiarPaginaActual = (n_pagina) => {
+        this.setState({paginaActual: n_pagina});
+    }
+
     render(){
+        const ultimoDato = this.state.paginaActual * this.state.cantidadPorPagina;
+        const primerDato = ultimoDato - this.state.cantidadPorPagina;
+        const datosActuales = this.props.propuestas.slice(primerDato, ultimoDato);
+
         return(
             <div>
                 <table className="table table-hover">
@@ -20,10 +35,10 @@ class TablaPropuestaCambio extends Component{
                         </tr>
                     </thead>
                     <tbody>
-                        {this.props.propuestas.map((propuesta,index)=>{
+                        {datosActuales.map((propuesta,index)=>{
                             return(
                                 <tr key={propuesta.id_propuestaCambio}>
-                                    <td>{index+1}</td>
+                                    <td>{index+1 + (this.state.cantidadPorPagina * (this.state.paginaActual-1))}</td>
                                     <td>{propuesta.nombre}</td>
                                     <td>{propuesta.fecha_peticion}</td>
                                     <td>{propuesta.id_subproyecto}</td>
@@ -38,6 +53,18 @@ class TablaPropuestaCambio extends Component{
                         })}
                     </tbody>
                 </table>
+                {
+                    (this.props.propuestas.length <= this.state.cantidadPorPagina)
+                    ?
+                        ""
+                    :
+                        <Paginacion
+                            cambiarPaginaActual = {this.cambiarPaginaActual}
+                            cantidadPorPagina = {this.state.cantidadPorPagina}
+                            cantidadDeDatos = {this.props.propuestas.length}
+                            paginaActual = {this.state.paginaActual} 
+                        />
+                }
             </div>
         );
     }

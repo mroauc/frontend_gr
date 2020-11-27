@@ -2,11 +2,18 @@ import Axios from 'axios';
 import React, { Component } from 'react'
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Paginacion from '../Paginacion';
 
 export class TablaErrores extends Component{
 
     state={
-        usuarios: []
+        usuarios: [],
+        paginaActual: 1,
+        cantidadPorPagina: 5
+    }
+
+    cambiarPaginaActual = (n_pagina) => {
+        this.setState({paginaActual: n_pagina});
     }
 
     buscarUsuario=(id_usuario)=>{
@@ -29,6 +36,10 @@ export class TablaErrores extends Component{
     }
 
     render(){
+        const ultimoDato = this.state.paginaActual * this.state.cantidadPorPagina;
+        const primerDato = ultimoDato - this.state.cantidadPorPagina;
+        const datosActuales = this.props.errores.slice(primerDato, ultimoDato);
+
         return(
             <div>
                 <table className="table table-hover">
@@ -42,10 +53,10 @@ export class TablaErrores extends Component{
                         </tr>
                     </thead>
                     <tbody>
-                        {this.props.errores.map((singleError,index)=>{
+                        {datosActuales.map((singleError,index)=>{
                             return(
                                 <tr key={singleError.id_error}>
-                                    <td>{index+1}</td>
+                                    <td>{index+1 + (this.state.cantidadPorPagina * (this.state.paginaActual-1))}</td>
                                     <td>{singleError.contenido}</td>
                                     <td>{this.buscarUsuario(singleError.id_usuario)}</td>
                                     <td>{singleError.fecha}</td>
@@ -58,6 +69,18 @@ export class TablaErrores extends Component{
                         })}
                     </tbody>
                 </table>
+                {
+                    (this.props.errores.length <= this.state.cantidadPorPagina)
+                    ?
+                        ""
+                    :
+                        <Paginacion
+                            cambiarPaginaActual = {this.cambiarPaginaActual}
+                            cantidadPorPagina = {this.state.cantidadPorPagina}
+                            cantidadDeDatos = {this.props.errores.length}
+                            paginaActual = {this.state.paginaActual} 
+                        />
+                }
             </div>
         );
     }
