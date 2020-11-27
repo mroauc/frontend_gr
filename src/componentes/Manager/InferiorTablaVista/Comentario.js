@@ -82,7 +82,7 @@ export default class Comentario extends Component{
                     <div className="col-3 cont-boton">
                         <div style={{width: '100%'}}>
                             <button className="btn btn-success btn-block" onClick={this.guardarComentario}>Comentar</button>
-                            {/* <p id="span_contador" style={{float:'right'}}><span style={{color: 'gray'}}>{}/1000</span></p> */}
+                            <p id="span_contador" style={{float:'right'}}><span style={{color: this.state.nuevo_comentario.length<255 ? 'gray' : 'red'}}>{this.state.nuevo_comentario.length}/255</span></p>
                             <div class="invalid-feedback" style={{display: 'block'}}>
                                 {this.state.errorComentario}
                             </div>

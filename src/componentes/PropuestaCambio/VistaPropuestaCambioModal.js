@@ -39,7 +39,7 @@ class VistaPropuestaCambioModal extends Component{
                             <input className="form-control" type="text" name="nombre" id="nombre" value={this.state.propuestaCambio.nombre} readOnly />
                             <br/>
                             <label htmlFor="id_modulo">ID Modulo</label>
-                            <input className="form-control" type="text" name="id_modulo" id="id_modulo" value={this.state.propuestaCambio.id_modulo} readOnly />
+                            <input className="form-control" type="text" name="id_modulo" id="id_modulo" value={this.state.propuestaCambio.id_subproyecto} readOnly />
                             <br/>
                             <label htmlFor="fecha_peticion">Fecha de Peticion</label>
                             <input className="form-control" type="date" name="fecha_peticion" id="fecha_peticion" value={this.state.propuestaCambio.fecha_peticion} readOnly />

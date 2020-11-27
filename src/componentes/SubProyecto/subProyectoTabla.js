@@ -5,11 +5,18 @@ import SubProyecto from './SubProyecto';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ReqIcon from './Req';
+import Paginacion from '../Paginacion';
 
 export default class subProyectoTabla extends Component {
     
     state={
-        usuarios: []
+        usuarios: [],
+        paginaActual: 1,
+        cantidadPorPagina: 2
+    }
+
+    cambiarPaginaActual = (n_pagina) => {
+        this.setState({paginaActual: n_pagina});
     }
 
     buscarUsuario=(id_usuario)=>{
@@ -32,6 +39,11 @@ export default class subProyectoTabla extends Component {
     }
     
     render(){
+
+        const ultimoDato = this.state.paginaActual * this.state.cantidadPorPagina;
+        const primerDato = ultimoDato - this.state.cantidadPorPagina;
+        const datosActuales = this.props.subProyectos.slice(primerDato, ultimoDato);
+
         return(
             <div>
                 <table className="table table-hover">
@@ -49,9 +61,9 @@ export default class subProyectoTabla extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {this.props.subProyectos.map((subProyecto, index) => {
+                            {datosActuales.map((subProyecto, index) => {
                                 return(
-                                    <tr key={subProyecto.id_subProyecto}>
+                                    <tr key={index+1 + (this.state.cantidadPorPagina * (this.state.paginaActual-1))}>
                                         <td scope="col">{index+1}</td>
                                         <td>{subProyecto.nombre_subProyecto}</td>
                                         <td>{subProyecto.fecha_inicio}</td>
@@ -72,6 +84,18 @@ export default class subProyectoTabla extends Component {
                         
                         </tbody>
                     </table>
+                    {
+                        (this.props.subProyectos.length <= this.state.cantidadPorPagina)
+                        ?
+                            ""
+                        :
+                            <Paginacion
+                                cambiarPaginaActual = {this.cambiarPaginaActual}
+                                cantidadPorPagina = {this.state.cantidadPorPagina}
+                                cantidadDeDatos = {this.props.subProyectos.length}
+                                paginaActual = {this.state.paginaActual} 
+                            />
+                    }
             </div>
         );
     }

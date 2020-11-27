@@ -31,6 +31,7 @@ class UsuarioModal extends Component{
 
     componentDidMount(){
         this.getEmpresas();
+        
     }
 
     componentWillReceiveProps(next_props){
@@ -156,7 +157,8 @@ class UsuarioModal extends Component{
     }
 
     esUsuario = () => {
-        if(this.state.usuario.tipo === "cliente"){
+        
+        if(this.state.usuario.tipo === "cliente" && this.state.cliente !== null){
             return (
             <div>
                 <label htmlFor="razon_social">Celular</label>
@@ -295,7 +297,7 @@ class UsuarioModal extends Component{
                                 {this.state.msj_password}
                             </div>
                             <br/>
-                            {this.esUsuario()}
+                            {this.esUsuario()}  
                         </div>
                     </ModalBody>
                     <ModalFooter>

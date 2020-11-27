@@ -114,7 +114,7 @@ class GraficoRequerimiento extends Component{
                         height={300}
                         data={this.state.data}
                         margin={{
-                        top: 50, right: 30, left: -40, bottom: 5,
+                        top: 50, right: 30, left: 0, bottom: 5,
                         }}
                         barSize={20}
                     >

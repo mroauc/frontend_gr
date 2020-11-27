@@ -2,7 +2,12 @@ import React, { Component } from 'react';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+<<<<<<< HEAD
 import Paginacion from '../Paginacion';
+=======
+import { Link } from 'react-router-dom';
+import GraficoSVG from './GraficoSVG'
+>>>>>>> 26bf260243b7a80484973f1aa4b279c4fc015400
 
 class TablaPropuestaCambio extends Component{
 
@@ -44,6 +49,7 @@ class TablaPropuestaCambio extends Component{
                                     <td>{propuesta.id_subproyecto}</td>
                                     <td>{propuesta.estado}</td>
                                     <td>
+                                        <Link to={`/analisisImpacto/${propuesta.id_propuestaCambio}`}><button className="btn btn-success" ><GraficoSVG/></button></Link> &nbsp;
                                         <button className="btn btn-success" onClick={()=>this.props.verPropuesta(propuesta)}><VisibilityIcon/></button> &nbsp;
                                         <button className="btn btn-warning" onClick={()=>this.props.editar(propuesta)}><EditIcon/></button> &nbsp;
                                         <button className="btn btn-danger" onClick={()=>this.props.modalEliminar(propuesta)}><DeleteIcon/></button> &nbsp;
