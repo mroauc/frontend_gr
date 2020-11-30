@@ -7,6 +7,7 @@ export class ErroresModal extends Component{
     state={
         dataError: {
             id_error: 0,
+            id_proyecto: '',
             contenido: '',
             id_usuario: '',
             fecha: ''
@@ -33,6 +34,7 @@ export class ErroresModal extends Component{
         if(this.validar()){
             const token = localStorage.getItem('token');
             await Axios.post('http://localhost:8080/api/errores/guardar/',{
+                id_proyecto: this.props.id_proyecto,
                 contenido: this.state.dataError.contenido,
                 id_usuario: this.state.dataError.id_usuario,
                 fecha: new Date().toLocaleString()
@@ -41,10 +43,29 @@ export class ErroresModal extends Component{
                 this.setState({
                     msj_contenido: ""
                 });
+                this.notificar(response.data.id_proyecto, response.data.contenido, response.data.fecha);
                 this.props.modalInsertar();
                 this.props.index();
             })
         }
+    }
+
+    notificar=(id_proyecto, contenido, fecha)=>{
+        const token = localStorage.getItem('token');
+        var nombre_proy = '';
+        Axios.get(`http://localhost:8080/api/proyecto/${id_proyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            nombre_proy=response.data.nombre;
+            Axios.get(`http://localhost:8080/api/usuario/id/${response.data.id_usuario}`, {headers: {"Authorization": `Bearer ${token}`}})
+            .then(response=>{
+                Axios.post('http://localhost:8080/api/email/enviar',{
+                    email: response.data.email,
+                    content: "Se ha registrado un nuevo error perteneciente al proyecto: <strong>"+nombre_proy+'</strong>.<br><br>El contenido del error es el siguiente: <i>"'+contenido+'"</i><br><br>'+fecha,
+                    subject: "Nuevo Error Registrado"
+                }, {headers: {"Authorization": `Bearer ${token}`}});
+                console.log(response.data.email);
+            });
+        });
     }
 
     guardarActualizacion=()=>{

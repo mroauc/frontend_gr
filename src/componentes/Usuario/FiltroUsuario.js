@@ -1,9 +1,6 @@
 import React from 'react';
 
 function FiltroUsuario (usuarios, valorBusqueda, cambiarUsuarios) {
-    console.log(usuarios);
-    console.log(valorBusqueda.toLowerCase());
-
     const filtro = usuarios.filter(usuario => {
         const idUsuario = usuario.id;
         const nombreUsuario = usuario.nombre.toLowerCase();
@@ -16,11 +13,7 @@ function FiltroUsuario (usuarios, valorBusqueda, cambiarUsuarios) {
         
         return  datos.indexOf(busquedaMinuscula) > -1
     })
-    console.log(filtro);
-
-    cambiarUsuarios(filtro);
-    
+    cambiarUsuarios(filtro);   
 }
-export default FiltroUsuario;
 
-// 0: {id: 63, nombre: "admin", email: "admin@u.u", estado: "Activo", tipo: "admin", …}
+export default FiltroUsuario;

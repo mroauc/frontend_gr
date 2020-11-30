@@ -1,6 +1,6 @@
 import Axios from 'axios';
 import React, {Component} from 'react';
-import { PieChart, Pie, Sector, Cell, Tooltip, ResponsiveContainer, BarChart, XAxis, YAxis, Legend, CartesianGrid, Bar } from 'recharts';
+import { PieChart, Pie, Cell, Tooltip} from 'recharts';
 import Menu from '../Menu/Menu';
 import {Link} from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -91,14 +91,14 @@ class GraficoRequerimiento extends Component{
                         <label>Requerimientos Registrados en el Sistema</label>
                     </div>
                     <div className="contenedor-dos-graficos">
-                    <PieChart width={500} height={300}>
+                    <PieChart width={700} height={310}>
                         <Pie
                             data={this.state.data}
                             cx={350}
-                            cy={150}
+                            cy={160}
                             labelLine={false}
                             label={renderCustomizedLabel}
-                            outerRadius={80}
+                            outerRadius={146}
                             fill="#8884d8"
                             dataKey="value"
                         >
@@ -108,24 +108,6 @@ class GraficoRequerimiento extends Component{
                         </Pie>
                         <Tooltip />
                     </PieChart>
-
-                    <BarChart
-                        width={500}
-                        height={300}
-                        data={this.state.data}
-                        margin={{
-                        top: 50, right: 30, left: 0, bottom: 5,
-                        }}
-                        barSize={20}
-                    >
-                        <XAxis dataKey="name" scale="point" padding={{ left: 10, right: 10 }} />
-                        <YAxis /> 
-                        <Tooltip />
-                        <Legend />
-                        <CartesianGrid strokeDasharray="3 3" />
-                    
-                        <Bar dataKey="frecuencia" fill="#8884d8" background={{ fill: '#eee' }} />
-                    </BarChart>
                     </div>
 
                     <div style={{textAlign:'left', marginLeft:'20px'}}>

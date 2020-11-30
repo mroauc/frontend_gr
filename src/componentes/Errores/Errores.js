@@ -1,9 +1,11 @@
 import Axios from 'axios';
 import React, { Component } from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import {Link} from 'react-router-dom';
 import Menu from '../Menu/Menu';
 import ErroresModal from './ErroresModal';
 import TablaErrores from './TablaErrores';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import './Errores.css';
 import '../vistaCrud.css';
 
@@ -16,6 +18,7 @@ class Errores extends Component{
         tipoModal: '',
         dataError: {
             id_error: 0,
+            id_proyecto: '',
             contenido: '',
             id_usuario: '',
             fecha: ''
@@ -24,7 +27,8 @@ class Errores extends Component{
 
     index=()=>{
         const token = localStorage.getItem('token');
-        Axios.get('http://localhost:8080/api/errores/',{headers: {"Authorization": `Bearer ${token}`}})
+        const id_proy = this.props.match.params.id_proyecto;
+        Axios.get(`http://localhost:8080/api/errores/pertenecientes/${id_proy}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 errores: response.data
@@ -90,7 +94,8 @@ class Errores extends Component{
                 <Menu/>
                 <div className="errores col-10">
                 <div className="Encabezado"><p>Errores</p></div>
-                <button type="button" class="btn boton" onClick={() => this.modalInsertar()}>Insertar</button>
+                <button type="button" class="btn boton" onClick={() => this.modalInsertar()}>Insertar</button> &nbsp;
+                <Link to={"/seleccionarError"}><button type="button" className="btn boton"><ArrowBackIcon/> Volver</button></Link>
 
                 <TablaErrores
                     errores={this.state.errores}
@@ -103,6 +108,7 @@ class Errores extends Component{
                     tipoModal={this.state.tipoModal}
                     estadoModalInsertar={this.state.modalInsertar}
                     modalInsertar={this.modalInsertar}
+                    id_proyecto = {this.props.match.params.id_proyecto}
                 />
 
                 <Modal isOpen={this.state.modalEliminar}>

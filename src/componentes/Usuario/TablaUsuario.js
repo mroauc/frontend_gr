@@ -21,7 +21,6 @@ class TablaUsuario extends Component{
 
     componentWillReceiveProps(next_props){
         this.setState({usuarios : next_props.usuarios})
-        console.log(next_props)
     }
 
     BuscarUsuario = (e) => {
@@ -36,7 +35,7 @@ class TablaUsuario extends Component{
     render(){
         const ultimoDato = this.state.paginaActual * this.state.cantidadPorPagina;
         const primerDato = ultimoDato - this.state.cantidadPorPagina;
-        const datosActuales = this.state.usuarios.slice(primerDato, ultimoDato); // Cambiar el props de la entidad
+        const datosActuales = this.state.usuarios.slice(primerDato, ultimoDato);
 
         if(datosActuales.length===0 && this.state.paginaActual!==1){
             this.cambiarPaginaActual(1);
@@ -44,7 +43,7 @@ class TablaUsuario extends Component{
 
         return(
             <div>
-                <input className="form-control input-filtrarTabla" placeholder="buscar"  onChange={this.BuscarUsuario}></input>
+                <input className="form-control input-filtrarTabla" placeholder="Buscar"  onChange={this.BuscarUsuario}></input>
                 <table className="table table-hover">
                     <thead>
                         <tr>
@@ -82,8 +81,8 @@ class TablaUsuario extends Component{
                     <Paginacion
                         cambiarPaginaActual = {this.cambiarPaginaActual}
                         cantidadPorPagina = {this.state.cantidadPorPagina}
-                        cantidadDeDatos = {this.state.usuarios.length}  // Cambiar el props de la entidad
-                        paginaActual = {this.state.paginaActual} 
+                        cantidadDeDatos = {this.state.usuarios.length}
+                        paginaActual = {this.state.paginaActual}
                     />
                 }
             </div>

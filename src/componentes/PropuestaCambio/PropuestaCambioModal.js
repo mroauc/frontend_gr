@@ -119,7 +119,7 @@ class PropuestaCambioModal extends Component{
                 console.log("propuesta de cambio")
                 console.log(response.data.id_propuestaCambio);
                 this.insertarImpactoDirecto(response.data.id_propuestaCambio);
-                this.notificar(response.data.id_subproyecto);
+                this.notificar(response.data.id_subproyecto, response.data.descripcion, response.data.fecha_peticion);
             })
         }
     }
@@ -137,11 +137,13 @@ class PropuestaCambioModal extends Component{
         });
     }
 
-    notificar=(id_subproyecto)=>{
+    notificar=(id_subproyecto, descr, fecha)=>{
         const token = localStorage.getItem('token');
         var nombre_proy = '';
+        var nombre_subproy = '';
         Axios.get(`http://localhost:8080/api/subProyecto/${id_subproyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
+            nombre_subproy = response.data.nombre_subProyecto;
             Axios.get(`http://localhost:8080/api/proyecto/${response.data.id_proyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
             .then(response=>{
                 nombre_proy= response.data.nombre;
@@ -149,7 +151,7 @@ class PropuestaCambioModal extends Component{
                 .then(response=>{
                     Axios.post('http://localhost:8080/api/email/enviar',{
                         email: response.data.email,
-                        content: "Se ha registrado una nueva propuesta de cambio para el proyecto: <strong>"+nombre_proy+"</strong>",
+                        content: "Se ha registrado una nueva propuesta de cambio para el subproyecto: <strong>"+nombre_subproy+"</strong> perteneciente al proyecto: <strong>"+nombre_proy+'</strong><br><br>El contenido de la propuesta de cambio es el siguiente: "<i>'+descr+'"</i><br><br>'+fecha,
                         subject: "Nueva Propuesta de Cambio"
                     }, {headers: {"Authorization": `Bearer ${token}`}})
                 })

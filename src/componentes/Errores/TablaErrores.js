@@ -3,17 +3,32 @@ import React, { Component } from 'react'
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Paginacion from '../Paginacion';
+import FiltroErrores from './FiltroErrores';
 
 export class TablaErrores extends Component{
 
     state={
         usuarios: [],
         paginaActual: 1,
-        cantidadPorPagina: 5
+        cantidadPorPagina: 5,
+        errores: []
     }
 
     cambiarPaginaActual = (n_pagina) => {
         this.setState({paginaActual: n_pagina});
+    }
+
+    componentWillReceiveProps(next_props){
+        this.setState({errores : next_props.errores});
+    }
+
+    BuscarError=(e)=>{
+        FiltroErrores(this.props.errores, e.target.value, this.CambiarErrores);
+        this.cambiarPaginaActual(1);
+    }
+
+    CambiarErrores=(nuevosErrores)=>{
+        this.setState({errores: nuevosErrores});
     }
 
     buscarUsuario=(id_usuario)=>{
@@ -38,10 +53,15 @@ export class TablaErrores extends Component{
     render(){
         const ultimoDato = this.state.paginaActual * this.state.cantidadPorPagina;
         const primerDato = ultimoDato - this.state.cantidadPorPagina;
-        const datosActuales = this.props.errores.slice(primerDato, ultimoDato);
+        const datosActuales = this.state.errores.slice(primerDato, ultimoDato);
+
+        if(datosActuales.length===0 && this.state.paginaActual!==1){
+            this.cambiarPaginaActual(1);
+        }
 
         return(
             <div>
+                <input className="form-control input-filtrarTabla" placeholder="Buscar"  onChange={this.BuscarError}></input>
                 <table className="table table-hover">
                     <thead>
                         <tr>
@@ -70,14 +90,14 @@ export class TablaErrores extends Component{
                     </tbody>
                 </table>
                 {
-                    (this.props.errores.length <= this.state.cantidadPorPagina)
+                    (this.state.errores.length <= this.state.cantidadPorPagina)
                     ?
                         ""
                     :
                         <Paginacion
                             cambiarPaginaActual = {this.cambiarPaginaActual}
                             cantidadPorPagina = {this.state.cantidadPorPagina}
-                            cantidadDeDatos = {this.props.errores.length}
+                            cantidadDeDatos = {this.state.errores.length}
                             paginaActual = {this.state.paginaActual} 
                         />
                 }

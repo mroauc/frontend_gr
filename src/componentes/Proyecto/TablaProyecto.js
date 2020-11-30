@@ -7,6 +7,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import ForwardIcon from '@material-ui/icons/Forward';
 import Paginacion from '../Paginacion';
+import FiltroProyecto from './FiltroProyecto';
 
 class TablaProyecto extends Component{
 
@@ -15,11 +16,25 @@ class TablaProyecto extends Component{
         subProyectos: [],
         verSubProyecto: false,
         paginaActual: 1,
-        cantidadPorPagina: 5
+        cantidadPorPagina: 5,
+        proyectos: []
     }
 
     cambiarPaginaActual = (n_pagina) => {
         this.setState({paginaActual: n_pagina});
+    }
+
+    componentWillReceiveProps(next_props){
+        this.setState({proyectos : next_props.proyectos})
+    }
+
+    BuscarTemplate = (e) =>{
+        FiltroProyecto(this.props.proyectos, e.target.value, this.cambiarProyectos);
+        this.cambiarPaginaActual(1);
+    }
+
+    cambiarProyectos = (nuevosProyectos) =>{
+        this.setState({proyectos: nuevosProyectos});
     }
 
     componentDidMount(){
@@ -59,10 +74,15 @@ class TablaProyecto extends Component{
     render(){
         const ultimoDato = this.state.paginaActual * this.state.cantidadPorPagina;
         const primerDato = ultimoDato - this.state.cantidadPorPagina;
-        const datosActuales = this.props.proyectos.slice(primerDato, ultimoDato);
+        const datosActuales = this.state.proyectos.slice(primerDato, ultimoDato);
+
+        if(datosActuales.length===0 && this.state.paginaActual!==1){
+            this.cambiarPaginaActual(1);
+        }
 
         return(
             <div>
+                <input className="form-control input-filtrarTabla" placeholder="Buscar"  onChange={this.BuscarTemplate}></input>
                 <table className="table table-hover">
                 <thead>
                     <tr>
@@ -95,14 +115,14 @@ class TablaProyecto extends Component{
                 </tbody>
             </table>   
             {
-                (this.props.proyectos.length <= this.state.cantidadPorPagina)
+                (this.state.proyectos.length <= this.state.cantidadPorPagina)
                 ?
                     ""
                 :
                     <Paginacion
                         cambiarPaginaActual = {this.cambiarPaginaActual}
                         cantidadPorPagina = {this.state.cantidadPorPagina}
-                        cantidadDeDatos = {this.props.proyectos.length}
+                        cantidadDeDatos = {this.state.proyectos.length}
                         paginaActual = {this.state.paginaActual} 
                     />
             }             

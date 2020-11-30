@@ -27,6 +27,7 @@ import GraficoRequerimiento from './componentes/Requerimiento/GraficoRequerimien
 import Dragdrop from './componentes/DragNDrop/Dragdrop';
 import IndexDragdrop from './componentes/DragNDrop/IndexDragdrop';
 import AnalisisDeImpacto from './componentes/AnalisisDeImpacto/AnalisisDeImpacto';
+import VistaPreviaErrores from './componentes/Errores/VistaPreviaErrores';
 
 
 const Routes=()=>(
@@ -35,7 +36,8 @@ const Routes=()=>(
             <Route exact path="/" component={Login} />
             <PrivateRoute path="/index" component={Dashboard} />
             <PrivateRoute path="/templates" component={Template} />
-            <PrivateRoute path="/errores" component={Errores} />
+            <PrivateRoute path="/seleccionarError" component={VistaPreviaErrores} />
+            <PrivateRoute path="/errores/:id_proyecto" component={Errores} />
             <PrivateRoute path="/cliente" component={Cliente} />
             <PrivateRoute path="/comentario" component={Comentario} />
             <PrivateRoute path="/empresa" component={Empresa} />

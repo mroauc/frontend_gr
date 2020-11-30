@@ -3,25 +3,45 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Paginacion from '../Paginacion';
+import FiltroTemplate from './FiltroTemplate';
 
 class TablaTemplate extends Component{
 
     state={
         paginaActual: 1,
-        cantidadPorPagina: 5
+        cantidadPorPagina: 5,
+        templates: []
     }
 
     cambiarPaginaActual = (n_pagina) => {
         this.setState({paginaActual: n_pagina});
     }
+
+    componentWillReceiveProps(next_props){
+        this.setState({templates : next_props.templates})
+    }
+
+    BuscarTemplate = (e) =>{
+        FiltroTemplate(this.props.templates, e.target.value, this.CambiarTemplates);
+        this.cambiarPaginaActual(1);
+    }
+
+    CambiarTemplates = (nuevosTemplates) =>{
+        this.setState({templates: nuevosTemplates});
+    }
     
     render(){
         const ultimoDato = this.state.paginaActual * this.state.cantidadPorPagina;
         const primerDato = ultimoDato - this.state.cantidadPorPagina;
-        const datosActuales = this.props.templates.slice(primerDato, ultimoDato);
+        const datosActuales = this.state.templates.slice(primerDato, ultimoDato);
+
+        if(datosActuales.length===0 && this.state.paginaActual!==1){
+            this.cambiarPaginaActual(1);
+        }
 
         return(
             <div>
+                <input className="form-control input-filtrarTabla" placeholder="Buscar" onChange={this.BuscarTemplate}></input>
                 <table className="table table-hover">
                     <thead>
                         <tr>
@@ -51,14 +71,14 @@ class TablaTemplate extends Component{
                     </tbody>
                 </table>
                 {
-                    (this.props.templates.length <= this.state.cantidadPorPagina)
+                    (this.state.templates.length <= this.state.cantidadPorPagina)
                     ?
                         ""
                     :
                         <Paginacion
                             cambiarPaginaActual = {this.cambiarPaginaActual}
                             cantidadPorPagina = {this.state.cantidadPorPagina}
-                            cantidadDeDatos = {this.props.templates.length}
+                            cantidadDeDatos = {this.state.templates.length}
                             paginaActual = {this.state.paginaActual} 
                         />
                 }

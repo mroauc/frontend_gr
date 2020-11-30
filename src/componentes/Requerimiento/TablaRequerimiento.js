@@ -3,25 +3,45 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ChatIcon from '@material-ui/icons/Chat';
 import Paginacion from '../Paginacion';
+import FiltroRequerimiento from './FiltroRequerimiento';
 
 class TablaRequerimiento extends Component{
 
     state={
         paginaActual: 1,
-        cantidadPorPagina: 5
+        cantidadPorPagina: 5,
+        requerimientos: []
     }
 
     cambiarPaginaActual = (n_pagina) => {
         this.setState({paginaActual: n_pagina});
     }
 
+    componentWillReceiveProps(next_props){
+        this.setState({requerimientos : next_props.requerimientos})
+    }
+
+    BuscarRequerimiento = (e) =>{
+        FiltroRequerimiento(this.props.requerimientos, e.target.value, this.CambiarRequerimientos);
+        this.cambiarPaginaActual(1);
+    }
+
+    CambiarRequerimientos=(nuevosRequerimientos)=>{
+        this.setState({requerimientos: nuevosRequerimientos});
+    }
+
     render(){
         const ultimoDato = this.state.paginaActual * this.state.cantidadPorPagina;
         const primerDato = ultimoDato - this.state.cantidadPorPagina;
-        const datosActuales = this.props.requerimientos.slice(primerDato, ultimoDato);
+        const datosActuales = this.state.requerimientos.slice(primerDato, ultimoDato);
+
+        if(datosActuales.length===0 && this.state.paginaActual!==1){
+            this.cambiarPaginaActual(1);
+        }
 
         return(
             <div>
+                <input className="form-control input-filtrarTabla" placeholder="Buscar"  onChange={this.BuscarRequerimiento}></input>
                 <table className="table table-hover">
                     <thead>
                         <tr>
@@ -59,14 +79,14 @@ class TablaRequerimiento extends Component{
                     </tbody>
                 </table>
                 {
-                    (this.props.requerimientos.length <= this.state.cantidadPorPagina)
+                    (this.state.requerimientos.length <= this.state.cantidadPorPagina)
                     ?
                         ""
                     :
                         <Paginacion
                             cambiarPaginaActual = {this.cambiarPaginaActual}
                             cantidadPorPagina = {this.state.cantidadPorPagina}
-                            cantidadDeDatos = {this.props.requerimientos.length}
+                            cantidadDeDatos = {this.state.requerimientos.length}
                             paginaActual = {this.state.paginaActual} 
                         />
                 }

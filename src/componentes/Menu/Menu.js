@@ -10,7 +10,7 @@ function Menu(){
                 {nombre : "Empresas", url : "/empresa"},
                 {nombre : "Clientes", url : "/cliente"},
                 {nombre : "Usuarios", url : "/usuario"},
-                {nombre : "Envio de Errores", url : "/errores"},
+                {nombre : "Envio de Errores", url : "/seleccionarError"},
                 {nombre : "Manager", url : "/manager"}
             ]}
         />
@@ -23,7 +23,7 @@ function Menu(){
                 {nombre : "Empresas", url : "/empresa"},
                 {nombre : "Clientes", url : "/cliente"},
                 {nombre : "Usuarios", url : "/usuario"},
-                {nombre : "Envio de Errores", url : "/errores"}
+                {nombre : "Envio de Errores", url : "/seleccionarError"}
             ]}
         />
     }
@@ -31,7 +31,7 @@ function Menu(){
         return <Navigation
             celdas = {[ 
                 {nombre : "Proyectos", url : "/proyecto"},
-                {nombre : "Envio de Errores", url : "/errores"}
+                {nombre : "Envio de Errores", url : "/seleccionarError"}
             ]}
         />
     }
@@ -54,7 +54,7 @@ function Menu(){
                 {nombre : "Empresas", url : "/empresa"},
                 {nombre : "Clientes", url : "/cliente"},
                 {nombre : "Usuarios", url : "/usuario"},
-                {nombre : "Envio de Errores", url : "/errores"}
+                {nombre : "Envio de Errores", url : "/seleccionarError"}
             ]}
         />
     }
