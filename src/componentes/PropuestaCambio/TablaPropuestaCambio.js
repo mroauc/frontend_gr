@@ -2,12 +2,9 @@ import React, { Component } from 'react';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-<<<<<<< HEAD
 import Paginacion from '../Paginacion';
-=======
 import { Link } from 'react-router-dom';
 import GraficoSVG from './GraficoSVG'
->>>>>>> 26bf260243b7a80484973f1aa4b279c4fc015400
 
 class TablaPropuestaCambio extends Component{
 

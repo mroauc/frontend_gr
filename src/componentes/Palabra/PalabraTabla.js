@@ -3,26 +3,42 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Paginacion from '../Paginacion';
+import FiltroPalabra from './FiltroPalabra'
 
 export default class ComentarioTabla extends Component {
 
     state={
         paginaActual: 1,
-        cantidadPorPagina: 1
+        cantidadPorPagina: 1,
+        palabras: []
     }
 
     cambiarPaginaActual = (n_pagina) => {
         this.setState({paginaActual: n_pagina});
     }
 
+    componentWillReceiveProps(next_props){
+        this.setState({palabras : next_props.palabras})
+    }
+
+    BuscarPalabra = (e) => {
+        FiltroPalabra(this.props.palabras, e.target.value,this.CambiarPalabras);
+        this.cambiarPaginaActual(1)
+    }
+
+    CambiarPalabras = (nuevasPalabras) => {
+        this.setState({palabras : nuevasPalabras})
+    }
+
     render(){
 
         const ultimoDato = this.state.paginaActual * this.state.cantidadPorPagina;
         const primerDato = ultimoDato - this.state.cantidadPorPagina;
-        const datosActuales = this.props.palabras.slice(primerDato, ultimoDato);
+        const datosActuales = this.state.palabras.slice(primerDato, ultimoDato);
 
         return(
             <div>
+                <input className="form-control input-filtrarTabla" placeholder="🔍 Buscar"  onChange={this.BuscarPalabra}></input>
                 <table className="table table-hover">
                         <thead>
                             <tr>
@@ -53,14 +69,14 @@ export default class ComentarioTabla extends Component {
                         </tbody>
                     </table>
                     {
-                        (this.props.palabras.length <= this.state.cantidadPorPagina)
+                        (this.state.palabras.length <= this.state.cantidadPorPagina)
                         ?
                             ""
                         :
                             <Paginacion
                                 cambiarPaginaActual = {this.cambiarPaginaActual}
                                 cantidadPorPagina = {this.state.cantidadPorPagina}
-                                cantidadDeDatos = {this.props.palabras.length}
+                                cantidadDeDatos = {this.state.palabras.length}
                                 paginaActual = {this.state.paginaActual} 
                             />
                     }

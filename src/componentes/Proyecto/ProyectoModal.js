@@ -13,12 +13,14 @@ class ProyectoModal extends Component{
             id_usuario: '',
             fecha_creacion: ''
         },
+        jefes_proyectos : [],
         empresasSeleccionadas: [],
         empresas: [],
         errorInputNombre : '',
         errorInputFechaInicio : '',
         errorInputFechaFin : '',
-        errorEmpresasAsociadas : ''
+        errorEmpresasAsociadas : '',
+        errorJefeProyecto : ''
     }
 
     componentWillReceiveProps(next_props){
@@ -33,6 +35,8 @@ class ProyectoModal extends Component{
                 empresas: response.data,
             });
         })
+        this.getJefesProyectos();
+
     }
 
     guardar=async()=>{
@@ -132,7 +136,8 @@ class ProyectoModal extends Component{
             errorInputNombre : '',
             errorEmpresasAsociadas: '',
             errorInputFechaInicio: '',
-            errorInputFechaFin : ''
+            errorInputFechaFin : '',
+            errorJefeProyecto: ''
         })
     }
 
@@ -162,8 +167,24 @@ class ProyectoModal extends Component{
             this.setState({errorEmpresasAsociadas : "Debe seleccionar al menos una empresa asociada."});
             validacion = false;
         }
+        if(this.state.proyecto.id_usuario === ""){
+            this.setState({errorJefeProyecto : "Debe seleccionar al menos un jefe de proyecto"});
+            validacion = false;
+        }
 
         return validacion;
+    }
+
+    getJefesProyectos = async () => {
+        const token = localStorage.getItem('token');
+        await Axios.get('http://localhost:8080/api/usuario/',{headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            this.setState({
+                jefes_proyectos: response.data.filter(usuario => usuario.tipo === "jefe")
+            });
+        })
+
+        console.log(this.state.jefes_proyectos)
     }
 
     render(){
@@ -187,7 +208,17 @@ class ProyectoModal extends Component{
                             </div>
                             <br/>
                             <label htmlFor="id_usuario">Jefe de Proyecto</label>
-                            <input className="form-control" type="text" name="id_usuario" id="id_usuario" value={this.state.proyecto.id_usuario} readOnly/>
+                            <select name="id_usuario" id="id_usuario" className={(this.state.errorJefeProyecto)? "form-control is-invalid" : "form-control"} value={this.state.proyecto.id_usuario}  onChange={this.changeHandler} onClick={() => {this.setState({errorJefeProyecto : ''})}}>
+                                <option value="" selected>Seleccione un Jefe de Proyecto</option>
+                                {this.state.jefes_proyectos.map(jefe => {
+                                    return(
+                                        <option key={jefe.id}value={jefe.id}>{jefe.id  +" - "+ jefe.nombre}</option>
+                                    )
+                                })}
+                            </select>
+                            <div class="invalid-feedback" style={{display: 'block'}}>
+                                {this.state.errorJefeProyecto}
+                            </div>
                             <br/>
                             <div id="ChipsEmpresasAsociadas" onClick={() => {this.setState({errorEmpresasAsociadas : ''})}}>
                                 <ChipsProyecto

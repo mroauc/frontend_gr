@@ -19,14 +19,17 @@ export default class subProyectoModal extends Component {
             id_usuario : ''
         },
         usuarios: [],
+        lideres_subProyectos : [],
         usuariosSeleccionados : [],
         msj_nombre_subp: "",
         msj_fechaInicio: "",
-        msj_tipo_subp: ""
+        msj_tipo_subp: "",
+        msj_lider_subp: ""
     }
 
     componentDidMount(){
         this.getUsuarios();
+        this.getLideres();
     }
 
     componentWillReceiveProps(next_props) {
@@ -47,13 +50,19 @@ export default class subProyectoModal extends Component {
             });
             salida=false;
         }
-        if(!this.state.subProyecto.tipo_subProyecto){
-            this.setState({
-                msj_tipo_subp: "Campo Vacio"
-            });
+        // if(!this.state.subProyecto.tipo_subProyecto){
+        //     this.setState({
+        //         msj_tipo_subp: "Campo Vacio"
+        //     });
+        //     salida=false;
+        // }
+        if(!this.state.usuariosSeleccionados){
             salida=false;
         }
-        if(!this.state.usuariosSeleccionados){
+        if(!this.state.subProyecto.id_usuario){
+            this.setState({
+                msj_lider_subp: "Campo Vacio"
+            });
             salida=false;
         }
         return salida;
@@ -77,7 +86,8 @@ export default class subProyectoModal extends Component {
                 this.setState({
                     msj_nombre_subp: "",
                     msj_fechaInicio: "",
-                    msj_tipo_subp: ""
+                    msj_tipo_subp: "",
+                    msj_lider_subp: ""
                 });
             })
             .catch(error => {
@@ -120,7 +130,8 @@ export default class subProyectoModal extends Component {
                 this.setState({
                     msj_nombre_subp: "",
                     msj_fechaInicio: "",
-                    msj_tipo_subp: ""
+                    msj_tipo_subp: "",
+                    msj_lider_subp: ""
                 });
             })
         }
@@ -161,8 +172,20 @@ export default class subProyectoModal extends Component {
             usuariosSeleccionados: [],
             msj_nombre_subp: "",
             msj_fechaInicio: "",
-            msj_tipo_subp: ""
+            msj_tipo_subp: "",
+            msj_lider_subp: ""
         });
+    }
+
+    getLideres = async () => {
+        const token = localStorage.getItem('token');
+        await Axios.get('http://localhost:8080/api/usuario/',{headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            this.setState({
+                lideres_subProyectos: response.data.filter(usuario => usuario.tipo === "lider")
+            });
+        })
+        console.log(this.state.lideres_subProyectos)
     }
 
     changeHandler = async (e) => {
@@ -220,14 +243,24 @@ export default class subProyectoModal extends Component {
                             <label htmlFor="id_proyecto">ID Proyecto</label>
                             <input className="form-control" type="text" name="id_proyecto" id="id_proyecto" value={this.state.subProyecto.id_proyecto} readOnly />
                             <br/>
-                            <label htmlFor="id_proyecto">Tipo SubProyecto</label>
+                            {/* <label htmlFor="id_proyecto">Tipo SubProyecto</label>
                             <input className={ (this.state.msj_tipo_subp)? "form-control is-invalid" : "form-control"} type="text" name="tipo_subProyecto" id="tipo_subProyecto" onChange={this.changeHandler} value={this.state.subProyecto.tipo_subProyecto} onClick={()=>{this.setState({msj_tipo_subp: ""})}} />
                             <div className="invalid-feedback">
                                 {this.state.msj_tipo_subp}
+                            </div> 
+                            <br/>*/}
+                            <label htmlFor="id_proyecto">Lider Subproyecto</label>
+                            <select name="id_usuario" id="id_usuario" className={ (this.state.msj_lider_subp)? "form-control is-invalid" : "form-control"} value={this.state.subProyecto.id_usuario} onChange={this.changeHandler} onClick={()=>{this.setState({msj_lider_subp: ""})}}>
+                                <option value="">Seleccionar Jefe de Subproyecto</option>
+                                {this.state.lideres_subProyectos.map( lider => {
+                                    return(
+                                    <option key={lider.id} value={lider.id}>{lider.id+" - "+lider.nombre}</option>
+                                    )
+                                })}
+                            </select>
+                            <div className="invalid-feedback">
+                                {this.state.msj_lider_subp}
                             </div>
-                            <br/>
-                            <label htmlFor="id_proyecto">ID Usuario</label>
-                            <input className="form-control" type="text" name="id_usuario" id="id_usuario" onChange={this.changeHandler} value={this.state.subProyecto.id_usuario} readOnly />                       
                         </div>
                     </ModalBody>
                     <ModalFooter>

@@ -41,6 +41,18 @@ export default class TablaRequerimiento extends Component {
                         requerimientos = {this.props.requerimientos}     
                         agregarReqATab = {this.props.agregarReqATab}     
                     />
+                    <CategoriaxUsuario
+                        tipo = "Funcionales"
+                        categoria = "REQF"
+                        requerimientos = {this.props.requerimientos}     
+                        agregarReqATab = {this.props.agregarReqATab}     
+                    />
+                    <CategoriaxUsuario
+                        tipo = "No Funcionales"
+                        categoria = "RENF"
+                        requerimientos = {this.props.requerimientos}     
+                        agregarReqATab = {this.props.agregarReqATab}     
+                    />
                     
                 </div>
                 

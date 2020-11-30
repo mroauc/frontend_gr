@@ -6,13 +6,15 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ReqIcon from './Req';
 import Paginacion from '../Paginacion';
+import FiltroSubProyecto from './FiltroSubProyecto'
 
 export default class subProyectoTabla extends Component {
     
     state={
         usuarios: [],
         paginaActual: 1,
-        cantidadPorPagina: 2
+        cantidadPorPagina: 2,
+        subProyectos : []
     }
 
     cambiarPaginaActual = (n_pagina) => {
@@ -37,15 +39,30 @@ export default class subProyectoTabla extends Component {
             });
         })
     }
+
+    componentWillReceiveProps(next_props){
+        this.setState({subProyectos : next_props.subProyectos})
+        console.log(next_props)
+    }
+
+    BuscarSubProyectos = (e) => {
+        FiltroSubProyecto(this.props.subProyectos, e.target.value,this.CambiarSubProyectos);
+        this.cambiarPaginaActual(1)
+    }
+
+    CambiarSubProyectos = (nuevosSubProyectos) => {
+        this.setState({subProyectos : nuevosSubProyectos})
+    }
     
     render(){
 
         const ultimoDato = this.state.paginaActual * this.state.cantidadPorPagina;
         const primerDato = ultimoDato - this.state.cantidadPorPagina;
-        const datosActuales = this.props.subProyectos.slice(primerDato, ultimoDato);
+        const datosActuales = this.state.subProyectos.slice(primerDato, ultimoDato);
 
         return(
             <div>
+                <input className="form-control input-filtrarTabla" placeholder="🔍 Buscar"  onChange={this.BuscarSubProyectos}></input>
                 <table className="table table-hover">
                         <thead>
                             <tr>
@@ -54,7 +71,7 @@ export default class subProyectoTabla extends Component {
                             <th scope="col">Fecha de Inicio</th>
                             <th scope="col">Fecha de Termino</th>
                             <th scope="col">ID Proyecto</th>
-                            <th scope="col">Tipo Proyecto</th>
+                            {/* <th scope="col">Tipo Proyecto</th> */}
                             <th scope="col">Usuario</th>
                             <th scope="col">Acciones</th>
 
@@ -69,7 +86,7 @@ export default class subProyectoTabla extends Component {
                                         <td>{subProyecto.fecha_inicio}</td>
                                         <td>{subProyecto.fecha_fin}</td>
                                         <td>{subProyecto.id_proyecto}</td>
-                                        <td>{subProyecto.tipo_subProyecto}</td>
+                                        {/* <td>{subProyecto.tipo_subProyecto}</td> */}
                                         <td>{this.buscarUsuario(subProyecto.id_usuario)}</td>
                                         <td>
                                             <Link to= {`/requerimiento/${subProyecto.id_subProyecto}`}><button type="button" className="btn botonpurple"><ReqIcon/></button></Link> &nbsp;
@@ -85,14 +102,14 @@ export default class subProyectoTabla extends Component {
                         </tbody>
                     </table>
                     {
-                        (this.props.subProyectos.length <= this.state.cantidadPorPagina)
+                        (this.state.subProyectos.length <= this.state.cantidadPorPagina)
                         ?
                             ""
                         :
                             <Paginacion
                                 cambiarPaginaActual = {this.cambiarPaginaActual}
                                 cantidadPorPagina = {this.state.cantidadPorPagina}
-                                cantidadDeDatos = {this.props.subProyectos.length}
+                                cantidadDeDatos = {this.state.subProyectos.length}
                                 paginaActual = {this.state.paginaActual} 
                             />
                     }
