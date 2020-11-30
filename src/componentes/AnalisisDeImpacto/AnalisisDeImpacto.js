@@ -39,14 +39,18 @@ function AnalisisImpacto(props) {
         .then(response => {
             requerimientoPrincipal = response.data;
         })
+        console.log(id_req)
         console.log(requerimientoPrincipal.nombre)
+        data.name = await requerimientoPrincipal.nombre;
         await Axios.get(`http://localhost:8080/api/relacionrequerimientos/requerimientosAsociados/${id_req}`,{headers: {"Authorization": `Bearer  ${token}`}})
         .then(async response => {
-            data.name = await requerimientoPrincipal.nombre;
             for (let i = 0; i < response.data.length; i++) {
                 
                 await data.children.push({name: response.data[i].nombre,textProps: {x: -25, y: 25}});
             }
+        })
+        .catch(() =>{
+            console.log("Este requerimiento no tiene requerimientos relacionados")
         })
         setRequerimientos(data);
         setRequerimiento(requerimientoPrincipal);

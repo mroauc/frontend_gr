@@ -141,7 +141,7 @@ export default class SubProyecto extends Component{
             <React.Fragment>
                 <Menu />
                 <div className="subProyecto col-10">
-                    <div className="Encabezado"><p>Subproyectos del proyecto: {this.state.nombre_proyecto}</p></div>
+                    <div className="Encabezado" style={{fontSize:'35px', textAlign:'initial', color:'white'}}><p>Subproyectos del proyecto: {this.state.nombre_proyecto}</p></div>
 
                     <button type="button" className="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Nuevo Subproyecto</button> &nbsp;
                     <Link to={"/proyecto"}><button type="button" className="btn boton"><ArrowBackIcon/> Volver</button></Link>

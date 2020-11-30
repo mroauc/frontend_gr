@@ -3,17 +3,33 @@ import React, { Component } from 'react';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Paginacion from '../Paginacion';
+import FiltroCliente from './FiltroCliente'
 
 export default class ClienteTabla extends Component {
     
     state={
         usuarios: [],
         paginaActual: 1,
-        cantidadPorPagina: 1
+        cantidadPorPagina: 1,
+        clientes : []
     }
 
     cambiarPaginaActual = (n_pagina) => {
         this.setState({paginaActual: n_pagina});
+    }
+
+    componentWillReceiveProps(next_props){
+        this.setState({clientes : next_props.clientes})
+        console.log(next_props)
+    }
+
+    BuscarCliente = (e) => {
+        FiltroCliente(this.props.clientes,this.state.usuarios, e.target.value,this.CambiarClientes);
+        this.cambiarPaginaActual(1)
+    }
+
+    CambiarClientes = (nuevosClientes) => {
+        this.setState({clientes : nuevosClientes})
     }
 
     buscarUsuario=(id_usuario)=>{
@@ -46,10 +62,11 @@ export default class ClienteTabla extends Component {
 
         const ultimoDato = this.state.paginaActual * this.state.cantidadPorPagina;
         const primerDato = ultimoDato - this.state.cantidadPorPagina;
-        const datosActuales = this.props.clientes.slice(primerDato, ultimoDato);
+        const datosActuales = this.state.clientes.slice(primerDato, ultimoDato);
 
         return(
             <div>
+                <input className="form-control input-filtrarTabla" placeholder="🔍 Buscar"  onChange={this.BuscarCliente}></input>
                 <table className="table table-hover">
                     <thead>
                         <tr>
@@ -78,14 +95,14 @@ export default class ClienteTabla extends Component {
                     </tbody>
                 </table>
                 {
-                    (this.props.clientes.length <= this.state.cantidadPorPagina)
+                    (this.state.clientes.length <= this.state.cantidadPorPagina)
                     ?
                         ""
                     :
                         <Paginacion
                             cambiarPaginaActual = {this.cambiarPaginaActual}
                             cantidadPorPagina = {this.state.cantidadPorPagina}
-                            cantidadDeDatos = {this.props.clientes.length}
+                            cantidadDeDatos = {this.state.clientes.length}
                             paginaActual = {this.state.paginaActual} 
                         />
                 }

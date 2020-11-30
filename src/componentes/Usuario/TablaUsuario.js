@@ -3,9 +3,9 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Paginacion from '../Paginacion';
 import FiltroUsuario from './FiltroUsuario';
-import SearchIcon from '@material-ui/icons/Search';
 import './Usuarios.css';
 import '../vistaCrud.css';
+import SearchIcon from '@material-ui/icons/Search';
 
 class TablaUsuario extends Component{
 
@@ -32,6 +32,7 @@ class TablaUsuario extends Component{
         this.setState({usuarios : nuevosUsuarios})
     }
 
+
     render(){
         const ultimoDato = this.state.paginaActual * this.state.cantidadPorPagina;
         const primerDato = ultimoDato - this.state.cantidadPorPagina;
@@ -43,7 +44,7 @@ class TablaUsuario extends Component{
 
         return(
             <div>
-                <input className="form-control input-filtrarTabla" placeholder="Buscar"  onChange={this.BuscarUsuario}></input>
+                <input className="form-control input-filtrarTabla" placeholder="🔍 Buscar"  onChange={this.BuscarUsuario}></input>
                 <table className="table table-hover">
                     <thead>
                         <tr>

@@ -53,7 +53,7 @@ class Proyecto extends Component{
         await Axios.get(`http://localhost:8080/api/usuario/${localStorage.getItem('email')}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
-                proyecto:{id_proyecto: 0, nombre: '', fecha_inicio: '',fecha_fin: '',id_usuario:response.data.id, fecha_creacion: ''},
+                proyecto:{id_proyecto: 0, nombre: '', fecha_inicio: '',fecha_fin: '',id_usuario:'', fecha_creacion: ''},
             });
         })
 
