@@ -4,7 +4,11 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import Paginacion from '../Paginacion';
 import { Link } from 'react-router-dom';
+<<<<<<< HEAD
 import GraficoSVG from './GraficoSVG'
+=======
+import GraficoSVG from './GraficoSVG';
+>>>>>>> a55b8ef4b7859d84baadff74e5d07a6c14d5c2d4
 
 class TablaPropuestaCambio extends Component{
 

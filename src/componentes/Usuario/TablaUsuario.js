@@ -3,6 +3,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Paginacion from '../Paginacion';
 import FiltroUsuario from './FiltroUsuario';
+import SearchIcon from '@material-ui/icons/Search';
 import './Usuarios.css';
 import '../vistaCrud.css';
 import SearchIcon from '@material-ui/icons/Search';
@@ -11,8 +12,8 @@ class TablaUsuario extends Component{
 
     state={
         paginaActual: 1,
-        cantidadPorPagina: 1,
-        usuarios : []
+        cantidadPorPagina: 5,
+        usuarios : [],
     }
 
     cambiarPaginaActual = (n_pagina) => {
@@ -39,9 +40,17 @@ class TablaUsuario extends Component{
         const primerDato = ultimoDato - this.state.cantidadPorPagina;
         const datosActuales = this.state.usuarios.slice(primerDato, ultimoDato); // Cambiar el props de la entidad
 
+        if(datosActuales.length===0 && this.state.paginaActual!==1){
+            this.cambiarPaginaActual(1);
+        }
+
         return(
             <div>
+<<<<<<< HEAD
                 <input className="form-control input-filtrarTabla" placeholder="🔍 Buscar"  onChange={this.BuscarUsuario}></input>
+=======
+                <input className="form-control input-filtrarTabla" placeholder="buscar"  onChange={this.BuscarUsuario}></input>
+>>>>>>> a55b8ef4b7859d84baadff74e5d07a6c14d5c2d4
                 <table className="table table-hover">
                     <thead>
                         <tr>
