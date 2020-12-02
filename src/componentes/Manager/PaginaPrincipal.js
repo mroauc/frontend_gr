@@ -1,6 +1,9 @@
 import Axios from 'axios';
-import React, { Component } from 'react'
-import './PaginaPrincipal.css'
+import React, { Component } from 'react';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import {Link} from 'react-router-dom';
+import './PaginaPrincipal.css';
+import ReqModal from './ReqModal';
 
 var arregloOrdenado = [];
 
@@ -8,27 +11,47 @@ export default class PaginaPrincipal extends Component{
 
     state = {
         usuarios: [],
-        usuario_actividad: []
-
+        usuario_actividad: [],
+        modalInsertar: false,
+        requerimiento: {
+            id_requerimiento: 0,
+            nombre: '', 
+            descripcion: '',
+            id_usuario: 0,
+            id_subProyecto: this.props.id_subproyecto,
+            fecha_creacion: '',
+            prioridad: '',
+            estado: '',
+            categoria: '',
+            id_template: 0
+        },
+        id_proyecto: ''
     }
 
     constructor (props){
         super(props);
     }
+
+    getIdProyecto=async()=>{
+        const token = localStorage.getItem("token");
+        await Axios.get(`http://localhost:8080/api/subProyecto/${this.props.id_subproyecto}`, {headers: {"Authorization": `Bearer  ${token}`}})
+        .then(response=>{
+            this.setState({
+                id_proyecto: response.data.id_proyecto
+            });
+        });
+    }
     
     getRequerimiento = () => {
         const token = localStorage.getItem("token");
-        Axios.get("http://localhost:8080/api/requerimiento/tipo/")
-        .then(response => {
-        })
+        Axios.get("http://localhost:8080/api/requerimiento/tipo/");
     }
 
     ordenarArregloReq = async () => {
         const token = localStorage.getItem("token");
-
         const ordenamiento = {Alta: 1, Media: 2, Baja: 3};
         
-        await Axios.get("http://localhost:8080/api/requerimiento/", {headers: {"Authorization": `Bearer  ${token}`}})
+        await Axios.get(`http://localhost:8080/api/requerimiento/obtener/${this.props.id_subproyecto}`, {headers: {"Authorization": `Bearer  ${token}`}})
         .then(async response => {
             arregloOrdenado = response.data;
         })
@@ -62,15 +85,45 @@ export default class PaginaPrincipal extends Component{
         }  
     }
 
+    modalInsertar=async()=>{
+        await this.setState({
+            requerimiento:{
+                id_requerimiento: 0,
+                nombre: '', 
+                descripcion: '',
+                id_usuario: '',
+                id_subProyecto: this.props.id_subproyecto,
+                fecha_creacion: '',
+                prioridad: '',
+                estado: '',
+                categoria: '',
+                id_template: 0
+            }
+        });
+        this.setState({modalInsertar: !this.state.modalInsertar});
+    }
+
     componentDidMount(){
         this.getUsuarios();
         this.getDataUsuarioActividad();
+        this.getIdProyecto();
     }
 
     render(){
         this.ordenarArregloReq();
         return(
-            <div style={{marginTop: '20px'}}>
+            <div>
+                <div style={{marginLeft:'5%'}}>
+                    <button type="button" className="btn boton" onClick={()=>this.modalInsertar()}>Insertar</button> &nbsp;
+                    <Link to={"/subProyecto/"+this.state.id_proyecto}><button type="button" className="btn boton"><ArrowBackIcon/> Volver</button></Link> 
+
+                    <div style={{float:'right', textDecoration:'none', marginRight:'5%'}}>
+                    <Link to={"/dragdrop/"+this.props.id_subproyecto}><button type="button" className="btn boton">Vista Interactiva</button> </Link>
+                    <Link to={"/matrizRelacion/"+this.props.id_subproyecto}><button type="button" className="btn boton">Ver Relacion Requerimientos</button> </Link>
+                    </div>
+                </div>
+                
+                <br/>
                 <h4 style={{marginLeft:'50px'}}>Prioridades de Requerimientos</h4>
                 <table className="tablaPagPrincipal">
                     <thead>
@@ -96,6 +149,17 @@ export default class PaginaPrincipal extends Component{
                         })}
                     </tbody>
                 </table>
+
+                <ReqModal
+                    requerimiento = {this.state.requerimiento}
+                    id_subProyecto = {this.props.id_subproyecto}
+                    estadoModalInsertar = {this.state.modalInsertar}
+                    modalInsertar = {this.modalInsertar}
+                    pasoFinal={this.pasoFinal}
+                    funcionGetRequerimientos = {this.props.funcionGetRequerimientos}
+                    getUsuarios = {this.getUsuarios}
+                    getDataUsuarioActividad = {this.getDataUsuarioActividad}
+                />
 
             </div>
         );

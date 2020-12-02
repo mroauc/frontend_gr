@@ -29,6 +29,7 @@ class PropuestaCambioModal extends Component{
     }
 
     componentWillReceiveProps(next_props){
+<<<<<<< HEAD
         const token = localStorage.getItem('token');
         this.setState({propuestaCambio: this.props.propuestaCambio});
         console.log(next_props.propuestaCambio)
@@ -42,12 +43,23 @@ class PropuestaCambioModal extends Component{
                     });
                 }
             })    
+=======
+        this.obtenerRecarga();
+    }
+
+    obtenerRecarga=async()=>{
+        await this.setState({propuestaCambio: this.props.propuestaCambio});
+        if(this.props.tipoModal==='actualizar'){
+            this.setState({requerimientoImpactoDirecto: this.props.requerimientoImpactoDirecto});
+        }else{
+            this.setState({requerimientoImpactoDirecto: ''});
+>>>>>>> 623a914c61f1303e6981eceb2c7db5c44213d7f6
         }
+        this.getRequerimientos(this.props.propuestaCambio.id_subproyecto);
     }
 
     componentDidMount(){
         this.index();
-        
     }
 
     index=async()=>{

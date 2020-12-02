@@ -31,7 +31,8 @@ class PropuestaCambio extends Component{
             fecha_resolucion: '',
             comentarios: '',
             estado: 'Pendiente'
-        }
+        },
+        requerimientoImpactoDirecto : ''
     }
 
     index=async()=>{
@@ -97,6 +98,16 @@ class PropuestaCambio extends Component{
         await this.setState({
             propuesta: propuestaEdit
         });
+
+        const token = localStorage.getItem('token');
+        await Axios.get(`http://localhost:8080/api/impacto_directo/obtener/${this.state.propuesta.id_propuestaCambio}`,{headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            if(response.data[0] !== undefined){
+                this.setState({
+                    requerimientoImpactoDirecto : response.data[0].id_requerimiento
+                });
+            }
+        })    
         this.modalActualizar();
     }
 
@@ -171,6 +182,7 @@ class PropuestaCambio extends Component{
                     estadoModalInsertar={this.state.modalInsertar}
                     modalInsertar={this.modalInsertar}
                     id_proyecto={this.props.match.params.id_proyecto}
+                    requerimientoImpactoDirecto= {this.state.requerimientoImpactoDirecto}
                 />
 
                 <VistaPropuestaCambioModal
