@@ -46,7 +46,7 @@ const Routes=()=>(
             <PrivateRoute path="/cambio" component={PropuestaCambio} />
             <PrivateRoute path="/proyecto" component={Proyecto} />
             <PrivateRoute path="/relacion_requerimiento" component={RelacionRequerimientos} />
-            <PrivateRoute path="/requerimiento/:id_subproyecto" component={Requerimiento} />
+            <PrivateRoute path="/requerimiento/:id_subproyecto" component={Manager} />
             <PrivateRoute path="/dragdrop/:id_subproyecto" component={IndexDragdrop} />
             <PrivateRoute path="/matrizRelacion/:id_subproyecto" component={MatrizRelacionReq} />
             <PrivateRoute path="/graficoRequerimientos/:id_proyecto" component={GraficoRequerimiento} />

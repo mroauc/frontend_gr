@@ -37,7 +37,8 @@ export default class SubProyecto extends Component{
 
     getProyectos = async() =>{
         const token = localStorage.getItem('token');
-        await axios.get(`http://localhost:8080/api/proyecto/${this.props.match.params.id_proyecto}`,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
+        await axios.get(`http://localhost:8080/api/proyecto/${this.props.match.params.id_proyecto}`,{headers: {"Authorization": `Bearer  ${token}`}})
+        .then(response=>{
             this.setState({
                 nombre_proyecto: response.data.nombre
             })
@@ -46,7 +47,6 @@ export default class SubProyecto extends Component{
 
     getSubProyectos = () => {
         const token = localStorage.getItem('token');
-
         const id_proy = this.props.match.params.id_proyecto;
 
         axios.get(`http://localhost:8080/api/subProyecto/pertenecientes/${id_proy}`,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{

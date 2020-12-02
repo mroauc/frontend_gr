@@ -94,16 +94,16 @@ class ProyectoModal extends Component{
             .then(response=>{
                 this.props.modalInsertar();
                 this.props.index();
-                this.actualizarProyectoEmpresa();
+                this.actualizarProyectoEmpresa(response.data.id_proyecto);
             })
         }
     }
 
-    actualizarProyectoEmpresa=()=>{
+    actualizarProyectoEmpresa=(id_proyecto)=>{
         const token = localStorage.getItem('token');
         var existentes = [];
         var original = [];
-        Axios.get(`http://localhost:8080/api/proyecto_empresa/obtener/${this.state.proyecto.id_proyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
+        Axios.get(`http://localhost:8080/api/proyecto_empresa/obtener/${id_proyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             original = response.data;
             for (let index = 0; index < response.data.length; index++) {
@@ -124,7 +124,7 @@ class ProyectoModal extends Component{
                 if(!existentes.includes(this.state.empresasSeleccionadas[index])){
                     Axios.post('http://localhost:8080/api/proyecto_empresa/guardar/',{
                         id_empresa: this.state.empresasSeleccionadas[index],
-                        id_proyecto: this.state.proyecto.id_proyecto,
+                        id_proyecto: id_proyecto,
                     },{headers: {"Authorization": `Bearer ${token}`}});
                 }             
             }

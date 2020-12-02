@@ -22,7 +22,6 @@ class Propiedades extends Component{
         .then(response=>{
             this.setState({
                 requerimientos: response.data,
-                //requerimiento: this.props.requerimiento,
             });
             Axios.get(`http://localhost:8080/api/requerimiento/${this.props.requerimiento.id_requerimiento}`, {headers: {"Authorization": `Bearer ${token}`}})
             .then(response=>{

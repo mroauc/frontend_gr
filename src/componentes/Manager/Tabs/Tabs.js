@@ -17,6 +17,13 @@ export default class Tabs extends Component{
 
     componentWillReceiveProps(next_props) {
         this.activeTabForClick();
+        if(this.props.eliminado===1){
+            this.eliminar();
+        }
+    }
+
+    eliminar=async()=>{
+        await this.onClickTabItem(this.props.children[0].props.label);
     }
 
     activeTabForClick = async () => {

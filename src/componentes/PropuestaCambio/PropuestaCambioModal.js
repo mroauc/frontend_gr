@@ -29,25 +29,21 @@ class PropuestaCambioModal extends Component{
     }
 
     componentWillReceiveProps(next_props){
-        const token = localStorage.getItem('token');
-        this.setState({propuestaCambio: this.props.propuestaCambio});
-        console.log(this.props.propuestaCambio)
-        this.getRequerimientos(this.props.propuestaCambio.id_subproyecto);
-        if(this.props.tipoModal === "actualizar"){
-            Axios.get(`http://localhost:8080/api/impacto_directo/obtener/${this.props.propuestaCambio.id_propuestaCambio}`,{headers: {"Authorization": `Bearer ${token}`}})
-            .then(response=>{
-                if(response.data[0] !== undefined){
-                    this.setState({
-                        requerimientoImpactoDirecto : response.data[0].id_requerimiento
-                    });
-                }
-            })    
+        this.obtenerRecarga();
+    }
+
+    obtenerRecarga=async()=>{
+        await this.setState({propuestaCambio: this.props.propuestaCambio});
+        if(this.props.tipoModal==='actualizar'){
+            this.setState({requerimientoImpactoDirecto: this.props.requerimientoImpactoDirecto});
+        }else{
+            this.setState({requerimientoImpactoDirecto: ''});
         }
+        this.getRequerimientos(this.props.propuestaCambio.id_subproyecto);
     }
 
     componentDidMount(){
         this.index();
-        
     }
 
     index=async()=>{

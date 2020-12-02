@@ -10,8 +10,7 @@ function Menu(){
                 {nombre : "Empresas", url : "/empresa"},
                 {nombre : "Clientes", url : "/cliente"},
                 {nombre : "Usuarios", url : "/usuario"},
-                {nombre : "Envio de Errores", url : "/seleccionarError"},
-                {nombre : "Manager", url : "/manager"}
+                {nombre : "Envio de Errores", url : "/seleccionarError"}
             ]}
         />
     }

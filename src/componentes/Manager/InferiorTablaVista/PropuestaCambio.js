@@ -45,7 +45,8 @@ class PropuestaCambio extends Component{
         await Axios.post('http://localhost:8080/api/propuestacambio/editar/',edit,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.index();
-        })
+            this.notificar(edit, 'aprobada');
+        });
     }
 
     rechazar=async(propuesta)=>{
@@ -55,7 +56,27 @@ class PropuestaCambio extends Component{
         await Axios.post('http://localhost:8080/api/propuestacambio/editar',edit,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.index();
-        })
+            this.notificar(edit, 'rechazada');
+        });
+    }
+
+    notificar=(propuesta, decision)=>{
+        const token = localStorage.getItem('token');
+        Axios.get(`http://localhost:8080/api/subProyecto/${propuesta.id_subproyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            Axios.get(`http://localhost:8080/api/proyecto/${response.data.id_proyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
+            .then(response=>{
+                Axios.get(`http://localhost:8080/api/usuario/id/${response.data.id_usuario}`, {headers: {"Authorization": `Bearer ${token}`}})
+                .then(response=>{
+                    console.log(response.data);
+                    Axios.post('http://localhost:8080/api/email/enviar',{
+                        email: response.data.email,
+                        content: "Se ha tomado una resolución sobre la propuesta de cambio: <strong>"+propuesta.nombre+"</strong>.<br>Dicha propuesta ha sido <strong>"+decision+"</strong><br><br>"+new Date().toLocaleString(),
+                        subject: "Resolucion propuesta de cambio "+propuesta.nombre
+                    }, {headers: {"Authorization": `Bearer ${token}`}});
+                });
+            });
+        });
     }
 
     finalizar=async(propuesta)=>{

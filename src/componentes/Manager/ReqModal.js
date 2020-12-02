@@ -1,15 +1,16 @@
 import Axios from 'axios';
-import React, { Component } from 'react'
+import React, {Component} from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
-class RequerimientoModal extends Component{
+class ReqModal extends Component{
+
     state={
         requerimiento:{
             id_requerimiento: 0,
             nombre: '',
             descripcion: '',
             id_usuario: '',
-            id_subProyecto: '',
+            id_subProyecto: this.props.id_subProyecto,
             fecha_creacion: '',
             prioridad: '',
             estado: '',
@@ -34,24 +35,57 @@ class RequerimientoModal extends Component{
         Axios.get('http://localhost:8080/api/template/',{headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             this.setState({
-                templates: response.data
+                templates: response.data,
             });
         })
         this.getUsuarios();
         this.getUsuariosSubProyecto();
+        this.getUser();
     }
 
     componentWillReceiveProps(next_props){
-        this.setState({requerimiento: this.props.requerimiento, template_actual: this.props.requerimiento.id_template});
-        const token = localStorage.getItem("token");
-        if(this.props.requerimiento.id_requerimiento !== undefined){
-            Axios.get('http://localhost:8080/api/usuarioactividad/id_requerimiento/'+this.props.requerimiento.id_requerimiento,{headers: {"Authorization" : `Bearer ${token}`}})
-            .then(response=>{
-                this.setState({
-                    id_usuario_responsable : response.data.id_usuario
-                });
-            })
+        this.setState({requerimiento: this.props.requerimiento, id_usuario_responsable: ''});
+    }
+
+    getUser=async()=>{
+        const token = localStorage.getItem('token');
+        await Axios.get(`http://localhost:8080/api/usuario/${localStorage.getItem('email')}`,{headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            var dataold = this.state.requerimiento;
+            dataold.id_usuario = response.data.id;
+            this.setState({requerimiento: dataold});
+        })
+    }
+
+    getUsuarios=()=>{
+        const token = localStorage.getItem('token');
+        Axios.get(`http://localhost:8080/api/usuario/`,{headers: {"Authorization" : `Bearer ${token}`}})
+        .then(response=>{
+            this.setState({usuarios : response.data});
+        })
+    }
+
+    getUsuariosSubProyecto= async ()=>{
+        const token = localStorage.getItem('token');
+        await Axios.get(`http://localhost:8080/api/encargadosubproyecto/obtener/${this.props.id_subProyecto}`,{headers: {"Authorization" : `Bearer ${token}`}})
+        .then(response=>{
+            this.setState({usuariosSubProyecto: response.data})
+        })
+    }
+
+    obtenerNombreUsuario = (id_usuario) => {
+        if(this.state.usuarios.length !== 0){
+            const usuarioEncontrado = this.state.usuarios.find(usuario => usuario.id === id_usuario);
+            return usuarioEncontrado.nombre;    
         }
+    }
+
+    changeHandler=async(e)=>{
+        await this.setState({
+            requerimiento:{
+                ...this.state.requerimiento, [e.target.name]: e.target.value
+            }
+        });
     }
 
     validar = () => {
@@ -111,94 +145,31 @@ class RequerimientoModal extends Component{
         }
     }
 
-    completarDatos=(requerimiento)=>{
+    completarDatos=async(requerimiento)=>{
         const token = localStorage.getItem('token');
-
-        Axios.get(`http://localhost:8080/api/template/${requerimiento.id_template}`,{headers: {"Authorization" : `Bearer ${token}`}})
+        await Axios.get(`http://localhost:8080/api/template/${requerimiento.id_template}`,{headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             var req = requerimiento;
             req.nombre = requerimiento.categoria.concat(requerimiento.id_requerimiento);
             req.descripcion = response.data.template;
             this.ejecutarCompletacionDatos(req);
         });
-        
-        Axios.post('http://localhost:8080/api/usuarioactividad/guardar',{
+        await Axios.post('http://localhost:8080/api/usuarioactividad/guardar',{
             fecha: new Date().toLocaleString(),
             id_requerimiento: requerimiento.id_requerimiento,
             id_usuario: this.state.id_usuario_responsable
         },{headers: {"Authorization" : `Bearer ${token}`}})
     }
 
-    ejecutarCompletacionDatos=(req)=>{
+    ejecutarCompletacionDatos=async(req)=>{
         const token = localStorage.getItem('token');
-        Axios.post('http://localhost:8080/api/requerimiento/editar/', req, {headers: {"Authorization" : `Bearer ${token}`}})
+        await Axios.post('http://localhost:8080/api/requerimiento/editar/', req, {headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
+            this.props.getUsuarios();
+            this.props.getDataUsuarioActividad()
             this.props.modalInsertar();
-            this.props.index();
+            this.props.funcionGetRequerimientos();
         })
-    }
-
-    guardarActualizacion=async()=>{
-        if(this.validar()){
-            const actual = this.state.requerimiento;
-            actual.nombre = actual.categoria.concat(actual.id_requerimiento);
-            const token = localStorage.getItem('token');
-            Axios.get('http://localhost:8080/api/usuarioactividad/id_requerimiento/'+ actual.id_requerimiento, {headers: {"Authorization" : `Bearer ${token}`}})
-            .then(response => {
-                Axios.post('http://localhost:8080/api/usuarioactividad/guardar',{
-                    id_usuarioActividad: response.data.id_usuarioActividad,
-                    fecha: response.data.fecha,
-                    id_requerimiento: actual.id_requerimiento,
-                    id_usuario: this.state.id_usuario_responsable
-                }, {headers: {"Authorization" : `Bearer ${token}`}})
-            })
-
-            if(this.state.template_actual !== this.state.requerimiento.id_template){
-                await Axios.get(`http://localhost:8080/api/template/${this.state.requerimiento.id_template}`,{headers: {"Authorization" : `Bearer ${token}`}})
-                .then(response=>{
-                    actual.descripcion = response.data.template;
-                });
-                console.log("nuevo template");
-            }
-            
-            Axios.post('http://localhost:8080/api/requerimiento/editar/',actual, {headers: {"Authorization" : `Bearer ${token}`}})
-            .then(response=>{
-                this.props.modalInsertar();
-                this.props.index();
-            })
-            this.initErrores();
-        }
-    }
-
-    getUsuarios=()=>{
-        const token = localStorage.getItem('token');
-        Axios.get(`http://localhost:8080/api/usuario/`,{headers: {"Authorization" : `Bearer ${token}`}})
-        .then(response=>{
-            this.setState({usuarios : response.data});
-        })
-    }
-
-    getUsuariosSubProyecto= async ()=>{
-        const token = localStorage.getItem('token');
-        await Axios.get(`http://localhost:8080/api/encargadosubproyecto/obtener/${this.props.requerimiento.id_subProyecto}`,{headers: {"Authorization" : `Bearer ${token}`}})
-        .then(response=>{
-            this.setState({usuariosSubProyecto: response.data})
-        })
-    }
-
-    obtenerNombreUsuario = (id_usuario) => {
-        if(this.state.usuarios.length !== 0){
-            const usuarioEncontrado = this.state.usuarios.find(usuario => usuario.id === id_usuario);
-            return usuarioEncontrado.nombre;    
-        }
-    }
-
-    changeHandler=async(e)=>{
-        await this.setState({
-            requerimiento:{
-                ...this.state.requerimiento, [e.target.name]: e.target.value
-            }
-        });
     }
 
     render(){
@@ -206,7 +177,7 @@ class RequerimientoModal extends Component{
             <React.Fragment>
                 <Modal isOpen={this.props.estadoModalInsertar} toggle={()=>{this.props.modalInsertar();this.initErrores();}}>
                     <ModalHeader style={{display:'block'}}>
-                        <span>{(this.props.tipoModal === 'insertar') ? 'Ingresar Requerimiento' :'Editar Requerimiento'}</span>
+                        <span>Ingresar Requerimiento</span>
                         <span style={{cursor:'pointer', float:'right'}} onClick={()=>{this.props.modalInsertar();this.initErrores();}}>X</span>
                     </ModalHeader>
                     <ModalBody>
@@ -293,21 +264,16 @@ class RequerimientoModal extends Component{
                         </div>
                     </ModalBody>
                     <ModalFooter>
-                        {this.props.tipoModal==='insertar'?
-                            <button className="btn btn-success" onClick={()=>this.guardar()}>
-                                Insertar
-                            </button>
-                            :
-                            <button className="btn btn-success" onClick={()=>this.guardarActualizacion()}>
-                                Actualizar
-                            </button>
-                        }
-                            <button className="btn btn-danger" onClick={()=>{this.props.modalInsertar();this.initErrores();}}>Cancelar</button>
+                        <button className="btn btn-success" onClick={()=>this.guardar()}>
+                            Insertar
+                        </button>
+                        <button className="btn btn-danger" onClick={()=>{this.props.modalInsertar();this.initErrores();}}>Cancelar</button>
                     </ModalFooter>
                 </Modal>
+                
             </React.Fragment>
-        );
+        )
     }
 }
 
-export default RequerimientoModal;
+export default ReqModal;

@@ -18,9 +18,10 @@ export default class Manager extends Component {
         this.getRequerimientos();
     }
 
-    getRequerimientos =  async() => {
+    getRequerimientos=async()=> {
         const token = localStorage.getItem("token");
-        await Axios.get("http://localhost:8080/api/requerimiento/", {headers: {"Authorization": `Bearer  ${token}`}})
+        const id_subproyecto = this.props.match.params.id_subproyecto;
+        await Axios.get(`http://localhost:8080/api/requerimiento/obtener/${id_subproyecto}`, {headers: {"Authorization": `Bearer  ${token}`}})
         .then(async response => {
             await this.setState({
                 requerimientos: response.data
@@ -37,7 +38,7 @@ export default class Manager extends Component {
         }
         else{
             await this.setState({clickTab: req});
-        }   
+        } 
     }
 
     consultaTabActivo = async () => {
@@ -68,6 +69,8 @@ export default class Manager extends Component {
                         eliminarReqDeTab = {this.eliminarReqDeTab}
                         requerimientos = {this.state.requerimientos}
                         clickTab = {this.consultaTabActivo}
+                        id_subproyecto = {this.props.match.params.id_subproyecto}
+                        funcionGetRequerimientos = {this.getRequerimientos}
                     />
                 </div>
             </React.Fragment>
