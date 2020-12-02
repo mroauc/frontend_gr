@@ -31,10 +31,10 @@ class PropuestaCambioModal extends Component{
     componentWillReceiveProps(next_props){
         const token = localStorage.getItem('token');
         this.setState({propuestaCambio: this.props.propuestaCambio});
-        console.log(this.props.propuestaCambio)
-        this.getRequerimientos(this.props.propuestaCambio.id_subproyecto);
+        console.log(next_props.propuestaCambio)
+        this.getRequerimientos(next_props.propuestaCambio.id_subproyecto);
         if(this.props.tipoModal === "actualizar"){
-            Axios.get(`http://localhost:8080/api/impacto_directo/obtener/${this.props.propuestaCambio.id_propuestaCambio}`,{headers: {"Authorization": `Bearer ${token}`}})
+            Axios.get(`http://localhost:8080/api/impacto_directo/obtener/${next_props.propuestaCambio.id_propuestaCambio}`,{headers: {"Authorization": `Bearer ${token}`}})
             .then(response=>{
                 if(response.data[0] !== undefined){
                     this.setState({

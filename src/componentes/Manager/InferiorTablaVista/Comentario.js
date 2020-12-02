@@ -92,6 +92,14 @@ export default class Comentario extends Component{
 
                 <div className="muestraComentarios">
                     {this.state.comentarios.reverse().map(comentario => {
+                        if(comentario.id_usuario === 0){
+                            return(
+                                <div className="cuadroComentario">
+                                    <i style={{marginRight:'10px'}}>{comentario.fecha_ingreso + " | "}</i>{comentario.texto}
+                                </div>
+                            );
+                        }
+                        
                         const usuarioEncontrado = this.state.usuarios.filter(usuario => usuario.id === comentario.id_usuario);
                         
                         if(usuarioEncontrado.length === 1){
