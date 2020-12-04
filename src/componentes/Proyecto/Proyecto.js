@@ -205,7 +205,8 @@ class Proyecto extends Component{
         var opt = {
             margin: 0.2,
             filename: 'documento_' + nombreProyecto + '.pdf',
-            jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait', putOnlyUsedFonts: true}
+            jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait', putOnlyUsedFonts: true},
+            pagebreak: { mode: ['avoid-all', 'legacy'] }
         };
 
         //html2pdf().set({filename: 'documentoSalida'}).from(imprimir).save();

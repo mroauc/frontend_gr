@@ -4,6 +4,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import {Link} from 'react-router-dom';
 import './PaginaPrincipal.css';
 import ReqModal from './ReqModal';
+import PaginacionRequerimiento from './PaginacionRequerimiento'
 
 var arregloOrdenado = [];
 
@@ -25,11 +26,18 @@ export default class PaginaPrincipal extends Component{
             categoria: '',
             id_template: 0
         },
-        id_proyecto: ''
+        id_proyecto: '',
+        paginaActual: 1,
+        cantidadPorPagina: 2
     }
 
     constructor (props){
         super(props);
+    }
+
+    cambiarPaginaActual = (n_pagina) => {
+        console.log(n_pagina)
+        this.setState({paginaActual: n_pagina});
     }
 
     getIdProyecto=async()=>{
@@ -110,6 +118,9 @@ export default class PaginaPrincipal extends Component{
     }
 
     render(){
+        const ultimoDato = this.state.paginaActual * this.state.cantidadPorPagina;
+        const primerDato = ultimoDato - this.state.cantidadPorPagina;
+        const datosActuales = arregloOrdenado.slice(primerDato, ultimoDato);
         this.ordenarArregloReq();
         return(
             <div>
@@ -136,7 +147,7 @@ export default class PaginaPrincipal extends Component{
                         </tr>
                     </thead>
                     <tbody>
-                        {arregloOrdenado.map(requerimiento => {
+                        {datosActuales.map(requerimiento => {
                             return(
                                 <tr>
                                     <td>{requerimiento.nombre}</td>
@@ -149,6 +160,13 @@ export default class PaginaPrincipal extends Component{
                         })}
                     </tbody>
                 </table>
+
+                <PaginacionRequerimiento
+                    cambiarPaginaActual = {this.cambiarPaginaActual}
+                    cantidadPorPagina = {this.state.cantidadPorPagina}
+                    cantidadDeDatos = {arregloOrdenado.length}
+                    paginaActual = {this.state.paginaActual} 
+                />
 
                 <ReqModal
                     requerimiento = {this.state.requerimiento}

@@ -75,7 +75,6 @@ export default class Permisos extends Component {
     }
 
     alertaGuardar = () => {
-        console.log("que ha pasao")
         swal({
             title: "Guardado Correctamente",
             icon: "success",
