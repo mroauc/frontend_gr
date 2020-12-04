@@ -13,22 +13,39 @@ class Propiedades extends Component{
     }
 
     componentDidMount(){
+        this.getRequerimientos();
         this.getRequerimiento();
+    }
+
+    getRequerimientos=async()=>{
+        const token = localStorage.getItem('token');
+        var subproys = [];
+        var reqs = [];
+        await Axios.get(`http://localhost:8080/api/subProyecto/${this.props.requerimiento.id_subProyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
+        .then(async response=>{
+            await Axios.get(`http://localhost:8080/api/subProyecto/pertenecientes/${response.data.id_proyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
+            .then(async response=>{
+                subproys = response.data;
+                for (let index = 0; index < subproys.length; index++) {                    
+                    await Axios.get(`http://localhost:8080/api/requerimiento/obtener/${subproys[index].id_subProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
+                    .then(async response=>{
+                        for (let index = 0; index < response.data.length; index++) {
+                            reqs.push(response.data[index]);
+                            await this.setState({requerimientos: reqs});
+                        }
+                    });
+                }
+            });
+        });
     }
 
     getRequerimiento=async()=>{
         const token = localStorage.getItem('token');
-        await Axios.get('http://localhost:8080/api/requerimiento/',{headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.get(`http://localhost:8080/api/requerimiento/${this.props.requerimiento.id_requerimiento}`, {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
-                requerimientos: response.data,
+                requerimiento : response.data
             });
-            Axios.get(`http://localhost:8080/api/requerimiento/${this.props.requerimiento.id_requerimiento}`, {headers: {"Authorization": `Bearer ${token}`}})
-            .then(response=>{
-                this.setState({
-                    requerimiento : response.data
-                });
-            })
         })
     }
 

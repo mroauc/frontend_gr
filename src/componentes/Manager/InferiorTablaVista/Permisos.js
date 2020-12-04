@@ -7,51 +7,44 @@ export default class Permisos extends Component {
     
     state={
         usuarios:[],
-        usuariosSubProyecto: [],
-        usuarioResponsable: ''
+        usuarioResponsable: '',
+        usuariosSubProyecto: []
     }
 
     componentDidMount(){
         this.getUsuarios();
+        this.obtenerUsuarioResponsable();
         this.getUsuariosSubProyecto();
-        this.obtenerUsuarioResponsable()
     }
     
-    getUsuarios = async () => {
+    getUsuarios=async()=>{
         const token = localStorage.getItem('token');
         await Axios.get(`http://localhost:8080/api/usuario/`,{headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
-            this.setState({usuarios: response.data})
+            this.setState({usuarios: response.data});
         })
     }
 
-    getUsuariosSubProyecto= async ()=>{
+    getUsuariosSubProyecto=async()=>{
         const token = localStorage.getItem('token');
-        console.log(this.props.requerimiento);
-        console.log(this.props.requerimiento.id_subProyecto)
         await Axios.get(`http://localhost:8080/api/encargadosubproyecto/obtener/${this.props.requerimiento.id_subProyecto}`,{headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 usuariosSubProyecto: response.data
             })
         })
-        
     }
 
-    obtenerUsuarioResponsable = async () => {
+    obtenerUsuarioResponsable=async()=>{
         const token = localStorage.getItem("token");
         await Axios.get(`http://localhost:8080/api/usuarioactividad/id_requerimiento/${this.props.requerimiento.id_requerimiento}`,{headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
-            console.log(response.data);
             this.setState({usuarioResponsable : response.data.id_usuario});
         })
-
     }
 
     obtenerNombreUsuario = (id_usuario) => {
         if(this.state.usuarios.length !== 0){
-            console.log(id_usuario)
-            console.log(this.state.usuarios)
             const usuarioEncontrado = this.state.usuarios.find(usuario => usuario.id === id_usuario)
             return usuarioEncontrado.nombre;    
         }
@@ -70,12 +63,10 @@ export default class Permisos extends Component {
             .then(
                 this.alertaGuardar()
             )
-            
         })
     }
 
     alertaGuardar = () => {
-        console.log("que ha pasao")
         swal({
             title: "Guardado Correctamente",
             icon: "success",
@@ -92,10 +83,13 @@ export default class Permisos extends Component {
                             <select className="form-control inputpermiso" type="text" name="usuarioResponsable" id="usuarioResponsable" value={this.state.usuarioResponsable} onChange={(e) => {this.setState({usuarioResponsable: e.target.value})}}>
                                 <option value="">Seleccionar Usuario Responsable</option>
                                 {this.state.usuariosSubProyecto.map(usuario => {
-                                    return(
-                                        <option value={usuario.id_usuario}>{this.obtenerNombreUsuario(usuario.id_usuario)}</option>
-                                    );
-                                    
+                                    const usuarioEncontrado = this.state.usuarios.find(posibleUsuario => posibleUsuario.id === usuario.id_usuario); 
+                                    if(usuarioEncontrado !== undefined){
+                                        if(usuarioEncontrado.tipo !== "cliente" && usuarioEncontrado.estado === 'Activo')
+                                            return(
+                                                <option value={usuario.id_usuario}>{this.obtenerNombreUsuario(usuario.id_usuario)}</option>
+                                        );
+                                    }
                                 })}
                             </select>
                         </div>

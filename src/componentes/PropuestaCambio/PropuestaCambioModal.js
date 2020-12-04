@@ -29,21 +29,6 @@ class PropuestaCambioModal extends Component{
     }
 
     componentWillReceiveProps(next_props){
-<<<<<<< HEAD
-        const token = localStorage.getItem('token');
-        this.setState({propuestaCambio: this.props.propuestaCambio});
-        console.log(next_props.propuestaCambio)
-        this.getRequerimientos(next_props.propuestaCambio.id_subproyecto);
-        if(this.props.tipoModal === "actualizar"){
-            Axios.get(`http://localhost:8080/api/impacto_directo/obtener/${next_props.propuestaCambio.id_propuestaCambio}`,{headers: {"Authorization": `Bearer ${token}`}})
-            .then(response=>{
-                if(response.data[0] !== undefined){
-                    this.setState({
-                        requerimientoImpactoDirecto : response.data[0].id_requerimiento
-                    });
-                }
-            })    
-=======
         this.obtenerRecarga();
     }
 
@@ -53,7 +38,6 @@ class PropuestaCambioModal extends Component{
             this.setState({requerimientoImpactoDirecto: this.props.requerimientoImpactoDirecto});
         }else{
             this.setState({requerimientoImpactoDirecto: ''});
->>>>>>> 623a914c61f1303e6981eceb2c7db5c44213d7f6
         }
         this.getRequerimientos(this.props.propuestaCambio.id_subproyecto);
     }
@@ -173,11 +157,10 @@ class PropuestaCambioModal extends Component{
 
     guardarActualizacion=async()=>{
         if(this.validar()){
-
             const token = localStorage.getItem('token');
             await Axios.post('http://localhost:8080/api/propuestacambio/editar/',this.state.propuestaCambio, {headers: {"Authorization": `Bearer ${token}`}})
             .then(response=>{
-                this.actualizarImpactoDirecto(this.state.propuestaCambio.id_propuestaCambio);
+                this.actualizarImpactoDirecto(response.data.id_propuestaCambio, this.state.requerimientoImpactoDirecto);
                 this.props.modalInsertar();
                 this.props.index();
                 this.setState({
@@ -190,19 +173,21 @@ class PropuestaCambioModal extends Component{
         }
     }
 
-    actualizarImpactoDirecto=async(id_propuestaCambio)=>{
+    actualizarImpactoDirecto=async(id_propuestaCambio, requerimientoID)=>{
         const token = localStorage.getItem('token');
         let impactoOld = '';
-        await Axios.get(`http://localhost:8080/api/impacto_directo/obtener/${this.state.propuestaCambio.id_propuestaCambio}`,{headers:{"Authorization": `Bearer ${token}`}})
+        await Axios.get(`http://localhost:8080/api/impacto_directo/obtener/${id_propuestaCambio}`,{headers:{"Authorization": `Bearer ${token}`}})
         .then(response => {
             impactoOld = response.data[0]
-        })
+        });
+
+        //console.log(id_propuestaCambio);
 
         await Axios.post('http://localhost:8080/api/impacto_directo/guardar/',{
             id_impacto_directo : impactoOld.id_impacto_directo,
             id_propuesta_cambio : id_propuestaCambio,
-            id_requerimiento : this.state.requerimientoImpactoDirecto
-        },{headers:{"Authorization": `Bearer ${token}`}})
+            id_requerimiento : requerimientoID
+        },{headers:{"Authorization": `Bearer ${token}`}});
     
         this.setState({
             requerimientoImpactoDirecto: ''

@@ -13,6 +13,10 @@ export default class ChipsPropiedades extends Component{
         this.cargarArreglos();
     }
 
+    componentWillReceiveProps(next_props){
+        this.setState({requerimientos: this.props.requerimientos});
+    }
+
     cargarArreglos=async()=>{
         const token = localStorage.getItem('token');
         await Axios.get(`http://localhost:8080/api/relacionrequerimientos/obtener/${this.props.id_requerimiento}`,{headers: {"Authorization": `Bearer ${token}`}})
@@ -61,7 +65,7 @@ export default class ChipsPropiedades extends Component{
                     <div className="input-group">
                         <select className="form-control" style={{width: '70%'}} onChange={this.changeInputRequerimiento}>
                             <option value="">Elige un Requerimiento</option>
-                            {this.props.requerimientos.map( requerimiento => {
+                            {this.state.requerimientos.map( requerimiento => {
                                 if(requerimiento.id_requerimiento !== this.props.id_requerimiento){
                                 return(
                                     <option key={requerimiento.id_requerimiento} value={requerimiento.id_requerimiento}>{requerimiento.nombre}</option>
