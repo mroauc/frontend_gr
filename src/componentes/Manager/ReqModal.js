@@ -69,8 +69,8 @@ class ReqModal extends Component{
         const token = localStorage.getItem('token');
         await Axios.get(`http://localhost:8080/api/encargadosubproyecto/obtener/${this.props.id_subProyecto}`,{headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
-            this.setState({usuariosSubProyecto: response.data})
-        })
+            this.setState({usuariosSubProyecto: response.data});
+        });
     }
 
     obtenerNombreUsuario = (id_usuario) => {
@@ -200,7 +200,7 @@ class ReqModal extends Component{
                                 {this.state.usuariosSubProyecto.map(usuario => {
                                     const usuarioEncontrado = this.state.usuarios.find(posibleUsuario => posibleUsuario.id === usuario.id_usuario); 
                                     if(usuarioEncontrado !== undefined){
-                                        if(usuarioEncontrado.tipo !== "cliente")
+                                        if(usuarioEncontrado.tipo !== "cliente" && usuarioEncontrado.estado === 'Activo')
                                             return(
                                                 <option value={usuario.id_usuario}>{this.obtenerNombreUsuario(usuario.id_usuario)}</option>
                                         );
