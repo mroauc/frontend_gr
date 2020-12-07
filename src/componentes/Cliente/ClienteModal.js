@@ -52,6 +52,7 @@ export default class ClienteModal extends Component {
     componentWillReceiveProps(next_props) {
         this.setState({ cliente: this.props.cliente});
         this.getUsuario(this.props.cliente.id_user);
+        console.log(this.props.cliente);
     }
 
     initErrores = () => {
@@ -86,17 +87,12 @@ export default class ClienteModal extends Component {
             this.setState({errorInputPassword: "Debe ingresar una contraseña"})
             salida = false;
         }
-
-
         return salida;
-        
-        
     }
 
     guardarCliente = async () => {
         const token = localStorage.getItem('token');
         var urlGuardar = url + 'guardar';
-        // tipo = rol
         if(this.validar()){
             if(this.props.estadoInsertar){
                 await axios.post(`http://localhost:8080/auth/nuevo`, {
@@ -140,19 +136,19 @@ export default class ClienteModal extends Component {
         }
     }
 
-        getUsuarioByEmail = async () => {
-        const token = localStorage.getItem('token');
-        await axios.get(`http://localhost:8080/api/usuario/${this.state.usuario.email}`,{headers: {"Authorization": `Bearer  ${token}`}})
-            .then(async response => {
-                await this.setState({
-                    cliente:{
-                        id_cliente: this.state.cliente.id_cliente,
-                        celular: this.state.cliente.celular,
-                        id_empresa: this.state.cliente.id_empresa,
-                        id_user: response.data.id
-                    }
-                });
-            })
+    getUsuarioByEmail = async () => {
+    const token = localStorage.getItem('token');
+    await axios.get(`http://localhost:8080/api/usuario/${this.state.usuario.email}`,{headers: {"Authorization": `Bearer  ${token}`}})
+        .then(async response => {
+            await this.setState({
+                cliente:{
+                    id_cliente: this.state.cliente.id_cliente,
+                    celular: this.state.cliente.celular,
+                    id_empresa: this.state.cliente.id_empresa,
+                    id_user: response.data.id
+                }
+            });
+        })
     }
 
     changeHandler = async (e) => {
@@ -160,7 +156,7 @@ export default class ClienteModal extends Component {
             cliente : {
               ...this.state.cliente, [e.target.name]: e.target.value
             }
-          });
+        });
     }
 
     changeHandler2 = async (e) => {
@@ -181,14 +177,48 @@ export default class ClienteModal extends Component {
         });
     }
 
+    cerrarModalInsertar=async()=>{
+        await this.setState({
+            usuario:{ 
+                id_usuario: '',
+                estado: '',
+                nombre: '',
+                password: '',
+                rol: 'cliente',
+                email: ''
+            },
+        });
+        this.props.cambiarEstadoInsertar();
+    }
+
+    cerrarModalEditar=async()=>{
+        await this.setState({
+            usuario:{ 
+                id_usuario: '',
+                estado: '',
+                nombre: '',
+                password: '',
+                rol: 'cliente',
+                email: ''
+            },
+            cliente: {
+                id_cliente: '',
+                celular: '',
+                id_empresa: '',
+                id_user: ''
+            }
+        });
+        this.props.cambiarEstadoEditar();
+    }
+
     render(){
         return(
             <React.Fragment>
-                <Modal isOpen = {this.props.estadoInsertar || this.props.estadoEditar} toggle={() => {(this.props.estadoInsertar) ? this.props.cambiarEstadoInsertar() : this.props.cambiarEstadoEditar(); this.initErrores()}} >
+                <Modal isOpen = {this.props.estadoInsertar || this.props.estadoEditar} toggle={() => {(this.props.estadoInsertar) ? this.cerrarModalInsertar() : this.cerrarModalEditar(); this.initErrores()}} >
                     <ModalHeader style={{display : 'block'}}>
                         <span>{(this.props.estadoInsertar) ? 'Ingresar Cliente' :'Editar Cliente'}</span>
                         
-                        <span style={{cursor : 'pointer' , float : 'right'}} onClick={() => {(this.props.estadoInsertar) ? this.props.cambiarEstadoInsertar() : this.props.cambiarEstadoEditar(); this.initErrores()}}>X</span>
+                        <span style={{cursor : 'pointer' , float : 'right'}} onClick={() => {(this.props.estadoInsertar) ? this.cerrarModalInsertar() : this.cerrarModalEditar(); this.initErrores()}}>X</span>
                     </ModalHeader>
                     <ModalBody>
                         <div className="form-group">
@@ -228,7 +258,8 @@ export default class ClienteModal extends Component {
                                 <br/>
                                 <label htmlFor="estado">Estado de usuario</label>
                                 <select name="estado" id="estado" className="form-control" value={this.state.usuario.estado} onChange={this.changeHandler2}>
-                                    <option value="Activo" selected>Activo</option>
+                                    <option value="">Seleccione un Estado</option>
+                                    <option value="Activo">Activo</option>
                                     <option value="Inactivo">Inactivo</option>
                                 </select>
                                 <br/>
@@ -238,6 +269,7 @@ export default class ClienteModal extends Component {
                                     {this.state.errorInputPassword}
                                 </div>
                                 <br/>
+                                
                                 <label htmlFor="id_user">ID User</label>
                                 <input className="form-control" type="text" name="id_user" id="id_user" onChange={this.changeHandler} value={this.state.cliente.id_user} readOnly/>
 
@@ -245,7 +277,7 @@ export default class ClienteModal extends Component {
                     </ModalBody>
                     <ModalFooter>
                         <button className="btn btn-success" onClick={() => this.guardarCliente()}> {(this.props.estadoInsertar)? "Insertar" : "Actualizar"} </button>
-                        <button className="btn btn-danger" onClick={() => {(this.props.estadoInsertar) ? this.props.cambiarEstadoInsertar() : this.props.cambiarEstadoEditar(); this.initErrores()}} >Cancelar</button>
+                        <button className="btn btn-danger" onClick={() => {(this.props.estadoInsertar) ? this.cerrarModalInsertar() : this.cerrarModalEditar(); this.initErrores()}} >Cancelar</button>
                     </ModalFooter>
                 </Modal>
 

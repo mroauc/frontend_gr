@@ -57,7 +57,6 @@ class ProyectoModal extends Component{
                 this.props.index();
             })
         }
-        
     }
 
     proyectoEmpresa=async(id_proyecto)=>{
@@ -175,16 +174,18 @@ class ProyectoModal extends Component{
         return validacion;
     }
 
-    getJefesProyectos = async () => {
+    getJefesProyectos=async()=>{
         const token = localStorage.getItem('token');
         await Axios.get('http://localhost:8080/api/usuario/',{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
+<<<<<<< HEAD
                 jefes_proyectos: response.data.filter(usuario => usuario.tipo === "jefe" && usuario.estado === "Activo")
+=======
+                jefes_proyectos: response.data.filter(usuario => usuario.tipo === "jefe" && usuario.estado==='Activo')
+>>>>>>> af6d9048d47be7dce2bb6a7dfc1ed3132ccfee59
             });
-        })
-
-        console.log(this.state.jefes_proyectos)
+        });
     }
 
     render(){
