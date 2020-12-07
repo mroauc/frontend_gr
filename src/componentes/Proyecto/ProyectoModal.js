@@ -180,7 +180,7 @@ class ProyectoModal extends Component{
         await Axios.get('http://localhost:8080/api/usuario/',{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
-                jefes_proyectos: response.data.filter(usuario => usuario.tipo === "jefe")
+                jefes_proyectos: response.data.filter(usuario => usuario.tipo === "jefe" && usuario.estado === "Activo")
             });
         })
 

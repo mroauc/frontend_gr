@@ -29,6 +29,10 @@ export default class Manager extends Component {
         })
     }
 
+    cambiarTabActivo = async(req) => {
+        await this.setState({clickTab: req})
+    }
+
     agregarReqATab = async (req) => {
         if(!this.state.reqsTab.includes(req)){
             await this.setState({
@@ -71,6 +75,8 @@ export default class Manager extends Component {
                         clickTab = {this.consultaTabActivo}
                         id_subproyecto = {this.props.match.params.id_subproyecto}
                         funcionGetRequerimientos = {this.getRequerimientos}
+                        cambiarTabActivo = {this.cambiarTabActivo}
+                        agregarReqATab = {this.agregarReqATab}
                     />
                 </div>
             </React.Fragment>

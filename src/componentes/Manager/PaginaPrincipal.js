@@ -28,7 +28,7 @@ export default class PaginaPrincipal extends Component{
         },
         id_proyecto: '',
         paginaActual: 1,
-        cantidadPorPagina: 2
+        cantidadPorPagina: 5
     }
 
     constructor (props){
@@ -108,7 +108,8 @@ export default class PaginaPrincipal extends Component{
                 id_template: 0
             }
         });
-        this.setState({modalInsertar: !this.state.modalInsertar});
+        this.props.cambiarTabActivo("");
+        await this.setState({modalInsertar: !this.state.modalInsertar});
     }
 
     componentDidMount(){
@@ -165,7 +166,8 @@ export default class PaginaPrincipal extends Component{
                     cambiarPaginaActual = {this.cambiarPaginaActual}
                     cantidadPorPagina = {this.state.cantidadPorPagina}
                     cantidadDeDatos = {arregloOrdenado.length}
-                    paginaActual = {this.state.paginaActual} 
+                    paginaActual = {this.state.paginaActual}
+                    cambiarTabActivo = {this.props.cambiarTabActivo} 
                 />
 
                 <ReqModal
@@ -177,6 +179,8 @@ export default class PaginaPrincipal extends Component{
                     funcionGetRequerimientos = {this.props.funcionGetRequerimientos}
                     getUsuarios = {this.getUsuarios}
                     getDataUsuarioActividad = {this.getDataUsuarioActividad}
+                    cambiarTabActivo = {this.props.cambiarTabActivo}
+                    agregarReqATab = {this.props.agregarReqATab} 
                 />
 
             </div>

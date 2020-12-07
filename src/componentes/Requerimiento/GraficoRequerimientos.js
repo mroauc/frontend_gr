@@ -111,9 +111,9 @@ class GraficoRequerimiento extends Component{
                     </div>
 
                     <div style={{textAlign:'left', marginLeft:'20px'}}>
-                        <label>-Requerimiento Creado</label><br/>
-                        <label>-Requerimiento En Redaccion</label><br/>
-                        <label>-Requerimiento Aprobado</label>
+                        - <div className="cuadroColor" style={{backgroundColor:"#0088FE"}}></div> <label>Requerimiento Creado</label><br/>
+                        - <div className="cuadroColor" style={{backgroundColor:"#00C49F"}}></div> <label>Requerimiento En Redaccion</label><br/>
+                        - <div className="cuadroColor" style={{backgroundColor:"#FFBB28"}}></div> <label>Requerimiento Aprobado</label>
                     </div>
                 </div>
                 <div style={{marginLeft: '110px'}}>

@@ -4,6 +4,10 @@ let numerosBarra = [];
 
 export default class PaginacionRequerimiento extends Component {
 
+    componentDidMount(){
+        this.props.cambiarTabActivo("");
+    }
+
     render(){
         numerosBarra = [];
         for (let i = 1; i <= Math.ceil(this.props.cantidadDeDatos/this.props.cantidadPorPagina) ; i++) {

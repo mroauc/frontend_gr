@@ -6,6 +6,8 @@ import Paginacion from '../Paginacion';
 import { Link } from 'react-router-dom';
 import GraficoSVG from './GraficoSVG'
 import FiltroPropuestaCambio from './FiltroPropuestaCambio';
+import swal from 'sweetalert';
+import Axios from 'axios';
 
 
 class TablaPropuestaCambio extends Component{
@@ -13,15 +15,29 @@ class TablaPropuestaCambio extends Component{
     state={
         paginaActual: 1,
         cantidadPorPagina: 5,
-        propuestas: []
+        propuestas: [],
+        impactos_directos: []
     }
 
     cambiarPaginaActual = (n_pagina) => {
         this.setState({paginaActual: n_pagina});
     }
+    
+    componentDidMount() {
+        this.getImpactosDirectos();
+    }
+
+    getImpactosDirectos = async () => {
+        const token = localStorage.getItem('token');
+        await Axios.get(`http://localhost:8080/api/impacto_directo/`,{headers: {"Authorization" : `Bearer ${token}`}})
+        .then(response=>{
+            this.setState({impactos_directos: response.data});
+        })
+    }
 
     componentWillReceiveProps(next_props){
-        this.setState({propuestas : next_props.propuestas})
+        this.setState({propuestas : next_props.propuestas});
+        this.getImpactosDirectos();
     }
 
     BuscarPropuestas = (e) =>{
@@ -31,6 +47,23 @@ class TablaPropuestaCambio extends Component{
 
     CambiarPropuestas=(nuevasPropuestas)=>{
         this.setState({propuestas: nuevasPropuestas});
+    }
+
+    alerta = () => {
+        swal({
+            title: "Se debe asignar un impacto directo a la propuesta de cambio",
+            icon: "warning",
+            buttons: "Aceptar"
+        })
+    }
+
+    tieneImpactoDirecto = (id_propuesta) => {
+        const encontrado = this.state.impactos_directos.find(impacto => impacto.id_propuesta_cambio === id_propuesta);
+        if(encontrado === undefined) return false;
+        else{
+            if(encontrado.id_requerimiento === 0) return false;
+        }
+        return true;
     }
 
     render(){
@@ -67,7 +100,11 @@ class TablaPropuestaCambio extends Component{
                                     <td>{propuesta.id_subproyecto}</td>
                                     <td>{propuesta.estado}</td>
                                     <td>
-                                        <Link to={`/analisisImpacto/${propuesta.id_propuestaCambio}`}><button className="btn btn-success" ><GraficoSVG/></button></Link> &nbsp;
+                                        {this.tieneImpactoDirecto(propuesta.id_propuestaCambio) ?
+                                            <Link to={`/analisisImpacto/${propuesta.id_propuestaCambio}`}><button className="btn btn-success" ><GraficoSVG/></button></Link> :
+                                            <button className="btn btn-success" onClick={this.alerta}><GraficoSVG/></button>
+                                        }
+                                        &nbsp;&nbsp;
                                         <button className="btn btn-success" onClick={()=>this.props.verPropuesta(propuesta)}><VisibilityIcon/></button> &nbsp;
                                         <button className="btn btn-warning" onClick={()=>this.props.editar(propuesta)}><EditIcon/></button> &nbsp;
                                         <button className="btn btn-danger" onClick={()=>this.props.modalEliminar(propuesta)}><DeleteIcon/></button> &nbsp;

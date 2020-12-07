@@ -43,7 +43,7 @@ export default class TablaVista extends Component {
 
     eliminar=async()=>{
         const token = localStorage.getItem('token');
-        Axios.delete(`http://localhost:8080/api/usuarioactividad/eliminar/id_requerimiento/${filtrado[0].id_requerimiento}`, {headers: {"Authorization": `Bearer ${token}`}})
+        // Axios.delete(`http://localhost:8080/api/usuarioactividad/eliminar/id_requerimiento/${filtrado[0].id_requerimiento}`, {headers: {"Authorization": `Bearer ${token}`}})
 
         await Axios.delete(`http://localhost:8080/api/requerimiento/eliminar/${filtrado[0].id_requerimiento}`, {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
@@ -51,8 +51,6 @@ export default class TablaVista extends Component {
             this.props.eliminarReqDeTab(filtrado[0].nombre);
             this.props.funcionGetRequerimientos();
             this.setState({eliminado: 1});
-            //this.volver();
-            //window.location.href = window.location.href;
         })
     }
 
@@ -120,6 +118,8 @@ export default class TablaVista extends Component {
                                 requerimientos = {this.props.requerimientos}
                                 id_subproyecto = {this.props.id_subproyecto}
                                 funcionGetRequerimientos = {this.props.funcionGetRequerimientos}
+                                cambiarTabActivo = {this.props.cambiarTabActivo}
+                                agregarReqATab = {this.props.agregarReqATab}
                             /> 
                         </div>
 

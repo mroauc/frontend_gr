@@ -29,7 +29,6 @@ class PropuestaCambioModal extends Component{
     }
 
     componentWillReceiveProps(next_props){
-<<<<<<< HEAD
         const token = localStorage.getItem('token');
         this.setState({propuestaCambio: this.props.propuestaCambio});
         console.log(next_props.propuestaCambio)
@@ -43,8 +42,6 @@ class PropuestaCambioModal extends Component{
                     });
                 }
             }) }   
-=======
->>>>>>> 11c912bc4972ff8296d22768022a47d4d5c94c56
         this.obtenerRecarga();
     }
 

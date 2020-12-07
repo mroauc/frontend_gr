@@ -158,7 +158,7 @@ class ReqModal extends Component{
             fecha: new Date().toLocaleString(),
             id_requerimiento: requerimiento.id_requerimiento,
             id_usuario: this.state.id_usuario_responsable
-        },{headers: {"Authorization" : `Bearer ${token}`}})
+        },{headers: {"Authorization" : `Bearer ${token}`}});
     }
 
     ejecutarCompletacionDatos=async(req)=>{
@@ -170,6 +170,8 @@ class ReqModal extends Component{
             this.props.modalInsertar();
             this.props.funcionGetRequerimientos();
         })
+        // await this.props.agregarReqATab(req.categoria.concat(req.id_requerimiento));
+        // this.props.cambiarTabActivo(req.categoria.concat(req.id_requerimiento));
     }
 
     render(){
