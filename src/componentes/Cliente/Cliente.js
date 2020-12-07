@@ -50,20 +50,15 @@ export default class Cliente extends Component{
         })
     }
 
-
-    cambiarEstadoInsertar = async () => { /// Cambios
-        
-        this.setState({
-            modalInsertar : !this.state.modalInsertar
-        });
+    cambiarEstadoInsertar=async()=>{
+       await this.setState({
+           cliente : '',
+           modalInsertar : !this.state.modalInsertar
+       });
     }
 
-    cambiarEstadoEditar = async () => { //// AQUIIII
-        await this.setState({
-            modalEditar : !this.state.modalEditar
-        });
-
-        if(!this.state.modalEditar){
+    cambiarEstadoEditar=async()=>{
+        /*if(!this.state.modalEditar){
             this.setState({
                 cliente: {
                     id_cliente: '',
@@ -72,7 +67,11 @@ export default class Cliente extends Component{
                     id_user: ''
                 }
             });
-        }
+        }*/
+        await this.setState({
+            cliente: '',
+            modalEditar : !this.state.modalEditar
+        });
     }
 
     cambiarEstadoEliminar = (elemento) => {
@@ -82,7 +81,7 @@ export default class Cliente extends Component{
         })
     }
 
-    obtenerCliente = async (elemento) => {
+    obtenerCliente=async(elemento)=>{
         await this.setState({
             cliente : elemento
         });

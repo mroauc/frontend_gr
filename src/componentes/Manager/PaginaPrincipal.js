@@ -28,7 +28,7 @@ export default class PaginaPrincipal extends Component{
         },
         id_proyecto: '',
         paginaActual: 1,
-        cantidadPorPagina: 2
+        cantidadPorPagina: 5
     }
 
     constructor (props){

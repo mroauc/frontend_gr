@@ -50,12 +50,7 @@ export default class subProyectoModal extends Component {
             });
             salida=false;
         }
-        // if(!this.state.subProyecto.tipo_subProyecto){
-        //     this.setState({
-        //         msj_tipo_subp: "Campo Vacio"
-        //     });
-        //     salida=false;
-        // }
+  
         if(!this.state.usuariosSeleccionados){
             salida=false;
         }
@@ -68,7 +63,7 @@ export default class subProyectoModal extends Component {
         return salida;
     }
 
-    guardarSubproyecto = async (subProyecto) => {
+    guardarSubproyecto=async(subProyecto)=>{
         if(this.validar()){
             const token = localStorage.getItem('token');
             var urlGuardar = url + 'guardar';
@@ -182,10 +177,9 @@ export default class subProyectoModal extends Component {
         await Axios.get('http://localhost:8080/api/usuario/',{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
-                lideres_subProyectos: response.data.filter(usuario => usuario.tipo === "lider")
+                lideres_subProyectos: response.data.filter(usuario => usuario.tipo === "lider" && usuario.estado==="Activo")
             });
-        })
-        console.log(this.state.lideres_subProyectos)
+        });
     }
 
     changeHandler = async (e) => {

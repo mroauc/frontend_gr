@@ -10,7 +10,7 @@ export default class ClienteTabla extends Component {
     state={
         usuarios: [],
         paginaActual: 1,
-        cantidadPorPagina: 1,
+        cantidadPorPagina: 3,
         clientes : []
     }
 
@@ -20,7 +20,6 @@ export default class ClienteTabla extends Component {
 
     componentWillReceiveProps(next_props){
         this.setState({clientes : next_props.clientes})
-        console.log(next_props)
     }
 
     BuscarCliente = (e) => {
