@@ -261,7 +261,7 @@ class PropuestaCambioModal extends Component{
                             <br/>
                             <label htmlFor="id_modulo">ID Modulo</label>
                             <select name="id_subproyecto" id="id_subproyecto" className={ (this.state.msj_idsubproyecto)? "form-control is-invalid" : "form-control"} value={this.state.propuestaCambio.id_subproyecto} onChange={(e) => {this.changeHandler(e); this.getRequerimientos(e.target.value)}} onClick={()=>{this.setState({msj_idsubproyecto: ""})}}>
-                                <option value="">Seleccione un SubProyecto</option>
+                                <option value="">Seleccione un Módulo</option>
                                 {this.state.subProyectos.map(subp=>{
                                     return(
                                         <option value={subp.id_subProyecto}>{subp.nombre_subProyecto}</option>

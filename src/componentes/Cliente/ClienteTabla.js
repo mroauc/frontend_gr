@@ -65,7 +65,7 @@ export default class ClienteTabla extends Component {
 
         return(
             <div>
-                <input className="form-control input-filtrarTabla" placeholder="🔍 Buscar"  onChange={this.BuscarCliente}></input>
+                <input className="form-control input-filtrarTabla" placeholder="Buscar"  onChange={this.BuscarCliente}></input>
                 <table className="table table-hover">
                     <thead>
                         <tr>

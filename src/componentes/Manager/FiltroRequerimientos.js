@@ -10,8 +10,9 @@ function FiltroUsuario (requerimientos, valorBusqueda, cambiarRequerimientos) {
         const estado = requerimiento.estado.toLowerCase();
         const nombre = requerimiento.nombre.toLowerCase();
         const prioridad = requerimiento.prioridad.toLowerCase();
+        const fecha_creacion = requerimiento.fecha_creacion;
 
-        const datos = idRequerimiento + " " + categoria + " " + descripcion + " " + estado + " " + nombre + " " + prioridad;
+        const datos = idRequerimiento + " " + categoria + " " + descripcion + " " + estado + " " + nombre + " " + prioridad + " " + fecha_creacion;
         console.log(datos);
         const busquedaMinuscula = valorBusqueda.toLowerCase();
         
@@ -23,5 +24,3 @@ function FiltroUsuario (requerimientos, valorBusqueda, cambiarRequerimientos) {
     
 }
 export default FiltroUsuario;
-
-// 0: {id: 63, nombre: "admin", email: "admin@u.u", estado: "Activo", tipo: "admin", …}

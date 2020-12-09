@@ -194,6 +194,10 @@ class UsuarioModal extends Component{
                     cliente: response.data
                 })
             })
+        }else{
+            this.setState({
+                cliente: ""
+            });
         }
     }
     
@@ -237,7 +241,8 @@ class UsuarioModal extends Component{
             msj_estado: "",
             msj_password: "",
             msj_celular: "",
-            msj_idempresa: ""
+            msj_idempresa: "",
+            cliente: ""
         });
         this.props.modalInsertar();
     }
