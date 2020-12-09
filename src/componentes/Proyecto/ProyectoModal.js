@@ -179,11 +179,7 @@ class ProyectoModal extends Component{
         await Axios.get('http://localhost:8080/api/usuario/',{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
-<<<<<<< HEAD
                 jefes_proyectos: response.data.filter(usuario => usuario.tipo === "jefe" && usuario.estado === "Activo")
-=======
-                jefes_proyectos: response.data.filter(usuario => usuario.tipo === "jefe" && usuario.estado==='Activo')
->>>>>>> af6d9048d47be7dce2bb6a7dfc1ed3132ccfee59
             });
         });
     }
