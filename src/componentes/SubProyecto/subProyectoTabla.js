@@ -62,7 +62,7 @@ export default class subProyectoTabla extends Component {
 
         return(
             <div>
-                <input className="form-control input-filtrarTabla" placeholder="🔍 Buscar"  onChange={this.BuscarSubProyectos}></input>
+                <input className="form-control input-filtrarTabla" placeholder="Buscar"  onChange={this.BuscarSubProyectos}></input>
                 <table className="table table-hover">
                         <thead>
                             <tr>
@@ -71,7 +71,7 @@ export default class subProyectoTabla extends Component {
                             <th scope="col">Fecha de Inicio</th>
                             <th scope="col">Fecha de Termino</th>
                             <th scope="col">ID Proyecto</th>
-                            <th scope="col">Lider Subproyecto</th>
+                            <th scope="col">Lider de Módulo</th>
                             <th scope="col">Acciones</th>
 
                             </tr>

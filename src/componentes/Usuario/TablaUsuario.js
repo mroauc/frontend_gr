@@ -44,7 +44,7 @@ class TablaUsuario extends Component{
 
         return(
             <div>
-                <input className="form-control input-filtrarTabla" placeholder="🔍 Buscar"  onChange={this.BuscarUsuario}></input>
+                <input className="form-control input-filtrarTabla" placeholder="Buscar"  onChange={this.BuscarUsuario}></input>
                 <table className="table table-hover">
                     <thead>
                         <tr>

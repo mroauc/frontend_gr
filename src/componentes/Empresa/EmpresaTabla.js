@@ -38,7 +38,7 @@ export default class EmpresaTabla extends Component {
 
         return(
             <div>
-                 <input className="form-control input-filtrarTabla" placeholder="🔍 Buscar"  onChange={this.BuscarEmpresa}></input>
+                 <input className="form-control input-filtrarTabla" placeholder="Buscar"  onChange={this.BuscarEmpresa}></input>
                 <table className="table table-hover"> 
                         <thead>
                             <tr>

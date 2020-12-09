@@ -195,7 +195,7 @@ export default class subProyectoModal extends Component {
             <React.Fragment>
                 <Modal isOpen = {this.props.estadoInsertar || this.props.estadoEditar} toggle= {this.cerrarModal} >
                     <ModalHeader style={{display : 'block'}}>
-                        <span>{(this.props.estadoInsertar) ? 'Ingresar Sub-Proyecto' :'Editar Sub-Proyecto'}</span>
+                        <span>{(this.props.estadoInsertar) ? 'Ingresar Módulo' :'Editar Módulo'}</span>
                         <span style={{cursor : 'pointer' , float : 'right'}} onClick={this.cerrarModal}>X</span>
                     </ModalHeader>
                     <ModalBody>
@@ -203,7 +203,7 @@ export default class subProyectoModal extends Component {
                             <label htmlFor="id">ID</label>
                             <input className="form-control" type="text" name="id_subProyecto" id="id_subProyecto" value={this.state.subProyecto.id_subProyecto} readOnly />
                             <br/>
-                            <label htmlFor="subProyecto">SubProyecto</label>
+                            <label htmlFor="subProyecto">Módulo</label>
                             <input className={ (this.state.msj_nombre_subp)? "form-control is-invalid" : "form-control"} type="text" name="nombre_subProyecto" id="nombre_subProyecto" onChange={this.changeHandler} value={this.state.subProyecto.nombre_subProyecto} onClick={()=>{this.setState({msj_nombre_subp: ""})}} />
                             <div className="invalid-feedback">
                                 {this.state.msj_nombre_subp}
@@ -243,9 +243,9 @@ export default class subProyectoModal extends Component {
                                 {this.state.msj_tipo_subp}
                             </div> 
                             <br/>*/}
-                            <label htmlFor="id_proyecto">Lider Subproyecto</label>
+                            <label htmlFor="id_proyecto">Lider de Módulo</label>
                             <select name="id_usuario" id="id_usuario" className={ (this.state.msj_lider_subp)? "form-control is-invalid" : "form-control"} value={this.state.subProyecto.id_usuario} onChange={this.changeHandler} onClick={()=>{this.setState({msj_lider_subp: ""})}}>
-                                <option value="">Seleccionar Jefe de Subproyecto</option>
+                                <option value="">Seleccionar Líder de Módulo</option>
                                 {this.state.lideres_subProyectos.map( lider => {
                                     return(
                                     <option key={lider.id} value={lider.id}>{lider.id+" - "+lider.nombre}</option>

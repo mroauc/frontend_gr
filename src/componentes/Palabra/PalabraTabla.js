@@ -9,7 +9,7 @@ export default class ComentarioTabla extends Component {
 
     state={
         paginaActual: 1,
-        cantidadPorPagina: 1,
+        cantidadPorPagina: 5,
         palabras: []
     }
 
@@ -30,6 +30,18 @@ export default class ComentarioTabla extends Component {
         this.setState({palabras : nuevasPalabras})
     }
 
+    insertarSignificado=(significado)=>{
+        var largo = significado.length;
+        var signific = significado.substr(0,95);
+
+        if(largo>95){
+            signific = signific.substr(0.,92);
+            signific = signific + "...";
+        }
+
+        return signific;
+    }
+
     render(){
 
         const ultimoDato = this.state.paginaActual * this.state.cantidadPorPagina;
@@ -38,13 +50,13 @@ export default class ComentarioTabla extends Component {
 
         return(
             <div>
-                <input className="form-control input-filtrarTabla" placeholder="🔍 Buscar"  onChange={this.BuscarPalabra}></input>
+                <input className="form-control input-filtrarTabla" placeholder="Buscar"  onChange={this.BuscarPalabra}></input>
                 <table className="table table-hover">
                         <thead>
                             <tr>
                             <th scope="col">#</th>
                             <th scope="col">Palabra</th>
-                            <th scope="col">ID Proyecto</th>
+                            <th scope="col">Significado</th>
                             <th scope="col">Acciones</th>
                             </tr>
                         </thead>
@@ -54,7 +66,7 @@ export default class ComentarioTabla extends Component {
                                     <tr key={palabra.id_palabra}>
                                         <td scope="col">{index+1 + (this.state.cantidadPorPagina * (this.state.paginaActual-1))}</td>
                                         <td>{palabra.palabra}</td>
-                                        <td>{palabra.id_proyecto}</td>
+                                        <td>{this.insertarSignificado(palabra.significado)}</td>
 
                                         <td>
                                             <button type="button" className="btn btn-success" data-toggle="modal" data-target="#modalEditar" onClick={() => this.props.verPalabra(palabra)}><VisibilityIcon/></button> &nbsp;

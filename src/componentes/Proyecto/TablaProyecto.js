@@ -90,7 +90,7 @@ class TablaProyecto extends Component{
                         <th scope="col">Nombre</th>
                         <th scope="col">Jefe de Proyecto</th>
                         <th scope="col">Fecha de Creacion</th>
-                        <th scope="col">Subproyectos Ingresados</th>
+                        <th scope="col">Módulos Ingresados</th>
                         <th scope="col">Acciones</th>
                     </tr>
                 </thead>
