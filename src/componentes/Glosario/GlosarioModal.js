@@ -21,7 +21,6 @@ export default class GlosarioModal extends Component {
 
     componentWillReceiveProps(next_props) {
         this.setState({ glosario: this.props.glosario});
-        // console.log("WILL RECIVE");
     }
 
     guardarGlosario= async (glosario) => {

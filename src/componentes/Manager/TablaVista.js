@@ -37,20 +37,20 @@ export default class TablaVista extends Component {
         })
     }
 
-    modalEliminar=()=>{
-        this.setState({modalEliminar: !this.state.modalEliminar});
+    modalEliminar=async()=>{
+        await this.setState({modalEliminar: !this.state.modalEliminar});
     }
 
     eliminar=async()=>{
         const token = localStorage.getItem('token');
-        // Axios.delete(`http://localhost:8080/api/usuarioactividad/eliminar/id_requerimiento/${filtrado[0].id_requerimiento}`, {headers: {"Authorization": `Bearer ${token}`}})
 
         await Axios.delete(`http://localhost:8080/api/requerimiento/eliminar/${filtrado[0].id_requerimiento}`, {headers: {"Authorization": `Bearer ${token}`}})
-        .then(response=>{
+        .then(async response=>{
             this.setState({modalEliminar: false});
             this.props.eliminarReqDeTab(filtrado[0].nombre);
             this.props.funcionGetRequerimientos();
-            this.setState({eliminado: 1});
+            await this.setState({eliminado: 1});
+            this.volver();
         })
     }
 

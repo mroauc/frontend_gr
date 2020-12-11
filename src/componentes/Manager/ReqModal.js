@@ -8,6 +8,7 @@ class ReqModal extends Component{
         requerimiento:{
             id_requerimiento: 0,
             nombre: '',
+            nombre_descriptivo: '',
             descripcion: '',
             id_usuario: '',
             id_subProyecto: this.props.id_subProyecto,
@@ -23,6 +24,7 @@ class ReqModal extends Component{
         usuarios: [],
         usuariosSubProyecto: [],
 
+        errorNombreDescriptivo: '',
         errorInputUsuarioResponsable: '',
         errorInputPrioridad: '',
         errorInputEstado: '',
@@ -65,7 +67,7 @@ class ReqModal extends Component{
         })
     }
 
-    getUsuariosSubProyecto= async ()=>{
+    getUsuariosSubProyecto=async()=>{
         const token = localStorage.getItem('token');
         await Axios.get(`http://localhost:8080/api/encargadosubproyecto/obtener/${this.props.id_subProyecto}`,{headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
@@ -73,7 +75,7 @@ class ReqModal extends Component{
         });
     }
 
-    obtenerNombreUsuario = (id_usuario) => {
+    obtenerNombreUsuario=(id_usuario)=>{
         if(this.state.usuarios.length !== 0){
             const usuarioEncontrado = this.state.usuarios.find(usuario => usuario.id === id_usuario);
             return usuarioEncontrado.nombre;    
@@ -88,7 +90,7 @@ class ReqModal extends Component{
         });
     }
 
-    validar = () => {
+    validar=()=>{
         let salida= true;
         
         if(this.state.id_usuario_responsable === "" || this.state.id_usuario_responsable === undefined){
@@ -111,12 +113,17 @@ class ReqModal extends Component{
             this.setState({errorInputTemplate : "Debe seleccionar una categoria para el requerimiento."});
             salida = false;
         }
+        if(this.state.requerimiento.nombre_descriptivo === ""){
+            this.setState({errorNombreDescriptivo: "Campo Vacío"});
+            salida = false;
+        }
 
         return salida;
     }
 
-    initErrores = () => {
+    initErrores=()=>{
         this.setState({
+            errorNombreDescriptivo: '',
             errorInputCategoria: '',
             errorInputEstado: '',
             errorInputPrioridad: '',
@@ -129,6 +136,7 @@ class ReqModal extends Component{
         const token = localStorage.getItem('token');
         if(this.validar()){
             await Axios.post('http://localhost:8080/api/requerimiento/guardar/',{
+                nombre_descriptivo: this.state.requerimiento.nombre_descriptivo,
                 descripcion: this.state.requerimiento.descripcion,
                 id_usuario: this.state.requerimiento.id_usuario,
                 id_subProyecto: this.state.requerimiento.id_subProyecto,
@@ -170,8 +178,6 @@ class ReqModal extends Component{
             this.props.modalInsertar();
             this.props.funcionGetRequerimientos();
         })
-        // await this.props.agregarReqATab(req.categoria.concat(req.id_requerimiento));
-        // this.props.cambiarTabActivo(req.categoria.concat(req.id_requerimiento));
     }
 
     render(){
@@ -184,18 +190,13 @@ class ReqModal extends Component{
                     </ModalHeader>
                     <ModalBody>
                         <div className="form-group">
-                            <label htmlFor="id_requerimiento">ID</label>
-                            <input className="form-control" type="text" name="id_requerimiento" id="id_requerimiento" value={this.state.requerimiento.id_requerimiento} readOnly/>
+                            <label htmlFor="nombre_descriptivo">Descripcion</label>
+                            <input className={(this.state.errorNombreDescriptivo)? "form-control is-invalid" : "form-control"} type="text" name="nombre_descriptivo" id="nombre_descriptivo" value={this.state.requerimiento.nombre_descriptivo} onChange={this.changeHandler} onClick={() => {this.setState({errorNombreDescriptivo : ''})}}/>
+                            <div class="invalid-feedback" style={{display: 'block'}}>
+                                {this.state.errorNombreDescriptivo}
+                            </div>
                             <br/>
-                            <label htmlFor="nombre">Nombre</label>
-                            <input className="form-control" type="text" name="nombre" id="nombre" value={this.state.requerimiento.nombre} readOnly/>
-                            <br/>
-                            <label htmlFor="id_usuario">ID Usuario</label>
-                            <input className="form-control" type="text" name="id_usuario" id="id_usuario" value={this.state.requerimiento.id_usuario} readOnly/>
-                            <br/>
-                            <label htmlFor="id_subProyecto">ID Sub-Proyecto</label>
-                            <input className="form-control" type="text" name="id_subProyecto" id="id_subProyecto" value={this.state.requerimiento.id_subProyecto} readOnly />
-                            <br/>
+                            
                             <label htmlFor="id_responsable">Usuario Responsable</label>
                             <select className={(this.state.errorInputUsuarioResponsable)? "form-control is-invalid" : "form-control"} type="text" name="id_usuario_responsable" id="id_usuario_responsable" value={this.state.id_usuario_responsable} onChange={(e) => {this.setState({id_usuario_responsable : e.target.value})}} onClick={() => {this.setState({errorInputUsuarioResponsable : ''})}}>
                                 <option value="">Seleccionar Usuario Responsable</option>
@@ -252,7 +253,7 @@ class ReqModal extends Component{
                             <br/> 
                             <label htmlFor="id_template">ID Template</label>
                             <select className={(this.state.errorInputTemplate)? "form-control is-invalid" : "form-control"} name="id_template" id="id_template" value={this.state.requerimiento.id_template} onChange={this.changeHandler} onClick={() => {this.setState({errorInputTemplate : ''})}}>
-                                <option value="">Seleccione un Template</option>
+                                <option value="" selected>Seleccione un Template</option>
                                 {this.state.templates.map(template=>{
                                     return(
                                         <option value={template.id_template}>{template.nombre}</option>

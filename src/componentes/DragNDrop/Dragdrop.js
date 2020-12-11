@@ -2,8 +2,42 @@ import Axios from 'axios';
 import React, {useEffect, useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import uuid from 'uuid/dist/v4';
+import './DragDrop.css';
+import ModalReq from './ModalReq';
+import ModalReqSelected from './ModalReqSelected';
 
 function Dragdrop(id_subproyecto) {
+
+  const [modalInsertar, setModalIsertar] = useState(false);
+
+  const [requerimientoSeleccionado, setRequerimiento] = useState({
+    id_requerimiento: 0,
+    nombre: '',
+    nombre_descriptivo: '',
+    descripcion: '',
+    id_usuario: '',
+    id_subProyecto: id_subproyecto.id_subproyecto,
+    fecha_creacion: '',
+    prioridad: '',
+    estado: '',
+    categoria: '',
+    id_template: ''
+  });
+  const [modalEditar, setModalEditar] = useState(false);
+
+  var requeri = {
+    id_requerimiento: 0,
+    nombre: '',
+    nombre_descriptivo: '',
+    descripcion: '',
+    id_usuario: '',
+    id_subProyecto: id_subproyecto.id_subproyecto,
+    fecha_creacion: '',
+    prioridad: '',
+    estado: '',
+    categoria: '',
+    id_template: ''
+}
 
   //valores que se traen del backend y se mostraran en pantalla
   var itemsCreado = [];
@@ -30,6 +64,27 @@ function Dragdrop(id_subproyecto) {
   useEffect(() => {
     principio();
   },[])
+
+  const cambioModalInsertar=()=>{
+    setModalIsertar(!modalInsertar);
+  }
+
+  const cambioModalEditar=()=>{
+    setModalEditar(!modalEditar);
+  }
+
+  const mostrarRequerimiento=async(nombre)=>{
+    const token = localStorage.getItem('token');
+    await Axios.get(`http://localhost:8080/api/requerimiento/nombre/${nombre}`, {headers: {"Authorization": `Bearer  ${token}`}})
+    .then(async response=>{
+      await setRequerimiento(response.data);
+      mostrar();
+    });
+  }
+
+  const mostrar=()=>{
+    setModalEditar(!modalEditar);
+  }
 
   const principio = async () => {
     const token = localStorage.getItem('token');
@@ -112,7 +167,12 @@ function Dragdrop(id_subproyecto) {
           return(
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <div style={{fontSize:'18px', fontFamily:'sans-serif'}}>
-                <label><strong>{column.name}</strong></label>
+                <label><strong>{column.name}</strong></label> &nbsp;
+                {column.name === 'Creado'?
+                  <button className="btn botoncito2" onClick={()=>setModalIsertar(!modalInsertar)}>+</button>
+                  :
+                  ''
+                }
               </div>
               <div style={{ margin: 8}}>
               <Droppable droppableId={id} key={id}>
@@ -148,6 +208,7 @@ function Dragdrop(id_subproyecto) {
                                   color: 'white',
                                   ...provided.draggableProps.style
                                 }}
+                                onClick={()=>mostrarRequerimiento(item.content)}
                               >
                                 {item.content}
                               </div>
@@ -166,7 +227,25 @@ function Dragdrop(id_subproyecto) {
           )
         })}
       </DragDropContext>
-    </div>    
+
+      <ModalReq
+        id_subProyecto = {id_subproyecto.id_subproyecto}
+        estadoModalInsertar = {modalInsertar}
+        modalInsertar = {cambioModalInsertar}
+        begin = {principio}
+        requerimiento = {requeri}
+      />
+
+      <ModalReqSelected
+        id_subProyecto = {id_subproyecto.id_subproyecto}
+        estadoModalEditar = {modalEditar}
+        modalEditar = {cambioModalEditar}
+        begin = {principio}
+        requerimiento = {requerimientoSeleccionado}
+      />
+      
+    </div>
+    
   );
 }
 

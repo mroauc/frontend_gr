@@ -21,6 +21,7 @@ class Requerimiento extends Component{
         requerimiento: {
             id_requerimiento: 0,
             nombre: '', 
+            nombre_descriptivo: '',
             descripcion: '',
             id_usuario: 0,
             id_subProyecto: this.props.match.params.id_subproyecto,

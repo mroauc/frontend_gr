@@ -125,7 +125,7 @@ class Proyecto extends Component{
 
 
         for (let index = 0; index < subProyectos.length; index++) {
-            imprimir = imprimir + '<div class="formatoSubproyecto"><div class="cabeceraSubProyecto"><h4>Subproyecto <strong>'+ subProyectos[index].nombre_subProyecto +'</strong></h4></div>';
+            imprimir = imprimir + '<div class="formatoSubproyecto"><div class="cabeceraSubProyecto"><h4>Módulo <strong>'+ subProyectos[index].nombre_subProyecto +'</strong></h4></div>';
             await Axios.get(`http://localhost:8080/api/requerimiento/obtener/${subProyectos[index].id_subProyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
             .then(response=>{
                 var rusa = response.data.filter(req => req.categoria === 'RUSA');

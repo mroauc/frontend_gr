@@ -222,11 +222,69 @@ class PropuestaCambioModal extends Component{
     }
 
     changeHandler=async(e)=>{
+        var x = 0;
+        if(e.target.name==='descripcion'){
+            x=1;
+        }
+        if(e.target.name==='justificacion'){
+            x=2;
+        }
+        if(e.target.name==='alternativas'){
+            x=3;
+        }
+        if(e.target.name==='consecuencias_rechazo'){
+            x=4;
+        }
+        if(e.target.name==='comentarios'){
+            x=5;
+        }
+
         await this.setState({
             propuestaCambio:{
                 ...this.state.propuestaCambio, [e.target.name]: e.target.value
             }
         });
+
+        if(x===1){
+            var caract = this.state.propuestaCambio.descripcion.length;
+            if(caract<255){
+                document.getElementById("span_contador_descr").innerHTML = '<span style="color: grey;">' + caract + '/255</span>';
+            }else{
+                document.getElementById("span_contador_descr").innerHTML = '<span style="color: red;">' + caract + '/255</span>';
+            }
+        }
+        if(x===2){
+            var caract = this.state.propuestaCambio.justificacion.length;
+            if(caract<255){
+                document.getElementById("span_contador_just").innerHTML = '<span style="color: grey;">' + caract + '/255</span>';
+            }else{
+                document.getElementById("span_contador_just").innerHTML = '<span style="color: red;">' + caract + '/255</span>';
+            }
+        }
+        if(x===3){
+            var caract = this.state.propuestaCambio.alternativas.length;
+            if(caract<255){
+                document.getElementById("span_contador_alt").innerHTML = '<span style="color: grey;">' + caract + '/255</span>';
+            }else{
+                document.getElementById("span_contador_alt").innerHTML = '<span style="color: red;">' + caract + '/255</span>';
+            }
+        }
+        if(x===4){
+            var caract = this.state.propuestaCambio.consecuencias_rechazo.length;
+            if(caract<255){
+                document.getElementById("span_contador_consec").innerHTML = '<span style="color: grey;">' + caract + '/255</span>';
+            }else{
+                document.getElementById("span_contador_consec").innerHTML = '<span style="color: red;">' + caract + '/255</span>';
+            }
+        }
+        if(x===5){
+            var caract = this.state.propuestaCambio.comentarios.length;
+            if(caract<255){
+                document.getElementById("span_contador_comentario").innerHTML = '<span style="color: grey;">' + caract + '/255</span>';
+            }else{
+                document.getElementById("span_contador_comentario").innerHTML = '<span style="color: red;">' + caract + '/255</span>';
+            }
+        }
     }
 
     cerrar=()=>{
@@ -282,10 +340,16 @@ class PropuestaCambioModal extends Component{
                             <input className="form-control" type="number" name="id_usuario" id="id_usuario" value={this.state.propuestaCambio.id_usuario} readOnly/>
                             <br/>
                             <label htmlFor="descripcion">Descripcion</label>
-                            <input className={ (this.state.msj_descripcion)? "form-control is-invalid" : "form-control"} type="text" name="descripcion" id="descripcion" onChange={this.changeHandler} value={this.state.propuestaCambio.descripcion} onClick={()=>{this.setState({msj_descripcion: ""})}} />
+                            <p><textarea className={ (this.state.msj_descripcion)? "form-control is-invalid" : "form-control"} type="text" name="descripcion" id="descripcion" rows="3" maxLength="255" onChange={this.changeHandler} value={this.state.propuestaCambio.descripcion} onClick={()=>{this.setState({msj_descripcion: ""})}} /></p>
                             <div className="invalid-feedback">
                                 {this.state.msj_descripcion}
                             </div>
+                            {(this.props.tipoModal==='actualizar')?
+                                    <p id="span_contador_descr" style={{float:'right'}}><span style={{color: 'gray'}}>{this.state.propuestaCambio.descripcion.length}/255</span></p>
+                                :
+                                    <p id="span_contador_descr" style={{float:'right'}}><span style={{color: 'gray'}}>0/255</span></p>
+
+                            }
                             <br/>
                             <label htmlFor="descripcion">Impacto Directo</label>
                             <select className="form-control" type="text" name="requerimientoImpactoDirecto" id="requerimientoImpactoDirecto" onChange={(e) => {this.setState({requerimientoImpactoDirecto: e.target.value})}} value={this.state.requerimientoImpactoDirecto}>
@@ -301,19 +365,43 @@ class PropuestaCambioModal extends Component{
                             
                             <br/>
                             <label htmlFor="justificacion">Justificacion</label>
-                            <input className="form-control" type="text" name="justificacion" id="justificacion" onChange={this.changeHandler} value={this.state.propuestaCambio.justificacion} />
+                            <p><textarea className="form-control" type="text" name="justificacion" id="justificacion" rows="3" maxLength="255" onChange={this.changeHandler} value={this.state.propuestaCambio.justificacion} /></p>
+                            {(this.props.tipoModal==='actualizar')?
+                                    <p id="span_contador_just" style={{float:'right'}}><span style={{color: 'gray'}}>{this.state.propuestaCambio.justificacion.length}/255</span></p>
+                                :
+                                    <p id="span_contador_just" style={{float:'right'}}><span style={{color: 'gray'}}>0/255</span></p>
+
+                            }
                             <br/>
                             <label htmlFor="alternativas">Alternativas</label>
-                            <input className="form-control" type="text" name="alternativas" id="alternativas" onChange={this.changeHandler} value={this.state.propuestaCambio.alternativas} />
+                            <p><textarea className="form-control" type="text" name="alternativas" id="alternativas" rows="3" maxLength="255" onChange={this.changeHandler} value={this.state.propuestaCambio.alternativas} /></p>
+                            {(this.props.tipoModal==='actualizar')?
+                                    <p id="span_contador_alt" style={{float:'right'}}><span style={{color: 'gray'}}>{this.state.propuestaCambio.alternativas.length}/255</span></p>
+                                :
+                                    <p id="span_contador_alt" style={{float:'right'}}><span style={{color: 'gray'}}>0/255</span></p>
+
+                            }
                             <br/>
                             <label htmlFor="consecuencias_rechazo">Consecuencias Rechazo</label>
-                            <input className="form-control" type="text" name="consecuencias_rechazo" id="consecuencias_rechazo" onChange={this.changeHandler} value={this.state.propuestaCambio.consecuencias_rechazo} />
+                            <p><textarea className="form-control" type="text" name="consecuencias_rechazo" id="consecuencias_rechazo" rows="3" maxLength="255" onChange={this.changeHandler} value={this.state.propuestaCambio.consecuencias_rechazo} /></p>
+                            {(this.props.tipoModal==='actualizar')?
+                                    <p id="span_contador_consec" style={{float:'right'}}><span style={{color: 'gray'}}>{this.state.propuestaCambio.consecuencias_rechazo.length}/255</span></p>
+                                :
+                                    <p id="span_contador_consec" style={{float:'right'}}><span style={{color: 'gray'}}>0/255</span></p>
+
+                            }
                             <br/>
                             <label htmlFor="fecha_resolucion">Fecha de Resolucion</label>
                             <input className="form-control" type="date" name="fecha_resolucion" id="fecha_resolucion" onChange={this.changeHandler} value={this.state.propuestaCambio.fecha_resolucion} />
                             <br/>
                             <label htmlFor="comentarios">Comentarios</label>
-                            <input className="form-control" type="text" name="comentarios" id="comentarios" onChange={this.changeHandler} value={this.state.propuestaCambio.comentarios} />
+                            <p><textarea className="form-control" type="text" name="comentarios" id="comentarios" rows="3" maxLength="255" onChange={this.changeHandler} value={this.state.propuestaCambio.comentarios} /></p>
+                            {(this.props.tipoModal==='actualizar')?
+                                    <p id="span_contador_comentario" style={{float:'right'}}><span style={{color: 'gray'}}>{this.state.propuestaCambio.comentarios.length}/255</span></p>
+                                :
+                                    <p id="span_contador_comentario" style={{float:'right'}}><span style={{color: 'gray'}}>0/255</span></p>
+
+                            }
                             <br/>
                             <label htmlFor="estado">Estado</label>
                             <input className="form-control" type="text" name="estado" id="estado" value={this.state.propuestaCambio.estado} readOnly/>

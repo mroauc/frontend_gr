@@ -17,6 +17,7 @@ export default class PaginaPrincipal extends Component{
         requerimiento: {
             id_requerimiento: 0,
             nombre: '', 
+            nombre_descriptivo: '',
             descripcion: '',
             id_usuario: 0,
             id_subProyecto: this.props.id_subproyecto,
@@ -24,7 +25,7 @@ export default class PaginaPrincipal extends Component{
             prioridad: '',
             estado: '',
             categoria: '',
-            id_template: 0
+            id_template: ''
         },
         id_proyecto: '',
         paginaActual: 1,
@@ -99,13 +100,14 @@ export default class PaginaPrincipal extends Component{
                 id_requerimiento: 0,
                 nombre: '', 
                 descripcion: '',
+                nombre_descriptivo: '',
                 id_usuario: '',
                 id_subProyecto: this.props.id_subproyecto,
                 fecha_creacion: '',
                 prioridad: '',
                 estado: '',
                 categoria: '',
-                id_template: 0
+                id_template: ''
             }
         });
         this.props.cambiarTabActivo("");
