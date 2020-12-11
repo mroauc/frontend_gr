@@ -3,18 +3,21 @@ import React, {Component} from 'react';
 import ChipsPropiedades from './ChipsPropiedades';
 import'./Propiedades.css'
 import swal from 'sweetalert';
+import SeleccionReq from './SeleccionReq/SeleccionReq';
 
 class Propiedades extends Component{
 
     state={
         requerimiento: '',
         requerimientos: [],
-        requerimientosSeleccionados: []
+        requerimientosSeleccionados: [],
+        estadoModal: false
     }
 
     componentDidMount(){
         this.getRequerimientos();
         this.getRequerimiento();
+        this.cargarArreglos();
     }
 
     getRequerimientos=async()=>{
@@ -57,6 +60,10 @@ class Propiedades extends Component{
         })
     }
 
+    cambiarEstadoAbrir = () => {
+        this.setState({estadoModal : !this.state.estadoModal})
+    }
+
     changeHandler=async(e)=>{
         await this.setState({
             requerimiento:{
@@ -65,17 +72,34 @@ class Propiedades extends Component{
         });
     }
 
-    insertarChip=(requerimiento)=>{
-        this.setState({
-            requerimientosSeleccionados: [...this.state.requerimientosSeleccionados, requerimiento],
+    cargarArreglos=async()=>{
+        const token = localStorage.getItem('token');
+        await Axios.get(`http://localhost:8080/api/relacionrequerimientos/obtener/${this.props.requerimiento.id_requerimiento}`,{headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            for (let index = 0; index < response.data.length; index++) {
+                this.setState({
+                    requerimientosSeleccionados: [...this.state.requerimientosSeleccionados, response.data[index].id_requerimiento_b.toString()]
+                });
+            }
         });
     }
 
-    eliminarChip=async(requerimiento)=>{
+    insertarRelaciones= async (nuevos_requerimientos)=>{
+        await this.setState({
+            requerimientosSeleccionados: nuevos_requerimientos
+        })
+        this.guardarChips();
+        
+    }
+
+
+    eliminarRelacion=async(requerimiento)=>{
         const filtrado = this.state.requerimientosSeleccionados.filter(item => item != requerimiento);
         await this.setState({
             requerimientosSeleccionados: filtrado
         });
+        this.guardarChips();
+        
     }
 
     guardarCambios=async()=>{
@@ -131,14 +155,24 @@ class Propiedades extends Component{
                             <ChipsPropiedades
                                 id_requerimiento = {this.props.requerimiento.id_requerimiento}
                                 requerimientos = {this.state.requerimientos}
-                                insertarChip = {this.insertarChip}
-                                eliminarChip = {this.eliminarChip}
+                                insertarChip = {this.insertarRelaciones}
+                                eliminarChip = {this.eliminarRelacion}
+                                valoresInput = {this.state.requerimientosSeleccionados}
                             />
                         </div>
                     
                         <div className="col-3 cont-boton-prop">
-                            <button className="btn btn-success btn-block" onClick={this.guardarChips}>Asignar Relacion</button>
+                            <button className="btn btn-success btn-block" onClick={this.cambiarEstadoAbrir}>Asignar Relacion</button>
                         </div>
+
+                        <SeleccionReq
+                            id_requerimiento = {this.props.requerimiento.id_requerimiento}
+                            requerimientos = {this.state.requerimientos}
+                            abrir = {this.state.estadoModal}
+                            cambiarEstadoAbrir = {this.cambiarEstadoAbrir}
+                            insertarRelaciones = {this.insertarRelaciones}
+                            valoresInput = {this.state.requerimientosSeleccionados}
+                        />
 
                     </div>
                 </div>

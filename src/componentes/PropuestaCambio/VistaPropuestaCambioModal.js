@@ -26,8 +26,9 @@ class VistaPropuestaCambioModal extends Component{
     render(){
         return(
             <React.Fragment>
-                <Modal isOpen={this.props.modalVista}>
+                <Modal isOpen={this.props.modalVista} toggle={()=>{this.props.estadoModalVista()}}>
                     <ModalHeader style={{display:'block'}}>
+                    <span>Vista Propuesta de Cambio</span>
                         <span style={{cursor:'pointer', float:'right'}} onClick={()=>{this.props.estadoModalVista()}}>X</span>
                     </ModalHeader>
                     <ModalBody>
@@ -70,6 +71,10 @@ class VistaPropuestaCambioModal extends Component{
                             <br/>
                         </div>
                     </ModalBody>
+                    <ModalFooter>
+                        <button className="btn btn-danger" onClick={()=>{this.props.estadoModalVista()}}>Cancelar</button>
+                        
+                    </ModalFooter>
                 </Modal>
             </React.Fragment>
         );

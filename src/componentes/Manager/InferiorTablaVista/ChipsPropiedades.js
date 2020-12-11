@@ -9,25 +9,12 @@ export default class ChipsPropiedades extends Component{
         requerimiento: ''
     }
 
-    componentDidMount(){
-        this.cargarArreglos();
-    }
-
     componentWillReceiveProps(next_props){
-        this.setState({requerimientos: this.props.requerimientos});
-    }
-
-    cargarArreglos=async()=>{
-        const token = localStorage.getItem('token');
-        await Axios.get(`http://localhost:8080/api/relacionrequerimientos/obtener/${this.props.id_requerimiento}`,{headers: {"Authorization": `Bearer ${token}`}})
-        .then(response=>{
-            for (let index = 0; index < response.data.length; index++) {
-                this.setState({
-                    arregloChips: [...this.state.arregloChips, response.data[index].id_requerimiento_b.toString()]
-                });
-                this.props.insertarChip(response.data[index].id_requerimiento_b.toString());
-            }
-        })
+        this.setState({
+            requerimientos: next_props.requerimientos,
+            arreglosChips : next_props.valoresInput
+        });
+            
     }
 
     handleDelete = async(requerimiento) =>{
@@ -62,7 +49,7 @@ export default class ChipsPropiedades extends Component{
         return(
             <React.Fragment>
                 <div className="divf">
-                    <div className="input-group">
+                    {/* <div className="input-group">
                         <select className="form-control" style={{width: '70%'}} onChange={this.changeInputRequerimiento}>
                             <option value="">Elige un Requerimiento</option>
                             {this.state.requerimientos.map( requerimiento => {
@@ -75,10 +62,10 @@ export default class ChipsPropiedades extends Component{
                             )}
                         </select>
                         <button className="btn btn-primary" style={{width: '20%', float: 'right', marginLeft: '5px'}} onClick={() => this.crearChip()}>Elegir</button>
-                    </div>
+                    </div> */}
                     
                     <div className="divf" style={{marginTop: '5px', padding: '3px'}}>
-                        {this.state.arregloChips.map(id_requerimiento => {
+                        {this.props.valoresInput.map(id_requerimiento => {
                             return(
                                 <Chip key={id_requerimiento} label={id_requerimiento} onDelete={() => this.handleDelete(id_requerimiento)}/>   
                             )
