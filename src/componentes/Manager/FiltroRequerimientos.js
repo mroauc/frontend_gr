@@ -6,7 +6,6 @@ function FiltroUsuario (requerimientos, valorBusqueda, cambiarRequerimientos) {
     const filtro = requerimientos.filter(requerimiento => {
         const idRequerimiento = requerimiento.id_requerimiento;
         const categoria = requerimiento.categoria.toLowerCase();
-        const descripcion = requerimiento.descripcion.toLowerCase();
         const estado = requerimiento.estado.toLowerCase();
         const nombre = requerimiento.nombre.toLowerCase();
         const prioridad = requerimiento.prioridad.toLowerCase();
