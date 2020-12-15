@@ -7,6 +7,7 @@ import TemplateModal from './TemplateModal';
 import VistaTemplate from './VistaTemplate';
 import './Template.css';
 import '../vistaCrud.css';
+import jQuery from 'jquery';
 
 class Template extends Component{
 
@@ -21,7 +22,7 @@ class Template extends Component{
             prefijo: '',
             nombre: '',
             tipo: '',
-            template: '',
+            template: '<figure class="table"><table><tbody><tr id="titulo_t"><td><strong>Ingrese Titulo</strong></td></tr><tr><td>&nbsp;</td></tr></tbody></table></figure>',
             fecha: ''
         }
     }
@@ -46,7 +47,7 @@ class Template extends Component{
     modalInsertar=()=>{
         this.setState({
             template: '',
-            template:{template:''},
+            template:{template:'<figure class="table"><table><tbody><tr id="titulo_t"><td><strong>Ingrese Titulo</strong></td></tr><tr><td>&nbsp;</td></tr></tbody></table></figure>'},
             modalInsertar: !this.state.modalInsertar,
             tipoModal: 'insertar'
         });
@@ -63,7 +64,7 @@ class Template extends Component{
         if(this.state.modalVista===true){
             this.setState({
                 template: '',
-                template:{template:''},
+                template:{template:'<figure class="table"><table><tbody><tr id="titulo_t"><td><strong>Ingrese Titulo</strong></td></tr><tr><td>&nbsp;</td></tr></tbody></table></figure>'},
             });
         }
         this.setState({
@@ -96,7 +97,7 @@ class Template extends Component{
         const token = localStorage.getItem('token');
         Axios.delete(`http://localhost:8080/api/template/eliminar/${this.state.template.id_template}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
-            this.setState({modalEliminar:false, template:'', template:{template:''}});
+            this.setState({modalEliminar:false, template:'', template:{template:'<figure class="table"><table><tbody><tr id="titulo_t"><td><strong>Ingrese Titulo</strong></td></tr><tr><td>&nbsp;</td></tr></tbody></table></figure>'}});
             this.index();
         })
     }

@@ -37,12 +37,11 @@ export default class subProyectoTabla extends Component {
             this.setState({
                 usuarios: response.data
             });
-        })
+        });
     }
 
     componentWillReceiveProps(next_props){
-        this.setState({subProyectos : next_props.subProyectos})
-        console.log(next_props)
+        this.setState({subProyectos : next_props.subProyectos});
     }
 
     BuscarSubProyectos = (e) => {

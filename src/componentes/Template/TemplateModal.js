@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { act } from 'react-dom/test-utils';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import TemplateTextEditor from './TemplateTextEditor';
+import jQuery from 'jquery';
 
 class TemplateModal extends Component{
     state={
@@ -11,16 +12,17 @@ class TemplateModal extends Component{
             prefijo: '',
             nombre: '',
             tipo: '',
-            template: '',
+            template: '<figure class="table"><table><tbody><tr id="titulo_t"><td><strong>Ingrese Titulo</strong></td></tr><tr><td>&nbsp;</td></tr></tbody></table></figure>',
             fecha: ''
         },
+        antiguo_template: "",
         msj_prefijo: "",
         msj_nombre: "",
         msj_tipo: ""
     }
 
     componentWillReceiveProps(next_props){
-        this.setState({template:this.props.template});
+        this.setState({template:this.props.template, antiguo_template:this.props.template.template});
     }
 
     validar=()=>{
@@ -77,10 +79,30 @@ class TemplateModal extends Component{
             const token = localStorage.getItem('token');
             Axios.post('http://localhost:8080/api/template/editar/',this.state.template, {headers: {"Authorization": `Bearer ${token}`}})
             .then(response=>{
+                if(this.state.antiguo_template !== this.state.template.template){
+                    this.modificarRequerimientos(response.data.id_template, response.data.template);
+                }
                 this.props.modalInsertar();
                 this.props.index();
             })
         }
+    }
+
+    modificarRequerimientos=(id_template, nuevoTemplate)=>{
+        const token = localStorage.getItem('token');
+        var nuevotitulo = jQuery('strong',nuevoTemplate).text();
+        console.log(nuevotitulo);
+        Axios.get(`http://localhost:8080/api/requerimiento/obtener/template/${id_template}`, {headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            for (let index = 0; index < response.data.length; index++) {
+                var requeri = response.data[index];
+                var titulo = jQuery('strong',requeri.descripcion).text();
+                console.log(titulo);
+                var nueva_descr = requeri.descripcion.replace(titulo, nuevotitulo);
+                requeri.descripcion = nueva_descr;
+                Axios.post('http://localhost:8080/api/requerimiento/editar/',requeri, {headers: {"Authorization" : `Bearer ${token}`}});
+            }
+        });
     }
 
     changeHandler=async(e)=>{
@@ -129,9 +151,6 @@ class TemplateModal extends Component{
                     </ModalHeader>
                     <ModalBody>
                         <div className="form-group">
-                            <label htmlFor="id_template">ID</label>
-                            <input className="form-control" type="text" name="id_template" id="id_template" value={this.state.template.id_template} readOnly/>
-                            <br/>
                             <label htmlFor="prefijo">Prefijo</label>
                             <input className={ (this.state.msj_prefijo)? "form-control is-invalid" : "form-control"} type="text" name="prefijo" id="prefijo" onChange={this.changeHandler} value={this.state.template.prefijo} onClick={()=>{this.setState({msj_prefijo:""})}} />
                             <div className="invalid-feedback">

@@ -123,7 +123,7 @@ export default class Palabra extends Component{
             <React.Fragment>
                 <Menu/>
                 <div className="palabra col-10">
-                    <div className="Encabezado"><p>Glosario</p></div>
+                    <div className="Encabezado"><p>Palabras</p></div>
                     <button type="button" className="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Ingresar Palabra</button> &nbsp;
                     <Link to={"/subProyecto/"+this.props.match.params.id_proyecto}><button type="button" className="btn boton"><ArrowBackIcon/> Volver</button></Link>
 

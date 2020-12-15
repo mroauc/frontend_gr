@@ -103,9 +103,6 @@ export default class EmpresaModal extends Component {
                     </ModalHeader>
                     <ModalBody>
                         <div className="form-group">
-                            <label htmlFor="id">ID</label>
-                            <input className="form-control" type="text" name="id_empresa" id="id_empresa" value={this.state.empresa.id_empresa} readOnly />
-                            <br/>
                             <label htmlFor="razon_social">Razon Social</label>
                             <input className={ (this.state.msj_razon_social)? "form-control is-invalid" : "form-control"} type="text" name="razon_social" id="razon_social" onChange={this.changeHandler} value={this.state.empresa.razon_social} onClick={()=>{this.setState({msj_razon_social:""})}}/>
                             <div className="invalid-feedback">

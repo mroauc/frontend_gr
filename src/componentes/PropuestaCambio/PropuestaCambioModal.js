@@ -308,9 +308,6 @@ class PropuestaCambioModal extends Component{
                     </ModalHeader>
                     <ModalBody>
                         <div className="form-group">
-                            <label htmlFor="id_propuestaCambio">ID</label>
-                            <input className="form-control" type="text" name="id_propuestaCambio" id="id_propuestaCambio" value={this.state.propuestaCambio.id_propuestaCambio} readOnly/>
-                            <br/>
                             <label htmlFor="nombre">Nombre</label>
                             <input className={ (this.state.msj_nombre)? "form-control is-invalid" : "form-control"} type="text" name="nombre" id="nombre" onChange={this.changeHandler} value={this.state.propuestaCambio.nombre} onClick={()=>{this.setState({msj_nombre: ""})}} />
                             <div className="invalid-feedback">
@@ -335,9 +332,6 @@ class PropuestaCambioModal extends Component{
                             <div className="invalid-feedback">
                                 {this.state.msj_fechapeticion}
                             </div>
-                            <br/>
-                            <label htmlFor="id_usuario">Autor</label>
-                            <input className="form-control" type="number" name="id_usuario" id="id_usuario" value={this.state.propuestaCambio.id_usuario} readOnly/>
                             <br/>
                             <label htmlFor="descripcion">Descripcion</label>
                             <p><textarea className={ (this.state.msj_descripcion)? "form-control is-invalid" : "form-control"} type="text" name="descripcion" id="descripcion" rows="3" maxLength="255" onChange={this.changeHandler} value={this.state.propuestaCambio.descripcion} onClick={()=>{this.setState({msj_descripcion: ""})}} /></p>
@@ -402,9 +396,6 @@ class PropuestaCambioModal extends Component{
                                     <p id="span_contador_comentario" style={{float:'right'}}><span style={{color: 'gray'}}>0/255</span></p>
 
                             }
-                            <br/>
-                            <label htmlFor="estado">Estado</label>
-                            <input className="form-control" type="text" name="estado" id="estado" value={this.state.propuestaCambio.estado} readOnly/>
                             <br/>
                         </div>
                     </ModalBody>

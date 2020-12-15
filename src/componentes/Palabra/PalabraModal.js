@@ -90,9 +90,6 @@ export default class PalabraModal extends Component {
                     </ModalHeader>
                     <ModalBody>
                         <div className="form-group">
-                            <label htmlFor="id">ID</label>
-                            <input className="form-control" type="text" name="id_palabra" id="id_palabra" value={this.state.palabra.id_palabra} readOnly />
-                            <br/>
                             <label htmlFor="palabra">Palabra</label>
                             <input className={(this.state.errorInputPalabra)? "form-control is-invalid" : "form-control"} type="text" name="palabra" id="palabra" onChange={this.changeHandler} value={this.state.palabra.palabra} onClick={() => {this.setState({errorInputPalabra : ''})}}/>
                             <div class="invalid-feedback" style={{display: 'block'}}>
@@ -110,10 +107,6 @@ export default class PalabraModal extends Component {
                             <div class="invalid-feedback" style={{display: 'block'}}>
                                 {this.state.errorInputSignificado}
                             </div>
-
-                            <br/>
-                            <label htmlFor="id_proyecto">Id Proyecto</label>
-                            <input className="form-control" type="text" name="id_proyecto" id="id_proyecto" onChange={this.changeHandler} value={this.state.palabra.id_proyecto} readOnly/>
                         </div>
                     </ModalBody>
                     <ModalFooter>

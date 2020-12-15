@@ -200,9 +200,6 @@ export default class subProyectoModal extends Component {
                     </ModalHeader>
                     <ModalBody>
                         <div className="form-group">
-                            <label htmlFor="id">ID</label>
-                            <input className="form-control" type="text" name="id_subProyecto" id="id_subProyecto" value={this.state.subProyecto.id_subProyecto} readOnly />
-                            <br/>
                             <label htmlFor="subProyecto">Módulo</label>
                             <input className={ (this.state.msj_nombre_subp)? "form-control is-invalid" : "form-control"} type="text" name="nombre_subProyecto" id="nombre_subProyecto" onChange={this.changeHandler} value={this.state.subProyecto.nombre_subProyecto} onClick={()=>{this.setState({msj_nombre_subp: ""})}} />
                             <div className="invalid-feedback">
@@ -234,15 +231,6 @@ export default class subProyectoModal extends Component {
                             <label htmlFor="id_usuario">Fecha Termino</label>
                             <input className="form-control" type="date" name="fecha_fin" id="fecha_fin" onChange={this.changeHandler} value={this.state.subProyecto.fecha_fin}/>
                             <br/>
-                            <label htmlFor="id_proyecto">ID Proyecto</label>
-                            <input className="form-control" type="text" name="id_proyecto" id="id_proyecto" value={this.state.subProyecto.id_proyecto} readOnly />
-                            <br/>
-                            {/* <label htmlFor="id_proyecto">Tipo SubProyecto</label>
-                            <input className={ (this.state.msj_tipo_subp)? "form-control is-invalid" : "form-control"} type="text" name="tipo_subProyecto" id="tipo_subProyecto" onChange={this.changeHandler} value={this.state.subProyecto.tipo_subProyecto} onClick={()=>{this.setState({msj_tipo_subp: ""})}} />
-                            <div className="invalid-feedback">
-                                {this.state.msj_tipo_subp}
-                            </div> 
-                            <br/>*/}
                             <label htmlFor="id_proyecto">Lider de Módulo</label>
                             <select name="id_usuario" id="id_usuario" className={ (this.state.msj_lider_subp)? "form-control is-invalid" : "form-control"} value={this.state.subProyecto.id_usuario} onChange={this.changeHandler} onClick={()=>{this.setState({msj_lider_subp: ""})}}>
                                 <option value="">Seleccionar Líder de Módulo</option>

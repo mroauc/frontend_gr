@@ -195,9 +195,6 @@ class ProyectoModal extends Component{
                     </ModalHeader>
                     <ModalBody>
                         <div className="form-group">
-                            <label htmlFor="id_proyecto">ID</label>
-                            <input className="form-control" type="text" name="id_proyecto" id="id_proyecto" value={this.state.proyecto.id_proyecto} readOnly/>
-                            <br/>
                             <label htmlFor="nombre">Nombre de Proyecto</label>
                             <input className={(this.state.errorInputNombre)? "form-control is-invalid" : "form-control"} type="text" name="nombre" id="nombre" placeholder="Ingrese el nombre que desea asignar al proyecto" onChange={this.changeHandler} value={this.state.proyecto.nombre} onClick={() => {this.setState({errorInputNombre : ''})}} />
                             <div class="invalid-feedback" style={{display: 'block'}}>

@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom';
 import './PaginaPrincipal.css';
 import ReqModal from './ReqModal';
 import PaginacionRequerimiento from './PaginacionRequerimiento'
+import ModalEliminarReq from './ModalEliminarReq';
 
 var arregloOrdenado = [];
 
@@ -14,6 +15,7 @@ export default class PaginaPrincipal extends Component{
         usuarios: [],
         usuario_actividad: [],
         modalInsertar: false,
+        modalEliminar: false,
         requerimiento: {
             id_requerimiento: 0,
             nombre: '', 
@@ -49,11 +51,6 @@ export default class PaginaPrincipal extends Component{
                 id_proyecto: response.data.id_proyecto
             });
         });
-    }
-    
-    getRequerimiento = () => {
-        const token = localStorage.getItem("token");
-        Axios.get("http://localhost:8080/api/requerimiento/tipo/");
     }
 
     ordenarArregloReq = async () => {
@@ -114,6 +111,10 @@ export default class PaginaPrincipal extends Component{
         await this.setState({modalInsertar: !this.state.modalInsertar});
     }
 
+    modalEliminar=async()=>{
+        await this.setState({modalEliminar: !this.state.modalEliminar});
+    }
+
     componentDidMount(){
         this.getUsuarios();
         this.getDataUsuarioActividad();
@@ -129,6 +130,7 @@ export default class PaginaPrincipal extends Component{
             <div>
                 <div style={{marginLeft:'5%'}}>
                     <button type="button" className="btn boton" onClick={()=>this.modalInsertar()}>Insertar</button> &nbsp;
+                    <button type="button" className="btn boton" onClick={()=>this.modalEliminar()}>Eliminar</button> &nbsp;
                     <Link to={"/subProyecto/"+this.state.id_proyecto}><button type="button" className="btn boton"><ArrowBackIcon/> Volver</button></Link> 
 
                     <div style={{float:'right', textDecoration:'none', marginRight:'5%'}}>
@@ -183,6 +185,14 @@ export default class PaginaPrincipal extends Component{
                     getDataUsuarioActividad = {this.getDataUsuarioActividad}
                     cambiarTabActivo = {this.props.cambiarTabActivo}
                     agregarReqATab = {this.props.agregarReqATab} 
+                />
+
+                <ModalEliminarReq
+                    requerimientos = {datosActuales}
+                    abrir = {this.state.modalEliminar}
+                    cambiarEstado = {this.modalEliminar}
+                    funcionGetRequerimientos = {this.props.funcionGetRequerimientos}
+                    actualizarTabla = {this.ordenarArregloReq}
                 />
 
             </div>
