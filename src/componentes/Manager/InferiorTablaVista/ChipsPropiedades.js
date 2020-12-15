@@ -65,6 +65,7 @@ export default class ChipsPropiedades extends Component{
                     </div> */}
                     
                     <div className="divf" style={{marginTop: '5px', padding: '3px'}}>
+                        {this.props.valoresInput.length === 0 ? <p className="texto">No hay relación con el requerimiento.</p> : ""}
                         {this.props.valoresInput.map(id_requerimiento => {
                             return(
                                 <Chip key={id_requerimiento} label={id_requerimiento} onDelete={() => this.handleDelete(id_requerimiento)}/>   

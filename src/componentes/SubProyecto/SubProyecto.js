@@ -22,7 +22,8 @@ export default class SubProyecto extends Component{
             fecha_fin : '',
             id_proyecto : '',
             tipo_subProyecto : '',
-            id_usuario : ''
+            id_usuario : '',
+            index_documento: 0
         },
         modalInsertar: false,
         modalEditar: false,
@@ -59,7 +60,8 @@ export default class SubProyecto extends Component{
                     fecha_fin : '',
                     id_proyecto : id_proy,
                     tipo_subProyecto : '',
-                    id_usuario : ''
+                    id_usuario : '',
+                    index_documento: 0
                 }
             });
         })
@@ -81,7 +83,8 @@ export default class SubProyecto extends Component{
                     fecha_fin : '',
                     id_proyecto : id_proy,
                     tipo_subProyecto : '',
-                    id_usuario : response.data.id
+                    id_usuario : response.data.id,  
+                    index_documento : 0
                 }
             });
         });

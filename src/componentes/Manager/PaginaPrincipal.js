@@ -142,9 +142,10 @@ export default class PaginaPrincipal extends Component{
                 <table className="tablaPagPrincipal">
                     <thead>
                         <tr>
-                            <th>Nombre</th>
-                            <th>Prioridad</th>
-                            <th>Estado</th>
+                            <th style={{width:'8%'}}>ID</th>
+                            <th style={{width:'30%'}}>Nombre</th>
+                            <th style={{width:'10%'}}>Prioridad</th>
+                            <th style={{width:'15%'}}>Estado</th>
                             <th>Usuario Responsable</th>
                             <th>Fecha Creacion</th>
                         </tr>
@@ -153,9 +154,10 @@ export default class PaginaPrincipal extends Component{
                         {datosActuales.map(requerimiento => {
                             return(
                                 <tr>
-                                    <td>{requerimiento.nombre}</td>
-                                    <td>{requerimiento.prioridad}</td>
-                                    <td>{requerimiento.estado}</td>
+                                    <td style={{width:'8%'}}>{requerimiento.nombre}</td>
+                                    <td style={{width:'30%', textAlign:'left', paddingLeft:'5px'}}>{requerimiento.nombre_descriptivo}</td>
+                                    <td style={{width:'10%'}}>{requerimiento.prioridad}</td>
+                                    <td style={{width:'15%'}}>{requerimiento.estado}</td>
                                     <td>{this.buscarUsuarioPorId(requerimiento.id_requerimiento)}</td>
                                     <td>{requerimiento.fecha_creacion}</td>
                                 </tr>
