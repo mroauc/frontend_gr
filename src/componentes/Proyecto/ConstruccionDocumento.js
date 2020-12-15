@@ -8,6 +8,8 @@ import swal from 'sweetalert';
 import {Link} from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import DeleteIcon from '@material-ui/icons/Delete';
+import DragnDropOrden from './DragnDropOrdenModulos';
+
 
 const initSeccion = {
     id_seccion: '',
@@ -167,7 +169,8 @@ export default class ConstruccionDocumento extends Component {
                     </label>
                     
                     <div className="inferior-contruccion_d">
-                        <label htmlFor="secciones"><strong>Secciones</strong></label>
+                        <label htmlFor="secciones" style={{fontSize:'20px'}}><strong><u>Secciones</u></strong></label><br/>
+                        <label htmlFor="secciones"><strong>Crear Seccion</strong></label>
                         <div>
                             <input className={(this.state.errorInputInsertar)? "form-control is-invalid inputCrear" : "form-control inputCrear"} type="text" name="nombre_seccion" id="nombre_seccion" placeholder="Nombre de Sección" value={this.state.newSeccion.nombre_seccion} onChange={this.changeHandler} onClick={() => {this.setState({errorInputInsertar: ''})}}/>
                             
@@ -203,12 +206,21 @@ export default class ConstruccionDocumento extends Component {
                                 }}
                             />
                         </div>
+                        <br/>
+                        <label htmlFor="modulos" style={{fontSize:'20px'}}><strong><u>Módulos</u></strong></label><br/>        
+                        <label><strong>Orden de Módulos</strong><p>Arrastre los bloques de los modulos para indicar el orden en el que se mostrarán en el documento.</p></label>
+                        <DragnDropOrden
+                            idProyecto = {this.props.match.params.id_proyecto}
+                        />
+
+
                     </div>
                 </div>
                 <br/>
-                <div style={{marginLeft:'280px'}}>
+                <Link to={"/subProyecto/"+this.props.match.params.id_proyecto} style={{position:'absolute', left:'2%', top:'88px'}}><button type="button" className="btn boton"><ArrowBackIcon/></button></Link>
+                {/* <div style={{marginLeft:'280px'}}>
                     <Link to={"/subProyecto/"+this.props.match.params.id_proyecto}><button type="button" className="btn boton"><ArrowBackIcon/> Volver</button></Link>
-                </div>
+                </div> */}
             </React.Fragment>
         );
     }

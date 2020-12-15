@@ -351,7 +351,7 @@ class PropuestaCambioModal extends Component{
                                 {
                                     this.state.requerimientos.map(req => {
                                         return(
-                                            <option key={req.id_requerimiento} value={req.id_requerimiento}>{req.nombre}</option>
+                                            <option key={req.id_requerimiento} value={req.id_requerimiento}>{req.nombre + " - " + req.nombre_descriptivo.substr(0,50)}</option>
                                         )
                                     })
                                 }

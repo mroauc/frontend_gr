@@ -58,7 +58,7 @@ export default class SeleccionReq extends Component {
                                 return(
                                     <div key={requerimiento.id_requerimiento}>
                                         <input  id={requerimiento.id_requerimiento} name={requerimiento.id_requerimiento.toString()} type="checkbox" className="inputCheckbox" onChange={this.changeHandler} checked={this.state.valoresInput.includes(requerimiento.id_requerimiento.toString())}/>
-                                        <label >{requerimiento.nombre + " - " + requerimiento.descripcion.replace(/<[^>]+>/g, '').substr(0,30)}</label><br/>
+                                        <label >{requerimiento.nombre + " - " + requerimiento.nombre_descriptivo.substr(0,30)}</label><br/>
                                     </div>
                                 )
                             })}

@@ -44,6 +44,7 @@ function Dragdrop(id_subproyecto) {
   var itemsEnRedaccion = [];
   var itemsAprobado = [];
   const [columns, setColumns] = useState([]);
+  const [requerimientos, setRequerimientos] = useState([]);
 
   const columnsFromBackend =
     {
@@ -90,8 +91,9 @@ function Dragdrop(id_subproyecto) {
     const token = localStorage.getItem('token');
     var respuesta = [];
     await Axios.get(`http://localhost:8080/api/requerimiento/obtener/${id_subproyecto.id_subproyecto}`, {headers: {"Authorization": `Bearer  ${token}`}})
-    .then(response => {
+    .then(async response => {
       respuesta = response.data; 
+      await setRequerimientos(response.data);
     });
 
     respuesta.map(requerimiento => {
@@ -109,6 +111,11 @@ function Dragdrop(id_subproyecto) {
       }
     })
     setColumns(columnsFromBackend);
+  }
+
+  const buscarNombreDescripcion = (nombre) => {
+    var reque = requerimientos.find(item => item.nombre === nombre);
+    return reque.nombre_descriptivo; 
   }
 
   const onDragEnd = async(result, columns, setColumns) => {
@@ -210,7 +217,7 @@ function Dragdrop(id_subproyecto) {
                                 }}
                                 onClick={()=>mostrarRequerimiento(item.content)}
                               >
-                                {item.content}
+                                <strong>{item.content}</strong>: {buscarNombreDescripcion(item.content)}
                               </div>
                             )
                           }}

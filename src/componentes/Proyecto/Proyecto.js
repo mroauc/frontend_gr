@@ -92,10 +92,19 @@ class Proyecto extends Component{
 
     generarPDF=async(id_proyecto)=>{
         const token = localStorage.getItem('token');
+        var copiaSubProyectos = [];
         await Axios.get(`http://localhost:8080/api/subProyecto/pertenecientes/${id_proyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
-            this.finalizarGeneracionPDF(response.data, id_proyecto);
+            copiaSubProyectos = response.data;
         })
+        copiaSubProyectos = copiaSubProyectos
+            .sort((a,b) => {
+                if(a.index_documento === 0) return 1;
+                if(b.index_documento === 0) return 0;
+                
+                return a.index_documento-b.index_documento
+            });
+        this.finalizarGeneracionPDF(copiaSubProyectos, id_proyecto);
     }
 
     finalizarGeneracionPDF=async(subProyectos, id_proyecto)=>{
