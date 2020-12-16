@@ -35,10 +35,12 @@ class Proyecto extends Component{
             this.setState({
                 proyectos: response.data
             });
+            console.log(response.data);
         })
         .catch(()=>{
             this.props.history.push('/noAutorizado');
         })
+        
     }
 
     componentDidMount(){

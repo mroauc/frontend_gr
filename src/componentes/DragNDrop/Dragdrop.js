@@ -43,6 +43,8 @@ function Dragdrop(id_subproyecto) {
   var itemsCreado = [];
   var itemsEnRedaccion = [];
   var itemsAprobado = [];
+  var itemsFaseDePrueba = [];
+  var itemsRechazado = [];
   const [columns, setColumns] = useState([]);
   const [requerimientos, setRequerimientos] = useState([]);
 
@@ -59,6 +61,14 @@ function Dragdrop(id_subproyecto) {
       [uuid()]: {
         name: 'Aprobado',
         items: itemsAprobado
+      },
+      [uuid()]: {
+        name: 'Fase de Prueba',
+        items: itemsFaseDePrueba
+      },
+      [uuid()]: {
+        name: 'Rechazado',
+        items: itemsRechazado
       }
     };
 
@@ -90,11 +100,25 @@ function Dragdrop(id_subproyecto) {
   const principio = async () => {
     const token = localStorage.getItem('token');
     var respuesta = [];
+
     await Axios.get(`http://localhost:8080/api/requerimiento/obtener/${id_subproyecto.id_subproyecto}`, {headers: {"Authorization": `Bearer  ${token}`}})
     .then(async response => {
       respuesta = response.data; 
       await setRequerimientos(response.data);
     });
+
+    if(localStorage.getItem("tipo") === "analista"){
+      let usuarioActividad = [];
+        await Axios.get(`http://localhost:8080/api/usuarioactividad/`, {headers: {"Authorization": `Bearer  ${token}`}})
+        .then(async response => {
+            usuarioActividad = response.data
+        })
+        let ReqsDeAnalista = usuarioActividad.filter(item => item.id_usuario.toString() === localStorage.getItem("id"));
+        const nuevoArreglo = respuesta.filter(item => {
+            return ReqsDeAnalista.find(item2 => item2.id_requerimiento === item.id_requerimiento) !== undefined
+        })
+        respuesta = nuevoArreglo;
+    }
 
     respuesta.map(requerimiento => {
       const nuevo = {
@@ -108,6 +132,12 @@ function Dragdrop(id_subproyecto) {
       }
       if(requerimiento.estado==="Aprobado"){
         itemsAprobado.push(nuevo);
+      }
+      if(requerimiento.estado==="Fase de Prueba"){
+        itemsFaseDePrueba.push(nuevo);
+      }
+      if(requerimiento.estado==="Rechazado"){
+        itemsRechazado.push(nuevo);
       }
     })
     setColumns(columnsFromBackend);

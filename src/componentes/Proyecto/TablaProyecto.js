@@ -9,6 +9,8 @@ import ForwardIcon from '@material-ui/icons/Forward';
 import Paginacion from '../Paginacion';
 import FiltroProyecto from './FiltroProyecto';
 
+const ocultarxTipoUsuario = {display: localStorage.getItem('tipo') === "cliente" ? "none" : "inline"};
+
 class TablaProyecto extends Component{
 
     state={
@@ -71,10 +73,17 @@ class TablaProyecto extends Component{
         return count;
     }
 
+    accesoUsuario = () => {
+        if(localStorage.getItem("tipo") === "admin" || localStorage.getItem("tipo") === "lider" || localStorage.getItem("tipo") === "jefe")
+            return true;
+        return false;
+    }
+
     render(){
         const ultimoDato = this.state.paginaActual * this.state.cantidadPorPagina;
         const primerDato = ultimoDato - this.state.cantidadPorPagina;
         const datosActuales = this.state.proyectos.slice(primerDato, ultimoDato);
+        
 
         if(datosActuales.length===0 && this.state.paginaActual!==1){
             this.cambiarPaginaActual(1);
@@ -104,9 +113,15 @@ class TablaProyecto extends Component{
                                 <td>{proyecto.fecha_creacion}</td>
                                 <td>{this.cantidadSubProyectos(proyecto.id_proyecto)}</td>
                                 <td>
-                                    <button className="btn btn-secondary" onClick={()=>this.props.generarPDF(proyecto.id_proyecto)}><DescriptionIcon/> </button> &nbsp;
-                                    <button className="btn btn-warning" onClick={()=>this.props.editar(proyecto)}><EditIcon/></button> &nbsp;
-                                    <button className="btn btn-danger" onClick={()=>this.props.modalEliminar(proyecto)}><DeleteIcon/></button> &nbsp;
+                                    {this.accesoUsuario() ?
+                                        <React.Fragment>
+                                            <button className="btn btn-secondary" onClick={()=>this.props.generarPDF(proyecto.id_proyecto)} ><DescriptionIcon/> </button> &nbsp;
+                                            <button className="btn btn-warning" onClick={()=>this.props.editar(proyecto)}><EditIcon/></button> &nbsp;
+                                            <button className="btn btn-danger" onClick={()=>this.props.modalEliminar(proyecto)}><DeleteIcon/></button> &nbsp;
+                                        </React.Fragment>:
+                                        ""
+                                    }
+                                    
                                     <Link to={"/subProyecto/"+proyecto.id_proyecto}><Button type="button" className="btn btn-info"><ForwardIcon/></Button></Link>
                                 </td>
                             </tr>
