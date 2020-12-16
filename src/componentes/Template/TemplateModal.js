@@ -54,7 +54,6 @@ class TemplateModal extends Component{
     guardar=async()=>{
         if(this.validar()){
             const token = localStorage.getItem('token');
-            console.log(this.state.template.template)
             await Axios.post('http://localhost:8080/api/template/guardar/',{
                 prefijo: this.state.template.prefijo,
                 nombre: this.state.template.nombre,
@@ -80,7 +79,7 @@ class TemplateModal extends Component{
             Axios.post('http://localhost:8080/api/template/editar/',this.state.template, {headers: {"Authorization": `Bearer ${token}`}})
             .then(response=>{
                 if(this.state.antiguo_template !== this.state.template.template){
-                    this.modificarRequerimientos(response.data.id_template, response.data.template);
+                    this.modificarRequerimientos(response.data.id_template, response.data.template, this.state.antiguo_template);
                 }
                 this.props.modalInsertar();
                 this.props.index();
@@ -88,16 +87,17 @@ class TemplateModal extends Component{
         }
     }
 
-    modificarRequerimientos=(id_template, nuevoTemplate)=>{
+    modificarRequerimientos=(id_template, nuevoTemplate, oldTemplate)=>{
         const token = localStorage.getItem('token');
-        var nuevotitulo = jQuery('strong',nuevoTemplate).text();
-        console.log(nuevotitulo);
+        var nt = nuevoTemplate.replace(/<[^>]+>/g, '');
+        var nuevotitulo = nt.replace('&nbsp;','');
+
         Axios.get(`http://localhost:8080/api/requerimiento/obtener/template/${id_template}`, {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             for (let index = 0; index < response.data.length; index++) {
                 var requeri = response.data[index];
-                var titulo = jQuery('strong',requeri.descripcion).text();
-                console.log(titulo);
+                var tl = oldTemplate.replace(/<[^>]+>/g, '');
+                var titulo = tl.replace('&nbsp;', '')
                 var nueva_descr = requeri.descripcion.replace(titulo, nuevotitulo);
                 requeri.descripcion = nueva_descr;
                 Axios.post('http://localhost:8080/api/requerimiento/editar/',requeri, {headers: {"Authorization" : `Bearer ${token}`}});
@@ -192,7 +192,6 @@ class TemplateModal extends Component{
             </React.Fragment>
         );
     }
-
 }
 
 export default TemplateModal;

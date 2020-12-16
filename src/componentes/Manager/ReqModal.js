@@ -64,7 +64,7 @@ class ReqModal extends Component{
         Axios.get(`http://localhost:8080/api/usuario/`,{headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             this.setState({usuarios : response.data});
-        })
+        });
     }
 
     getUsuariosSubProyecto=async()=>{
@@ -138,7 +138,7 @@ class ReqModal extends Component{
             await Axios.post('http://localhost:8080/api/requerimiento/guardar/',{
                 nombre_descriptivo: this.state.requerimiento.nombre_descriptivo,
                 descripcion: this.state.requerimiento.descripcion,
-                id_usuario: this.state.requerimiento.id_usuario,
+                id_usuario: this.state.id_usuario_responsable,
                 id_subProyecto: this.state.requerimiento.id_subProyecto,
                 fecha_creacion: new Date().toLocaleString(),
                 prioridad: this.state.requerimiento.prioridad,
@@ -174,7 +174,7 @@ class ReqModal extends Component{
         await Axios.post('http://localhost:8080/api/requerimiento/editar/', req, {headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             this.props.getUsuarios();
-            this.props.getDataUsuarioActividad()
+            this.props.getDataUsuarioActividad();
             this.props.modalInsertar();
             this.props.funcionGetRequerimientos();
         })

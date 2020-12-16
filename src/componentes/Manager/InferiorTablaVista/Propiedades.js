@@ -11,7 +11,8 @@ class Propiedades extends Component{
         requerimiento: '',
         requerimientos: [],
         requerimientosSeleccionados: [],
-        estadoModal: false
+        estadoModal: false,
+        oldRequerimiento: ''
     }
 
     componentDidMount(){
@@ -46,10 +47,12 @@ class Propiedades extends Component{
         const token = localStorage.getItem('token');
         await Axios.get(`http://localhost:8080/api/requerimiento/${this.props.requerimiento.id_requerimiento}`, {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
+            var req = response.data;
             this.setState({
-                requerimiento : response.data
+                requerimiento: req,
+                oldRequerimiento: req
             });
-        })
+        });
     }
 
     mostrarAlerta = () => {
@@ -106,8 +109,24 @@ class Propiedades extends Component{
         const token = localStorage.getItem('token');
         await Axios.post('http://localhost:8080/api/requerimiento/editar/',this.state.requerimiento, {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
+            this.guardarCambioVersion(this.state.oldRequerimiento, response.data);
             this.mostrarAlerta();
         })
+    }
+
+    guardarCambioVersion=(antiguoRequerimiento, nuevoRequerimiento)=>{
+        if(antiguoRequerimiento !== nuevoRequerimiento){
+            const token = localStorage.getItem('token');
+            Axios.post('http://localhost:8080/api/versionanterior/guardar/',{
+                id_requerimiento: antiguoRequerimiento.id_requerimiento,
+                nombre_descriptivo: antiguoRequerimiento.nombre_descriptivo,
+                descripcion: antiguoRequerimiento.descripcion,
+                prioridad: antiguoRequerimiento.prioridad,
+                estado: antiguoRequerimiento.estado,
+                id_usuario: antiguoRequerimiento.id_usuario,
+                fecha: new Date().toLocaleString()
+            }, {headers: {"Authorization": `Bearer ${token}`}});
+        }
     }
 
     guardarChips=()=>{

@@ -34,7 +34,7 @@ export default class TablaVista extends Component {
             title: "Guardado Correctamente",
             icon: "success",
             buttons: "Aceptar"
-        })
+        });
     }
 
     modalEliminar=async()=>{
@@ -59,13 +59,33 @@ export default class TablaVista extends Component {
     }
 
     insertar=(requerimiento)=>{
-        var act = requerimiento;
+        let antigua_descripcion = requerimiento.descripcion;
+        let act = requerimiento;
         act.descripcion = this.state.dataRequerimiento;
         const token = localStorage.getItem('token');
         Axios.post('http://localhost:8080/api/requerimiento/editar/',act, {headers: {"Authorization": `Bearer ${token}`}})
-        .then(
-            this.mostrarAlerta()
-        )
+        .then(response=>{
+            this.guardarCambioVersion(requerimiento, antigua_descripcion);
+            this.mostrarAlerta();
+        });
+    }
+
+    guardarCambioVersion=(oldRequerimiento, antigua)=>{
+        const token = localStorage.getItem('token');
+        Axios.get(`http://localhost:8080/api/template/${oldRequerimiento.id_template}`, {headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            if(response.data.template !== antigua){    //caso en que ya estaba redactado
+                Axios.post('http://localhost:8080/api/versionanterior/guardar/',{
+                    id_requerimiento: oldRequerimiento.id_requerimiento,
+                    nombre_descriptivo: oldRequerimiento.nombre_descriptivo,
+                    descripcion: antigua,
+                    prioridad: oldRequerimiento.prioridad,
+                    estado: oldRequerimiento.estado,
+                    id_usuario: oldRequerimiento.id_usuario,
+                    fecha: new Date().toLocaleString()
+                }, {headers: {"Authorization": `Bearer ${token}`}});
+            }
+        });
     }
     
     generarTabs = () => {
@@ -122,7 +142,6 @@ export default class TablaVista extends Component {
                                 agregarReqATab = {this.props.agregarReqATab}
                             /> 
                         </div>
-
                         {this.generarTabs()}
                     </Tabs>
                 </div>

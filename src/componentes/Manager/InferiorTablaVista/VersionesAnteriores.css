@@ -1,0 +1,5 @@
+.muestraVersiones{
+    height: 55%;
+    display: flex;
+    overflow: auto;
+}

@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Modal, ModalBody, ModalHeader } from 'reactstrap';
-import parse from 'html-react-parser';
 import TemplateTextEditor from './TemplateTextEditor';
 
 class VistaTemplate extends Component{
@@ -50,7 +49,6 @@ class VistaTemplate extends Component{
                                 obtenerTemplate={this.obtenerTemplate}
                                 soloLeer={true}
                             />
-                
                         </div>
                     </ModalBody>
                 </Modal>

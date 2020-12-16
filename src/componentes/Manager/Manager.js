@@ -21,17 +21,16 @@ export default class Manager extends Component {
     getRequerimientos=async()=> {
         const token = localStorage.getItem("token");
         const id_subproyecto = this.props.match.params.id_subproyecto;
-        console.log("entro a la funcion");
         await Axios.get(`http://localhost:8080/api/requerimiento/obtener/${id_subproyecto}`, {headers: {"Authorization": `Bearer  ${token}`}})
         .then(async response => {
             await this.setState({
                 requerimientos: response.data
             });
-        })
+        });
     }
 
     cambiarTabActivo = async(req) => {
-        await this.setState({clickTab: req})
+        await this.setState({clickTab: req});
     }
 
     agregarReqATab = async (req) => {
@@ -39,7 +38,7 @@ export default class Manager extends Component {
             await this.setState({
                 reqsTab : [ ...this.state.reqsTab, req],
                 clickTab: req
-            })
+            });
         }
         else{
             await this.setState({clickTab: req});
@@ -55,7 +54,7 @@ export default class Manager extends Component {
         await this.setState({
             reqsTab : filtrado,
             clickTab : ""
-        })
+        });
     }
 
     render(){

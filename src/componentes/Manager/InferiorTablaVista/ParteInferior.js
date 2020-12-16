@@ -4,6 +4,7 @@ import Comentario from './Comentario'
 import Propiedades from './Propiedades';
 import PropuestaCambio from './PropuestaCambio';
 import Permisos from './Permisos';
+import VersionesAnteriores from './VersionesAnteriores';
 
 export default class ParteInferior extends Component {
     render(){
@@ -30,8 +31,12 @@ export default class ParteInferior extends Component {
                             requerimiento = {this.props.requerimiento}
                         />
                     </div>
+                    <div label="Versiones Anteriores">
+                        <VersionesAnteriores
+                        requerimiento = {this.props.requerimiento}
+                        />
+                    </div>
                 </TabsEstaticos>
-                
             </React.Fragment>
         );
     }

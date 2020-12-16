@@ -31,8 +31,8 @@ export default class Permisos extends Component {
         .then(response=>{
             this.setState({
                 usuariosSubProyecto: response.data
-            })
-        })
+            });
+        });
     }
 
     obtenerUsuarioResponsable=async()=>{
@@ -59,11 +59,32 @@ export default class Permisos extends Component {
                 fecha: response.data.fecha,
                 id_requerimiento: response.data.id_requerimiento,
                 id_usuario: this.state.usuarioResponsable
-            }, {headers: {"Authorization" : `Bearer ${token}`}})
-            .then(
-                this.alertaGuardar()
-            )
-        })
+            },{headers: {"Authorization" : `Bearer ${token}`}})
+            .then(response=>{
+                this.guardarCambioVersion(this.props.requerimiento, this.state.usuarioResponsable);
+                this.alertaGuardar();
+            });
+        });
+    }
+
+    guardarCambioVersion=(requerimiento, usuarioResponsable)=>{
+        if(requerimiento.id_usuario !== usuarioResponsable){
+            const token = localStorage.getItem('token');
+            Axios.post('http://localhost:8080/api/versionanterior/guardar/',{
+                descripcion: requerimiento.descripcion,
+                estado: requerimiento.estado,
+                id_requerimiento: requerimiento.id_requerimiento,
+                id_usuario: requerimiento.id_usuario,
+                nombre_descriptivo: requerimiento.nombre_descriptivo,
+                prioridad: requerimiento.prioridad,
+                fecha: new Date().toLocaleString()
+            }, {headers: {"Authorization": `Bearer ${token}`}})
+            .then(response=>{
+                var newReq = requerimiento;
+                newReq.id_usuario = usuarioResponsable;
+                Axios.post('http://localhost:8080/api/requerimiento/editar/', newReq, {headers: {"Authorization": `Bearer ${token}`}});
+            });
+        }
     }
 
     alertaGuardar = () => {
@@ -71,7 +92,7 @@ export default class Permisos extends Component {
             title: "Guardado Correctamente",
             icon: "success",
             buttons: "Aceptar"
-        })
+        });
     }
     
     render(){
