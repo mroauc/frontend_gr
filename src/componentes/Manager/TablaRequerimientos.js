@@ -1,3 +1,4 @@
+import Axios from 'axios';
 import { extend } from 'jquery'
 import React, { Component } from 'react'
 import CategoriaxUsuario from './CategoriaxUsuario';
@@ -6,7 +7,8 @@ import './Manager.css';
 
 export default class TablaRequerimiento extends Component {
     state = {
-        requerimientos : []
+        requerimientos : [],
+        usuario_actividad : []
     }
 
     BuscarRequerimiento = (e) => {
@@ -18,9 +20,30 @@ export default class TablaRequerimiento extends Component {
         this.setState({requerimientos : nuevosReq})
     }
 
-    componentWillReceiveProps(next_props){
-        this.setState({requerimientos : next_props.requerimientos})
+    componentWillReceiveProps(next_props){    
+        if(localStorage.getItem("tipo") === "analista"){
+            this.RequerimientosAnalista(next_props)
+        }
+        else{
+            this.setState({requerimientos : next_props.requerimientos})
+        }
     }
+
+    RequerimientosAnalista = async (props) => {
+        const token = localStorage.getItem("token");
+        let usuarioActividad = [];
+        await Axios.get(`http://localhost:8080/api/usuarioactividad/`, {headers: {"Authorization": `Bearer  ${token}`}})
+        .then(async response => {
+            usuarioActividad = response.data
+        })
+        let ReqsDeAnalista = usuarioActividad.filter(item => item.id_usuario.toString() === localStorage.getItem("id"));
+        const nuevoArreglo = props.requerimientos.filter(item => {
+            return ReqsDeAnalista.find(item2 => item2.id_requerimiento === item.id_requerimiento) !== undefined
+        })  
+        console.log(nuevoArreglo)
+        this.setState({requerimientos : nuevoArreglo});
+    }
+
     render(){
         return(
             <div className="col-3" style={{height: '100%', display:'inline-block',padding: 0}}>

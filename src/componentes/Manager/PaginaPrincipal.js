@@ -62,6 +62,15 @@ export default class PaginaPrincipal extends Component{
             arregloOrdenado = response.data;
         })
 
+        if(localStorage.getItem("tipo") === "analista"){
+            let ReqsDeAnalista = this.state.usuario_actividad.filter(item => item.id_usuario.toString() === localStorage.getItem("id"));
+            const nuevoArreglo = arregloOrdenado.filter(item => {
+                return ReqsDeAnalista.find(item2 => item2.id_requerimiento === item.id_requerimiento) !== undefined
+            })
+            arregloOrdenado = nuevoArreglo;  
+        }
+
+
         await arregloOrdenado.sort((
             (a, b) => { return ordenamiento[a.prioridad] - ordenamiento[b.prioridad]}));
     }
@@ -121,6 +130,12 @@ export default class PaginaPrincipal extends Component{
         this.getIdProyecto();
     }
 
+    accesoUsuario = () => {
+        if(localStorage.getItem("tipo") === "admin" || localStorage.getItem("tipo") === "lider" || localStorage.getItem("tipo") === "jefe")
+            return true;
+        return false;
+    }
+
     render(){
         const ultimoDato = this.state.paginaActual * this.state.cantidadPorPagina;
         const primerDato = ultimoDato - this.state.cantidadPorPagina;
@@ -129,8 +144,13 @@ export default class PaginaPrincipal extends Component{
         return(
             <div>
                 <div style={{marginLeft:'5%'}}>
-                    <button type="button" className="btn boton" onClick={()=>this.modalInsertar()}>Insertar</button> &nbsp;
-                    <button type="button" className="btn boton" onClick={()=>this.modalEliminar()}>Eliminar</button> &nbsp;
+                    {(this.accesoUsuario()) ? 
+                        <React.Fragment>
+                            <button type="button" className="btn boton" onClick={()=>this.modalInsertar()}>Insertar</button> &nbsp;
+                            <button type="button" className="btn boton" onClick={()=>this.modalEliminar()}>Eliminar</button> &nbsp;
+                        </React.Fragment>
+                        : ""
+                    }
                     <Link to={"/subProyecto/"+this.state.id_proyecto}><button type="button" className="btn boton"><ArrowBackIcon/> Volver</button></Link> 
 
                     <div style={{float:'right', textDecoration:'none', marginRight:'5%'}}>

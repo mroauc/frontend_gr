@@ -73,6 +73,17 @@ export default class Permisos extends Component {
             buttons: "Aceptar"
         })
     }
+
+    activarReadOnly = () => {
+        if(localStorage.getItem("tipo") === "analista"){
+            console.log("retornara true")
+            return true
+        }
+        else{
+            console.log("retornara false")
+            return false;
+        }
+    }
     
     render(){
         return(
@@ -80,14 +91,14 @@ export default class Permisos extends Component {
                 <label htmlFor="id_responsable">Usuario Responsable</label>
                     <div className="row">
                         <div className="col-8">
-                            <select className="form-control inputpermiso" type="text" name="usuarioResponsable" id="usuarioResponsable" value={this.state.usuarioResponsable} onChange={(e) => {this.setState({usuarioResponsable: e.target.value})}}>
+                            <select className="form-control inputpermiso" type="text" name="usuarioResponsable" id="usuarioResponsable" value={this.state.usuarioResponsable} onChange={(e) => {this.setState({usuarioResponsable: e.target.value})}} disabled={localStorage.getItem("tipo") === "analista" ? true : false} readOnly={localStorage.getItem("tipo") === "analista" ? true : false}>
                                 <option value="">Seleccionar Usuario Responsable</option>
                                 {this.state.usuariosSubProyecto.map(usuario => {
                                     const usuarioEncontrado = this.state.usuarios.find(posibleUsuario => posibleUsuario.id === usuario.id_usuario); 
                                     if(usuarioEncontrado !== undefined){
                                         if(usuarioEncontrado.tipo !== "cliente" && usuarioEncontrado.estado === 'Activo')
                                             return(
-                                                <option value={usuario.id_usuario}>{this.obtenerNombreUsuario(usuario.id_usuario)}</option>
+                                                <option value={usuario.id_usuario} >{this.obtenerNombreUsuario(usuario.id_usuario)}</option>
                                         );
                                     }
                                 })}

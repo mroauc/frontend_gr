@@ -231,6 +231,8 @@ class ReqModal extends Component{
                                 <option value="Creado">Creado</option>
                                 <option value="En Redaccion">En Redaccion</option>
                                 <option value="Aprobado">Aprobado</option>
+                                <option value="Fase de Prueba">Fase de Prueba</option>
+                                <option value="Rechazado">Rechazado</option>
                             </select>
                             <div class="invalid-feedback" style={{display: 'block'}}>
                                 {this.state.errorInputEstado}

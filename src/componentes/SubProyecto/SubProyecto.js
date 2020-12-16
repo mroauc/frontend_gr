@@ -139,6 +139,12 @@ export default class SubProyecto extends Component{
         });
     }
 
+    accesoUsuario = () => {
+        if(localStorage.getItem("tipo") === "admin" || localStorage.getItem("tipo") === "lider" || localStorage.getItem("tipo") === "jefe")
+            return true;
+        return false;
+    }
+
     render(){
         return(
             <React.Fragment>
@@ -153,7 +159,11 @@ export default class SubProyecto extends Component{
                         <Link to={"/graficoRequerimientos/"+this.props.match.params.id_proyecto}><button type="button" className="btn boton" >Estado Requerimientos</button> </Link>
                         <Link to= {`/palabra/${this.props.match.params.id_proyecto}`}><button type="button" className="btn boton">Ver Glosario</button> </Link>
                         <Link to={"/propuestaCambio/"+this.props.match.params.id_proyecto}><button type="button" className="btn boton" >Propuestas de cambio</button> </Link>
-                        <Link to= {`/c_documento/${this.props.match.params.id_proyecto}`}><button type="button" className="btn boton">Construir Documento</button></Link>
+                        {(this.accesoUsuario()) ? 
+                            <Link to= {`/c_documento/${this.props.match.params.id_proyecto}`}><button type="button" className="btn boton">Construir Documento</button></Link>    
+                            : ""
+                        }
+                        
                     </div>
 
                     <TablasubProyecto
