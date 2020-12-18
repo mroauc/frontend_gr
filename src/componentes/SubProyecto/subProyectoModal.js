@@ -12,7 +12,7 @@ export default class subProyectoModal extends Component {
         subProyecto: {
             id_subProyecto : 0,
             nombre_subProyecto :'',
-            fecha_inicio : '',
+            fecha_inicio : new Date().toLocaleDateString('fr-CA'),
             fecha_fin : '',
             id_proyecto : '',
             tipo_subProyecto : '',

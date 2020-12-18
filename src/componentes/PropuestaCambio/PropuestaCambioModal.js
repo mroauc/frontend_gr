@@ -10,7 +10,7 @@ class PropuestaCambioModal extends Component{
             id_propuestaCambio: 0,
             nombre: '',
             id_subproyecto: "",
-            fecha_peticion: 0,
+            fecha_peticion: new Date().toLocaleDateString('fr-CA'),
             id_usuario: '',
             descripcion: '',
             justificacion: '',
