@@ -8,7 +8,7 @@ class ProyectoModal extends Component{
         proyecto: {
             id_proyecto: 0,
             nombre: '',
-            fecha_inicio: '',
+            fecha_inicio: new Date().toLocaleDateString('fr-CA'),
             fecha_fin: '',
             id_usuario: '',
             fecha_creacion: ''
@@ -36,7 +36,6 @@ class ProyectoModal extends Component{
             });
         })
         this.getJefesProyectos();
-
     }
 
     guardar=async()=>{

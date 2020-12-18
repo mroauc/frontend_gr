@@ -19,7 +19,7 @@ class Proyecto extends Component{
         proyecto: {
             id_proyecto: 0,
             nombre: '',
-            fecha_inicio: '',
+            fecha_inicio: new Date().toLocaleDateString('fr-CA'),
             fecha_fin: '',
             id_usuario: '',
             fecha_creacion: ''
@@ -52,7 +52,7 @@ class Proyecto extends Component{
         await Axios.get(`http://localhost:8080/api/usuario/${localStorage.getItem('email')}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
-                proyecto:{id_proyecto: 0, nombre: '', fecha_inicio: '',fecha_fin: '',id_usuario:'', fecha_creacion: ''},
+                proyecto:{id_proyecto: 0, nombre: '', fecha_inicio: new Date().toLocaleDateString('fr-CA'), fecha_fin: '',id_usuario:'', fecha_creacion: ''},
             });
         })
 

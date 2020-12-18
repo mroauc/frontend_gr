@@ -18,7 +18,7 @@ export default class SubProyecto extends Component{
         subProyecto: {
             id_subProyecto : 0,
             nombre_subProyecto :'',
-            fecha_inicio : '',
+            fecha_inicio : new Date().toLocaleDateString('fr-CA'),
             fecha_fin : '',
             id_proyecto : '',
             tipo_subProyecto : '',
@@ -56,7 +56,7 @@ export default class SubProyecto extends Component{
                 subProyecto:{
                     id_subProyecto : 0,
                     nombre_subProyecto :'',
-                    fecha_inicio : '',
+                    fecha_inicio : new Date().toLocaleDateString('fr-CA'),
                     fecha_fin : '',
                     id_proyecto : id_proy,
                     tipo_subProyecto : '',
@@ -79,7 +79,7 @@ export default class SubProyecto extends Component{
                 subProyecto: {
                     id_subProyecto : 0,
                     nombre_subProyecto :'',
-                    fecha_inicio : '',
+                    fecha_inicio : new Date().toLocaleDateString('fr-CA'),
                     fecha_fin : '',
                     id_proyecto : id_proy,
                     tipo_subProyecto : '',
@@ -104,7 +104,7 @@ export default class SubProyecto extends Component{
                 subProyecto: {
                     id_subProyecto : 0,
                     nombre_subProyecto :'',
-                    fecha_inicio : '',
+                    fecha_inicio : new Date().toLocaleDateString('fr-CA'),
                     fecha_fin : '',
                     id_proyecto : id_proy,
                     tipo_subProyecto : '',

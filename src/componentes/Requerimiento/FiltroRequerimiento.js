@@ -6,8 +6,10 @@ function FiltroRequerimiento(requerimientos, valorBusqueda, cambiarRequerimiento
         const nombreRequerimiento = requerimiento.nombre.toLowerCase();
         const estadoRequerimiento = requerimiento.estado.toLowerCase();
         const categoriaRequerimiento = requerimiento.categoria.toLowerCase();
+        const nombreDescriptivo = requerimiento.nombre_descriptivo.toLowerCase();
+        console.log(nombreDescriptivo);
 
-        const datos = idRequerimiento + " " + nombreRequerimiento + " " + estadoRequerimiento + " " + categoriaRequerimiento;
+        const datos = idRequerimiento + " " + nombreRequerimiento + " " + estadoRequerimiento + " " + categoriaRequerimiento + " " + nombreDescriptivo;
         const busquedaMinuscula = valorBusqueda.toLowerCase();
 
         return datos.indexOf(busquedaMinuscula) > -1
