@@ -12,7 +12,8 @@ class VistaVersionAnterior extends Component{
             id_usuario: '',
             descripcion: '',
             nombre_descriptivo: '',
-            prioridad: ''
+            prioridad: '',
+            cambios_realizados: ''
         }
     }
 

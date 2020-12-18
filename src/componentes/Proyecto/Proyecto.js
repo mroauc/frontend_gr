@@ -118,7 +118,7 @@ class Proyecto extends Component{
         await Axios.get(`http://localhost:8080/api/proyecto/${id_proyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             nombreProyecto = response.data.nombre;
-        })
+        });
 
         await Axios.get(`http://localhost:8080/api/seccion/id_proyecto/${id_proyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{

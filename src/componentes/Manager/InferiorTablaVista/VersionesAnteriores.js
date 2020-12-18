@@ -17,7 +17,8 @@ class VersionesAnteriores extends Component{
             id_usuario: '',
             descripcion: '',
             nombre_descriptivo: '',
-            prioridad: ''
+            prioridad: '',
+            cambios_realizados: ''
         }
     }
 
@@ -60,6 +61,7 @@ class VersionesAnteriores extends Component{
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
+                                <th scope="col">Cambios</th>
                                 <th scope="col">Fecha</th>
                                 <th scope="col">Ver</th>
                             </tr>
@@ -69,6 +71,7 @@ class VersionesAnteriores extends Component{
                                 return(
                                     <tr key={versionAnterior.id_version_anterior}>
                                         <td>{index+1}</td>
+                                        <td>{versionAnterior.cambios_realizados}</td>
                                         <td>{versionAnterior.fecha}</td>
                                         <td>
                                             <button className="btn btn-success" onClick={()=>this.ver(versionAnterior)}><VisibilityIcon/></button>

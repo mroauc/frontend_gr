@@ -77,7 +77,8 @@ export default class Permisos extends Component {
                 id_usuario: requerimiento.id_usuario,
                 nombre_descriptivo: requerimiento.nombre_descriptivo,
                 prioridad: requerimiento.prioridad,
-                fecha: new Date().toLocaleString()
+                fecha: new Date().toLocaleString(),
+                cambios_realizados: "Nuevo usuario responsable"
             }, {headers: {"Authorization": `Bearer ${token}`}})
             .then(response=>{
                 var newReq = requerimiento;

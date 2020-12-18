@@ -105,16 +105,16 @@ class Propiedades extends Component{
         
     }
 
-    guardarCambios=async()=>{
+    guardarCambios=async(atributo)=>{
         const token = localStorage.getItem('token');
         await Axios.post('http://localhost:8080/api/requerimiento/editar/',this.state.requerimiento, {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
-            this.guardarCambioVersion(this.state.oldRequerimiento, response.data);
+            this.guardarCambioVersion(this.state.oldRequerimiento, response.data, atributo);
             this.mostrarAlerta();
         })
     }
 
-    guardarCambioVersion=(antiguoRequerimiento, nuevoRequerimiento)=>{
+    guardarCambioVersion=(antiguoRequerimiento, nuevoRequerimiento, atributo)=>{
         if(antiguoRequerimiento !== nuevoRequerimiento){
             const token = localStorage.getItem('token');
             Axios.post('http://localhost:8080/api/versionanterior/guardar/',{
@@ -124,7 +124,8 @@ class Propiedades extends Component{
                 prioridad: antiguoRequerimiento.prioridad,
                 estado: antiguoRequerimiento.estado,
                 id_usuario: antiguoRequerimiento.id_usuario,
-                fecha: new Date().toLocaleString()
+                fecha: new Date().toLocaleString(),
+                cambios_realizados: "Cambio de " + atributo
             }, {headers: {"Authorization": `Bearer ${token}`}});
         }
     }
@@ -181,7 +182,7 @@ class Propiedades extends Component{
                         </div>
                     
                         <div className="col-3 cont-boton-prop">
-                            <button className="btn btn-success btn-block" onClick={this.cambiarEstadoAbrir}>Asignar Relacion</button>
+                            <button className="btn btn-success btn-block" onClick={()=>this.cambiarEstadoAbrir}>Asignar Relacion</button>
                         </div>
 
                         <SeleccionReq
@@ -207,7 +208,7 @@ class Propiedades extends Component{
                                 </select>
                         </div>
                         <div className="col-3 cont-boton">
-                            <button className="btn btn-success btn-block" onClick={this.guardarCambios}>Cambiar Prioridad</button>
+                            <button className="btn btn-success btn-block" onClick={()=>{this.guardarCambios("prioridad")}}>Cambiar Prioridad</button>
                         </div>
                     </div>
                 </div>
@@ -224,7 +225,7 @@ class Propiedades extends Component{
                             </select>
                     </div>
                     <div className="col-3 cont-boton">
-                        <button className="btn btn-success btn-block" onClick={this.guardarCambios}>Cambiar Estado</button>
+                        <button className="btn btn-success btn-block" onClick={()=>{this.guardarCambios("estado")}}>Cambiar Estado</button>
                     </div>
                 </div>
             </div>

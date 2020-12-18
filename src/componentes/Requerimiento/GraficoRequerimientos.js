@@ -7,7 +7,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import './GraficoRequerimientos.css';
 import '../vistaCrud.css';
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#B542FF'];
 
 const RADIAN = Math.PI / 180;
 
@@ -64,18 +64,28 @@ class GraficoRequerimiento extends Component{
 
         //tupla estado CREADO
         var creado = requerimientos.filter(req => req.estado === "Creado");
-        var tupla1 = {name: 'Creado', value: creado.length, frecuencia: creado.length};
+        var tupla1 = {name: 'Creado', value: creado.length};
         dataFinal.push(tupla1);
 
         //tupla estado EN REDACCION
         var enRedaccion = requerimientos.filter(req => req.estado === "En Redaccion");
-        var tupla2 = {name: 'En Redaccion', value: enRedaccion.length, frecuencia: enRedaccion.length};
+        var tupla2 = {name: 'En Redaccion', value: enRedaccion.length};
         dataFinal.push(tupla2);
 
         //tupla estado Aprobado
         var aprobado = requerimientos.filter(req => req.estado === "Aprobado");
-        var tupla3 = {name: 'Aprobado', value: aprobado.length, frecuencia: aprobado.length};
+        var tupla3 = {name: 'Aprobado', value: aprobado.length};
         dataFinal.push(tupla3);
+
+        //tupla estado Fase de Prueba
+        var fasePrueba = requerimientos.filter(req => req.estado === "Fase de Prueba");
+        var tupla4 = {name: 'Fase de Prueba', value: fasePrueba.length};
+        dataFinal.push(tupla4);
+
+        //tupla estado Rechazado
+        var rechazado = requerimientos.filter(req => req.estado === "Rechazado");
+        var tupla5 = {name: 'Rechazado', value: rechazado.length};
+        dataFinal.push(tupla5);
 
         this.setState({
             data : dataFinal
@@ -113,7 +123,9 @@ class GraficoRequerimiento extends Component{
                     <div style={{textAlign:'left', marginLeft:'20px'}}>
                         - <div className="cuadroColor" style={{backgroundColor:"#0088FE"}}></div> <label>Requerimiento Creado</label><br/>
                         - <div className="cuadroColor" style={{backgroundColor:"#00C49F"}}></div> <label>Requerimiento En Redaccion</label><br/>
-                        - <div className="cuadroColor" style={{backgroundColor:"#FFBB28"}}></div> <label>Requerimiento Aprobado</label>
+                        - <div className="cuadroColor" style={{backgroundColor:"#FFBB28"}}></div> <label>Requerimiento Aprobado</label><br/>
+                        - <div className="cuadroColor" style={{backgroundColor:"#FF8042"}}></div> <label>Requerimiento En Fase de Prueba</label><br/>
+                        - <div className="cuadroColor" style={{backgroundColor:"#B542FF"}}></div> <label>Requerimiento Rechazado</label>
                     </div>
                 </div>
                 <div style={{marginLeft: '110px'}}>

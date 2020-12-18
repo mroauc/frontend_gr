@@ -82,7 +82,8 @@ export default class TablaVista extends Component {
                     prioridad: oldRequerimiento.prioridad,
                     estado: oldRequerimiento.estado,
                     id_usuario: oldRequerimiento.id_usuario,
-                    fecha: new Date().toLocaleString()
+                    fecha: new Date().toLocaleString(),
+                    cambios_realizados: "Nueva redacción del requerimiento"
                 }, {headers: {"Authorization": `Bearer ${token}`}});
             }
         });
