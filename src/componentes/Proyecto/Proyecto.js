@@ -220,13 +220,25 @@ class Proyecto extends Component{
         html2pdf().from(imprimir).set(opt).save();
     }
 
+    accesoUsuario = () => {
+        if(localStorage.getItem("tipo") === "admin" || localStorage.getItem("tipo") === "lider" || localStorage.getItem("tipo") === "jefe")
+            return true;
+        return false;
+    }
+
     render(){
         return(
             <React.Fragment>
                 <Menu/>
                 <div className="proyecto col-10">
                 <div className="Encabezado"><p>Listado de Proyectos</p></div>
-                <button type="button" class="btn boton" onClick={() => this.modalInsertar()}>Nuevo Proyecto</button>
+                {
+                    this.accesoUsuario() ? 
+                        <React.Fragment>
+                            <button type="button" class="btn boton" onClick={() => this.modalInsertar()}>Nuevo Proyecto</button>
+                        </React.Fragment>
+                    : <div style={{height:"40px"}}></div>
+                }
 
                 <TablaProyecto
                     proyectos={this.state.proyectos}

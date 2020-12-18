@@ -122,7 +122,15 @@ class TablaProyecto extends Component{
                                         ""
                                     }
                                     
-                                    <Link to={"/subProyecto/"+proyecto.id_proyecto}><Button type="button" className="btn btn-info"><ForwardIcon/></Button></Link>
+                                    {localStorage.getItem("tipo") === "cliente" ?
+                                        <React.Fragment>
+                                            <Link to={"/graficoRequerimientos/"+proyecto.id_proyecto}><Button type="button" className="btn btn-info"><ForwardIcon/></Button></Link>
+                                        </React.Fragment>    
+                                        : 
+                                        <React.Fragment>
+                                            <Link to={"/subProyecto/"+proyecto.id_proyecto}><Button type="button" className="btn btn-info"><ForwardIcon/></Button></Link>
+                                        </React.Fragment>
+                                    }
                                 </td>
                             </tr>
                         )

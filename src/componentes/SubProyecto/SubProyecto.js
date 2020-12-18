@@ -152,7 +152,14 @@ export default class SubProyecto extends Component{
                 <div className="subProyecto col-10">
                     <div className="Encabezado" style={{fontSize:'35px', textAlign:'initial', color:'white'}}><p>Módulos del proyecto: {this.state.nombre_proyecto}</p></div>
 
-                    <button type="button" className="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Nuevo Módulo</button> &nbsp;
+                    {
+                       this.accesoUsuario() ? 
+                            <React.Fragment>
+                                <button type="button" className="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Nuevo Módulo</button> &nbsp;
+                            </React.Fragment>
+                        : ""
+                        
+                    }
                     <Link to={"/proyecto"}><button type="button" className="btn boton"><ArrowBackIcon/> Volver</button></Link>
 
                     <div style={{float: "right" , textDecoration: 'none'}}>

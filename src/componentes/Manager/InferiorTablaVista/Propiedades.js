@@ -163,6 +163,12 @@ class Propiedades extends Component{
         this.mostrarAlerta();
     }
 
+    accesoUsuario = () => {
+        if(localStorage.getItem("tipo") === "admin" || localStorage.getItem("tipo") === "lider" || localStorage.getItem("tipo") === "jefe")
+            return true;
+        return false;
+    }
+
     render(){
         return(
             <div style={{height: '78%', overflow: 'auto', paddingTop:'10px'}}>
@@ -197,6 +203,7 @@ class Propiedades extends Component{
                     </div>
                 </div>
 
+<<<<<<< HEAD
                 <label htmlFor="prioridad"><strong>Prioridad:</strong></label>
                 <div style={{width:'100%', marginBottom:'15px'}}>
                     <div className="areaCrear3">
@@ -212,6 +219,29 @@ class Propiedades extends Component{
                         </div>
                     </div>
                 </div>
+=======
+                {
+                    this.accesoUsuario() ? 
+                        <React.Fragment>
+                            <label htmlFor="prioridad"><strong>Prioridad:</strong></label>
+                            <div style={{width:'100%', marginBottom:'15px'}}>
+                                <div className="areaCrear3">
+                                    <div className="col-9" style={{paddingLeft: '0'}}>
+                                            <select className="form-control" name="prioridad" id="prioridad" value={this.state.requerimiento.prioridad} onChange={this.changeHandler}>
+                                                <option value="Baja">Baja</option>
+                                                <option value="Media">Media</option>
+                                                <option value="Alta">Alta</option>
+                                            </select>
+                                    </div>
+                                    <div className="col-3 cont-boton">
+                                        <button className="btn btn-success btn-block" onClick={this.guardarCambios}>Cambiar Prioridad</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </React.Fragment>
+                        : ""
+                }
+>>>>>>> 321d4c4368ee7b6b5cc5640b3f833455189558c5
 
                 <label htmlFor="estado"><strong>Estado:</strong></label><br/>
                 <div className="areaCrear3">

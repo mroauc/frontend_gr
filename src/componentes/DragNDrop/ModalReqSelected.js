@@ -173,13 +173,13 @@ class ModalReqSelected extends Component{
                     <ModalBody>
                         <div className="form-group">
                             <label htmlFor="nombre_descriptivo">Descripcion</label>
-                            <input className={(this.state.errorNombreDescriptivo)? "form-control is-invalid" : "form-control"} type="text" name="nombre_descriptivo" id="nombre_descriptivo" value={this.state.requerimiento.nombre_descriptivo} onChange={this.changeHandler} onClick={() => {this.setState({errorNombreDescriptivo : ''})}}/>
+                            <input className={(this.state.errorNombreDescriptivo)? "form-control is-invalid" : "form-control"} type="text" name="nombre_descriptivo" id="nombre_descriptivo" value={this.state.requerimiento.nombre_descriptivo} onChange={this.changeHandler} onClick={() => {this.setState({errorNombreDescriptivo : ''})}}  readOnly={localStorage.getItem("tipo") === "analista" ? true : false}/>
                             <div class="invalid-feedback" style={{display: 'block'}}>
                                 {this.state.errorNombreDescriptivo}
                             </div>
                             <br/>                
                             <label htmlFor="id_responsable">Usuario Responsable</label>
-                            <select className={(this.state.errorInputUsuarioResponsable)? "form-control is-invalid" : "form-control"} type="text" name="id_usuario_responsable" id="id_usuario_responsable" value={this.state.id_usuario_responsable} onChange={(e) => {this.setState({id_usuario_responsable : e.target.value})}} onClick={() => {this.setState({errorInputUsuarioResponsable : ''})}}>
+                            <select className={(this.state.errorInputUsuarioResponsable)? "form-control is-invalid" : "form-control"} type="text" name="id_usuario_responsable" id="id_usuario_responsable" value={this.state.id_usuario_responsable} onChange={(e) => {this.setState({id_usuario_responsable : e.target.value})}} onClick={() => {this.setState({errorInputUsuarioResponsable : ''})}} readOnly={localStorage.getItem("tipo") === "analista" ? true : false} disabled={localStorage.getItem("tipo") === "analista" ? true : false}>
                                 <option value="">Seleccionar Usuario Responsable</option>
                                 {this.state.usuariosSubProyecto.map(usuario => {
                                     const usuarioEncontrado = this.state.usuarios.find(posibleUsuario => posibleUsuario.id === usuario.id_usuario); 
@@ -196,7 +196,7 @@ class ModalReqSelected extends Component{
                             </div>
                             <br/>
                             <label htmlFor="prioridad">Prioridad</label>
-                            <select className={(this.state.errorInputPrioridad)? "form-control is-invalid" : "form-control"} name="prioridad" id="prioridad" value={this.state.requerimiento.prioridad} onChange={this.changeHandler} onClick={() => {this.setState({errorInputPrioridad : ''})}}>
+                            <select className={(this.state.errorInputPrioridad)? "form-control is-invalid" : "form-control"} name="prioridad" id="prioridad" value={this.state.requerimiento.prioridad} onChange={this.changeHandler} onClick={() => {this.setState({errorInputPrioridad : ''})}} readOnly={localStorage.getItem("tipo") === "analista" ? true : false} disabled={localStorage.getItem("tipo") === "analista" ? true : false}>
                                 <option value="" selected>Seleccione una prioridad</option>
                                 <option value="Baja">Baja</option>
                                 <option value="Media">Media</option>
@@ -207,7 +207,7 @@ class ModalReqSelected extends Component{
                             </div>
                             <br/>
                             <label htmlFor="categoria">Categoría</label>
-                            <select className={(this.state.errorInputCategoria)? "form-control is-invalid" : "form-control"} name="categoria" id="categoria" value={this.state.requerimiento.categoria} onChange={this.changeHandler} onClick={() => {this.setState({errorInputCategoria : ''})}}>
+                            <select className={(this.state.errorInputCategoria)? "form-control is-invalid" : "form-control"} name="categoria" id="categoria" value={this.state.requerimiento.categoria} onChange={this.changeHandler} onClick={() => {this.setState({errorInputCategoria : ''})}} readOnly={localStorage.getItem("tipo") === "analista" ? true : false} disabled={localStorage.getItem("tipo") === "analista" ? true : false}>
                                 <option value="">Seleccione una categoría</option>
                                 <option value="RUSA">Requerimiento Analista</option>
                                 <option value="RUSL">Requerimiento Lider de subproyecto</option>
@@ -222,7 +222,7 @@ class ModalReqSelected extends Component{
                             </div>
                             <br/> 
                             <label htmlFor="id_template">ID Template</label>
-                            <select className={(this.state.errorInputTemplate)? "form-control is-invalid" : "form-control"} name="id_template" id="id_template" value={this.state.requerimiento.id_template} onChange={this.changeHandler} onClick={() => {this.setState({errorInputTemplate : ''})}}>
+                            <select className={(this.state.errorInputTemplate)? "form-control is-invalid" : "form-control"} name="id_template" id="id_template" value={this.state.requerimiento.id_template} onChange={this.changeHandler} onClick={() => {this.setState({errorInputTemplate : ''})}} readOnly={localStorage.getItem("tipo") === "analista" ? true : false} disabled={localStorage.getItem("tipo") === "analista" ? true : false}>
                                 <option value="" selected>Seleccione un Template</option>
                                 {this.state.templates.map(template=>{
                                     return(
@@ -237,9 +237,15 @@ class ModalReqSelected extends Component{
                         </div>
                     </ModalBody>
                     <ModalFooter>
-                        <button className="btn btn-success" onClick={()=>this.actualizar()}>
-                            Actualizar
-                        </button>
+                        {localStorage.getItem("tipo") !== "analista" ? 
+                            <React.Fragment>
+                                <button className="btn btn-success" onClick={()=>this.actualizar()}>
+                                    Actualizar
+                                </button>
+                            </React.Fragment>
+                            : ""
+                        }
+                        
                         <button className="btn btn-danger" onClick={()=>{this.props.modalEditar();this.initErrores();}}>Cancelar</button>
                     </ModalFooter>
                 </Modal>

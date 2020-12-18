@@ -5,15 +5,22 @@ import CategoriaxUsuario from './CategoriaxUsuario';
 import FiltroRequerimientos from './FiltroRequerimientos'
 import './Manager.css';
 
+var AnalistaRequerimientos = [];
+
 export default class TablaRequerimiento extends Component {
     state = {
         requerimientos : [],
         usuario_actividad : []
     }
 
-    BuscarRequerimiento = (e) => {
+    BuscarRequerimiento = async (e) => {
         console.log(e.target.value);
-        FiltroRequerimientos(this.props.requerimientos, e.target.value,this.CambiarRequerimientos);
+        if(localStorage.getItem("tipo") === "analista"){
+            FiltroRequerimientos(AnalistaRequerimientos, e.target.value,this.CambiarRequerimientos);    
+        }
+        else {
+            FiltroRequerimientos(this.props.requerimientos, e.target.value,this.CambiarRequerimientos);
+        }
     }
 
     CambiarRequerimientos = (nuevosReq) => {
@@ -42,6 +49,7 @@ export default class TablaRequerimiento extends Component {
         })  
         console.log(nuevoArreglo)
         this.setState({requerimientos : nuevoArreglo});
+        AnalistaRequerimientos = nuevoArreglo;
     }
 
     render(){

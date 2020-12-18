@@ -7,6 +7,13 @@ import Permisos from './Permisos';
 import VersionesAnteriores from './VersionesAnteriores';
 
 export default class ParteInferior extends Component {
+
+    accesoUsuario = () => {
+        if(localStorage.getItem("tipo") === "admin" || localStorage.getItem("tipo") === "lider" || localStorage.getItem("tipo") === "jefe")
+            return true;
+        return false;
+    }
+
     render(){
         return(
             <React.Fragment>
@@ -21,11 +28,14 @@ export default class ParteInferior extends Component {
                             requerimiento = {this.props.requerimiento}
                         />
                     </div>
-                    <div label="Permisos">
-                        <Permisos
-                            requerimiento = {this.props.requerimiento}
-                        />
-                    </div>
+                    {this.accesoUsuario() ? 
+                        <div label="Permisos">
+                            <Permisos
+                                requerimiento = {this.props.requerimiento}
+                            />
+                        </div>
+                        : ""
+                    }
                     <div label="Propuesta de cambio">
                         <PropuestaCambio
                             requerimiento = {this.props.requerimiento}
