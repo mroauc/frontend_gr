@@ -205,7 +205,7 @@ function Dragdrop(id_subproyecto) {
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <div style={{fontSize:'18px', fontFamily:'sans-serif'}}>
                 <label><strong>{column.name}</strong></label> &nbsp;
-                {column.name === 'Creado'?
+                {(column.name === 'Creado' && localStorage.getItem("tipo") !== "analista") ?
                   <button className="btn botoncito2" onClick={()=>setModalIsertar(!modalInsertar)}>+</button>
                   :
                   ''

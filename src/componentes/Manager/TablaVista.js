@@ -88,6 +88,12 @@ export default class TablaVista extends Component {
         });
     }
     
+    accesoUsuario = () => {
+        if(localStorage.getItem("tipo") === "admin" || localStorage.getItem("tipo") === "lider" || localStorage.getItem("tipo") === "jefe")
+            return true;
+        return false;
+    }
+
     generarTabs = () => {
         return(
             <React.Fragment>
@@ -96,14 +102,18 @@ export default class TablaVista extends Component {
                         filtrado = this.props.requerimientos.filter(requerimiento => requerimiento.nombre === reqID);
                         return(
                             <div label={reqID}>
-                                <div style={{marginBottom:'10px'}}>
-                                    <button className="btn boton" onClick={()=>this.insertar(filtrado[0])}><SaveOutlinedIcon/></button> &nbsp;
-                                    <button className="btn boton" onClick={()=>this.modalEliminar()}><DeleteIcon/></button>
-                                </div>
+                                {(this.accesoUsuario()) ? 
+                                    <div style={{marginBottom:'10px'}}>
+                                        <button className="btn boton" onClick={()=>this.insertar(filtrado[0])}><SaveOutlinedIcon/></button> &nbsp;
+                                        <button className="btn boton" onClick={()=>this.modalEliminar()}><DeleteIcon/></button>
+                                    </div>
+                                    : <div style={{height:'30px'}}></div>
+                                }
                                 <div className="editReq">
                                     <TemplateTextEditor
                                         template = {filtrado[0].descripcion}
                                         obtenerTemplate = {this.obtener}
+                                        soloLeer = {localStorage.getItem("tipo") === "analista" ? true : false}
                                     />       
                                 </div>
                                 <div className="barraDivisora"></div>

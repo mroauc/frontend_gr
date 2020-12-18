@@ -52,6 +52,12 @@ export default class subProyectoTabla extends Component {
     CambiarSubProyectos = (nuevosSubProyectos) => {
         this.setState({subProyectos : nuevosSubProyectos})
     }
+
+    accesoUsuario = () => {
+        if(localStorage.getItem("tipo") === "admin" || localStorage.getItem("tipo") === "lider" || localStorage.getItem("tipo") === "jefe")
+            return true;
+        return false;
+    }
     
     render(){
 
@@ -87,8 +93,14 @@ export default class subProyectoTabla extends Component {
                                         <td>{this.buscarUsuario(subProyecto.id_usuario)}</td>
                                         <td>
                                             <Link to= {`/requerimiento/${subProyecto.id_subProyecto}`}><button type="button" className="btn botonpurple"><ReqIcon/></button></Link> &nbsp;
-                                            <button type="button" className="btn btn-warning" data-toggle="modal" data-target="#modalEditar" onClick={() => this.props.obtenerSubProyecto(subProyecto)}><EditIcon/></button> &nbsp;
-                                            <button type="button" className="btn btn-danger" data-toggle="modal" data-target="#modalEditar" onClick={() => this.props.cambiarEstadoEliminar(subProyecto)}><DeleteIcon/></button>
+                                            {this.accesoUsuario() ? 
+                                                <React.Fragment>
+                                                    <button type="button" className="btn btn-warning" data-toggle="modal" data-target="#modalEditar" onClick={() => this.props.obtenerSubProyecto(subProyecto)}><EditIcon/></button> &nbsp;
+                                                    <button type="button" className="btn btn-danger" data-toggle="modal" data-target="#modalEditar" onClick={() => this.props.cambiarEstadoEliminar(subProyecto)}><DeleteIcon/></button>
+                                                </React.Fragment>
+                                                : ""
+                                            }
+                                            
                                         </td>
 
                                     </tr>

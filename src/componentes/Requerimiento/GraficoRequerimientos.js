@@ -26,11 +26,13 @@ const renderCustomizedLabel = ({cx, cy, midAngle, innerRadius, outerRadius, perc
 class GraficoRequerimiento extends Component{
 
     state={
-        data : []
+        data : [],
+        proyecto : ""
     }
 
     componentDidMount(){
         this.index();
+        this.getProyecto();
     }
 
     index=async()=>{
@@ -42,6 +44,17 @@ class GraficoRequerimiento extends Component{
             subProyectos = response.data;
         })
         this.obtenerRequerimientos(subProyectos);
+    }
+
+    getProyecto = async () => {
+        const token = localStorage.getItem('token');
+        await Axios.get(`http://localhost:8080/api/proyecto/${this.props.match.params.id_proyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            this.setState({
+                proyecto : response.data
+            })
+            
+        })
     }
 
     obtenerRequerimientos=async(subProyectos)=>{
@@ -88,7 +101,7 @@ class GraficoRequerimiento extends Component{
                 <Menu/>
                 <div className="contenedor-grafico">
                     <div className="titulo-grafico">
-                        <label>Requerimientos Registrados en el Sistema</label>
+                        <label>Requerimientos registrados para el proyecto {this.state.proyecto.nombre}</label>
                     </div>
                     <div className="contenedor-dos-graficos">
                     <PieChart width={700} height={310}>
@@ -116,10 +129,17 @@ class GraficoRequerimiento extends Component{
                         - <div className="cuadroColor" style={{backgroundColor:"#FFBB28"}}></div> <label>Requerimiento Aprobado</label>
                     </div>
                 </div>
-                <div style={{marginLeft: '110px'}}>
-                    <br/>
-                    <Link to={"/subProyecto/"+this.props.match.params.id_proyecto}><button type="button" className="btn boton"><ArrowBackIcon/> Volver</button></Link>
-                </div>
+                {localStorage.getItem("tipo") === "cliente" ? 
+                    <div style={{marginLeft: '110px'}}>
+                        <br/>
+                        <Link to={"/proyecto/"}><button type="button" className="btn boton"><ArrowBackIcon/> Volver</button></Link>
+                    </div>
+                    :
+                    <div style={{marginLeft: '110px'}}>
+                        <br/>
+                        <Link to={"/subProyecto/"+this.props.match.params.id_proyecto}><button type="button" className="btn boton"><ArrowBackIcon/> Volver</button></Link>
+                    </div>        
+                }
             </React.Fragment>
         );
     }

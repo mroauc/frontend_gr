@@ -121,11 +121,17 @@ class PropuestaCambio extends Component{
                                         <td>{propuesta.id_usuario}</td>
                                         <td>{propuesta.fecha_peticion}</td>
                                         <td>{propuesta.estado}</td>
-                                        <td>
-                                            <button className="btn btn-success" onClick={()=>this.aprobar(propuesta)}>√</button>&nbsp;
-                                            <button className="btn btn-danger" onClick={()=>this.rechazar(propuesta)}>X</button>&nbsp;
-                                            <button className="btn btn-primary" onClick={()=>this.finalizar(propuesta)}>Finalizar</button>
-                                        </td>
+                                        {localStorage.getItem("tipo") === "analista" ? 
+                                            "" :
+                                            <React.Fragment>
+                                                <td>
+                                                    <button className="btn btn-success" onClick={()=>this.aprobar(propuesta)}>√</button>&nbsp;
+                                                    <button className="btn btn-danger" onClick={()=>this.rechazar(propuesta)}>X</button>&nbsp;
+                                                    <button className="btn btn-primary" onClick={()=>this.finalizar(propuesta)}>Finalizar</button>
+                                                </td>
+                                            </React.Fragment>
+                                        }
+                                        
                                     </tr>
                                 )
                             })}
