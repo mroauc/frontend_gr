@@ -88,13 +88,25 @@ class Errores extends Component{
         })
     }
 
+    accesoUsuario = () => {
+        if(localStorage.getItem("tipo") === "admin" || localStorage.getItem("tipo") === "lider" || localStorage.getItem("tipo") === "jefe")
+            return true;
+        return false;
+    }
+
     render(){
         return(
             <React.Fragment>
                 <Menu/>
                 <div className="errores col-10">
                 <div className="Encabezado"><p>Errores</p></div>
-                <button type="button" class="btn boton" onClick={() => this.modalInsertar()}>Insertar</button> &nbsp;
+                {this.accesoUsuario() ?
+                    <React.Fragment>
+                        <button type="button" class="btn boton" onClick={() => this.modalInsertar()}>Insertar</button> &nbsp;
+                    </React.Fragment>
+                    : ""
+                }
+                
                 <Link to={"/seleccionarError"}><button type="button" className="btn boton"><ArrowBackIcon/> Volver</button></Link>
 
                 <TablaErrores

@@ -21,6 +21,7 @@ export default class subProyectoModal extends Component {
         usuarios: [],
         lideres_subProyectos : [],
         usuariosSeleccionados : [],
+        clientes: [],
         msj_nombre_subp: "",
         msj_fechaInicio: "",
         msj_tipo_subp: "",
@@ -30,6 +31,7 @@ export default class subProyectoModal extends Component {
     componentDidMount(){
         this.getUsuarios();
         this.getLideres();
+        this.getClientes();
     }
 
     componentWillReceiveProps(next_props) {
@@ -182,6 +184,16 @@ export default class subProyectoModal extends Component {
         });
     }
 
+    getClientes = async () => {
+        const token = localStorage.getItem('token');
+        await Axios.get(`http://localhost:8080/api/cliente/id_proyecto/${this.props.id_proyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            this.setState({
+                clientes : response.data
+            });
+        });
+    }
+
     changeHandler = async (e) => {
         await this.setState({
             subProyecto : {
@@ -208,7 +220,7 @@ export default class subProyectoModal extends Component {
                             <br/>
                             <ChipsSubProyectoUsuario
                                 tipo="Clientes"
-                                usuarios = {this.state.usuarios.filter(usuario => usuario.tipo === "cliente")}
+                                usuarios = {this.state.clientes}
                                 ingresarChip = {this.insertarChip}
                                 eliminarChip = {this.eliminarChip}
                                 id_subProyecto = {this.state.subProyecto.id_subProyecto}

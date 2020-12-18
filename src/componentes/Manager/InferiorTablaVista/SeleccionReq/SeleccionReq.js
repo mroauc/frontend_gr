@@ -27,7 +27,7 @@ export default class SeleccionReq extends Component {
 
     changeHandler = async (e) => {
         
-        let copiaValoresInput = this.state.valoresInput;
+        let copiaValoresInput = [...this.state.valoresInput];
 
         if(e.target.checked === true){
             copiaValoresInput.push(e.target.name);
@@ -38,16 +38,21 @@ export default class SeleccionReq extends Component {
             await this.setState({valoresInput : valoresFinal});
         }
     }
+
+    cerrar = async  () => {
+        await this.setState({valoresInput : []});
+        this.props.cambiarEstadoAbrir();
+    } 
     
     render(){
         return(
             <React.Fragment>
 
-                <Modal isOpen = {this.props.abrir} toggle={() => {this.props.cambiarEstadoAbrir()}} centered>
+                <Modal isOpen = {this.props.abrir} toggle={() => {this.cerrar()}} centered>
                     <ModalHeader style={{display : 'block'}}>
                         <span>Seleccionar Requerimientos</span>
                         
-                        <span style={{cursor : 'pointer' , float : 'right'}} onClick={() => {this.props.cambiarEstadoAbrir()}}>X</span>
+                        <span style={{cursor : 'pointer' , float : 'right'}} onClick={() => {this.cerrar()}}>X</span>
                     </ModalHeader>
                     <ModalBody>
                         <div><input className="form-control" placeholder="Buscar" onChange={this.BuscarRequerimiento}/></div>
@@ -55,18 +60,20 @@ export default class SeleccionReq extends Component {
                         <div className="form-group" className="grupoCheckbox">
 
                             {this.state.requerimientos.map(requerimiento => {
-                                return(
-                                    <div key={requerimiento.id_requerimiento}>
-                                        <input  id={requerimiento.id_requerimiento} name={requerimiento.id_requerimiento.toString()} type="checkbox" className="inputCheckbox" onChange={this.changeHandler} checked={this.state.valoresInput.includes(requerimiento.id_requerimiento.toString())}/>
-                                        <label >{requerimiento.nombre + " - " + requerimiento.nombre_descriptivo.substr(0,30)}</label><br/>
-                                    </div>
-                                )
+                                if(requerimiento.id_requerimiento !== this.props.id_requerimiento){
+                                    return(
+                                        <div key={requerimiento.id_requerimiento}>
+                                            <input  id={requerimiento.id_requerimiento} name={requerimiento.id_requerimiento.toString()} type="checkbox" className="inputCheckbox" onChange={this.changeHandler} checked={this.state.valoresInput.includes(requerimiento.id_requerimiento.toString())}/>
+                                            <label >{requerimiento.nombre + " - " + requerimiento.nombre_descriptivo.substr(0,30)}</label><br/>
+                                        </div>
+                                    )
+                                }
                             })}
                         </div>
                     </ModalBody>
                     <ModalFooter>
                         <button className="btn btn-success" onClick= {() => {this.props.insertarRelaciones(this.state.valoresInput)}} > Guardar</button>
-                        <button className="btn btn-danger" onClick={() => {this.props.cambiarEstadoAbrir()}}>Cancelar</button>
+                        <button className="btn btn-danger" onClick={() => {this.cerrar()}}>Cancelar</button>
                     </ModalFooter>
                 </Modal>
 

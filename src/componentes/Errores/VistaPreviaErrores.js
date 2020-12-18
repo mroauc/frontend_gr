@@ -10,11 +10,19 @@ class VistaPreviaErrores extends Component{
     }
 
     componentDidMount(){
+        this.getProyectos();
+    }
+
+    getProyectos = async ()=>{
         const token = localStorage.getItem('token');
-        Axios.get('http://localhost:8080/api/proyecto/', {headers: {"Authorization": `Bearer ${token}`}})
+        const tipo_usuario = localStorage.getItem("tipo");
+        const id_usuario = localStorage.getItem("id");
+        await Axios.get(`http://localhost:8080/api/proyecto/id_usuario/${id_usuario}/${tipo_usuario}`, {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
-            this.setState({proyectos: response.data});
-        });
+            this.setState({
+                proyectos: response.data
+            });
+        })
     }
 
     render(){
