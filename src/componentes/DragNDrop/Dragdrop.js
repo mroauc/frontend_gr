@@ -40,35 +40,59 @@ function Dragdrop(id_subproyecto) {
 }
 
   //valores que se traen del backend y se mostraran en pantalla
-  var itemsCreado = [];
-  var itemsEnRedaccion = [];
+  var itemsPropuesto = [];
+  var itemsRedactado = [];
   var itemsAprobado = [];
+  var itemsToDo = [];
+  var itemsDoing = [];
+  var itemsDone = [];
   var itemsFaseDePrueba = [];
   var itemsRechazado = [];
+  var itemsCreado = [];
+  var itemsEnRedaccion = [];
   const [columns, setColumns] = useState([]);
   const [requerimientos, setRequerimientos] = useState([]);
 
+  const estadoPrimeraFase = {
+    [uuid()]:{
+      name: 'Propuesto',
+      items: itemsPropuesto
+    },
+    [uuid()]:{
+      name: 'Redactado',
+      items: itemsRedactado
+    },
+    [uuid()]:{
+      name: 'Aprobado',
+      items: itemsAprobado
+    }
+  }
+
   const columnsFromBackend =
     {
-      [uuid()]:{
-        name: 'Creado',
-        items: itemsCreado
+      ["1"]:{
+        name: 'Propuesto',
+        items: itemsPropuesto
       },
-      [uuid()]: {
-        name: 'En Redaccion',
-        items: itemsEnRedaccion
+      ["2"]:{
+        name: 'Redactado',
+        items: itemsRedactado
       },
-      [uuid()]: {
+      ["3"]:{
         name: 'Aprobado',
         items: itemsAprobado
       },
-      [uuid()]: {
-        name: 'Fase de Prueba',
-        items: itemsFaseDePrueba
+      ["4"]: {
+        name: 'to do',
+        items: itemsToDo
       },
-      [uuid()]: {
-        name: 'Rechazado',
-        items: itemsRechazado
+      ["5"]: {
+        name: 'doing',
+        items: itemsDoing
+      },
+      ["6"]: {
+        name: 'done',
+        items: itemsDone
       }
     };
 
@@ -124,20 +148,24 @@ function Dragdrop(id_subproyecto) {
       const nuevo = {
         id: uuid(), content: requerimiento.nombre
       }
-      if(requerimiento.estado==="Creado"){
-        itemsCreado.push(nuevo);
+      console.log(requerimiento)
+      if(requerimiento.estado==="Propuesto"){
+        itemsPropuesto.push(nuevo);
       }
-      if(requerimiento.estado==="En Redaccion"){
-        itemsEnRedaccion.push(nuevo);
+      if(requerimiento.estado==="Redactado"){
+        itemsRedactado.push(nuevo);
       }
       if(requerimiento.estado==="Aprobado"){
         itemsAprobado.push(nuevo);
       }
-      if(requerimiento.estado==="Fase de Prueba"){
-        itemsFaseDePrueba.push(nuevo);
+      if(requerimiento.estado==="to do"){
+        itemsToDo.push(nuevo);
       }
-      if(requerimiento.estado==="Rechazado"){
-        itemsRechazado.push(nuevo);
+      if(requerimiento.estado==="doing"){
+        itemsDoing.push(nuevo);
+      }
+      if(requerimiento.estado==="done"){
+        itemsDone.push(nuevo);
       }
     })
     setColumns(columnsFromBackend);
@@ -151,6 +179,8 @@ function Dragdrop(id_subproyecto) {
   const onDragEnd = async(result, columns, setColumns) => {
     if (!result.destination) return;
     const { source, destination } = result;
+    console.log(result)
+    console.log(columns)
     
     if(source.droppableId !== destination.droppableId){
       const sourceColumn = columns[source.droppableId];
@@ -200,67 +230,225 @@ function Dragdrop(id_subproyecto) {
   return (
     <div style={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
       <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
-        {Object.entries(columns).map(([id, column]) =>{
+        {Object.entries(columns).map(([id, column], index) =>{
           return(
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <div style={{fontSize:'18px', fontFamily:'sans-serif'}}>
-                <label><strong>{column.name}</strong></label> &nbsp;
-                {(column.name === 'Creado' && localStorage.getItem("tipo") !== "analista") ?
-                  <button className="btn botoncito2" onClick={()=>setModalIsertar(!modalInsertar)}>+</button>
-                  :
-                  ''
-                }
-              </div>
-              <div style={{ margin: 8}}>
-              <Droppable droppableId={id} key={id}>
-              {(provided, snapshot) => {
-                return(
-                  <div
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}
-                    style={{
-                      background: snapshot.isDraggingOver ? 'lightblue' : 'lightgrey',
-                      padding: 4,
-                      width: 250,
-                      minHeight: 500
-                    }}
-                  >
-                    {column.items.map((item, index)=>{
-                      
-                      return(
-                        
-                        <Draggable key={item.id} draggableId={item.id} index={index}>
-                          {(provided, snapshot)=>{
-                            return(
-                              <div 
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                                style={{
-                                  userSelect: 'none',
-                                  padding: 16,
-                                  margin: '0 0 8px 0',
-                                  minHeight: '50px',
-                                  backgroundColor: snapshot.isDragging ? '#263B4A' : '#456C86',
-                                  color: 'white',
-                                  ...provided.draggableProps.style
-                                }}
-                                onClick={()=>mostrarRequerimiento(item.content)}
-                              >
-                                <strong>{item.content}</strong>: {buscarNombreDescripcion(item.content)}
-                              </div>
-                            )
+            <React.Fragment>
+            {index === 0 ?
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <div style={{fontSize:'18px', fontFamily:'sans-serif', margin:'8'}}>
+                    <label><strong></strong>Primera Fase</label> &nbsp;
+                    {(column.name === 'Propuesto' && localStorage.getItem("tipo") !== "analista") ?
+                      <button className="btn botoncito2" onClick={()=>setModalIsertar(!modalInsertar)}>+</button>
+                      :
+                      ''
+                    }
+                    <Droppable droppableId="1" key="1">
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          style={{ 
+                            background: snapshot.isDraggingOver ? 'lightblue' : 'lightgrey',
+                            height: '166px',
+                            width: 250,
+                            overflow: 'auto'
                           }}
-                        </Draggable>
-                      );
-                    })}
-                    {provided.placeholder}
+                          
+                          {...provided.droppableProps}
+                        >
+                          {column.items.map((item, index)=>{
+                            
+                            return(
+                              
+                              <Draggable key={item.id} draggableId={item.id} index={index}>
+                                {(provided, snapshot)=>{
+                                  return(
+                                    <div 
+                                      ref={provided.innerRef}
+                                      {...provided.draggableProps}
+                                      {...provided.dragHandleProps}
+                                      style={{
+                                        userSelect: 'none',
+                                        padding: 8,
+                                        margin: '0 0 8px 0',
+                                        minHeight: '50px',
+                                        backgroundColor: snapshot.isDragging ? '#263B4A' : '#456C86',
+                                        color: 'white',
+                                        ...provided.draggableProps.style
+                                      }}
+                                      onClick={()=>mostrarRequerimiento(item.content)}
+                                    >
+                                      <strong>{item.content}</strong>: {buscarNombreDescripcion(item.content)}
+                                    </div>
+                                  )
+                                }}
+                              </Draggable>
+                            );
+                          })}
+                        {provided.placeholder}
+                        </div>
+                      )}
+                    </Droppable>
+
+                    <Droppable droppableId="2" key="2">
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          style={{ 
+                            background: snapshot.isDraggingOver ? 'lightblue' : 'lightgrey',
+                            height: '166px',
+                            width: 250,
+                            overflow: 'auto'
+                          }}
+                          
+                          {...provided.droppableProps}
+                        >
+                          {/* {console.log(columns)} */}
+                          {Object.entries(columns)[1][1].items.map((item, index)=>{
+                            
+                            return(
+                              
+                              <Draggable key={item.id} draggableId={item.id} index={index}>
+                                {(provided, snapshot)=>{
+                                  return(
+                                    <div 
+                                      ref={provided.innerRef}
+                                      {...provided.draggableProps}
+                                      {...provided.dragHandleProps}
+                                      style={{
+                                        userSelect: 'none',
+                                        padding: 8,
+                                        margin: '0 0 8px 0',
+                                        minHeight: '50px',
+                                        backgroundColor: snapshot.isDragging ? '#263B4A' : '#456C86',
+                                        color: 'white',
+                                        ...provided.draggableProps.style
+                                      }}
+                                      onClick={()=>mostrarRequerimiento(item.content)}
+                                    >
+                                      <strong>{item.content}</strong>: {buscarNombreDescripcion(item.content)}
+                                    </div>
+                                  )
+                                }}
+                              </Draggable>
+                            );
+                          })}
+                        {provided.placeholder}
+                        </div>
+                      )}
+                    </Droppable>
+
+                    <Droppable droppableId="3" key="3">
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          style={{ 
+                            background: snapshot.isDraggingOver ? 'lightblue' : 'lightgrey',
+                            height: '166px',
+                            width: 250,
+                            overflow: 'auto'
+                          }}
+                          
+                          {...provided.droppableProps}
+                        >
+                          {console.log(Object.entries(columns)[1][1])}
+                          {Object.entries(columns)[2][1].items.map((item, index)=>{
+                            
+                            return(
+                              
+                              <Draggable key={item.id} draggableId={item.id} index={index}>
+                                {(provided, snapshot)=>{
+                                  return(
+                                    <div 
+                                      ref={provided.innerRef}
+                                      {...provided.draggableProps}
+                                      {...provided.dragHandleProps}
+                                      style={{
+                                        userSelect: 'none',
+                                        padding: 8,
+                                        margin: '0 0 8px 0',
+                                        minHeight: '50px',
+                                        backgroundColor: snapshot.isDragging ? '#263B4A' : '#456C86',
+                                        color: 'white',
+                                        ...provided.draggableProps.style
+                                      }}
+                                      onClick={()=>mostrarRequerimiento(item.content)}
+                                    >
+                                      <strong>{item.content}</strong>: {buscarNombreDescripcion(item.content)}
+                                    </div>
+                                  )
+                                }}
+                              </Draggable>
+                            );
+                          })}
+                        {provided.placeholder}
+                        </div>
+                      )}
+                    </Droppable>
                   </div>
-                )
-              }}
-            </Droppable>
-          </div>
-          </div>
+
+                </div>
+              :""
+
+            }
+            {index > 2 ? 
+            
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <label><strong>{column.name}</strong></label> &nbsp;
+                  <div style={{ margin: 8}}>
+
+                    <Droppable droppableId={id} key={id}>
+                    {(provided, snapshot) => {
+                      return(
+                        <div
+                          {...provided.droppableProps}
+                          ref={provided.innerRef}
+                          style={{
+                            background: snapshot.isDraggingOver ? 'lightblue' : 'lightgrey',
+                            padding: 4,
+                            width: 250,
+                            minHeight: 500
+                          }}
+                        >
+                          {column.items.map((item, index)=>{
+                            
+                            return(
+                              
+                              <Draggable key={item.id} draggableId={item.id} index={index}>
+                                {(provided, snapshot)=>{
+                                  return(
+                                    <div 
+                                      ref={provided.innerRef}
+                                      {...provided.draggableProps}
+                                      {...provided.dragHandleProps}
+                                      style={{
+                                        userSelect: 'none',
+                                        padding: 16,
+                                        margin: '0 0 8px 0',
+                                        minHeight: '50px',
+                                        backgroundColor: snapshot.isDragging ? '#263B4A' : '#456C86',
+                                        color: 'white',
+                                        ...provided.draggableProps.style
+                                      }}
+                                      onClick={()=>mostrarRequerimiento(item.content)}
+                                    >
+                                      <strong>{item.content}</strong>: {buscarNombreDescripcion(item.content)}
+                                    </div>
+                                  )
+                                }}
+                              </Draggable>
+                            );
+                          })}
+                          {provided.placeholder}
+                        </div>
+                      )
+                    }}
+                  </Droppable>
+                </div>
+              </div> 
+            : ""
+          }
+            
+          </React.Fragment>
           )
         })}
       </DragDropContext>
