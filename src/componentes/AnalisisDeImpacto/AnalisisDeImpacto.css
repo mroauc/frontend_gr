@@ -37,9 +37,16 @@ text{
     width: 85%;
     margin: 0 auto;
     border: 1px solid rgb(0 0 0 / 29%);
-	margin-top: 30px;
+	margin-top: 10px;
 	border-radius: 10px;
+	overflow: auto;
 }
+
+.contenedor-propuesta svg {
+	overflow:initial;
+}
+
+
 
 .titulo-propuesta{
 	height: 40px;

@@ -217,7 +217,6 @@ class Propiedades extends Component{
                                         </select>
                                     </div>
                                     <div className="col-3 cont-boton">
-<<<<<<< HEAD
                                         <button className="btn btn-success btn-block" onClick={() => this.guardarCambios("prioridad")}>Cambiar Prioridad</button>
                                     </div>
                                 </div>
@@ -225,15 +224,6 @@ class Propiedades extends Component{
                         </React.Fragment>
                         : ""
                 }
-=======
-                                        <button className="btn btn-success btn-block" onClick={()=>{this.guardarCambios("prioridad")}}>Cambiar Prioridad</button>
-                                    </div>
-                                </div>
-                            </div>
-                         </React.Fragment>
-                         : ""
-                 }
->>>>>>> 4dc0139106114ce63817001a54c9f662c542a290
 
                 <label htmlFor="estado"><strong>Estado:</strong></label><br/>
                 <div className="areaCrear3">

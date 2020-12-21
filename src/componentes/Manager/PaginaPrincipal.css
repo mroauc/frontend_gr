@@ -17,9 +17,11 @@
     vertical-align: top;
     border: 1px solid rgba(54, 54, 54, 0.4);
     border-spacing: 0;
+    padding: 0;
 }
 
 .tablaPagPrincipal > tbody > tr > td{
     border: 1px solid rgba(54, 54, 54, 0.4);
     border-spacing: 0;
+    padding: 0;
 }

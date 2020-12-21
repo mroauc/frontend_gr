@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 let id_req="";
+let historialRequerimientos = []
 
 function AnalisisImpacto(props) {
 
@@ -18,7 +19,7 @@ function AnalisisImpacto(props) {
 
     let data = {
         name: '',
-        textProps: {x: -25, y: 25},
+        textProps: {x: -24, y: -10},
         children: []
     };
 
@@ -34,18 +35,30 @@ function AnalisisImpacto(props) {
     const getRelacionados = async () => {
         //console.log(id_req);
         const token = localStorage.getItem('token');
-        let requerimientoPrincipal; 
+        let requerimientoPrincipal;
+        let childrenAux = []; 
         await Axios.get(`http://localhost:8080/api/requerimiento/${id_req}`,{headers: {"Authorization": `Bearer  ${token}`}})
         .then(response => {
             requerimientoPrincipal = response.data;
         })
 
         if(requerimientoPrincipal!==null){
-            data.name = await requerimientoPrincipal.nombre;
+                data.name = <React.Fragment><tspan alignment-baseline="text-before-edge" x="-23" y="-10">{requerimientoPrincipal.nombre}</tspan> <tspan x="-20" y="14" alignment-baseline="text-before-edge">{requerimientoPrincipal.nombre_descriptivo}</tspan></React.Fragment>;
+            historialRequerimientos.push(requerimientoPrincipal.nombre);
             await Axios.get(`http://localhost:8080/api/relacionrequerimientos/requerimientosAsociados/${id_req}`,{headers: {"Authorization": `Bearer  ${token}`}})
             .then(async response => {
                 for (let i = 0; i < response.data.length; i++) {
-                    await data.children.push({name: response.data[i].nombre,textProps: {x: -25, y: 25}});
+                    await Axios.get(`http://localhost:8080/api/relacionrequerimientos/requerimientosAsociados/${response.data[i].id_requerimiento}`,{headers: {"Authorization": `Bearer  ${token}`}})
+                    .then(response2 => {
+                        console.log(response2.data);
+                        for (let i = 0; i < response2.data.length; i++) {
+                            if(response2.data[i].nombre !== requerimientoPrincipal.nombre)
+                                childrenAux.push({name: <React.Fragment><tspan alignment-baseline="text-before-edge" x="-23" y="-10">{response2.data[i].nombre}</tspan> <tspan x="-20" y="14" alignment-baseline="text-before-edge">{response2.data[i].nombre_descriptivo}</tspan></React.Fragment> ,textProps: {x: -24, y: -10}})
+                        }
+                    })
+                    await data.children.push({name: <React.Fragment><tspan alignment-baseline="text-before-edge" x="-23" y="-10">{response.data[i].nombre}</tspan> <tspan x="-20" y="14" alignment-baseline="text-before-edge">{response.data[i].nombre_descriptivo}</tspan></React.Fragment>,textProps: {x: -24, y: -10 },children: childrenAux});
+                    
+                    childrenAux = [];
                 }
             })
             .catch(() =>{
@@ -84,10 +97,10 @@ function AnalisisImpacto(props) {
                     <Tree
                         data={requerimientos}
                         animated={true}
-                        nodeRadius={10}
-                        margins={{ top: 20, bottom: 10, left: 15, right: 30 }}
-                        height={500}
-                        width={600}
+                        nodeRadius={15}
+                        margins={{ top: 20, bottom: 1, left: 15, right: 30 }}
+                        height={530}
+                        width={700}
                     />
                 </div>
             </div>

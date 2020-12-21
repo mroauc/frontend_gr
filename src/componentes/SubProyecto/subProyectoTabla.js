@@ -13,7 +13,7 @@ export default class subProyectoTabla extends Component {
     state={
         usuarios: [],
         paginaActual: 1,
-        cantidadPorPagina: 2,
+        cantidadPorPagina: 5,
         subProyectos : []
     }
 
