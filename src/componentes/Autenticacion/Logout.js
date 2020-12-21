@@ -8,6 +8,7 @@ export default class Logout extends Component{
         localStorage.removeItem('email');
         localStorage.removeItem('id');
         localStorage.removeItem('nombre');
+        localStorage.removeItem('tipo');
         this.props.history.push("/");
     }
 

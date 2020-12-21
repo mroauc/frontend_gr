@@ -276,7 +276,7 @@ class UsuarioModal extends Component{
                             <label htmlFor="rol">Tipo de usuario</label>
                             <select name="rol" id="rol" className={ (this.state.msj_tipo)? "form-control is-invalid" : "form-control"} value={this.state.usuario.tipo} onChange={this.changeRol} onClick={()=>{this.setState({msj_tipo:""})}} >
                                 <option selected value="">Seleccione un tipo</option>
-                                <option value="analista">Analista</option>
+                                <option value="analista">Analista Programador</option>
                                 <option value="lider">Lider de subproyecto</option>
                                 <option value="jefe">Jefe de proyecto</option>
                                 <option value="cliente">Cliente</option>

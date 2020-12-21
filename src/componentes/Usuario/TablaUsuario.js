@@ -32,6 +32,13 @@ class TablaUsuario extends Component{
         this.setState({usuarios : nuevosUsuarios})
     }
 
+    tipo=(tipo)=>{
+        if(tipo==="analista"){
+            return "analista programador";
+        }else{
+            return tipo;
+        }
+    }
 
     render(){
         const ultimoDato = this.state.paginaActual * this.state.cantidadPorPagina;
@@ -63,7 +70,7 @@ class TablaUsuario extends Component{
                                     <td>{index+1 + (this.state.cantidadPorPagina * (this.state.paginaActual-1))}</td>
                                     <td>{usuario.nombre}</td>
                                     <td>{usuario.email}</td>
-                                    <td>{usuario.tipo}</td>
+                                    <td>{this.tipo(usuario.tipo)}</td>
                                     <td>{usuario.estado}</td>
                                     <td>
                                         <button className="btn btn-warning" onClick={()=>this.props.editar(usuario)}><EditIcon/></button> &nbsp;
