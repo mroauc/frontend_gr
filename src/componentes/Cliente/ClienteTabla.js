@@ -80,7 +80,7 @@ export default class ClienteTabla extends Component {
                         {datosActuales.map((cliente,index) => {
                             return(
                                 <tr key={cliente.id_cliente}>
-                                    <td scope="col">{index+1 + (this.state.cantidadPorPagina * (this.state.paginaActual-1))}</td>
+                                    <td>{index+1 + (this.state.cantidadPorPagina * (this.state.paginaActual-1))}</td>
                                     <td>{cliente.celular}</td>
                                     <td>{cliente.id_empresa}</td>
                                     <td>{this.buscarUsuario(cliente.id_user)}</td> 

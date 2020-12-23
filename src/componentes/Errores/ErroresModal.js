@@ -114,8 +114,6 @@ export class ErroresModal extends Component{
                     </ModalHeader>
                     <ModalBody>
                         <div className="form-group">
-                            <input className="form-control" type="text" name="id_error" id="id_error" value={this.state.dataError.id_error} readOnly hidden/>
-                            <br/>
                             <label htmlFor="contenido">Contenido del Error</label>
                             <p><textarea className={ (this.state.msj_contenido)? "form-control is-invalid" : "form-control"} type="text" name="contenido" id="contenido" rows="4" maxLength="1000" onChange={this.changeHandler} value={this.state.dataError.contenido} onClick={()=>{this.setState({contenido:""})}} /></p>
                             {(this.props.tipoModal==='actualizar')?
@@ -127,8 +125,6 @@ export class ErroresModal extends Component{
                             <div className="invalid-feedback" style={{display:'block'}}>
                                 {this.state.msj_contenido}
                             </div>
-                            <br/>
-                            <input className="form-control" type="text" name="id_usuario" id="id_usuario" value={this.state.dataError.id_usuario} readOnly hidden/>
                         </div>
                     </ModalBody>
                     <ModalFooter>

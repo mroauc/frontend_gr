@@ -13,7 +13,7 @@ class ModalReq extends Component{
             id_subProyecto: this.props.id_subProyecto,
             fecha_creacion: '',
             prioridad: '',
-            estado: 'Creado',
+            estado: 'Propuesto',
             categoria: '',
             id_template: ''
         },
@@ -131,7 +131,7 @@ class ModalReq extends Component{
                 id_subProyecto: this.props.id_subProyecto,
                 fecha_creacion: new Date().toLocaleString(),
                 prioridad: this.state.requerimiento.prioridad,
-                estado: 'Creado',
+                estado: 'Propuesto',
                 categoria: this.state.requerimiento.categoria,
                 id_template: this.state.requerimiento.id_template
             }, {headers: {"Authorization" : `Bearer ${token}`}})

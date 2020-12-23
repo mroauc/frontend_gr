@@ -75,7 +75,6 @@ export default class subProyectoTabla extends Component {
                             <th scope="col">Nombre</th>
                             <th scope="col">Fecha de Inicio</th>
                             <th scope="col">Fecha de Termino</th>
-                            <th scope="col">ID Proyecto</th>
                             <th scope="col">Lider de Módulo</th>
                             <th scope="col">Acciones</th>
 
@@ -85,11 +84,10 @@ export default class subProyectoTabla extends Component {
                             {datosActuales.map((subProyecto, index) => {
                                 return(
                                     <tr key={index+1 + (this.state.cantidadPorPagina * (this.state.paginaActual-1))}>
-                                        <td scope="col">{index+1}</td>
+                                        <td >{index+1 + (this.state.cantidadPorPagina * (this.state.paginaActual-1))}</td>
                                         <td>{subProyecto.nombre_subProyecto}</td>
                                         <td>{subProyecto.fecha_inicio}</td>
                                         <td>{subProyecto.fecha_fin}</td>
-                                        <td>{subProyecto.id_proyecto}</td>
                                         <td>{this.buscarUsuario(subProyecto.id_usuario)}</td>
                                         <td>
                                             <Link to= {`/requerimiento/${subProyecto.id_subProyecto}`}><button type="button" className="btn botonpurple"><ReqIcon/></button></Link> &nbsp;

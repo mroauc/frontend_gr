@@ -154,7 +154,7 @@ export default class Palabra extends Component{
                         <ModalHeader></ModalHeader>
                         <ModalBody>Estas seguro que quiere eliminar la palabra</ModalBody>
                         <ModalFooter>
-                            <button className="btn btn-danger" onClick ={() => {this.eliminarPalabra(); this.setState({palabra : ''})}}>SI</button>
+                            <button className="btn btn-danger" onClick ={() => {this.eliminarPalabra(); this.setState({palabra: {id_palabra: '', palabra: '', significado : '', id_proyecto: ''}})}}>SI</button>
                             <button className="btn btn-secunday" onClick={() => this.setState({modalEliminar : false})}>NO</button>
                         </ModalFooter>
                     </Modal>

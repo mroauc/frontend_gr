@@ -210,7 +210,7 @@ export default class PaginaPrincipal extends Component{
                 />
 
                 <ModalEliminarReq
-                    requerimientos = {datosActuales}
+                    requerimientos = {arregloOrdenado}
                     abrir = {this.state.modalEliminar}
                     cambiarEstado = {this.modalEliminar}
                     funcionGetRequerimientos = {this.props.funcionGetRequerimientos}

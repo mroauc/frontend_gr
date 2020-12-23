@@ -43,30 +43,11 @@ function Dragdrop(id_subproyecto) {
   var itemsPropuesto = [];
   var itemsRedactado = [];
   var itemsAprobado = [];
-  var itemsToDo = [];
-  var itemsDoing = [];
-  var itemsDone = [];
-  var itemsFaseDePrueba = [];
-  var itemsRechazado = [];
-  var itemsCreado = [];
-  var itemsEnRedaccion = [];
+  var itemsPorHacer = [];
+  var itemsEnProceso = [];
+  var itemsHecho = [];
   const [columns, setColumns] = useState([]);
   const [requerimientos, setRequerimientos] = useState([]);
-
-  const estadoPrimeraFase = {
-    [uuid()]:{
-      name: 'Propuesto',
-      items: itemsPropuesto
-    },
-    [uuid()]:{
-      name: 'Redactado',
-      items: itemsRedactado
-    },
-    [uuid()]:{
-      name: 'Aprobado',
-      items: itemsAprobado
-    }
-  }
 
   const columnsFromBackend =
     {
@@ -83,16 +64,16 @@ function Dragdrop(id_subproyecto) {
         items: itemsAprobado
       },
       ["4"]: {
-        name: 'to do',
-        items: itemsToDo
+        name: 'Por Hacer',
+        items: itemsPorHacer
       },
       ["5"]: {
-        name: 'doing',
-        items: itemsDoing
+        name: 'En Proceso',
+        items: itemsEnProceso
       },
       ["6"]: {
-        name: 'done',
-        items: itemsDone
+        name: 'Hecho',
+        items: itemsHecho
       }
     };
 
@@ -158,14 +139,14 @@ function Dragdrop(id_subproyecto) {
       if(requerimiento.estado==="Aprobado"){
         itemsAprobado.push(nuevo);
       }
-      if(requerimiento.estado==="to do"){
-        itemsToDo.push(nuevo);
+      if(requerimiento.estado==="Por Hacer"){
+        itemsPorHacer.push(nuevo);
       }
-      if(requerimiento.estado==="doing"){
-        itemsDoing.push(nuevo);
+      if(requerimiento.estado==="En Proceso"){
+        itemsEnProceso.push(nuevo);
       }
-      if(requerimiento.estado==="done"){
-        itemsDone.push(nuevo);
+      if(requerimiento.estado==="Hecho"){
+        itemsHecho.push(nuevo);
       }
     })
     setColumns(columnsFromBackend);

@@ -258,9 +258,6 @@ class UsuarioModal extends Component{
                     </ModalHeader>
                     <ModalBody>
                         <div className="form-group">
-                            <label htmlFor="id_usuario">ID</label>
-                            <input className="form-control" type="text" name="id_usuario" id="id_usuario" value={this.state.usuario.id_usuario} readOnly/>
-                            <br/>
                             <label htmlFor="nombre">Nombre del usuario</label>
                             <input className={ (this.state.msj_nombre)? "form-control is-invalid" : "form-control"} type="text" name="nombre" id="nombre" onChange={this.changeHandler} value={this.state.usuario.nombre} onClick={()=>{this.setState({msj_nombre:""})}} />
                             <div className="invalid-feedback">
@@ -296,12 +293,11 @@ class UsuarioModal extends Component{
                                 {this.state.msj_estado}
                             </div>
                             <br/>
-                            <label htmlFor="password">Contraseña</label>
-                            <input className={ (this.state.msj_password)? "form-control is-invalid" : "form-control"} type="password" name="password" id="password" onChange={this.changeHandler} value={this.state.usuario.password} onClick={()=>{this.setState({msj_password:""})}} />
-                            <div className="invalid-feedback">
+                            <label htmlFor="password" hidden={(this.props.tipoModal==='insertar')?false:true}>Contraseña</label>
+                            <input className={ (this.state.msj_password)? "form-control is-invalid" : "form-control"} hidden={(this.props.tipoModal==='insertar')?false:true} type="password" name="password" id="password" onChange={this.changeHandler} value={this.state.usuario.password} onClick={()=>{this.setState({msj_password:""})}} />
+                            <div className="invalid-feedback" hidden={(this.props.tipoModal==='insertar')?false:true}>
                                 {this.state.msj_password}
                             </div>
-                            <br/>
                             {this.esUsuario()}  
                         </div>
                     </ModalBody>

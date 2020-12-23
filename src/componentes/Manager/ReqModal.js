@@ -14,7 +14,7 @@ class ReqModal extends Component{
             id_subProyecto: this.props.id_subProyecto,
             fecha_creacion: '',
             prioridad: '',
-            estado: '',
+            estado: 'Propuesto',
             categoria: '',
             id_template: ''
         },
@@ -27,7 +27,6 @@ class ReqModal extends Component{
         errorNombreDescriptivo: '',
         errorInputUsuarioResponsable: '',
         errorInputPrioridad: '',
-        errorInputEstado: '',
         errorInputCategoria: '',
         errorInputTemplate: ''        
     }
@@ -101,10 +100,6 @@ class ReqModal extends Component{
             this.setState({errorInputPrioridad : "Debe seleccionar una prioridad al requerimiento."});
             salida = false;
         }
-        if(this.state.requerimiento.estado === ""){
-            this.setState({errorInputEstado : "Debe seleccionar un estado para el requerimiento."});
-            salida = false;
-        }
         if(this.state.requerimiento.categoria === ""){
             this.setState({errorInputCategoria : "Debe seleccionar una categoria para el requerimiento."});
             salida = false;
@@ -125,7 +120,6 @@ class ReqModal extends Component{
         this.setState({
             errorNombreDescriptivo: '',
             errorInputCategoria: '',
-            errorInputEstado: '',
             errorInputPrioridad: '',
             errorInputUsuarioResponsable: '',
             errorInputTemplate:''
@@ -142,7 +136,7 @@ class ReqModal extends Component{
                 id_subProyecto: this.state.requerimiento.id_subProyecto,
                 fecha_creacion: new Date().toLocaleString(),
                 prioridad: this.state.requerimiento.prioridad,
-                estado: this.state.requerimiento.estado,
+                estado: 'Propuesto',
                 categoria: this.state.requerimiento.categoria,
                 id_template: this.state.requerimiento.id_template
             }, {headers: {"Authorization" : `Bearer ${token}`}})
@@ -223,19 +217,6 @@ class ReqModal extends Component{
                             </select>
                             <div class="invalid-feedback" style={{display: 'block'}}>
                                 {this.state.errorInputPrioridad}
-                            </div>
-                            <br/>
-                            <label htmlFor="estado">Estado</label><br/>
-                            <select className={(this.state.errorInputEstado)? "form-control is-invalid" : "form-control"} name="estado" id="estado" value={this.state.requerimiento.estado} onChange={this.changeHandler} onClick={() => {this.setState({errorInputEstado : ''})}}>
-                                <option value="" selected>Seleccione un estado</option>
-                                <option value="Creado">Creado</option>
-                                <option value="En Redaccion">En Redaccion</option>
-                                <option value="Aprobado">Aprobado</option>
-                                <option value="Fase de Prueba">Fase de Prueba</option>
-                                <option value="Rechazado">Rechazado</option>
-                            </select>
-                            <div class="invalid-feedback" style={{display: 'block'}}>
-                                {this.state.errorInputEstado}
                             </div>
                             <br/>
                             <label htmlFor="categoria">Categoría</label>

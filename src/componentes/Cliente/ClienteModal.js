@@ -222,9 +222,6 @@ export default class ClienteModal extends Component {
                     </ModalHeader>
                     <ModalBody>
                         <div className="form-group">
-                                <label htmlFor="id">ID</label>
-                                <input className="form-control" type="text" name="id_cliente" id="id_cliente" value={this.state.cliente.id_cliente} readOnly />
-                                <br/>
                                 <label htmlFor="nombre">Nombre del usuario</label>
                                 <input className={(this.state.errorInputNombre)? "form-control is-invalid" : "form-control"} type="text" name="nombre" id="nombre" onChange={this.changeHandler2} value={this.state.usuario.nombre} onClick={() => {this.setState({errorInputNombre : ''})}}/>
                                 <div class="invalid-feedback" style={{display: 'block'}}>
@@ -263,16 +260,11 @@ export default class ClienteModal extends Component {
                                     <option value="Inactivo">Inactivo</option>
                                 </select>
                                 <br/>
-                                <label htmlFor="password">Contraseña</label>
-                                <input className={ (this.state.errorInputPassword)? "form-control is-invalid" : "form-control"} type="password" name="password" id="password" onChange={this.changeHandler2} value={this.state.usuario.password} onClick={()=>{this.setState({errorInputPassword: ''})}} />
-                                <div className="invalid-feedback">
+                                <label htmlFor="password" hidden={(this.props.estadoInsertar)?false : true}>Contraseña</label>
+                                <input className={ (this.state.errorInputPassword)? "form-control is-invalid" : "form-control"} hidden={(this.props.estadoInsertar)?false : true} type="password" name="password" id="password" onChange={this.changeHandler2} value={this.state.usuario.password} onClick={()=>{this.setState({errorInputPassword: ''})}} />
+                                <div className="invalid-feedback" hidden={(this.props.estadoInsertar)?false : true}>
                                     {this.state.errorInputPassword}
                                 </div>
-                                <br/>
-                                
-                                <label htmlFor="id_user">ID User</label>
-                                <input className="form-control" type="text" name="id_user" id="id_user" onChange={this.changeHandler} value={this.state.cliente.id_user} readOnly/>
-
                             </div>
                     </ModalBody>
                     <ModalFooter>

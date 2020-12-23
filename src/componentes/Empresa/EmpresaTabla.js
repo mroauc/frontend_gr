@@ -53,7 +53,7 @@ export default class EmpresaTabla extends Component {
                             {datosActuales.map((empresa, index) => {
                                 return(
                                     <tr key={empresa.id_empresa}>
-                                        <td scope="col">{index+1 + (this.state.cantidadPorPagina * (this.state.paginaActual-1))}</td>
+                                        <td>{index+1 + (this.state.cantidadPorPagina * (this.state.paginaActual-1))}</td>
                                         <td>{empresa.razon_social}</td>
                                         <td>{empresa.rut_empresa}</td>
                                         <td>{empresa.representante}</td>

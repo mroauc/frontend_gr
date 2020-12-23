@@ -229,11 +229,12 @@ class Propiedades extends Component{
                 <div className="areaCrear3">
                     <div className="col-9" style={{paddingLeft: '0'}}>
                             <select className="form-control" name="estado" id="estado" value={this.state.requerimiento.estado} onChange={this.changeHandler}>
-                                <option value="Creado">Creado</option>
-                                <option value="En Redaccion">En Redaccion</option>
+                                <option value="Propuesto">Propuesto</option>
+                                <option value="Redactado">Redactado</option>
                                 <option value="Aprobado">Aprobado</option>
-                                <option value="Fase de Prueba">Fase de Prueba</option>
-                                <option value="Rechazado">Rechazado</option>
+                                <option value="Por Hacer">Por Hacer</option>
+                                <option value="En Proceso">En Proceso</option>
+                                <option value="Hecho">Hecho</option>
                             </select>
                     </div>
                     <div className="col-3 cont-boton">
