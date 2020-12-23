@@ -44,15 +44,9 @@ function Dragdrop(id_subproyecto) {
   var itemsPropuesto = [];
   var itemsRedactado = [];
   var itemsAprobado = [];
-<<<<<<< HEAD
   var itemsPorHacer = [];
   var itemsEnProceso = [];
   var itemsHecho = [];
-=======
-  var itemsToDo = [];
-  var itemsDoing = [];
-  var itemsDone = [];
->>>>>>> 1cb842197684f671e61fdb19ea92e315e38b9e47
   const [columns, setColumns] = useState([]);
   const [requerimientos, setRequerimientos] = useState([]);
 
