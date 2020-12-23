@@ -95,7 +95,6 @@ class IndexDragdrop extends Component{
                     <div className="titulo-dnd">
                         <label>Vista Interactiva de Requerimientos</label>
                     </div>
-                    <br/>
                     <Dragdrop
                         id_subproyecto = {this.props.match.params.id_subproyecto}
                     />
@@ -111,8 +110,8 @@ class IndexDragdrop extends Component{
                         <span style={{cursor:'pointer', float:'right'}} onClick={()=>this.cambiarModal()}>X</span>
                     </ModalHeader>
                     <ModalBody>
+                        <label>Seleccione un color:</label><br/><br/>
                         <div className="container">
-                            <label>Seleccione un color:</label><br/><br/>
                             <div className="row">
                                 <div className="col-4">
                                     <div id="circulo0" className="circulo0" onClick={()=>this.seleccionar(0)}/>

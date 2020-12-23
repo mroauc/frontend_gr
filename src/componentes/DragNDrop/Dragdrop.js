@@ -5,6 +5,7 @@ import uuid from 'uuid/dist/v4';
 import './DragDrop.css';
 import ModalReq from './ModalReq';
 import ModalReqSelected from './ModalReqSelected';
+import AddIcon from '@material-ui/icons/Add';
 
 function Dragdrop(id_subproyecto) {
 
@@ -43,9 +44,15 @@ function Dragdrop(id_subproyecto) {
   var itemsPropuesto = [];
   var itemsRedactado = [];
   var itemsAprobado = [];
+<<<<<<< HEAD
   var itemsPorHacer = [];
   var itemsEnProceso = [];
   var itemsHecho = [];
+=======
+  var itemsToDo = [];
+  var itemsDoing = [];
+  var itemsDone = [];
+>>>>>>> 1cb842197684f671e61fdb19ea92e315e38b9e47
   const [columns, setColumns] = useState([]);
   const [requerimientos, setRequerimientos] = useState([]);
 
@@ -129,7 +136,6 @@ function Dragdrop(id_subproyecto) {
       const nuevo = {
         id: uuid(), content: requerimiento.nombre
       }
-      console.log(requerimiento)
       if(requerimiento.estado==="Propuesto"){
         itemsPropuesto.push(nuevo);
       }
@@ -160,8 +166,6 @@ function Dragdrop(id_subproyecto) {
   const onDragEnd = async(result, columns, setColumns) => {
     if (!result.destination) return;
     const { source, destination } = result;
-    console.log(result)
-    console.log(columns)
     
     if(source.droppableId !== destination.droppableId){
       const sourceColumn = columns[source.droppableId];
@@ -209,33 +213,39 @@ function Dragdrop(id_subproyecto) {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
+    <div style={{ display: 'flex', justifyContent: 'center', height: '77vh', paddingTop:'10px'}}>
       <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
         {Object.entries(columns).map(([id, column], index) =>{
           return(
             <React.Fragment>
             {index === 0 ?
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                  <div style={{fontSize:'18px', fontFamily:'sans-serif', margin:'8'}}>
-                    <label><strong></strong>Primera Fase</label> &nbsp;
+                  <div className="row">
+                    <label><strong>Primera Fase</strong></label> 
                     {(column.name === 'Propuesto' && localStorage.getItem("tipo") !== "analista") ?
-                      <button className="btn botoncito2" onClick={()=>setModalIsertar(!modalInsertar)}>+</button>
-                      :
-                      ''
+                        <button className="btn botoncito2" style={{marginLeft: '5px', display: 'flex', alignItems: 'center'}} onClick={()=>setModalIsertar(!modalInsertar)}><AddIcon fontSize="small"/></button>
+                        :
+                        ''
                     }
+                  </div>
+
+                  <div style={{margin:8}}>
                     <Droppable droppableId="1" key="1">
                       {(provided, snapshot) => (
                         <div
                           ref={provided.innerRef}
                           style={{ 
                             background: snapshot.isDraggingOver ? 'lightblue' : 'lightgrey',
-                            height: '166px',
+                            padding: 4,
+                            height: '23vh',
                             width: 250,
-                            overflow: 'auto'
+                            overflow: 'auto',
+                            marginBottom: '2px'
                           }}
                           
                           {...provided.droppableProps}
                         >
+                          <div>Propuesto</div>
                           {column.items.map((item, index)=>{
                             
                             return(
@@ -252,7 +262,7 @@ function Dragdrop(id_subproyecto) {
                                         padding: 8,
                                         margin: '0 0 8px 0',
                                         minHeight: '50px',
-                                        backgroundColor: snapshot.isDragging ? '#263B4A' : '#456C86',
+                                        backgroundColor: snapshot.isDragging ? '#bf682a' : '#fc8225',
                                         color: 'white',
                                         ...provided.draggableProps.style
                                       }}
@@ -276,14 +286,16 @@ function Dragdrop(id_subproyecto) {
                           ref={provided.innerRef}
                           style={{ 
                             background: snapshot.isDraggingOver ? 'lightblue' : 'lightgrey',
-                            height: '166px',
+                            padding: 4,
+                            height: '23vh',
                             width: 250,
-                            overflow: 'auto'
+                            overflow: 'auto',
+                            marginBottom: '2px'
                           }}
                           
                           {...provided.droppableProps}
                         >
-                          {/* {console.log(columns)} */}
+                          <div>Redactado</div>
                           {Object.entries(columns)[1][1].items.map((item, index)=>{
                             
                             return(
@@ -300,7 +312,7 @@ function Dragdrop(id_subproyecto) {
                                         padding: 8,
                                         margin: '0 0 8px 0',
                                         minHeight: '50px',
-                                        backgroundColor: snapshot.isDragging ? '#263B4A' : '#456C86',
+                                        backgroundColor: snapshot.isDragging ? '#69933e' : '#6fc11d',
                                         color: 'white',
                                         ...provided.draggableProps.style
                                       }}
@@ -324,14 +336,15 @@ function Dragdrop(id_subproyecto) {
                           ref={provided.innerRef}
                           style={{ 
                             background: snapshot.isDraggingOver ? 'lightblue' : 'lightgrey',
-                            height: '166px',
+                            padding: 4,
+                            height: '22.4vh',
                             width: 250,
                             overflow: 'auto'
                           }}
                           
                           {...provided.droppableProps}
                         >
-                          {console.log(Object.entries(columns)[1][1])}
+                          <div>Aprobado</div>
                           {Object.entries(columns)[2][1].items.map((item, index)=>{
                             
                             return(
@@ -348,7 +361,7 @@ function Dragdrop(id_subproyecto) {
                                         padding: 8,
                                         margin: '0 0 8px 0',
                                         minHeight: '50px',
-                                        backgroundColor: snapshot.isDragging ? '#263B4A' : '#456C86',
+                                        backgroundColor: snapshot.isDragging ? '#4898b5' : '#41b5e2',
                                         color: 'white',
                                         ...provided.draggableProps.style
                                       }}
@@ -374,7 +387,7 @@ function Dragdrop(id_subproyecto) {
             {index > 2 ? 
             
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                  <label><strong>{column.name}</strong></label> &nbsp;
+                  <label><strong>{column.name}</strong></label>
                   <div style={{ margin: 8}}>
 
                     <Droppable droppableId={id} key={id}>
@@ -387,7 +400,8 @@ function Dragdrop(id_subproyecto) {
                             background: snapshot.isDraggingOver ? 'lightblue' : 'lightgrey',
                             padding: 4,
                             width: 250,
-                            minHeight: 500
+                            height: '69vh',
+                            overflow: 'auto'
                           }}
                         >
                           {column.items.map((item, index)=>{
