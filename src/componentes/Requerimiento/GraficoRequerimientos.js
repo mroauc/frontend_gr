@@ -7,7 +7,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import './GraficoRequerimientos.css';
 import '../vistaCrud.css';
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#B542FF'];
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#B542FF', '#ff0000'];
 
 const RADIAN = Math.PI / 180;
 
@@ -23,6 +23,8 @@ const renderCustomizedLabel = ({cx, cy, midAngle, innerRadius, outerRadius, perc
     );
 };
 
+let frecuencias = [];
+
 class GraficoRequerimiento extends Component{
 
     state={
@@ -33,6 +35,7 @@ class GraficoRequerimiento extends Component{
     componentDidMount(){
         this.index();
         this.getProyecto();
+        console.log(this.state.data)
     }
 
     index=async()=>{
@@ -75,32 +78,45 @@ class GraficoRequerimiento extends Component{
     cargarData=async(requerimientos)=>{
         var dataFinal = [];
 
-        //tupla estado CREADO
-        var creado = requerimientos.filter(req => req.estado === "Creado");
-        var tupla1 = {name: 'Creado', value: creado.length};
+        //tupla estado Propuesto
+        var propuesto = requerimientos.filter(req => req.estado === "Propuesto");
+        var tupla1 = {name: 'Propuesto', value: propuesto.length};
         dataFinal.push(tupla1);
+        frecuencias.push(propuesto.length);
 
-        //tupla estado EN REDACCION
-        var enRedaccion = requerimientos.filter(req => req.estado === "En Redaccion");
-        var tupla2 = {name: 'En Redaccion', value: enRedaccion.length};
+        //tupla estado Redactado
+        var redactado = requerimientos.filter(req => req.estado === "Redactado");
+        var tupla2 = {name: 'Redactado', value: redactado.length};
         dataFinal.push(tupla2);
+        frecuencias.push(redactado.length);
+
 
         //tupla estado Aprobado
         var aprobado = requerimientos.filter(req => req.estado === "Aprobado");
         var tupla3 = {name: 'Aprobado', value: aprobado.length};
         dataFinal.push(tupla3);
+        frecuencias.push(aprobado.length);
 
-        //tupla estado Fase de Prueba
-        var fasePrueba = requerimientos.filter(req => req.estado === "Fase de Prueba");
-        var tupla4 = {name: 'Fase de Prueba', value: fasePrueba.length};
+        //tupla estado Por Hacer
+        var por_hacer = requerimientos.filter(req => req.estado === "Por Hacer");
+        var tupla4 = {name: 'Por Hacer', value: por_hacer.length};
         dataFinal.push(tupla4);
+        frecuencias.push(por_hacer.length);
 
-        //tupla estado Rechazado
-        var rechazado = requerimientos.filter(req => req.estado === "Rechazado");
-        var tupla5 = {name: 'Rechazado', value: rechazado.length};
+        //tupla estado En Proceso
+        var en_proceso = requerimientos.filter(req => req.estado === "En Proceso");
+        var tupla5 = {name: 'En Proceso', value: en_proceso.length};
         dataFinal.push(tupla5);
+        frecuencias.push(en_proceso.length);
 
-        this.setState({
+        //tupla estado Hecho
+        var hecho = requerimientos.filter(req => req.estado === "Hecho");
+        var tupla5 = {name: 'Hecho', value: hecho.length};
+        dataFinal.push(tupla5);
+        frecuencias.push(hecho.length);
+
+
+        await this.setState({
             data : dataFinal
         });
     }
@@ -134,11 +150,12 @@ class GraficoRequerimiento extends Component{
                     </div>
 
                     <div style={{textAlign:'left', marginLeft:'20px'}}>
-                        - <div className="cuadroColor" style={{backgroundColor:"#0088FE"}}></div> <label>Requerimiento Creado</label><br/>
-                        - <div className="cuadroColor" style={{backgroundColor:"#00C49F"}}></div> <label>Requerimiento En Redaccion</label><br/>
-                        - <div className="cuadroColor" style={{backgroundColor:"#FFBB28"}}></div> <label>Requerimiento Aprobado</label><br/>
-                        - <div className="cuadroColor" style={{backgroundColor:"#FF8042"}}></div> <label>Requerimiento En Fase de Prueba</label><br/>
-                        - <div className="cuadroColor" style={{backgroundColor:"#B542FF"}}></div> <label>Requerimiento Rechazado</label>
+                        - <div className="cuadroColor" style={{backgroundColor:"#0088FE"}}></div> <label>Requerimiento Propuesto</label>{" : "+frecuencias[0]}<br/>
+                        - <div className="cuadroColor" style={{backgroundColor:"#00C49F"}}></div> <label>Requerimiento Redactado</label>{" : "+frecuencias[1]}<br/>
+                        - <div className="cuadroColor" style={{backgroundColor:"#FFBB28"}}></div> <label>Requerimiento Aprobado</label>{" : "+frecuencias[2]}<br/>
+                        - <div className="cuadroColor" style={{backgroundColor:"#FF8042"}}></div> <label>Requerimiento Por Hacer</label>{" : "+frecuencias[3]}<br/>
+                        - <div className="cuadroColor" style={{backgroundColor:"#B542FF"}}></div> <label>Requerimiento En Proceso</label>{" : "+frecuencias[4]}<br/>
+                        - <div className="cuadroColor" style={{backgroundColor:"#ff0000"}}></div> <label>Requerimiento En Hecho</label>{" : "+frecuencias[5]}
                     </div>
                 </div>
                 {localStorage.getItem("tipo") === "cliente" ? 
@@ -147,8 +164,7 @@ class GraficoRequerimiento extends Component{
                         <Link to={"/proyecto/"}><button type="button" className="btn boton"><ArrowBackIcon/> Volver</button></Link>
                     </div>
                     :
-                    <div style={{marginLeft: '110px'}}>
-                        <br/>
+                    <div style={{marginLeft: '110px' , marginTop: '5px'}}>
                         <Link to={"/subProyecto/"+this.props.match.params.id_proyecto}><button type="button" className="btn boton"><ArrowBackIcon/> Volver</button></Link>
                     </div>        
                 }

@@ -169,6 +169,16 @@ class Propiedades extends Component{
         return false;
     }
 
+    accesoUsuarioEstadoReq = (tipo) => {
+        if(localStorage.getItem("tipo") === "analista"){
+            if(this.state.requerimiento.estado === "Propuesto" || this.state.requerimiento.estado === "Redactado" || this.state.requerimiento.estado === "Aprobado"){
+                if(tipo === "readonly") return "readonly"
+                if(tipo === "disabled") return "true"
+            }
+        }
+        return "";
+    }
+
     render(){
         return(
             <div style={{height: '78%', overflow: 'auto', paddingTop:'10px'}}>
@@ -226,12 +236,17 @@ class Propiedades extends Component{
                 }
 
                 <label htmlFor="estado"><strong>Estado:</strong></label><br/>
-                <div className="areaCrear3">
+                <div className="areaCrear3" style={{marginBottom:'15px'}}>
                     <div className="col-9" style={{paddingLeft: '0'}}>
-                            <select className="form-control" name="estado" id="estado" value={this.state.requerimiento.estado} onChange={this.changeHandler}>
-                                <option value="Propuesto">Propuesto</option>
-                                <option value="Redactado">Redactado</option>
-                                <option value="Aprobado">Aprobado</option>
+                            <select className="form-control" name="estado" id="estado" value={this.state.requerimiento.estado} onChange={this.changeHandler} readOnly={this.accesoUsuarioEstadoReq("readonly")} disabled={this.accesoUsuarioEstadoReq("disabled")}>
+                                {this.accesoUsuario() ? 
+                                    <React.Fragment>
+                                        <option value="Propuesto">Propuesto</option>
+                                        <option value="Redactado">Redactado</option>
+                                        <option value="Aprobado">Aprobado</option>
+                                    </React.Fragment>
+                                    : ""
+                                }
                                 <option value="Por Hacer">Por Hacer</option>
                                 <option value="En Proceso">En Proceso</option>
                                 <option value="Hecho">Hecho</option>
@@ -239,6 +254,15 @@ class Propiedades extends Component{
                     </div>
                     <div className="col-3 cont-boton">
                         <button className="btn btn-success btn-block" onClick={()=>{this.guardarCambios("estado")}}>Cambiar Estado</button>
+                    </div>
+                </div>
+                <label htmlFor="descripcion"><strong>Descripcion:</strong></label><br/>
+                <div className="areaCrear3">
+                    <div className="col-9" style={{paddingLeft: '0'}}>
+                            <input id="nombre_descriptivo" name="nombre_descriptivo" className="form-control" value={this.state.requerimiento.nombre_descriptivo} onChange={this.changeHandler}></input>
+                    </div>
+                    <div className="col-3 cont-boton">
+                        <button className="btn btn-success btn-block" onClick={()=>{this.guardarCambios("descripción")}}>Cambiar Descripción</button>
                     </div>
                 </div>
             </div>

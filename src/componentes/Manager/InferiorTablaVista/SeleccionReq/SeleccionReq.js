@@ -72,7 +72,7 @@ export default class SeleccionReq extends Component {
                         </div>
                     </ModalBody>
                     <ModalFooter>
-                        <button className="btn btn-success" onClick= {() => {this.props.insertarRelaciones(this.state.valoresInput)}} > Guardar</button>
+                        <button className="btn btn-success" onClick= {() => {this.props.insertarRelaciones(this.state.valoresInput); this.cerrar()}} > Guardar</button>
                         <button className="btn btn-danger" onClick={() => {this.cerrar()}}>Cancelar</button>
                     </ModalFooter>
                 </Modal>

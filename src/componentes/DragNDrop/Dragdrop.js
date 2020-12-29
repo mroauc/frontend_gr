@@ -206,13 +206,20 @@ function Dragdrop(id_subproyecto) {
     }
   };
 
+  const accesoUsuario = (contador) => {
+    if(localStorage.getItem("tipo") === "admin" || localStorage.getItem("tipo") === "lider" || localStorage.getItem("tipo") === "jefe"){
+      if(contador === 0) return true
+    }
+    return false;
+  }
+
   return (
     <div style={{ display: 'flex', justifyContent: 'center', height: '77vh', paddingTop:'10px'}}>
       <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
         {Object.entries(columns).map(([id, column], index) =>{
           return(
             <React.Fragment>
-            {index === 0 ?
+            {accesoUsuario(index) ?
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <div className="row">
                     <label><strong>Primera Fase</strong></label> 
