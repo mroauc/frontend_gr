@@ -30,7 +30,7 @@ export default class SeleccionJefe extends Component {
             await this.setState({valorInput : parseInt(e.target.id)});
         }
         else{
-            await this.setState({valorInput : ""});
+            await this.setState({valorInput : 0});
         }
     }
 

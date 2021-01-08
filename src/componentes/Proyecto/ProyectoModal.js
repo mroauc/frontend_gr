@@ -171,7 +171,8 @@ class ProyectoModal extends Component{
             this.setState({errorEmpresasAsociadas : "Debe seleccionar al menos una empresa asociada."});
             validacion = false;
         }
-        if(this.state.proyecto.id_usuario === ""){
+        console.log(this.state.proyecto.id_usuario);
+        if(this.state.proyecto.id_usuario === 0){
             this.setState({errorJefeProyecto : "Debe seleccionar al menos un jefe de proyecto"});
             validacion = false;
         }
@@ -205,6 +206,9 @@ class ProyectoModal extends Component{
         let copiaProyecto = {...this.state.proyecto};
         copiaProyecto.id_usuario = id_nuevo_jefe;
         this.setState({proyecto : copiaProyecto});
+        if(id_nuevo_jefe === 0){
+            nombre_usuario = "Seleccione Lider de Módulo";
+        }
     }
 
     buscarNombreUsuario = () => {
@@ -239,7 +243,7 @@ class ProyectoModal extends Component{
                             <label htmlFor="id_proyecto">Jefe de Proyecto</label>
                             <div style={{display:'flex', alignItems:'center'}}>
                                 <input className="form-control" type="text" style={{width:'75%', display:'inline', marginRight:'5px', backgroundColor:'#fff'}} name="id_usuario" id="id_usuario" value={nombre_usuario} disabled/>
-                                <button className="btn btn-primary" style={{width:'25%', display:'inline'}} onClick={this.cambiarEstadoAbrir}>Elegir Jefe</button>
+                                <button className="btn btn-primary" style={{width:'25%', display:'inline'}} onClick={() => {this.cambiarEstadoAbrir() ; this.setState({errorJefeProyecto:""});}}>Elegir Jefe</button>
                             </div>
                             <SeleccionJefe
                                 usuariosJefe = {this.state.jefes_proyectos}

@@ -81,19 +81,19 @@ export default class subProyectoModal extends Component {
 
     validar=()=>{
         let salida = true;
-        if(!this.state.subProyecto.nombre_subProyecto){
+        if(this.state.subProyecto.nombre_subProyecto === ""){
             this.setState({
                 msj_nombre_subp: "Campo Vacio"
             });
             salida=false;
         }
-        if(!this.state.subProyecto.fecha_inicio){
+        if(this.state.subProyecto.fecha_inicio === ""){
             this.setState({
                 msj_fechaInicio: "Campo Vacio"
             });
             salida=false;
         }
-        if(!this.state.subProyecto.id_usuario){
+        if(this.state.subProyecto.id_usuario === 0){
             this.setState({
                 msj_lider_subp: "Campo Vacio"
             });
@@ -279,6 +279,9 @@ export default class subProyectoModal extends Component {
         let copiaSubProyecto = {...this.state.subProyecto};
         copiaSubProyecto.id_usuario = id_nuevo_lider;
         this.setState({subProyecto : copiaSubProyecto});
+        if(id_nuevo_lider === 0){
+            nombre_usuario = "Seleccione Lider de Módulo";
+        }
     }
 
     eliminarCliente=(cliente)=>{
@@ -393,13 +396,13 @@ export default class subProyectoModal extends Component {
                                 {this.state.msj_fechaInicio}
                             </div>
                             <br/>
-                            <label htmlFor="id_usuario">Fecha Termino</label>
+                            <label htmlFor="fecha_termino">Fecha Termino</label>
                             <input className="form-control" type="date" name="fecha_fin" id="fecha_fin" onChange={this.changeHandler} value={this.state.subProyecto.fecha_fin}/>
                             <br/>
-                            <label htmlFor="id_proyecto">Lider de Módulo</label>
+                            <label htmlFor="id_usuario">Lider de Módulo</label>
                             <div style={{display:'flex', alignItems:'center'}}>
                                 <input className="form-control" type="text" style={{width:'75%', display:'inline', marginRight:'5px', backgroundColor:'#fff'}} name="id_usuario" id="id_usuario" value={nombre_usuario} disabled/>
-                                <button className="btn btn-primary" style={{width:'25%', display:'inline'}} onClick={this.cambiarEstadoAbrir}>Elegir Lider</button>
+                                <button className="btn btn-primary" style={{width:'25%', display:'inline'}} onClick={() => {this.cambiarEstadoAbrir(); this.setState({msj_lider_subp:""});}}>Elegir Lider</button>
                             </div>
                             <SeleccionLider
                                 usuariosLider = {this.state.lideres_subProyectos}
@@ -408,7 +411,7 @@ export default class subProyectoModal extends Component {
                                 valorInput = {this.state.subProyecto.id_usuario}
                                 cambiarLider = {this.cambiarLider}
                             />
-                            <div className="invalid-feedback">
+                            <div class="invalid-feedback" style={{display: 'block'}}>
                                 {this.state.msj_lider_subp}
                             </div>
                         </div>

@@ -30,7 +30,7 @@ export default class SeleccionLider extends Component {
             await this.setState({valorInput : parseInt(e.target.id)});
         }
         else{
-            await this.setState({valorInput : ""});
+            await this.setState({valorInput : 0});
         }
     }
 
@@ -65,7 +65,7 @@ export default class SeleccionLider extends Component {
                         </div>
                     </ModalBody>
                     <ModalFooter>
-                        <button className="btn btn-success" onClick= {() => {this.props.cambiarLider(this.state.valorInput);this.cerrar()}} >Elegir</button>
+                        <button className="btn btn-success" onClick= {() => {this.props.cambiarLider(this.state.valorInput);this.cerrar()}}>Elegir</button>
                         <button className="btn btn-danger" onClick={() => {this.cerrar()}}>Cancelar</button>
                     </ModalFooter>
                 </Modal>
