@@ -34,6 +34,7 @@ function Menu(){
     if(localStorage.getItem('rol') === 'ROLE_LIDER_SUBPROYECTO'){
         return <Navigation
             celdas = {[
+                {nombre : "Proyectos", url : "/proyecto"},
                 {nombre : "Templates", url : "/templates"},
                 {nombre : "Clientes", url : "/cliente"},
                 {nombre : "Usuarios", url : "/usuario"}

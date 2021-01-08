@@ -56,7 +56,7 @@ a:hover{
     margin-bottom: 15px;
 }
 
-th , td {
+.table th , .table td {
     padding: 0.65rem;
     vertical-align: middle;
 }

@@ -1,0 +1,9 @@
+.inputCheckbox{
+    margin-right: 5px;
+}
+
+.grupoCheckbox{
+    max-height: 200px;
+    overflow: auto;
+    margin-top: 10px;
+}

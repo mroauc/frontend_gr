@@ -83,7 +83,7 @@ export default class SubProyecto extends Component{
                     fecha_fin : '',
                     id_proyecto : id_proy,
                     tipo_subProyecto : '',
-                    id_usuario : response.data.id,  
+                    id_usuario : 0,  
                     index_documento : 0
                 }
             });

@@ -2,6 +2,9 @@ import Axios from 'axios';
 import React, { Component } from 'react'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import ChipsProyecto from './ChipsProyecto';
+import SeleccionJefe from './SeleccionJefe/SeleccionJefe';
+
+let nombre_usuario = "";
 
 class ProyectoModal extends Component{
     state={
@@ -20,7 +23,8 @@ class ProyectoModal extends Component{
         errorInputFechaInicio : '',
         errorInputFechaFin : '',
         errorEmpresasAsociadas : '',
-        errorJefeProyecto : ''
+        errorJefeProyecto : '',
+        estadoModal : false
     }
 
     componentWillReceiveProps(next_props){
@@ -183,7 +187,29 @@ class ProyectoModal extends Component{
         });
     }
 
+    cambiarEstadoAbrir = () => {
+        this.setState({estadoModal : !this.state.estadoModal})
+    }
+
+    cambiarJefe = (id_nuevo_jefe) => {
+        let copiaProyecto = {...this.state.proyecto};
+        copiaProyecto.id_usuario = id_nuevo_jefe;
+        this.setState({proyecto : copiaProyecto});
+    }
+
+    buscarNombreUsuario = () => {
+        if(this.state.proyecto.id_usuario === 0) {
+            nombre_usuario = "Seleccione un Jefe de Proyecto";
+        }
+        else{
+            let usuarioEncontrado = this.state.jefes_proyectos.find(usuario => usuario.id === this.state.proyecto.id_usuario);
+            if(usuarioEncontrado !== undefined)
+                nombre_usuario = usuarioEncontrado.nombre;
+        }
+    } 
+
     render(){
+        this.buscarNombreUsuario();
         return(
             <React.Fragment>
                 <Modal isOpen={this.props.estadoModalInsertar} toggle={()=>{this.initErrores();this.props.modalInsertar()}}>
@@ -200,15 +226,18 @@ class ProyectoModal extends Component{
                                 {this.state.errorInputNombre}
                             </div>
                             <br/>
-                            <label htmlFor="id_usuario">Jefe de Proyecto</label>
-                            <select name="id_usuario" id="id_usuario" className={(this.state.errorJefeProyecto)? "form-control is-invalid" : "form-control"} value={this.state.proyecto.id_usuario}  onChange={this.changeHandler} onClick={() => {this.setState({errorJefeProyecto : ''})}}>
-                                <option value="" selected>Seleccione un Jefe de Proyecto</option>
-                                {this.state.jefes_proyectos.map(jefe => {
-                                    return(
-                                        <option key={jefe.id}value={jefe.id}>{jefe.id  +" - "+ jefe.nombre}</option>
-                                    )
-                                })}
-                            </select>
+                            <label htmlFor="id_proyecto">Jefe de Proyecto</label>
+                            <div style={{display:'flex', alignItems:'center'}}>
+                                <input className="form-control" type="text" style={{width:'75%', display:'inline', marginRight:'5px', backgroundColor:'#fff'}} name="id_usuario" id="id_usuario" value={nombre_usuario} disabled/>
+                                <button className="btn btn-primary" style={{width:'25%', display:'inline'}} onClick={this.cambiarEstadoAbrir}>Elegir Jefe</button>
+                            </div>
+                            <SeleccionJefe
+                                usuariosJefe = {this.state.jefes_proyectos}
+                                abrir = {this.state.estadoModal}
+                                cambiarEstadoAbrir = {this.cambiarEstadoAbrir}
+                                valorInput = {this.state.proyecto.id_usuario}
+                                cambiarJefe = {this.cambiarJefe}
+                            />
                             <div class="invalid-feedback" style={{display: 'block'}}>
                                 {this.state.errorJefeProyecto}
                             </div>

@@ -66,7 +66,7 @@ class ModalEliminarReq extends Component{
                                 return(
                                     <div key={requerimiento.id_requerimiento}>
                                         <input id={requerimiento.id_requerimiento} name={requerimiento.id_requerimiento.toString()} type="checkbox" className="inputCheckbox" onChange={this.changeHandler} checked={this.state.seleccionados.includes(requerimiento.id_requerimiento.toString())} />
-                                        <label>{requerimiento.nombre}</label><br/>
+                                        <label>{requerimiento.nombre + " - " + requerimiento.nombre_descriptivo.substr(0,30)}</label><br/>
                                     </div>
                                 );
                             })}
