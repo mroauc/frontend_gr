@@ -2,12 +2,15 @@ import Axios from 'axios';
 import axios from 'axios';
 import React, { Component } from 'react'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import ChipsSubProyectoUsuario from './ChipsSubProyectoUsuario';
+import ChipsAnalistas from './ChipsAnalistas';
+import ChipsClientes from './ChipsClientes';
+import SeleccionAnalistas from './SeleccionAnalistas';
+import SeleccionClientes from './SeleccionClientes';
 
 const url="http://localhost:8080/api/subProyecto/";
 
 export default class subProyectoModal extends Component {
-    
+
     state ={
         subProyecto: {
             id_subProyecto : 0,
@@ -20,118 +23,24 @@ export default class subProyectoModal extends Component {
         },
         usuarios: [],
         lideres_subProyectos : [],
-        usuariosSeleccionados : [],
         clientes: [],
         msj_nombre_subp: "",
         msj_fechaInicio: "",
         msj_tipo_subp: "",
-        msj_lider_subp: ""
+        msj_lider_subp: "",
+        msj_cliente: "",
+        msj_analista: "",
+        modalClientesAsociados: false,
+        clientesSeleccionados: [],
+        analistasSeleccionados: [],
+        modalAnalistasAsociados: false
     }
 
     componentDidMount(){
         this.getUsuarios();
         this.getLideres();
         this.getClientes();
-    }
-
-    componentWillReceiveProps(next_props) {
-        this.setState({subProyecto: this.props.subProyecto});
-    }
-
-    validar=()=>{
-        let salida = true;
-        if(!this.state.subProyecto.nombre_subProyecto){
-            this.setState({
-                msj_nombre_subp: "Campo Vacio"
-            });
-            salida=false;
-        }
-        if(!this.state.subProyecto.fecha_inicio){
-            this.setState({
-                msj_fechaInicio: "Campo Vacio"
-            });
-            salida=false;
-        }
-  
-        if(!this.state.usuariosSeleccionados){
-            salida=false;
-        }
-        if(!this.state.subProyecto.id_usuario){
-            this.setState({
-                msj_lider_subp: "Campo Vacio"
-            });
-            salida=false;
-        }
-        return salida;
-    }
-
-    guardarSubproyecto=async(subProyecto)=>{
-        if(this.validar()){
-            const token = localStorage.getItem('token');
-            var urlGuardar = url + 'guardar';
-            await axios.post(urlGuardar, subProyecto,{headers: {"Authorization": `Bearer  ${token}`}})
-            .then(response => {
-                if(this.props.estadoEditar){
-                    this.props.cambiarEstadoEditar();
-                    this.guardarActualizacion(response.data.id_subProyecto);
-                }
-                else{
-                    this.insertar_usuariosSubProyecto(response.data.id_subProyecto);
-                    this.props.cambiarEstadoInsertar();
-                }
-                this.props.getSubProyectos();
-                this.setState({
-                    msj_nombre_subp: "",
-                    msj_fechaInicio: "",
-                    msj_tipo_subp: "",
-                    msj_lider_subp: ""
-                });
-            })
-            .catch(error => {
-                console.log(error)
-            })
-        }
-    }
-
-    guardarActualizacion=(id_subProyecto)=>{
-        if(this.validar()){
-            var existentes = [];
-            var original = [];
-            const token = localStorage.getItem('token');
-            Axios.get(`http://localhost:8080/api/encargadosubproyecto/obtener/${id_subProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
-            .then(response=>{
-                original = response.data;
-                for (let index = 0; index < original.length; index++) {
-                    existentes = [...existentes, response.data[index].id_usuario.toString()];
-                }
-
-                //eliminar
-                for (let index = 0; index < existentes.length; index++) {
-                    if(!this.state.usuariosSeleccionados.includes(existentes[index])){
-                        Axios.delete(`http://localhost:8080/api/encargadosubproyecto/eliminar/${original[index].id_encargadoSubProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
-                        .then(response=>{
-                        });
-                    }
-                }
-
-                //agregar
-                for (let index = 0; index < this.state.usuariosSeleccionados.length; index++) {
-                    if(!existentes.includes(this.state.usuariosSeleccionados[index])){
-                        Axios.post("http://localhost:8080/api/encargadosubproyecto/guardar",{
-                            id_subProyecto: id_subProyecto,
-                            id_usuario: this.state.usuariosSeleccionados[index],
-                        }, {headers: {"Authorization": `Bearer ${token}`}})
-                    }
-                }
-
-                this.setState({
-                    msj_nombre_subp: "",
-                    msj_fechaInicio: "",
-                    msj_tipo_subp: "",
-                    msj_lider_subp: ""
-                });
-            })
-        }
+        this.setState({analistasSeleccionados: [], clientesSeleccionados: []});
     }
 
     getUsuarios = async () => {
@@ -140,37 +49,6 @@ export default class subProyectoModal extends Component {
             this.setState({
                 usuarios: response.data
             })
-        });
-    }
-
-    insertarChip=(usuario)=>{
-        this.setState({
-            usuariosSeleccionados: [ ...this.state.usuariosSeleccionados, usuario],
-        });
-    }
-
-    eliminarChip=(usuario)=>{
-        const filtrado = this.state.usuariosSeleccionados.filter(item => item!==usuario);
-        this.setState({
-            usuariosSeleccionados : filtrado
-        });
-    }
-
-    insertar_usuariosSubProyecto = async (id_subProyecto) => {
-        const token = localStorage.getItem('token');
-        for (let i = 0; i < this.state.usuariosSeleccionados.length; i++) {
-            await axios.post("http://localhost:8080/api/encargadosubproyecto/guardar",{id_subProyecto: id_subProyecto, id_usuario: this.state.usuariosSeleccionados[i]},{headers: {"Authorization": `Bearer  ${token}`}})        
-        }
-    }
-
-    cerrarModal = () => {
-        (this.props.estadoInsertar) ? this.props.cambiarEstadoInsertar() : this.props.cambiarEstadoEditar(); 
-        this.setState({
-            usuariosSeleccionados: [],
-            msj_nombre_subp: "",
-            msj_fechaInicio: "",
-            msj_tipo_subp: "",
-            msj_lider_subp: ""
         });
     }
 
@@ -194,12 +72,220 @@ export default class subProyectoModal extends Component {
         });
     }
 
+    componentWillReceiveProps(next_props) {
+        this.setState({subProyecto: this.props.subProyecto});
+    }
+
+    validar=()=>{
+        let salida = true;
+        if(!this.state.subProyecto.nombre_subProyecto){
+            this.setState({
+                msj_nombre_subp: "Campo Vacio"
+            });
+            salida=false;
+        }
+        if(!this.state.subProyecto.fecha_inicio){
+            this.setState({
+                msj_fechaInicio: "Campo Vacio"
+            });
+            salida=false;
+        }
+        if(!this.state.subProyecto.id_usuario){
+            this.setState({
+                msj_lider_subp: "Campo Vacio"
+            });
+            salida=false;
+        }
+        if(this.state.clientesSeleccionados.length === 0){
+            this.setState({
+                msj_cliente: "Campo Vacio"
+            });
+            salida=false;
+        }
+        if(this.state.analistasSeleccionados.length === 0){
+            this.setState({
+                msj_analista: "Campo Vacio"
+            });
+            salida=false;
+        }
+        return salida;
+    }
+
+    guardarSubproyecto=async(subProyecto)=>{
+        if(this.validar()){
+            const token = localStorage.getItem('token');
+            var urlGuardar = url + 'guardar';
+            await axios.post(urlGuardar, subProyecto,{headers: {"Authorization": `Bearer  ${token}`}})
+            .then(response => {
+                if(this.props.estadoEditar){
+                    this.props.cambiarEstadoEditar();
+                    this.guardarActualizacion(response.data.id_subProyecto, this.state.clientes);
+                }
+                else{
+                    this.insertar_usuariosSubProyecto(response.data.id_subProyecto);
+                    this.props.cambiarEstadoInsertar();
+                }
+                this.props.getSubProyectos();
+                this.setState({
+                    msj_nombre_subp: "",
+                    msj_fechaInicio: "",
+                    msj_tipo_subp: "",
+                    msj_lider_subp: "",
+                    msj_cliente: "",
+                    msj_analista: ""
+                });
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        }
+    }
+
+    guardarActualizacion=(id_subProyecto, clientes)=>{
+        if(this.state.analistasSeleccionados.length!==0 && this.state.clientesSeleccionados.length!==0){
+            var original = [];
+            var clientes_string = [];
+            var existentesClientes = [];
+            var existentesAnalistas = [];
+            var originalClientes = [];
+            var originalAnalistas = [];
+            const token = localStorage.getItem('token');
+
+            for (let index=0; index<clientes.length; index++) {
+                clientes_string.push(this.state.clientes[index].id.toString());
+            }
+
+            Axios.get(`http://localhost:8080/api/encargadosubproyecto/obtener/${id_subProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
+            .then(response=>{
+                original = response.data;
+                for (let index=0; index<original.length; index++) {
+                    if(clientes_string.includes(response.data[index].id_usuario.toString())){
+                        existentesClientes = [...existentesClientes, response.data[index].id_usuario.toString()];
+                        originalClientes = [...originalClientes, response.data[index]];
+                    }else{
+                        existentesAnalistas = [...existentesAnalistas, response.data[index].id_usuario.toString()];
+                        originalAnalistas = [...originalAnalistas, response.data[index]];
+                    }
+                }
+
+                //eliminar
+                for (let index = 0; index < existentesClientes.length; index++) {   //cliente
+                    if(!this.state.clientesSeleccionados.includes(existentesClientes[index])){
+                        Axios.delete(`http://localhost:8080/api/encargadosubproyecto/eliminar/${originalClientes[index].id_encargadoSubProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
+                    }
+                }
+                for (let index = 0; index < existentesAnalistas.length; index++) {   //analista
+                    if(!this.state.analistasSeleccionados.includes(existentesAnalistas[index])){
+                        Axios.delete(`http://localhost:8080/api/encargadosubproyecto/eliminar/${originalAnalistas[index].id_encargadoSubProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
+                    }
+                }
+
+                //agregar
+                for (let index=0; index<this.state.clientesSeleccionados.length; index++) { //cliente
+                    if(!existentesClientes.includes(this.state.clientesSeleccionados[index])){
+                        Axios.post("http://localhost:8080/api/encargadosubproyecto/guardar",{
+                            id_subProyecto: id_subProyecto,
+                            id_usuario: this.state.clientesSeleccionados[index],
+                        }, {headers: {"Authorization": `Bearer ${token}`}})
+                    }
+                }
+                for (let index=0; index<this.state.analistasSeleccionados.length; index++) { //analista
+                    if(!existentesAnalistas.includes(this.state.analistasSeleccionados[index])){
+                        Axios.post("http://localhost:8080/api/encargadosubproyecto/guardar",{
+                            id_subProyecto: id_subProyecto,
+                            id_usuario: this.state.analistasSeleccionados[index],
+                        }, {headers: {"Authorization": `Bearer ${token}`}})
+                    }
+                }
+
+                this.setState({
+                    msj_nombre_subp: "",
+                    msj_fechaInicio: "",
+                    msj_tipo_subp: "",
+                    msj_lider_subp: "",
+                    msj_cliente: "",
+                    msj_analista: "",
+                    clientesSeleccionados: [],
+                    analistasSeleccionados: []
+                });
+            })
+        }
+    }
+
+    insertar_usuariosSubProyecto = async (id_subProyecto) => {
+        const token = localStorage.getItem('token');
+        for (let i = 0; i < this.state.clientesSeleccionados.length; i++) {
+            await axios.post("http://localhost:8080/api/encargadosubproyecto/guardar",{id_subProyecto: id_subProyecto, id_usuario: this.state.clientesSeleccionados[i]},{headers: {"Authorization": `Bearer  ${token}`}})        
+        }
+
+        for (let index = 0; index < this.state.analistasSeleccionados.length; index++) { 
+            await axios.post("http://localhost:8080/api/encargadosubproyecto/guardar",{id_subProyecto: id_subProyecto, id_usuario: this.state.analistasSeleccionados[index]},{headers: {"Authorization": `Bearer  ${token}`}})                   
+        }
+        this.setState({clientesSeleccionados: [], analistasSeleccionados: []});
+    }
+
+    cerrarModal = () => {
+        (this.props.estadoInsertar) ? this.props.cambiarEstadoInsertar() : this.props.cambiarEstadoEditar(); 
+        this.setState({
+            msj_nombre_subp: "",
+            msj_fechaInicio: "",
+            msj_tipo_subp: "",
+            msj_lider_subp: "",
+            msj_cliente: "",
+            msj_analista: "",
+            analistasSeleccionados: [],
+            clientesSeleccionados: []
+        });
+    }
+
     changeHandler = async (e) => {
         await this.setState({
             subProyecto : {
               ...this.state.subProyecto, [e.target.name]: e.target.value
             }
         });
+    }
+
+    modalClientesAsociados=async()=>{
+        await this.setState({modalClientesAsociados: !this.state.modalClientesAsociados});
+    }
+
+    insertarCliente=(cliente)=>{
+        this.setState({
+            clientesSeleccionados: [ ...this.state.clientesSeleccionados, cliente],
+        });
+    }
+
+    eliminarCliente=(cliente)=>{
+        const filtrado = this.state.clientesSeleccionados.filter(item => item!==cliente);        
+        this.setState({
+            clientesSeleccionados : filtrado
+        });
+    }
+
+    insertarClientes=async(nuevos_clientes)=>{
+        await this.setState({clientesSeleccionados: nuevos_clientes});
+    }
+
+    insertarAnalista=(analista)=>{
+        this.setState({
+            analistasSeleccionados: [ ...this.state.analistasSeleccionados, analista],
+        });
+    }
+
+    eliminarAnalista=(analista)=>{
+        const filtrado = this.state.analistasSeleccionados.filter(item => item!==analista);        
+        this.setState({
+            analistasSeleccionados : filtrado
+        });
+    }
+
+    insertarAnalistas=async(nuevos_analistas)=>{
+        await this.setState({analistasSeleccionados: nuevos_analistas});
+    }
+
+    modalAnalistasAsociados=async()=>{
+        await this.setState({modalAnalistasAsociados: !this.state.modalAnalistasAsociados});
     }
     
     render(){
@@ -218,22 +304,63 @@ export default class subProyectoModal extends Component {
                                 {this.state.msj_nombre_subp}
                             </div>
                             <br/>
-                            <ChipsSubProyectoUsuario
-                                tipo="Clientes"
-                                usuarios = {this.state.clientes}
-                                ingresarChip = {this.insertarChip}
-                                eliminarChip = {this.eliminarChip}
-                                id_subProyecto = {this.state.subProyecto.id_subProyecto}
-                            />
+
+                            <label htmlFor="id_usuario">Clientes Asociados</label>
+                            <div className="areaCrear2">
+                                <div className="col-8" style={{display:'flow-root', paddingLeft: '0'}}>
+                                    <ChipsClientes
+                                        id_subproyecto = {this.state.subProyecto.id_subProyecto}
+                                        insertarChip = {this.insertarCliente}
+                                        eliminarChip = {this.eliminarCliente}
+                                        clientes = {this.state.usuarios.filter(usuario => usuario.tipo === "cliente")}
+                                        seleccionados = {this.state.clientesSeleccionados}
+                                    />
+                                </div>
+                                <div className="col-4 cont-boton-prop">
+                                    <button className="btn btn-success btn-block" onClick={()=>{this.modalClientesAsociados(); this.setState({msj_cliente:""});}}>Seleccionar</button>
+                                </div>
+
+                                <SeleccionClientes
+                                    clientes = {this.state.usuarios.filter(usuario => usuario.tipo === "cliente")}
+                                    valoresInput = {this.state.clientesSeleccionados}
+                                    insertarClientes = {this.insertarClientes}
+                                    abrir = {this.state.modalClientesAsociados}
+                                    modalClientesAsociados = {this.modalClientesAsociados}
+                                    usuarios = {this.state.usuarios}
+                                />
+                                <div class="invalid-feedback" style={{display: 'block'}}>
+                                    {this.state.msj_cliente}
+                                </div>
+                            </div>
                             <br/>
-                            <ChipsSubProyectoUsuario
-                                tipo="Analistas"
-                                usuarios = {this.state.usuarios.filter(usuario => usuario.tipo === "analista")}
-                                ingresarChip = {this.insertarChip}
-                                eliminarChip = {this.eliminarChip}
-                                id_subProyecto = {this.state.subProyecto.id_subProyecto}
-                            />
+
+                            <label htmlFor="id_usuario">Analistas Asociados</label>
+                            <div className="areaCrear2">
+                                <div className="col-8" style={{display:'flow-root', paddingLeft: '0'}}>
+                                    <ChipsAnalistas
+                                        id_subproyecto = {this.state.subProyecto.id_subProyecto}
+                                        insertarChip = {this.insertarAnalista}
+                                        eliminarChip = {this.eliminarAnalista}
+                                        analistas = {this.state.usuarios.filter(usuario => usuario.tipo === "analista")}
+                                        seleccionados = {this.state.analistasSeleccionados}
+                                    />
+                                </div>
+                                <div className="col-4 cont-boton-prop">
+                                    <button className="btn btn-success btn-block" onClick={()=>{this.modalAnalistasAsociados(); this.setState({msj_analista:""});}}>Seleccionar</button>
+                                </div>
+                                <SeleccionAnalistas
+                                    analistas = {this.state.usuarios.filter(usuario => usuario.tipo === "analista")}
+                                    valoresInput = {this.state.analistasSeleccionados}
+                                    insertarAnalistas = {this.insertarAnalistas}
+                                    abrir = {this.state.modalAnalistasAsociados}
+                                    modalAnalistasAsociados = {this.modalAnalistasAsociados}
+                                />
+                                <div class="invalid-feedback" style={{display: 'block'}}>
+                                    {this.state.msj_analista}
+                                </div>
+                            </div>
                             <br/>
+
                             <label htmlFor="fecha_inicio">Fecha Inicio</label>
                             <input className={ (this.state.msj_fechaInicio)? "form-control is-invalid" : "form-control"} type="date" name="fecha_inicio" id="fecha_inicio" onChange={this.changeHandler} value={this.state.subProyecto.fecha_inicio} onClick={()=>{this.setState({msj_fechaInicio: ""})}} />
                             <div className="invalid-feedback">

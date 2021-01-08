@@ -2,6 +2,7 @@ import Axios from 'axios';
 import React, { Component } from 'react'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import ChipsProyecto from './ChipsProyecto';
+import SeleccionEmpresas from './SeleccionEmpresas';
 
 class ProyectoModal extends Component{
     state={
@@ -20,7 +21,8 @@ class ProyectoModal extends Component{
         errorInputFechaInicio : '',
         errorInputFechaFin : '',
         errorEmpresasAsociadas : '',
-        errorJefeProyecto : ''
+        errorJefeProyecto : '',
+        modalSeleccionarEmpresas: false
     }
 
     componentWillReceiveProps(next_props){
@@ -50,7 +52,6 @@ class ProyectoModal extends Component{
                 fecha_creacion: new Date().toLocaleString()
             },{headers: {"Authorization": `Bearer ${token}`}})
             .then(response=>{
-                console.log(response); 
                 this.proyectoEmpresa(response.data.id_proyecto);
                 this.props.modalInsertar();
                 this.props.index();
@@ -126,6 +127,7 @@ class ProyectoModal extends Component{
                     },{headers: {"Authorization": `Bearer ${token}`}});
                 }             
             }
+            this.setState({empresasSeleccionadas:[]});
         })
     }
 
@@ -183,14 +185,22 @@ class ProyectoModal extends Component{
         });
     }
 
+    modalEmpresasAsociadas=async()=>{
+        await this.setState({modalSeleccionarEmpresas: !this.state.modalSeleccionarEmpresas});
+    }
+
+    insertarRelaciones=async(nuevas_empresas)=>{
+        await this.setState({empresasSeleccionadas: nuevas_empresas});
+    }
+
     render(){
         return(
             <React.Fragment>
-                <Modal isOpen={this.props.estadoModalInsertar} toggle={()=>{this.initErrores();this.props.modalInsertar()}}>
+                <Modal isOpen={this.props.estadoModalInsertar} toggle={()=>{this.initErrores();this.props.modalInsertar();this.setState({empresasSeleccionadas:[]})}}>
                     <ModalHeader style={{display:'block'}}>
                         <span>{(this.props.tipoModal==='insertar') ? 'Ingresar Proyecto' :'Editar Proyecto'}</span>
 
-                        <span style={{cursor:'pointer', float:'right'}} onClick={()=>{this.initErrores();this.props.modalInsertar()}}>X</span>
+                        <span style={{cursor:'pointer', float:'right'}} onClick={()=>{this.initErrores();this.props.modalInsertar();this.setState({empresasSeleccionadas:[]})}}>X</span>
                     </ModalHeader>
                     <ModalBody>
                         <div className="form-group">
@@ -213,19 +223,33 @@ class ProyectoModal extends Component{
                                 {this.state.errorJefeProyecto}
                             </div>
                             <br/>
-                            <div id="ChipsEmpresasAsociadas" onClick={() => {this.setState({errorEmpresasAsociadas : ''})}}>
-                                <ChipsProyecto
-                                    id_proyecto = {this.state.proyecto.id_proyecto}
+                            <label htmlFor="id_usuario">Empresas Asociadas</label>
+
+                            <div className="areaCrear2">
+                                <div className="col-8" style={{display:'flow-root', paddingLeft: '0'}}>
+                                    <ChipsProyecto
+                                        id_proyecto = {this.state.proyecto.id_proyecto}
+                                        insertarChip = {this.insertarChip}
+                                        eliminarChip = {this.eliminarChip}
+                                        empresas = {this.state.empresas}
+                                        seleccionadas = {this.state.empresasSeleccionadas}
+                                    />
+                                </div>
+                                <div className="col-4 cont-boton-prop">
+                                    <button className="btn btn-success btn-block" onClick={()=>{this.modalEmpresasAsociadas(); this.setState({errorEmpresasAsociadas : ''});} }>Seleccionar</button>
+                                </div>
+                                <SeleccionEmpresas
                                     empresas = {this.state.empresas}
-                                    insertarChip = {this.insertarChip}
-                                    eliminarChip = {this.eliminarChip}
-                                    seleccionadas = {this.state.empresasSeleccionadas}
+                                    valoresInput = {this.state.empresasSeleccionadas}
+                                    insertarRelaciones = {this.insertarRelaciones}
+                                    abrir = {this.state.modalSeleccionarEmpresas}
+                                    modalEmpresasAsociadas = {this.modalEmpresasAsociadas}
                                 />
+                                <div class="invalid-feedback" style={{display: 'block'}}>
+                                    {this.state.errorEmpresasAsociadas}
+                                </div>
                             </div>
-                            <div class="invalid-feedback" style={{display: 'block'}}>
-                                {this.state.errorEmpresasAsociadas}
-                            </div>
-                            <br/>
+
                             <label htmlFor="fecha_inicio">Fecha de Inicio</label>
                             <input className={(this.state.errorInputFechaInicio)? "form-control is-invalid" : "form-control"} type="date" name="fecha_inicio" id="fecha_inicio" onChange={this.changeHandler} value={this.state.proyecto.fecha_inicio} onClick={() => {this.setState({errorInputFechaInicio : ''})}}/>
                             <div class="invalid-feedback" style={{display: 'block'}}>
@@ -251,7 +275,7 @@ class ProyectoModal extends Component{
                                 Actualizar
                             </button>
                         }
-                            <button className="btn btn-danger" onClick={()=>{this.props.modalInsertar();this.initErrores()}}>Cancelar</button>
+                            <button className="btn btn-danger" onClick={()=>{this.props.modalInsertar();this.initErrores();this.setState({empresasSeleccionadas:[]})}}>Cancelar</button>
                     </ModalFooter>
                 </Modal>
             </React.Fragment>

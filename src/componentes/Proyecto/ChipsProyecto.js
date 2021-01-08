@@ -55,24 +55,14 @@ export default class ChipsProyecto extends Component{
         }               
     }
 
+    componentWillReceiveProps(props){
+        this.setState({arregloChips: props.seleccionadas});
+    }
+
     render(){   
         return(
             <React.Fragment>
-                <label style={{marginRight: '10px' }}>Empresas Asociadas</label>
                 <div className="divf">
-                    <div className="input-group">
-                        <select className="form-control" onChange={this.changeInputEmpresa}>
-                            <option value="">Elige una Empresa</option>
-                            {this.props.empresas.map( empresa => {
-                                return(
-                                    <option key={empresa.id_empresa} value={empresa.id_empresa}>{empresa.id_empresa + " - " + empresa.razon_social}</option>
-                                )
-                            }
-                            )}
-                        </select>
-                        <button className="btn btn-primary" style={{width: '20%', float: 'right', marginLeft: '5px'}} onClick={() => this.crearChip()}>Elegir</button>
-                    </div>
-                    
                     <div className="divf" style={{marginTop: '5px', padding: '3px'}}>
                         {this.state.arregloChips.map(id_empresa => {
                             return(

@@ -18,7 +18,7 @@ export default class SeleccionReq extends Component {
     }
 
     BuscarRequerimiento = (e) => {
-        FiltroRequerimientos(this.props.requerimientos, e.target.value,this.CambiarRequerimientos);
+        FiltroRequerimientos(this.props.requerimientos, e.target.value, this.CambiarRequerimientos);
     }
 
     CambiarRequerimientos = (nuevosReq) => {

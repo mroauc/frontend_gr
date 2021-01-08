@@ -40,7 +40,6 @@ class Proyecto extends Component{
         .catch(()=>{
             this.props.history.push('/noAutorizado');
         })
-        
     }
 
     componentDidMount(){

@@ -196,7 +196,6 @@ class Propiedades extends Component{
                                 valoresInput = {this.state.requerimientosSeleccionados}
                             />
                         </div>
-                    
                         <div className="col-3 cont-boton-prop">
                             <button className="btn btn-success btn-block" onClick={()=>this.cambiarEstadoAbrir()}>Asignar Relacion</button>
                         </div>
