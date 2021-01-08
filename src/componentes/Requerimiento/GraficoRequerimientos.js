@@ -164,7 +164,7 @@ class GraficoRequerimiento extends Component{
                         <Link to={"/proyecto/"}><button type="button" className="btn boton"><ArrowBackIcon/> Volver</button></Link>
                     </div>
                     :
-                    <div style={{marginLeft: '110px' , marginTop: '5px'}}>
+                    <div style={{marginLeft: '7.5%' , marginTop: '5px'}}>
                         <Link to={"/subProyecto/"+this.props.match.params.id_proyecto}><button type="button" className="btn boton"><ArrowBackIcon/> Volver</button></Link>
                     </div>        
                 }

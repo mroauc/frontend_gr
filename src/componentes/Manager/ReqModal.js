@@ -234,7 +234,7 @@ class ReqModal extends Component{
                                 {this.state.errorInputCategoria}
                             </div>
                             <br/> 
-                            <label htmlFor="id_template">ID Template</label>
+                            <label htmlFor="id_template">Template</label>
                             <select className={(this.state.errorInputTemplate)? "form-control is-invalid" : "form-control"} name="id_template" id="id_template" value={this.state.requerimiento.id_template} onChange={this.changeHandler} onClick={() => {this.setState({errorInputTemplate : ''})}}>
                                 <option value="" selected>Seleccione un Template</option>
                                 {this.state.templates.map(template=>{

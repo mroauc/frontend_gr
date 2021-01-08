@@ -99,7 +99,7 @@ class IndexDragdrop extends Component{
                         id_subproyecto = {this.props.match.params.id_subproyecto}
                     />
                 </div>
-                <div style={{marginLeft: '110px'}}>
+                <div style={{marginLeft: '0.6%'}}>
                     <Link to={"/requerimiento/"+this.props.match.params.id_subproyecto}><button type="button" className="btn boton"><ArrowBackIcon/> Volver</button> </Link>
                     <button type="button" className="btn boton" onClick={()=>this.cambiarModal()}>Personalizar Fondo</button>
                 </div>

@@ -41,7 +41,12 @@ export default class subProyectoTabla extends Component {
     }
 
     componentWillReceiveProps(next_props){
-        this.setState({subProyectos : next_props.subProyectos});
+        if(localStorage.getItem("tipo") === "lider"){
+            this.setState({subProyectos : next_props.subProyectos.filter(dato => dato.id_usuario.toString() === localStorage.getItem("id"))});
+        }
+        else{
+            this.setState({subProyectos : next_props.subProyectos});
+        }
     }
 
     BuscarSubProyectos = (e) => {
@@ -63,7 +68,7 @@ export default class subProyectoTabla extends Component {
 
         const ultimoDato = this.state.paginaActual * this.state.cantidadPorPagina;
         const primerDato = ultimoDato - this.state.cantidadPorPagina;
-        const datosActuales = this.state.subProyectos.slice(primerDato, ultimoDato);
+        var datosActuales = this.state.subProyectos.slice(primerDato, ultimoDato);
 
         return(
             <div>

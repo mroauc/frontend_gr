@@ -98,7 +98,7 @@ class MatrizRelacionReq extends Component{
                         </table>
                     </div>
                     <br/>
-                    <div style={{marginLeft: '110px'}}>
+                    <div style={{marginLeft: '7.5%'}}>
                         <Link to={"/requerimiento/"+this.props.match.params.id_subproyecto}><button type="button" className="btn boton"><ArrowBackIcon/> Volver</button></Link>
                     </div>
             </React.Fragment>

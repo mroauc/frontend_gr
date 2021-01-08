@@ -2,12 +2,18 @@ import Axios from 'axios';
 import axios from 'axios';
 import React, { Component } from 'react'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+<<<<<<< HEAD
 import ChipsAnalistas from './ChipsAnalistas';
 import ChipsClientes from './ChipsClientes';
 import SeleccionAnalistas from './SeleccionAnalistas';
 import SeleccionClientes from './SeleccionClientes';
+=======
+import ChipsSubProyectoUsuario from './ChipsSubProyectoUsuario';
+import SeleccionLider from './SeleccionLider/SeleccionLider'
+>>>>>>> 3137ea1e9033b01643568c59ed49955baed08875
 
 const url="http://localhost:8080/api/subProyecto/";
+let nombre_usuario = "";
 
 export default class subProyectoModal extends Component {
 
@@ -28,12 +34,16 @@ export default class subProyectoModal extends Component {
         msj_fechaInicio: "",
         msj_tipo_subp: "",
         msj_lider_subp: "",
+<<<<<<< HEAD
         msj_cliente: "",
         msj_analista: "",
         modalClientesAsociados: false,
         clientesSeleccionados: [],
         analistasSeleccionados: [],
         modalAnalistasAsociados: false
+=======
+        estadoModal: false
+>>>>>>> 3137ea1e9033b01643568c59ed49955baed08875
     }
 
     componentDidMount(){
@@ -109,6 +119,10 @@ export default class subProyectoModal extends Component {
             salida=false;
         }
         return salida;
+    }
+
+    cambiarEstadoAbrir = () => {
+        this.setState({estadoModal : !this.state.estadoModal})
     }
 
     guardarSubproyecto=async(subProyecto)=>{
@@ -224,8 +238,23 @@ export default class subProyectoModal extends Component {
         this.setState({clientesSeleccionados: [], analistasSeleccionados: []});
     }
 
+<<<<<<< HEAD
     cerrarModal = () => {
         (this.props.estadoInsertar) ? this.props.cambiarEstadoInsertar() : this.props.cambiarEstadoEditar(); 
+=======
+    buscarNombreUsuario = () => {
+        if(this.state.subProyecto.id_usuario === 0) {
+            nombre_usuario = "Seleccione Lider de Módulo";
+        }
+        else{
+            let usuarioEncontrado = this.state.usuarios.find(usuario => usuario.id === this.state.subProyecto.id_usuario);
+            if(usuarioEncontrado !== undefined)
+                nombre_usuario = usuarioEncontrado.nombre;
+        }
+    } 
+
+    insertarChip=(usuario)=>{
+>>>>>>> 3137ea1e9033b01643568c59ed49955baed08875
         this.setState({
             msj_nombre_subp: "",
             msj_fechaInicio: "",
@@ -250,10 +279,22 @@ export default class subProyectoModal extends Component {
         await this.setState({modalClientesAsociados: !this.state.modalClientesAsociados});
     }
 
+<<<<<<< HEAD
     insertarCliente=(cliente)=>{
+=======
+    cambiarLider = (id_nuevo_lider) => {
+        let copiaSubProyecto = {...this.state.subProyecto};
+        copiaSubProyecto.id_usuario = id_nuevo_lider;
+        this.setState({subProyecto : copiaSubProyecto});
+    }
+
+    cerrarModal = () => {
+        (this.props.estadoInsertar) ? this.props.cambiarEstadoInsertar() : this.props.cambiarEstadoEditar(); 
+>>>>>>> 3137ea1e9033b01643568c59ed49955baed08875
         this.setState({
             clientesSeleccionados: [ ...this.state.clientesSeleccionados, cliente],
         });
+        nombre_usuario="";
     }
 
     eliminarCliente=(cliente)=>{
@@ -289,6 +330,7 @@ export default class subProyectoModal extends Component {
     }
     
     render(){
+        this.buscarNombreUsuario();
         return(
             <React.Fragment>
                 <Modal isOpen = {this.props.estadoInsertar || this.props.estadoEditar} toggle= {this.cerrarModal} >
@@ -371,14 +413,17 @@ export default class subProyectoModal extends Component {
                             <input className="form-control" type="date" name="fecha_fin" id="fecha_fin" onChange={this.changeHandler} value={this.state.subProyecto.fecha_fin}/>
                             <br/>
                             <label htmlFor="id_proyecto">Lider de Módulo</label>
-                            <select name="id_usuario" id="id_usuario" className={ (this.state.msj_lider_subp)? "form-control is-invalid" : "form-control"} value={this.state.subProyecto.id_usuario} onChange={this.changeHandler} onClick={()=>{this.setState({msj_lider_subp: ""})}}>
-                                <option value="">Seleccionar Líder de Módulo</option>
-                                {this.state.lideres_subProyectos.map( lider => {
-                                    return(
-                                    <option key={lider.id} value={lider.id}>{lider.id+" - "+lider.nombre}</option>
-                                    )
-                                })}
-                            </select>
+                            <div style={{display:'flex', alignItems:'center'}}>
+                                <input className="form-control" type="text" style={{width:'75%', display:'inline', marginRight:'5px', backgroundColor:'#fff'}} name="id_usuario" id="id_usuario" value={nombre_usuario} disabled/>
+                                <button className="btn btn-primary" style={{width:'25%', display:'inline'}} onClick={this.cambiarEstadoAbrir}>Elegir Lider</button>
+                            </div>
+                            <SeleccionLider
+                                usuariosLider = {this.state.lideres_subProyectos}
+                                abrir = {this.state.estadoModal}
+                                cambiarEstadoAbrir = {this.cambiarEstadoAbrir}
+                                valorInput = {this.state.subProyecto.id_usuario}
+                                cambiarLider = {this.cambiarLider}
+                            />
                             <div className="invalid-feedback">
                                 {this.state.msj_lider_subp}
                             </div>
