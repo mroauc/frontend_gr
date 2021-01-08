@@ -2,13 +2,10 @@ import Axios from 'axios';
 import React, { Component } from 'react'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import ChipsProyecto from './ChipsProyecto';
-<<<<<<< HEAD
 import SeleccionEmpresas from './SeleccionEmpresas';
-=======
 import SeleccionJefe from './SeleccionJefe/SeleccionJefe';
 
 let nombre_usuario = "";
->>>>>>> 3137ea1e9033b01643568c59ed49955baed08875
 
 class ProyectoModal extends Component{
     state={
@@ -28,11 +25,8 @@ class ProyectoModal extends Component{
         errorInputFechaFin : '',
         errorEmpresasAsociadas : '',
         errorJefeProyecto : '',
-<<<<<<< HEAD
-        modalSeleccionarEmpresas: false
-=======
+        modalSeleccionarEmpresas: false,
         estadoModal : false
->>>>>>> 3137ea1e9033b01643568c59ed49955baed08875
     }
 
     componentWillReceiveProps(next_props){
@@ -195,7 +189,6 @@ class ProyectoModal extends Component{
         });
     }
 
-<<<<<<< HEAD
     modalEmpresasAsociadas=async()=>{
         await this.setState({modalSeleccionarEmpresas: !this.state.modalSeleccionarEmpresas});
     }
@@ -204,7 +197,6 @@ class ProyectoModal extends Component{
         await this.setState({empresasSeleccionadas: nuevas_empresas});
     }
 
-=======
     cambiarEstadoAbrir = () => {
         this.setState({estadoModal : !this.state.estadoModal})
     }
@@ -226,7 +218,6 @@ class ProyectoModal extends Component{
         }
     } 
 
->>>>>>> 3137ea1e9033b01643568c59ed49955baed08875
     render(){
         this.buscarNombreUsuario();
         return(
