@@ -62,6 +62,7 @@ export default class ChipsProyecto extends Component{
     render(){   
         return(
             <React.Fragment>
+<<<<<<< HEAD
                 <div className="divf">
                     <div className="divf" style={{marginTop: '5px', padding: '3px'}}>
                         {this.state.arregloChips.map(id_empresa => {
@@ -73,6 +74,22 @@ export default class ChipsProyecto extends Component{
                     </div>
                 </div>     
             </React.Fragment>         
+=======
+                <div className="divf2">
+                    {this.state.arregloChips.length === 0 ? "No hay empresas seleccionadas." : 
+                        <React.Fragment>
+                            {this.state.arregloChips.map(id_empresa => {
+                                return(
+                                    <Chip key={id_empresa} label={id_empresa} onDelete={() => this.handleDelete(id_empresa)}/>   
+                                )
+                            })
+                            }
+                        </React.Fragment>
+                    }
+                </div>
+            </React.Fragment>
+                      
+>>>>>>> 8daa8cb689dcdd5e64b1d3468933e3f8e83ab0c1
         );
     }
 }

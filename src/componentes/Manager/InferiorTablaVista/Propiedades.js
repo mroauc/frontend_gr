@@ -181,7 +181,7 @@ class Propiedades extends Component{
 
     render(){
         return(
-            <div style={{height: '78%', overflow: 'auto', paddingTop:'10px'}}>
+            <div style={{height: '82%', overflow: 'auto', paddingTop:'10px'}}>
 
                 <label htmlFor="prioridad"><strong>Se relaciona con:</strong></label>
                 <div style={{width: '100%', marginBottom:'15px'}}>

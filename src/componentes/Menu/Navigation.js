@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './Navigation.css';
 import {Link} from 'react-router-dom';
 import ModalCambioContraseña from '../Usuario/cambiarContraseña';
+import logoUCM from '../../imgs/UCM.png'
 
 import Axios from 'axios';
 
@@ -36,7 +37,7 @@ class Navigation extends Component {
         <div className="Navigation">
             <nav className="navbar navbar-expand-lg navi">
                 <div style={{width : '10%', textAlign : 'center', marginRight : '16px'}} onClick={() => {this.seleccionarCelda("Home")}}>
-                    <Link className= {"navbar-brand sistema "+ this.menu("Sistema")} to="/index">Sistema</Link>
+                    <Link className= {"navbar-brand sistema "+ this.menu("Sistema")} to="/index"><img src={logoUCM} style={{width: '80%'}}></img></Link>
                 </div>
                 
 

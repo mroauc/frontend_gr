@@ -259,7 +259,7 @@ class ProyectoModal extends Component{
                             <label htmlFor="id_usuario">Empresas Asociadas</label>
 
                             <div className="areaCrear2">
-                                <div className="col-8" style={{display:'flow-root', paddingLeft: '0'}}>
+                                <div className="col-9" style={{display:'flow-root', paddingLeft: '0', paddingRight:'5px'}}>
                                     <ChipsProyecto
                                         id_proyecto = {this.state.proyecto.id_proyecto}
                                         insertarChip = {this.insertarChip}
@@ -268,8 +268,8 @@ class ProyectoModal extends Component{
                                         seleccionadas = {this.state.empresasSeleccionadas}
                                     />
                                 </div>
-                                <div className="col-4 cont-boton-prop">
-                                    <button className="btn btn-success btn-block" onClick={()=>{this.modalEmpresasAsociadas(); this.setState({errorEmpresasAsociadas : ''});} }>Seleccionar</button>
+                                <div className="col-3 cont-boton-prop">
+                                    <button className="btn btn-primary btn-block" onClick={()=>{this.modalEmpresasAsociadas(); this.setState({errorEmpresasAsociadas : ''});} }>Seleccionar</button>
                                 </div>
                                 <SeleccionEmpresas
                                     empresas = {this.state.empresas}
@@ -282,7 +282,7 @@ class ProyectoModal extends Component{
                                     {this.state.errorEmpresasAsociadas}
                                 </div>
                             </div>
-
+                            <br/>
                             <label htmlFor="fecha_inicio">Fecha de Inicio</label>
                             <input className={(this.state.errorInputFechaInicio)? "form-control is-invalid" : "form-control"} type="date" name="fecha_inicio" id="fecha_inicio" onChange={this.changeHandler} value={this.state.proyecto.fecha_inicio} onClick={() => {this.setState({errorInputFechaInicio : ''})}}/>
                             <div class="invalid-feedback" style={{display: 'block'}}>
@@ -294,7 +294,6 @@ class ProyectoModal extends Component{
                             <div class="invalid-feedback" style={{display: 'block'}}>
                                 {this.state.errorInputFechaFin}
                             </div>
-                            <br/>
                             
                         </div>
                     </ModalBody>

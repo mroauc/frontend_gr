@@ -65,16 +65,18 @@ export default class ChipsAnalistas extends Component{
     render(){   
         return(
             <React.Fragment>
-                <div className="divf">
-                    <div className="divf" style={{marginTop: '5px', padding: '3px'}}>
+                <div className="divf2">
+                    {this.state.arregloChips.length === 0 ? "No hay Analistas Asociados." : 
+                     <React.Fragment>
                         {this.state.arregloChips.map(id_analista => {
                             return(
                                 <Chip key={id_analista} label={id_analista} onDelete={() => this.handleDelete(id_analista)}/>   
                             )
                         })
                         }
-                    </div>
-                </div>     
+                     </React.Fragment>
+                    }
+                </div>
             </React.Fragment>
         );
     }
