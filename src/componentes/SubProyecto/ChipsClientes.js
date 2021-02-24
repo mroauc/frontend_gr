@@ -65,16 +65,18 @@ export default class ChipsClientes extends Component{
     render(){   
         return(
             <React.Fragment>
-                <div className="divf">
-                    <div className="divf" style={{marginTop: '5px', padding: '3px'}}>
-                        {this.state.arregloChips.map(id_cliente => {
-                            return(
-                                <Chip key={id_cliente} label={id_cliente} onDelete={() => this.handleDelete(id_cliente)}/>   
-                            )
-                        })
-                        }
-                    </div>
-                </div>     
+                <div className="divf2">
+                    {this.state.arregloChips.length === 0 ? "No hay Clientes Asociados." :
+                        <React.Fragment>
+                            {this.state.arregloChips.map(id_cliente => {
+                                return(
+                                    <Chip key={id_cliente} label={id_cliente} onDelete={() => this.handleDelete(id_cliente)}/>   
+                                )
+                            })
+                            }
+                        </React.Fragment>
+                    }
+                </div>
             </React.Fragment>
                       
         );

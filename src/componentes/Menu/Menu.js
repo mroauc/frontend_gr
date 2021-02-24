@@ -35,9 +35,7 @@ function Menu(){
         return <Navigation
             celdas = {[
                 {nombre : "Proyectos", url : "/proyecto"},
-                {nombre : "Templates", url : "/templates"},
-                {nombre : "Clientes", url : "/cliente"},
-                {nombre : "Usuarios", url : "/usuario"}
+                {nombre : "Templates", url : "/templates"}
             ]}
         />
     }
@@ -49,7 +47,6 @@ function Menu(){
                 {nombre : "Templates", url : "/templates"},
                 {nombre : "Empresas", url : "/empresa"},
                 {nombre : "Clientes", url : "/cliente"},
-                {nombre : "Usuarios", url : "/usuario"},
                 {nombre : "Envio de Errores", url : "/seleccionarError"}
             ]}
         />

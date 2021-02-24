@@ -1,5 +1,5 @@
-import Axios from 'axios';
 import React, { Component } from 'react';
+import Axios from 'axios';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import Menu from '../Menu/Menu';
 
@@ -31,6 +31,7 @@ export default class DragnDropOrden extends Component {
     }
 
     cambiarPosicion = async (e) => {
+        console.log(e);
         if (!e.destination) return;
         const token = localStorage.getItem('token');
         let copiaElementos = [...this.state.modulos];

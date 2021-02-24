@@ -43,7 +43,6 @@ export default class Cliente extends Component{
     getUsuarioCliente = () => {
         const token = localStorage.getItem('token');
         axios.get("http://localhost:8080/api/usuario/tipo/cliente",{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
-            console.log(response.data);
         })
         .catch(()=>{
             this.props.history.push('/noAutorizado');

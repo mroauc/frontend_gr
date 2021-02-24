@@ -328,7 +328,7 @@ export default class subProyectoModal extends Component {
                     <ModalBody>
                         <div className="form-group">
                             <label htmlFor="subProyecto">Módulo</label>
-                            <input className={ (this.state.msj_nombre_subp)? "form-control is-invalid" : "form-control"} type="text" name="nombre_subProyecto" id="nombre_subProyecto" onChange={this.changeHandler} value={this.state.subProyecto.nombre_subProyecto} onClick={()=>{this.setState({msj_nombre_subp: ""})}} />
+                            <input className={ (this.state.msj_nombre_subp)? "form-control is-invalid" : "form-control"} type="text" name="nombre_subProyecto" id="nombre_subProyecto" placeholder="Ingrese el nombre que desea asignar al módulo" onChange={this.changeHandler} value={this.state.subProyecto.nombre_subProyecto} onClick={()=>{this.setState({msj_nombre_subp: ""})}} />
                             <div className="invalid-feedback">
                                 {this.state.msj_nombre_subp}
                             </div>
@@ -336,7 +336,7 @@ export default class subProyectoModal extends Component {
 
                             <label htmlFor="id_usuario">Clientes Asociados</label>
                             <div className="areaCrear2">
-                                <div className="col-8" style={{display:'flow-root', paddingLeft: '0'}}>
+                                <div className="col-9" style={{display:'flow-root', paddingLeft: '0' , paddingRight: '5px'}}>
                                     <ChipsClientes
                                         id_subproyecto = {this.state.subProyecto.id_subProyecto}
                                         insertarChip = {this.insertarCliente}
@@ -345,8 +345,8 @@ export default class subProyectoModal extends Component {
                                         seleccionados = {this.state.clientesSeleccionados}
                                     />
                                 </div>
-                                <div className="col-4 cont-boton-prop">
-                                    <button className="btn btn-success btn-block" onClick={()=>{this.modalClientesAsociados(); this.setState({msj_cliente:""});}}>Seleccionar</button>
+                                <div className="col-3 cont-boton-prop">
+                                    <button className="btn btn-primary btn-block" onClick={()=>{this.modalClientesAsociados(); this.setState({msj_cliente:""});}}>Seleccionar</button>
                                 </div>
 
                                 <SeleccionClientes
@@ -365,7 +365,7 @@ export default class subProyectoModal extends Component {
 
                             <label htmlFor="id_usuario">Analistas Asociados</label>
                             <div className="areaCrear2">
-                                <div className="col-8" style={{display:'flow-root', paddingLeft: '0'}}>
+                                <div className="col-9" style={{display:'flow-root', paddingLeft: '0', paddingRight: '5px'}}>
                                     <ChipsAnalistas
                                         id_subproyecto = {this.state.subProyecto.id_subProyecto}
                                         insertarChip = {this.insertarAnalista}
@@ -374,8 +374,8 @@ export default class subProyectoModal extends Component {
                                         seleccionados = {this.state.analistasSeleccionados}
                                     />
                                 </div>
-                                <div className="col-4 cont-boton-prop">
-                                    <button className="btn btn-success btn-block" onClick={()=>{this.modalAnalistasAsociados(); this.setState({msj_analista:""});}}>Seleccionar</button>
+                                <div className="col-3 cont-boton-prop">
+                                    <button className="btn btn-primary btn-block" onClick={()=>{this.modalAnalistasAsociados(); this.setState({msj_analista:""});}}>Seleccionar</button>
                                 </div>
                                 <SeleccionAnalistas
                                     analistas = {this.state.usuarios.filter(usuario => usuario.tipo === "analista")}
