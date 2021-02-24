@@ -72,8 +72,7 @@ export default class ChipsProyecto extends Component{
                         }
                     </div>
                 </div>     
-            </React.Fragment>
-                      
+            </React.Fragment>         
         );
     }
 }
