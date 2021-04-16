@@ -7,7 +7,8 @@ import './Comentario.css'
 import ModalComentario from './ComentarioModal'
 import TablaComentario from './ComentarioTabla'
 
-const url="http://localhost:8080/api/comentario/";
+
+const url=localStorage.getItem('url')+"/api/comentario/";
 
 export default class Comentario extends Component {
     
