@@ -7,7 +7,7 @@ import ModalEmpresa from './EmpresaModal'
 import TablaEmpresa from './EmpresaTabla'
 import Menu from '../Menu/Menu'
 
-const url="http://localhost:8080/api/empresa/";
+const url=localStorage.getItem('url')+"/api/empresa/";
 
 export default class Empresa extends Component{
    

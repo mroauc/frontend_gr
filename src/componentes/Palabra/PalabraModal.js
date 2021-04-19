@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { Component } from 'react'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
-const url="http://localhost:8080/api/palabra/";
+const url= localStorage.getItem('url')+"/api/palabra/";
 
 export default class PalabraModal extends Component {
     

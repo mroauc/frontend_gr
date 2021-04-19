@@ -18,7 +18,7 @@ class PropuestaCambio extends Component{
         const token = localStorage.getItem('token');
         this.setState({impactosDir:[], propuestas:[]});
         var existentes = [];
-        await Axios.get(`http://localhost:8080/api/impacto_directo/obtener/requerimiento/${this.props.requerimiento.id_requerimiento}`,{headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem('url')+`/api/impacto_directo/obtener/requerimiento/${this.props.requerimiento.id_requerimiento}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({impactosDir: response.data});
             existentes=response.data;
@@ -29,7 +29,7 @@ class PropuestaCambio extends Component{
     getPropuestas=async(existentes)=>{
         const token = localStorage.getItem('token');
         for (let index = 0; index < existentes.length; index++) {
-            await Axios.get(`http://localhost:8080/api/propuestacambio/${existentes[index].id_propuesta_cambio}`,{headers: {"Authorization": `Bearer ${token}`}})
+            await Axios.get(localStorage.getItem('url')+`/api/propuestacambio/${existentes[index].id_propuesta_cambio}`,{headers: {"Authorization": `Bearer ${token}`}})
             .then(response=>{
                 this.setState({
                     propuestas : [...this.state.propuestas, response.data]
@@ -42,7 +42,7 @@ class PropuestaCambio extends Component{
         const token = localStorage.getItem('token');
         var edit = propuesta;
         edit.estado="APROBADA";
-        await Axios.post('http://localhost:8080/api/propuestacambio/editar/',edit,{headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.post(localStorage.getItem('url')+'/api/propuestacambio/editar/',edit,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.index();
             this.notificar(edit, 'aprobada');
@@ -53,7 +53,7 @@ class PropuestaCambio extends Component{
         const token = localStorage.getItem('token');
         var edit = propuesta;
         edit.estado = "RECHAZADA";
-        await Axios.post('http://localhost:8080/api/propuestacambio/editar',edit,{headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.post(localStorage.getItem('url')+'/api/propuestacambio/editar',edit,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.index();
             this.notificar(edit, 'rechazada');
@@ -62,14 +62,14 @@ class PropuestaCambio extends Component{
 
     notificar=(propuesta, decision)=>{
         const token = localStorage.getItem('token');
-        Axios.get(`http://localhost:8080/api/subProyecto/${propuesta.id_subproyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
+        Axios.get(localStorage.getItem('url')+`/api/subProyecto/${propuesta.id_subproyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
-            Axios.get(`http://localhost:8080/api/proyecto/${response.data.id_proyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
+            Axios.get(localStorage.getItem('url')+`/api/proyecto/${response.data.id_proyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
             .then(response=>{
-                Axios.get(`http://localhost:8080/api/usuario/id/${response.data.id_usuario}`, {headers: {"Authorization": `Bearer ${token}`}})
+                Axios.get(localStorage.getItem('url')+`/api/usuario/id/${response.data.id_usuario}`, {headers: {"Authorization": `Bearer ${token}`}})
                 .then(response=>{
                     console.log(response.data);
-                    Axios.post('http://localhost:8080/api/email/enviar',{
+                    Axios.post(localStorage.getItem('url')+'/api/email/enviar',{
                         email: response.data.email,
                         content: "Se ha tomado una resolución sobre la propuesta de cambio: <strong>"+propuesta.nombre+"</strong>.<br>Dicha propuesta ha sido <strong>"+decision+"</strong><br><br>"+new Date().toLocaleString(),
                         subject: "Resolucion propuesta de cambio "+propuesta.nombre
@@ -81,7 +81,7 @@ class PropuestaCambio extends Component{
 
     finalizar=async(propuesta)=>{
         const token = localStorage.getItem('token');
-        await Axios.delete(`http://localhost:8080/api/propuestacambio/eliminar/${propuesta.id_propuestaCambio}`,{headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.delete(localStorage.getItem('url')+`/api/propuestacambio/eliminar/${propuesta.id_propuestaCambio}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             var impacto_eliminar = this.state.impactosDir.filter(item => item.id_propuesta_cambio === propuesta.id_propuestaCambio);
             this.eliminarSegundaInstancia(impacto_eliminar[0].id_impacto_directo);
@@ -91,7 +91,7 @@ class PropuestaCambio extends Component{
     eliminarSegundaInstancia=async(id_impacto_directo)=>{
         console.log(id_impacto_directo);
         const token = localStorage.getItem('token');
-        await Axios.delete(`http://localhost:8080/api/impacto_directo/eliminar/${id_impacto_directo}`,{headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.delete(localStorage.getItem('url')+`/api/impacto_directo/eliminar/${id_impacto_directo}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.index();
         })

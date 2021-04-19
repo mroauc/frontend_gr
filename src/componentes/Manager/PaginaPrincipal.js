@@ -45,7 +45,7 @@ export default class PaginaPrincipal extends Component{
 
     getIdProyecto=async()=>{
         const token = localStorage.getItem("token");
-        await Axios.get(`http://localhost:8080/api/subProyecto/${this.props.id_subproyecto}`, {headers: {"Authorization": `Bearer  ${token}`}})
+        await Axios.get(localStorage.getItem('url')+`/api/subProyecto/${this.props.id_subproyecto}`, {headers: {"Authorization": `Bearer  ${token}`}})
         .then(response=>{
             this.setState({
                 id_proyecto: response.data.id_proyecto
@@ -57,7 +57,7 @@ export default class PaginaPrincipal extends Component{
         const token = localStorage.getItem("token");
         const ordenamiento = {Alta: 1, Media: 2, Baja: 3};
         
-        await Axios.get(`http://localhost:8080/api/requerimiento/obtener/${this.props.id_subproyecto}`, {headers: {"Authorization": `Bearer  ${token}`}})
+        await Axios.get(localStorage.getItem('url')+`/api/requerimiento/obtener/${this.props.id_subproyecto}`, {headers: {"Authorization": `Bearer  ${token}`}})
         .then(async response => {
             arregloOrdenado = response.data;
         })
@@ -77,7 +77,7 @@ export default class PaginaPrincipal extends Component{
 
     getUsuarios = async () => {
         const token = localStorage.getItem("token");
-        await Axios.get("http://localhost:8080/api/usuario/",{headers: {"Authorization": `Bearer  ${token}`}})
+        await Axios.get(localStorage.getItem('url')+"/api/usuario/",{headers: {"Authorization": `Bearer  ${token}`}})
         .then(response => {
             this.setState({usuarios : response.data});
         })
@@ -85,7 +85,7 @@ export default class PaginaPrincipal extends Component{
 
     getDataUsuarioActividad = async () => {
         const token = localStorage.getItem("token");
-        await Axios.get("http://localhost:8080/api/usuarioactividad/",{headers: {"Authorization": `Bearer  ${token}`}})
+        await Axios.get(localStorage.getItem('url')+"/api/usuarioactividad/",{headers: {"Authorization": `Bearer  ${token}`}})
         .then(response => {
             this.setState({usuario_actividad : response.data});
         });

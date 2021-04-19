@@ -39,11 +39,11 @@ class ModalEliminarReq extends Component{
         var cantidadElementos = this.state.seleccionados.length;
 
         for (let index = 0; index < this.state.seleccionados.length-1; index++) {
-            await Axios.delete(`http://localhost:8080/api/requerimiento/eliminar/${this.state.seleccionados[index]}`, {headers: {"Authorization": `Bearer ${token}`}})
+            await Axios.delete(localStorage.getItem('url')+`/api/requerimiento/eliminar/${this.state.seleccionados[index]}`, {headers: {"Authorization": `Bearer ${token}`}})
         }
 
         if(this.state.seleccionados.length>0){
-            await Axios.delete(`http://localhost:8080/api/requerimiento/eliminar/${this.state.seleccionados[this.state.seleccionados.length-1 ]}`, {headers: {"Authorization": `Bearer ${token}`}})
+            await Axios.delete(localStorage.getItem('url')+`/api/requerimiento/eliminar/${this.state.seleccionados[this.state.seleccionados.length-1 ]}`, {headers: {"Authorization": `Bearer ${token}`}})
             .then(response=>{
                 this.props.cambiarEstado();
                 this.props.funcionGetRequerimientos();

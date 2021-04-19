@@ -8,7 +8,7 @@ import SeleccionAnalistas from './SeleccionAnalistas';
 import SeleccionClientes from './SeleccionClientes';
 import SeleccionLider from './SeleccionLider/SeleccionLider'
 
-const url="http://localhost:8080/api/subProyecto/";
+const url=localStorage.getItem("url")+"/api/subProyecto/";
 let nombre_usuario = "";
 
 export default class subProyectoModal extends Component {
@@ -48,7 +48,7 @@ export default class subProyectoModal extends Component {
 
     getUsuarios = async () => {
         const token = localStorage.getItem('token');
-        await axios.get("http://localhost:8080/api/usuario/",{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
+        await axios.get(localStorage.getItem('url')+"/api/usuario/",{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.setState({
                 usuarios: response.data
             })
@@ -57,7 +57,7 @@ export default class subProyectoModal extends Component {
 
     getLideres = async () => {
         const token = localStorage.getItem('token');
-        await Axios.get('http://localhost:8080/api/usuario/',{headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem('url')+'/api/usuario/',{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 lideres_subProyectos: response.data.filter(usuario => usuario.tipo === "lider" && usuario.estado === "Activo")
@@ -67,7 +67,7 @@ export default class subProyectoModal extends Component {
 
     getClientes = async () => {
         const token = localStorage.getItem('token');
-        await Axios.get(`http://localhost:8080/api/cliente/id_proyecto/${this.props.id_proyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem('url')+`/api/cliente/id_proyecto/${this.props.id_proyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 clientes : response.data
@@ -162,7 +162,7 @@ export default class subProyectoModal extends Component {
                 clientes_string.push(this.state.clientes[index].id.toString());
             }
 
-            Axios.get(`http://localhost:8080/api/encargadosubproyecto/obtener/${id_subProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
+            Axios.get(localStorage.getItem('url')+`/api/encargadosubproyecto/obtener/${id_subProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
             .then(response=>{
                 original = response.data;
                 for (let index=0; index<original.length; index++) {
@@ -178,19 +178,19 @@ export default class subProyectoModal extends Component {
                 //eliminar
                 for (let index = 0; index < existentesClientes.length; index++) {   //cliente
                     if(!this.state.clientesSeleccionados.includes(existentesClientes[index])){
-                        Axios.delete(`http://localhost:8080/api/encargadosubproyecto/eliminar/${originalClientes[index].id_encargadoSubProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
+                        Axios.delete(localStorage.getItem('url')+`/api/encargadosubproyecto/eliminar/${originalClientes[index].id_encargadoSubProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
                     }
                 }
                 for (let index = 0; index < existentesAnalistas.length; index++) {   //analista
                     if(!this.state.analistasSeleccionados.includes(existentesAnalistas[index])){
-                        Axios.delete(`http://localhost:8080/api/encargadosubproyecto/eliminar/${originalAnalistas[index].id_encargadoSubProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
+                        Axios.delete(localStorage.getItem('url')+`/api/encargadosubproyecto/eliminar/${originalAnalistas[index].id_encargadoSubProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
                     }
                 }
 
                 //agregar
                 for (let index=0; index<this.state.clientesSeleccionados.length; index++) { //cliente
                     if(!existentesClientes.includes(this.state.clientesSeleccionados[index])){
-                        Axios.post("http://localhost:8080/api/encargadosubproyecto/guardar",{
+                        Axios.post(localStorage.getItem('url')+"/api/encargadosubproyecto/guardar",{
                             id_subProyecto: id_subProyecto,
                             id_usuario: this.state.clientesSeleccionados[index],
                         }, {headers: {"Authorization": `Bearer ${token}`}})
@@ -198,7 +198,7 @@ export default class subProyectoModal extends Component {
                 }
                 for (let index=0; index<this.state.analistasSeleccionados.length; index++) { //analista
                     if(!existentesAnalistas.includes(this.state.analistasSeleccionados[index])){
-                        Axios.post("http://localhost:8080/api/encargadosubproyecto/guardar",{
+                        Axios.post(localStorage.getItem('url')+"/api/encargadosubproyecto/guardar",{
                             id_subProyecto: id_subProyecto,
                             id_usuario: this.state.analistasSeleccionados[index],
                         }, {headers: {"Authorization": `Bearer ${token}`}})
@@ -222,11 +222,11 @@ export default class subProyectoModal extends Component {
     insertar_usuariosSubProyecto = async (id_subProyecto) => {
         const token = localStorage.getItem('token');
         for (let i = 0; i < this.state.clientesSeleccionados.length; i++) {
-            await axios.post("http://localhost:8080/api/encargadosubproyecto/guardar",{id_subProyecto: id_subProyecto, id_usuario: this.state.clientesSeleccionados[i]},{headers: {"Authorization": `Bearer  ${token}`}})        
+            await axios.post(localStorage.getItem('url')+"/api/encargadosubproyecto/guardar",{id_subProyecto: id_subProyecto, id_usuario: this.state.clientesSeleccionados[i]},{headers: {"Authorization": `Bearer  ${token}`}})        
         }
 
         for (let index = 0; index < this.state.analistasSeleccionados.length; index++) { 
-            await axios.post("http://localhost:8080/api/encargadosubproyecto/guardar",{id_subProyecto: id_subProyecto, id_usuario: this.state.analistasSeleccionados[index]},{headers: {"Authorization": `Bearer  ${token}`}})                   
+            await axios.post(localStorage.getItem('url')+"/api/encargadosubproyecto/guardar",{id_subProyecto: id_subProyecto, id_usuario: this.state.analistasSeleccionados[index]},{headers: {"Authorization": `Bearer  ${token}`}})                   
         }
         this.setState({clientesSeleccionados: [], analistasSeleccionados: []});
     }

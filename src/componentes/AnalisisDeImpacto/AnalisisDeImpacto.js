@@ -25,7 +25,7 @@ function AnalisisImpacto(props) {
 
     const getRequerimiento = async () => {
         const token = localStorage.getItem('token');
-        await Axios.get(`http://localhost:8080/api/impacto_directo/obtener/${props.match.params.id_propuestaCambio}`,{headers: {"Authorization": `Bearer  ${token}`}})
+        await Axios.get(localStorage.getItem('url')+`/api/impacto_directo/obtener/${props.match.params.id_propuestaCambio}`,{headers: {"Authorization": `Bearer  ${token}`}})
         .then(async response => {
             id_req= response.data[0].id_requerimiento;
             getRelacionados();
@@ -37,7 +37,7 @@ function AnalisisImpacto(props) {
         const token = localStorage.getItem('token');
         let requerimientoPrincipal;
         let childrenAux = []; 
-        await Axios.get(`http://localhost:8080/api/requerimiento/${id_req}`,{headers: {"Authorization": `Bearer  ${token}`}})
+        await Axios.get(localStorage.getItem('url')+`/api/requerimiento/${id_req}`,{headers: {"Authorization": `Bearer  ${token}`}})
         .then(response => {
             requerimientoPrincipal = response.data;
         })
@@ -45,10 +45,10 @@ function AnalisisImpacto(props) {
         if(requerimientoPrincipal!==null){
                 data.name = <React.Fragment><tspan alignment-baseline="text-before-edge" x="-23" y="-10">{requerimientoPrincipal.nombre}</tspan> <tspan x="-20" y="14" alignment-baseline="text-before-edge">{requerimientoPrincipal.nombre_descriptivo}</tspan></React.Fragment>;
             historialRequerimientos.push(requerimientoPrincipal.nombre);
-            await Axios.get(`http://localhost:8080/api/relacionrequerimientos/requerimientosAsociados/${id_req}`,{headers: {"Authorization": `Bearer  ${token}`}})
+            await Axios.get(localStorage.getItem('url')+`/api/relacionrequerimientos/requerimientosAsociados/${id_req}`,{headers: {"Authorization": `Bearer  ${token}`}})
             .then(async response => {
                 for (let i = 0; i < response.data.length; i++) {
-                    await Axios.get(`http://localhost:8080/api/relacionrequerimientos/requerimientosAsociados/${response.data[i].id_requerimiento}`,{headers: {"Authorization": `Bearer  ${token}`}})
+                    await Axios.get(localStorage.getItem('url')+`/api/relacionrequerimientos/requerimientosAsociados/${response.data[i].id_requerimiento}`,{headers: {"Authorization": `Bearer  ${token}`}})
                     .then(response2 => {
                         console.log(response2.data);
                         for (let i = 0; i < response2.data.length; i++) {
@@ -71,9 +71,9 @@ function AnalisisImpacto(props) {
 
     const getttIdProyecto=async()=>{
         const token = localStorage.getItem('token');
-        await Axios.get(`http://localhost:8080/api/propuestacambio/${props.match.params.id_propuestaCambio}`, {headers: {"Authorization": `Bearer  ${token}`}})
+        await Axios.get(localStorage.getItem('url')+`/api/propuestacambio/${props.match.params.id_propuestaCambio}`, {headers: {"Authorization": `Bearer  ${token}`}})
         .then(response=>{
-            Axios.get(`http://localhost:8080/api/subProyecto/${response.data.id_subproyecto}`, {headers: {"Authorization": `Bearer  ${token}`}})
+            Axios.get(localStorage.getItem('url')+`/api/subProyecto/${response.data.id_subproyecto}`, {headers: {"Authorization": `Bearer  ${token}`}})
             .then(response=>{
                 setIdproyecto(response.data.id_proyecto);
             })

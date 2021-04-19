@@ -28,7 +28,7 @@ export default class Comentario extends Component{
     getComentarios = async () => {
         const token = localStorage.getItem("token");
         const id_requerimiento = this.props.requerimiento.id_requerimiento;
-        await Axios.get(`http://localhost:8080/api/comentario/requerimiento/${id_requerimiento}`,{headers: {"Authorization": `Bearer  ${token}`}})
+        await Axios.get(localStorage.getItem('url')+`/api/comentario/requerimiento/${id_requerimiento}`,{headers: {"Authorization": `Bearer  ${token}`}})
         .then(response => {
             this.setState({
                 comentarios: response.data
@@ -38,7 +38,7 @@ export default class Comentario extends Component{
 
     getUsuarios = async () => {
         const token = localStorage.getItem("token");
-        await Axios.get('http://localhost:8080/api/usuario/',{headers: {"Authorization": `Bearer  ${token}`}})
+        await Axios.get(localStorage.getItem('url')+'/api/usuario/',{headers: {"Authorization": `Bearer  ${token}`}})
         .then(response => {
             this.setState({
                 usuarios: response.data
@@ -50,7 +50,7 @@ export default class Comentario extends Component{
         const token = localStorage.getItem("token");
 
         if(this.validar()){
-            await Axios.post('http://localhost:8080/api/comentario/guardar',{
+            await Axios.post(localStorage.getItem('url')+'/api/comentario/guardar',{
                 texto: this.state.nuevo_comentario,
                 id_requerimiento: this.props.requerimiento.id_requerimiento,
                 fecha_ingreso: new Date().toLocaleString(),

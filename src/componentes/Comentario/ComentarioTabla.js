@@ -1,5 +1,7 @@
 import Axios from 'axios';
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+
+const url=localStorage.getItem('url')+"/api/comentario/";
 
 export default class ComentarioTabla extends Component {
     
@@ -18,7 +20,7 @@ export default class ComentarioTabla extends Component {
 
     componentDidMount(){
         const token = localStorage.getItem('token');
-        Axios.get('http://localhost:8080/api/usuario/',{headers: {"Authorization": `Bearer ${token}`}})
+        Axios.get(localStorage.getItem("url")+'/api/usuario/',{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 usuarios: response.data

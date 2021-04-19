@@ -17,7 +17,7 @@ export default class ChipsClientes extends Component{
             }
 
             const token = localStorage.getItem('token');
-            Axios.get(`http://localhost:8080/api/encargadosubproyecto/obtener/${this.props.id_subproyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
+            Axios.get(localStorage.getItem("url")+`/api/encargadosubproyecto/obtener/${this.props.id_subproyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
             .then(response=>{
                 for (let index = 0; index < response.data.length; index++) {
                     if(existentes.includes(response.data[index].id_usuario.toString())){

@@ -44,7 +44,7 @@ export default class TablaVista extends Component {
     eliminar=async()=>{
         const token = localStorage.getItem('token');
 
-        await Axios.delete(`http://localhost:8080/api/requerimiento/eliminar/${filtrado[0].id_requerimiento}`, {headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.delete(localStorage.getItem('url')+`/api/requerimiento/eliminar/${filtrado[0].id_requerimiento}`, {headers: {"Authorization": `Bearer ${token}`}})
         .then(async response=>{
             this.setState({modalEliminar: false});
             this.props.eliminarReqDeTab(filtrado[0].nombre);
@@ -63,7 +63,7 @@ export default class TablaVista extends Component {
         let act = requerimiento;
         act.descripcion = this.state.dataRequerimiento;
         const token = localStorage.getItem('token');
-        Axios.post('http://localhost:8080/api/requerimiento/editar/',act, {headers: {"Authorization": `Bearer ${token}`}})
+        Axios.post(localStorage.getItem('url')+'/api/requerimiento/editar/',act, {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.guardarCambioVersion(requerimiento, antigua_descripcion);
             this.mostrarAlerta();
@@ -72,10 +72,10 @@ export default class TablaVista extends Component {
 
     guardarCambioVersion=(oldRequerimiento, antigua)=>{
         const token = localStorage.getItem('token');
-        Axios.get(`http://localhost:8080/api/template/${oldRequerimiento.id_template}`, {headers: {"Authorization": `Bearer ${token}`}})
+        Axios.get(localStorage.getItem('url')+`/api/template/${oldRequerimiento.id_template}`, {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             if(response.data.template !== antigua){    //caso en que ya estaba redactado
-                Axios.post('http://localhost:8080/api/versionanterior/guardar/',{
+                Axios.post(localStorage.getItem('url')+'/api/versionanterior/guardar/',{
                     id_requerimiento: oldRequerimiento.id_requerimiento,
                     nombre_descriptivo: oldRequerimiento.nombre_descriptivo,
                     descripcion: antigua,

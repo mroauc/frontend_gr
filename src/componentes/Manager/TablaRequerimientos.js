@@ -39,7 +39,7 @@ export default class TablaRequerimiento extends Component {
     RequerimientosAnalista = async (props) => {
         const token = localStorage.getItem("token");
         let usuarioActividad = [];
-        await Axios.get(`http://localhost:8080/api/usuarioactividad/`, {headers: {"Authorization": `Bearer  ${token}`}})
+        await Axios.get(localStorage.getItem('url')+`/api/usuarioactividad/`, {headers: {"Authorization": `Bearer  ${token}`}})
         .then(async response => {
             usuarioActividad = response.data
         })

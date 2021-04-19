@@ -19,7 +19,7 @@ export default class Permisos extends Component {
     
     getUsuarios=async()=>{
         const token = localStorage.getItem('token');
-        await Axios.get(`http://localhost:8080/api/usuario/`,{headers: {"Authorization" : `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem('url')+`/api/usuario/`,{headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             this.setState({usuarios: response.data});
         })
@@ -27,7 +27,7 @@ export default class Permisos extends Component {
 
     getUsuariosSubProyecto=async()=>{
         const token = localStorage.getItem('token');
-        await Axios.get(`http://localhost:8080/api/encargadosubproyecto/obtener/${this.props.requerimiento.id_subProyecto}`,{headers: {"Authorization" : `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem('url')+`/api/encargadosubproyecto/obtener/${this.props.requerimiento.id_subProyecto}`,{headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 usuariosSubProyecto: response.data
@@ -37,7 +37,7 @@ export default class Permisos extends Component {
 
     obtenerUsuarioResponsable=async()=>{
         const token = localStorage.getItem("token");
-        await Axios.get(`http://localhost:8080/api/usuarioactividad/id_requerimiento/${this.props.requerimiento.id_requerimiento}`,{headers: {"Authorization" : `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem('url')+`/api/usuarioactividad/id_requerimiento/${this.props.requerimiento.id_requerimiento}`,{headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             this.setState({usuarioResponsable : response.data.id_usuario});
         })
@@ -52,9 +52,9 @@ export default class Permisos extends Component {
 
     asignarUsuarioResponsable = () => {
         const token = localStorage.getItem("token");
-        Axios.get('http://localhost:8080/api/usuarioactividad/id_requerimiento/'+ this.props.requerimiento.id_requerimiento, {headers: {"Authorization" : `Bearer ${token}`}})
+        Axios.get(localStorage.getItem('url')+'/api/usuarioactividad/id_requerimiento/'+ this.props.requerimiento.id_requerimiento, {headers: {"Authorization" : `Bearer ${token}`}})
         .then(response => {
-            Axios.post('http://localhost:8080/api/usuarioactividad/guardar',{
+            Axios.post(localStorage.getItem('url')+'/api/usuarioactividad/guardar',{
                 id_usuarioActividad: response.data.id_usuarioActividad,
                 fecha: response.data.fecha,
                 id_requerimiento: response.data.id_requerimiento,
@@ -70,7 +70,7 @@ export default class Permisos extends Component {
     guardarCambioVersion=(requerimiento, usuarioResponsable)=>{
         if(requerimiento.id_usuario !== usuarioResponsable){
             const token = localStorage.getItem('token');
-            Axios.post('http://localhost:8080/api/versionanterior/guardar/',{
+            Axios.post(localStorage.getItem('url')+'/api/versionanterior/guardar/',{
                 descripcion: requerimiento.descripcion,
                 estado: requerimiento.estado,
                 id_requerimiento: requerimiento.id_requerimiento,
@@ -83,7 +83,7 @@ export default class Permisos extends Component {
             .then(response=>{
                 var newReq = requerimiento;
                 newReq.id_usuario = usuarioResponsable;
-                Axios.post('http://localhost:8080/api/requerimiento/editar/', newReq, {headers: {"Authorization": `Bearer ${token}`}});
+                Axios.post(localStorage.getItem('url')+'/api/requerimiento/editar/', newReq, {headers: {"Authorization": `Bearer ${token}`}});
             });
         }
     }

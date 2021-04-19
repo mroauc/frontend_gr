@@ -25,13 +25,13 @@ class Propiedades extends Component{
         const token = localStorage.getItem('token');
         var subproys = [];
         var reqs = [];
-        await Axios.get(`http://localhost:8080/api/subProyecto/${this.props.requerimiento.id_subProyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem('url')+`/api/subProyecto/${this.props.requerimiento.id_subProyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
         .then(async response=>{
-            await Axios.get(`http://localhost:8080/api/subProyecto/pertenecientes/${response.data.id_proyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
+            await Axios.get(localStorage.getItem('url')+`/api/subProyecto/pertenecientes/${response.data.id_proyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
             .then(async response=>{
                 subproys = response.data;
                 for (let index = 0; index < subproys.length; index++) {                    
-                    await Axios.get(`http://localhost:8080/api/requerimiento/obtener/${subproys[index].id_subProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
+                    await Axios.get(localStorage.getItem('url')+`/api/requerimiento/obtener/${subproys[index].id_subProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
                     .then(async response=>{
                         for (let index = 0; index < response.data.length; index++) {
                             reqs.push(response.data[index]);
@@ -45,7 +45,7 @@ class Propiedades extends Component{
 
     getRequerimiento=async()=>{
         const token = localStorage.getItem('token');
-        await Axios.get(`http://localhost:8080/api/requerimiento/${this.props.requerimiento.id_requerimiento}`, {headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem('url')+`/api/requerimiento/${this.props.requerimiento.id_requerimiento}`, {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             var req = response.data;
             this.setState({
@@ -77,7 +77,7 @@ class Propiedades extends Component{
 
     cargarArreglos=async()=>{
         const token = localStorage.getItem('token');
-        await Axios.get(`http://localhost:8080/api/relacionrequerimientos/obtener/${this.props.requerimiento.id_requerimiento}`,{headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem('url')+`/api/relacionrequerimientos/obtener/${this.props.requerimiento.id_requerimiento}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             for (let index = 0; index < response.data.length; index++) {
                 this.setState({
@@ -107,7 +107,7 @@ class Propiedades extends Component{
 
     guardarCambios=async(atributo)=>{
         const token = localStorage.getItem('token');
-        await Axios.post('http://localhost:8080/api/requerimiento/editar/',this.state.requerimiento, {headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.post(localStorage.getItem('url')+'/api/requerimiento/editar/',this.state.requerimiento, {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.guardarCambioVersion(this.state.oldRequerimiento, response.data, atributo);
             this.mostrarAlerta();
@@ -117,7 +117,7 @@ class Propiedades extends Component{
     guardarCambioVersion=(antiguoRequerimiento, nuevoRequerimiento, atributo)=>{
         if(antiguoRequerimiento !== nuevoRequerimiento){
             const token = localStorage.getItem('token');
-            Axios.post('http://localhost:8080/api/versionanterior/guardar/',{
+            Axios.post(localStorage.getItem('url')+'/api/versionanterior/guardar/',{
                 id_requerimiento: antiguoRequerimiento.id_requerimiento,
                 nombre_descriptivo: antiguoRequerimiento.nombre_descriptivo,
                 descripcion: antiguoRequerimiento.descripcion,
@@ -134,7 +134,7 @@ class Propiedades extends Component{
         const token = localStorage.getItem('token');
         var existentes = [];
         var original = [];
-        Axios.get(`http://localhost:8080/api/relacionrequerimientos/obtener/${this.state.requerimiento.id_requerimiento}`,{headers: {"Authorization": `Bearer ${token}`}})
+        Axios.get(localStorage.getItem('url')+`/api/relacionrequerimientos/obtener/${this.state.requerimiento.id_requerimiento}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             original = response.data;
             for (let index = 0; index < response.data.length; index++) {
@@ -144,7 +144,7 @@ class Propiedades extends Component{
             //eliminar
             for (let index = 0; index < existentes.length; index++) {
                 if(!this.state.requerimientosSeleccionados.includes(existentes[index])){
-                    Axios.delete(`http://localhost:8080/api/relacionrequerimientos/eliminar/${original[index].id_relacionRequerimientos}`,{headers: {"Authorization": `Bearer ${token}`}})
+                    Axios.delete(localStorage.getItem('url')+`/api/relacionrequerimientos/eliminar/${original[index].id_relacionRequerimientos}`,{headers: {"Authorization": `Bearer ${token}`}})
                     .then(response=>{
                     });
                 }
@@ -153,7 +153,7 @@ class Propiedades extends Component{
             //insertar
             for (let index = 0; index < this.state.requerimientosSeleccionados.length; index++) {
                 if(!existentes.includes(this.state.requerimientosSeleccionados[index])){
-                    Axios.post('http://localhost:8080/api/relacionrequerimientos/guardar/',{
+                    Axios.post(localStorage.getItem('url')+'/api/relacionrequerimientos/guardar/',{
                         id_requerimiento_a : this.state.requerimiento.id_requerimiento,
                         id_requerimiento_b : this.state.requerimientosSeleccionados[index]
                     }, {headers: {"Authorization": `Bearer ${token}`}});

@@ -32,7 +32,7 @@ class ModalReq extends Component{
 
     componentDidMount(){
         const token = localStorage.getItem('token');
-        Axios.get('http://localhost:8080/api/template/',{headers: {"Authorization" : `Bearer ${token}`}})
+        Axios.get(localStorage.getItem("url")+'/api/template/',{headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 templates: response.data,
@@ -45,7 +45,7 @@ class ModalReq extends Component{
 
     getUsuarios=()=>{
         const token = localStorage.getItem('token');
-        Axios.get(`http://localhost:8080/api/usuario/`,{headers: {"Authorization" : `Bearer ${token}`}})
+        Axios.get(localStorage.getItem("url")+`/api/usuario/`,{headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             this.setState({usuarios : response.data});
         })
@@ -53,7 +53,7 @@ class ModalReq extends Component{
 
     getUsuariosSubProyecto=async()=>{
         const token = localStorage.getItem('token');
-        await Axios.get(`http://localhost:8080/api/encargadosubproyecto/obtener/${this.props.id_subProyecto}`,{headers: {"Authorization" : `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem("url")+`/api/encargadosubproyecto/obtener/${this.props.id_subProyecto}`,{headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             this.setState({usuariosSubProyecto: response.data});
         });
@@ -61,7 +61,7 @@ class ModalReq extends Component{
 
     getUser=async()=>{
         const token = localStorage.getItem('token');
-        await Axios.get(`http://localhost:8080/api/usuario/${localStorage.getItem('email')}`,{headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem("url")+`/api/usuario/${localStorage.getItem('email')}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             var dataold = this.state.requerimiento;
             dataold.id_usuario = response.data.id;
@@ -124,7 +124,7 @@ class ModalReq extends Component{
     guardar=async()=>{
         const token = localStorage.getItem('token');
         if(this.validar()){
-            await Axios.post('http://localhost:8080/api/requerimiento/guardar/',{
+            await Axios.post(localStorage.getItem("url")+'/api/requerimiento/guardar/',{
                 nombre_descriptivo: this.state.requerimiento.nombre_descriptivo,
                 descripcion: this.state.requerimiento.descripcion,
                 id_usuario: this.state.requerimiento.id_usuario,
@@ -144,14 +144,14 @@ class ModalReq extends Component{
 
     completarDatos=async(requerimiento)=>{
         const token = localStorage.getItem('token');
-        await Axios.get(`http://localhost:8080/api/template/${requerimiento.id_template}`,{headers: {"Authorization" : `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem("url")+`/api/template/${requerimiento.id_template}`,{headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             var req = requerimiento;
             req.nombre = requerimiento.categoria.concat(requerimiento.id_requerimiento);
             req.descripcion = response.data.template;
             this.ejecutarCompletacionDatos(req);
         });
-        await Axios.post('http://localhost:8080/api/usuarioactividad/guardar',{
+        await Axios.post(localStorage.getItem("url")+'/api/usuarioactividad/guardar',{
             fecha: new Date().toLocaleString(),
             id_requerimiento: requerimiento.id_requerimiento,
             id_usuario: this.state.id_usuario_responsable
@@ -160,7 +160,7 @@ class ModalReq extends Component{
 
     ejecutarCompletacionDatos=async(req)=>{
         const token = localStorage.getItem('token');
-        await Axios.post('http://localhost:8080/api/requerimiento/editar/', req, {headers: {"Authorization" : `Bearer ${token}`}})
+        await Axios.post(localStorage.getItem("url")+'/api/requerimiento/editar/', req, {headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             this.props.begin();
             this.props.modalInsertar();
