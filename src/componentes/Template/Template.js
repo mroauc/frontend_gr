@@ -29,7 +29,7 @@ class Template extends Component{
 
     index=()=>{
         const token = localStorage.getItem('token');
-        Axios.get('http://localhost:8080/api/template/', {headers: {"Authorization": `Bearer ${token}`}})
+        Axios.get(localStorage.getItem('url') + '/api/template/', {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 templates: response.data
@@ -95,7 +95,7 @@ class Template extends Component{
 
     eliminar=()=>{
         const token = localStorage.getItem('token');
-        Axios.delete(`http://localhost:8080/api/template/eliminar/${this.state.template.id_template}`,{headers: {"Authorization": `Bearer ${token}`}})
+        Axios.delete(localStorage.getItem('url') + `/api/template/eliminar/${this.state.template.id_template}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({modalEliminar:false, template:'', template:{template:'<figure class="table"><table><tbody><tr id="titulo_t"><td><strong>Ingrese Titulo</strong></td></tr><tr><td>&nbsp;</td></tr></tbody></table></figure>'}});
             this.index();

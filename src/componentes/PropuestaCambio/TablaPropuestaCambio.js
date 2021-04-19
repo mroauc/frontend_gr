@@ -9,7 +9,6 @@ import FiltroPropuestaCambio from './FiltroPropuestaCambio';
 import swal from 'sweetalert';
 import Axios from 'axios';
 
-
 class TablaPropuestaCambio extends Component{
 
     state={
@@ -29,7 +28,7 @@ class TablaPropuestaCambio extends Component{
 
     getImpactosDirectos = async () => {
         const token = localStorage.getItem('token');
-        await Axios.get(`http://localhost:8080/api/impacto_directo/`,{headers: {"Authorization" : `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem('url') + `/api/impacto_directo/`,{headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             this.setState({impactos_directos: response.data});
         })

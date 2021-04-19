@@ -38,7 +38,7 @@ class Requerimiento extends Component{
         const id_subp = this.props.match.params.id_subproyecto;
         const token = localStorage.getItem('token');
 
-        Axios.get(`http://localhost:8080/api/requerimiento/obtener/${id_subp}`,{headers: {"Authorization": `Bearer ${token}`}})
+        Axios.get(localStorage.getItem('url') + `/api/requerimiento/obtener/${id_subp}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 requerimientos: response.data
@@ -52,7 +52,7 @@ class Requerimiento extends Component{
     componentDidMount(){
         this.index();
         const token = localStorage.getItem('token');
-        Axios.get(`http://localhost:8080/api/subProyecto/${this.props.match.params.id_subproyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
+        Axios.get(localStorage.getItem('url') + `/api/subProyecto/${this.props.match.params.id_subproyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 id_proy : response.data.id_proyecto
@@ -62,7 +62,7 @@ class Requerimiento extends Component{
 
     modalInsertar=async()=>{
         const token = localStorage.getItem('token');
-        await Axios.get(`http://localhost:8080/api/usuario/${localStorage.getItem('email')}`,{headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem('url') + `/api/usuario/${localStorage.getItem('email')}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 requerimiento:{
@@ -108,11 +108,11 @@ class Requerimiento extends Component{
 
     eliminar=()=>{
         const token = localStorage.getItem('token');
-        Axios.delete(`http://localhost:8080/api/usuarioactividad/eliminar/id_requerimiento/${this.state.requerimiento.id_requerimiento}`,{headers: {"Authorization": `Bearer ${token}`}})
+        Axios.delete(localStorage.getItem('url') + `/api/usuarioactividad/eliminar/id_requerimiento/${this.state.requerimiento.id_requerimiento}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             console.log(response.data);    
         })
-        Axios.delete(`http://localhost:8080/api/requerimiento/eliminar/${this.state.requerimiento.id_requerimiento}`,{headers: {"Authorization": `Bearer ${token}`}})
+        Axios.delete(localStorage.getItem('url') + `/api/requerimiento/eliminar/${this.state.requerimiento.id_requerimiento}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({modalEliminar:false, requerimiento:'', requerimiento:{prioridad:'Baja',estado:'Creado'},});
             this.index();

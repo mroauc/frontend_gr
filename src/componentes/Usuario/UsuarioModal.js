@@ -41,7 +41,7 @@ class UsuarioModal extends Component{
 
     getUsuarioByEmail = async () => {
         const token = localStorage.getItem('token');
-        await Axios.get(`http://localhost:8080/api/usuario/${this.state.usuario.email}`,{headers: {"Authorization": `Bearer  ${token}`}})
+        await Axios.get(localStorage.getItem('url') + `/api/usuario/${this.state.usuario.email}`,{headers: {"Authorization": `Bearer  ${token}`}})
         .then(async response => {
             await this.setState({
                 cliente:{
@@ -107,7 +107,7 @@ class UsuarioModal extends Component{
     guardar=async()=>{
         if(this.validar()){
             const token = localStorage.getItem('token');
-            await Axios.post('http://localhost:8080/auth/nuevo/',{
+            await Axios.post(localStorage.getItem('url') + '/auth/nuevo/',{
                 nombre: this.state.usuario.nombre,
                 email: this.state.usuario.email,
                 estado: this.state.usuario.estado,
@@ -118,7 +118,7 @@ class UsuarioModal extends Component{
             .then(async response=>{
                 if(this.state.usuario.tipo === "cliente"){
                     await this.getUsuarioByEmail();
-                    await Axios.post("http://localhost:8080/api/cliente/guardar", this.state.cliente,{headers: {"Authorization": `Bearer  ${token}`}})
+                    await Axios.post(localStorage.getItem('url') + "/api/cliente/guardar", this.state.cliente,{headers: {"Authorization": `Bearer  ${token}`}})
                 }
                 this.props.modalInsertar();
                 this.props.index();
@@ -138,8 +138,7 @@ class UsuarioModal extends Component{
     guardarActualizacion=()=>{
         if(this.validar()){
             const token = localStorage.getItem('token');
-            console.log(this.state.usuario);
-            Axios.post('http://localhost:8080/api/usuario/editar/',this.state.usuario,{headers: {"Authorization": `Bearer  ${token}`}})
+            Axios.post(localStorage.getItem('url') + '/api/usuario/editar/',this.state.usuario,{headers: {"Authorization": `Bearer  ${token}`}})
             .then(response=>{
                 this.props.modalInsertar();
                 this.props.index();
@@ -187,8 +186,7 @@ class UsuarioModal extends Component{
     getCliente = (usuario) => {
         if(usuario.tipo === "cliente"){
             const token = localStorage.getItem('token');
-            console.log(usuario);
-            Axios.get(`http://localhost:8080/api/cliente/id_usuario/${usuario.id}`,{headers: {"Authorization": `Bearer  ${token}`}})
+            Axios.get(localStorage.getItem('url') + `/api/cliente/id_usuario/${usuario.id}`,{headers: {"Authorization": `Bearer  ${token}`}})
             .then(response => {
                 this.setState({
                     cliente: response.data
@@ -203,7 +201,7 @@ class UsuarioModal extends Component{
     
     getEmpresas = async () => {
         const token = localStorage.getItem('token');
-        await Axios.get("http://localhost:8080/api/empresa/",{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
+        await Axios.get(localStorage.getItem('url') + "/api/empresa/",{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.setState({
                 empresas: response.data
             })

@@ -35,14 +35,13 @@ class GraficoRequerimiento extends Component{
     componentDidMount(){
         this.index();
         this.getProyecto();
-        console.log(this.state.data)
     }
 
     index=async()=>{
         const token = localStorage.getItem('token');
         const id_proy = this.props.match.params.id_proyecto;
         var subProyectos;
-        await Axios.get(`http://localhost:8080/api/subProyecto/pertenecientes/${id_proy}`,{headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem('url') + `/api/subProyecto/pertenecientes/${id_proy}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             subProyectos = response.data;
         })
@@ -51,12 +50,11 @@ class GraficoRequerimiento extends Component{
 
     getProyecto = async () => {
         const token = localStorage.getItem('token');
-        await Axios.get(`http://localhost:8080/api/proyecto/${this.props.match.params.id_proyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem('url') + `/api/proyecto/${this.props.match.params.id_proyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 proyecto : response.data
             })
-            
         })
     }
 
@@ -64,14 +62,13 @@ class GraficoRequerimiento extends Component{
         const token = localStorage.getItem('token');
         var requerimientos = [];
         for (let index = 0; index < subProyectos.length; index++) {
-            await Axios.get(`http://localhost:8080/api/requerimiento/obtener/${subProyectos[index].id_subProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
+            await Axios.get(localStorage.getItem('url') + `/api/requerimiento/obtener/${subProyectos[index].id_subProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
             .then(response=>{
                 for (let index = 0; index < response.data.length; index++) {
                     requerimientos.push(response.data[index]);                    
                 }
             })
         }
-        console.log(requerimientos);
         this.cargarData(requerimientos);
     }
 

@@ -13,8 +13,7 @@ export default class Login extends Component{
     }
 
     getUsuario = async(token) => {
-        
-        await Axios.get(`http://localhost:8080/api/usuario/${token.email}`,{headers: {"Authorization": `Bearer  ${token.token}`}})
+        await Axios.get(localStorage.getItem('url') + `/api/usuario/${token.email}`,{headers: {"Authorization": `Bearer  ${token.token}`}})
             .then(response=>{
                 localStorage.setItem('id',response.data.id);
                 localStorage.setItem('nombre',response.data.nombre);
@@ -23,7 +22,6 @@ export default class Login extends Component{
     }
 
     signIn = () =>{
-        console.log(localStorage.getItem('url'));
         const data={email: this.email, password: this.password};
 
         const requestInfo={
@@ -33,7 +31,7 @@ export default class Login extends Component{
                 'Content-Type': 'application/json'
             }),
         };
-        fetch('http://localhost:8080/auth/login',requestInfo)
+        fetch(localStorage.getItem('url') + '/auth/login',requestInfo)
         .then(response=>{
             if(response.ok){
                 return response.json()

@@ -8,12 +8,12 @@ async function finalizarGeneracionPDF(subProyectos, id_proyecto){
     var secciones = [];
     var nombreProyecto = '';
 
-    await Axios.get(`http://localhost:8080/api/proyecto/${id_proyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
+    await Axios.get(localStorage.getItem('url') + `/api/proyecto/${id_proyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
     .then(response=>{
         nombreProyecto = response.data.nombre;
     });
 
-    await Axios.get(`http://localhost:8080/api/seccion/id_proyecto/${id_proyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
+    await Axios.get(localStorage.getItem('url') + `/api/seccion/id_proyecto/${id_proyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
     .then(response=>{
         secciones = response.data;
     });
@@ -27,7 +27,7 @@ async function finalizarGeneracionPDF(subProyectos, id_proyecto){
 
     for (let index = 0; index < subProyectos.length; index++) {
         imprimir = imprimir + '<div class="formatoSubproyecto"><div class="cabeceraSubProyecto"><h4>Módulo <strong>'+ subProyectos[index].nombre_subProyecto +'</strong></h4></div>';
-        await Axios.get(`http://localhost:8080/api/requerimiento/obtener/${subProyectos[index].id_subProyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem('url') + `/api/requerimiento/obtener/${subProyectos[index].id_subProyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             var rusa = response.data.filter(req => req.categoria === 'RUSA');
             var rusl = response.data.filter(req => req.categoria === 'RUSL');

@@ -14,7 +14,7 @@ export default class ChipsProyecto extends Component{
     componentDidMount(){
         if(this.props.id_proyecto !== 0){
             const token = localStorage.getItem('token');
-            Axios.get(`http://localhost:8080/api/proyecto_empresa/obtener/${this.props.id_proyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
+            Axios.get(localStorage.getItem('url') + `/api/proyecto_empresa/obtener/${this.props.id_proyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
             .then(response=>{
                 for (let index = 0; index < response.data.length; index++) {
                     this.setState({

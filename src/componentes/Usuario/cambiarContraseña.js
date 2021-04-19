@@ -89,7 +89,7 @@ export default class cambiarContraseña extends Component {
         const token = localStorage.getItem('token');
 
         if(this.validar()){
-            await Axios.post("http://localhost:8080/api/usuario/pass", this.state.datos,{headers: {"Authorization": `Bearer  ${token}`}})
+            await Axios.post(localStorage.getItem('url') + "/api/usuario/pass", this.state.datos,{headers: {"Authorization": `Bearer  ${token}`}})
             .then(response => {
                 this.setState({
                     ok : response.data

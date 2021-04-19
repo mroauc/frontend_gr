@@ -10,7 +10,6 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DragnDropOrden from './DragnDropOrdenModulos';
 
-
 const initSeccion = {
     id_seccion: '',
     nombre_seccion: '',
@@ -45,7 +44,7 @@ export default class ConstruccionDocumento extends Component {
 
     getProyecto = async () => {
         const token = localStorage.getItem('token');
-        await Axios.get(`http://localhost:8080/api/proyecto/${this.props.match.params.id_proyecto}`,{headers: {"Authorization": `Bearer  ${token}`}})
+        await Axios.get(localStorage.getItem('url') + `/api/proyecto/${this.props.match.params.id_proyecto}`,{headers: {"Authorization": `Bearer  ${token}`}})
         .then(async response=>{
             await this.setState({
                 proyecto: response.data
@@ -57,7 +56,7 @@ export default class ConstruccionDocumento extends Component {
 
     getSecciones = async () => {
         const token = localStorage.getItem('token');
-        await Axios.get(`http://localhost:8080/api/seccion/id_proyecto/${this.props.match.params.id_proyecto}`,{headers: {"Authorization": `Bearer  ${token}`}})
+        await Axios.get(localStorage.getItem('url') + `/api/seccion/id_proyecto/${this.props.match.params.id_proyecto}`,{headers: {"Authorization": `Bearer  ${token}`}})
         .then(response=>{
             this.setState({
                 secciones: response.data
@@ -72,7 +71,7 @@ export default class ConstruccionDocumento extends Component {
         
         if(this.validar()){
             let seccionIngresada;
-            await Axios.post("http://localhost:8080/api/seccion/guardar",this.state.newSeccion,{headers: {"Authorization": `Bearer  ${token}`}})
+            await Axios.post(localStorage.getItem('url') + "/api/seccion/guardar",this.state.newSeccion,{headers: {"Authorization": `Bearer  ${token}`}})
             .then(response => {
                 seccionIngresada = response.data;
             })
@@ -90,14 +89,14 @@ export default class ConstruccionDocumento extends Component {
 
     actualizarSeccion = async() =>{
         const token = localStorage.getItem('token');
-        await Axios.post("http://localhost:8080/api/seccion/guardar",this.state.seccion,{headers: {"Authorization": `Bearer  ${token}`}});
+        await Axios.post(localStorage.getItem('url') + "/api/seccion/guardar",this.state.seccion,{headers: {"Authorization": `Bearer  ${token}`}});
         this.alertaActualizar();
         await this.getSecciones();
     }
 
     eliminarSeccion = async() => {
         const token = localStorage.getItem('token');
-        await Axios.delete(`http://localhost:8080/api/seccion/eliminar/${this.state.seccion.id_seccion}`,{headers: {"Authorization": `Bearer  ${token}`}})
+        await Axios.delete(localStorage.getItem('url') + `/api/seccion/eliminar/${this.state.seccion.id_seccion}`,{headers: {"Authorization": `Bearer  ${token}`}})
         .then(response => {
             console.log(response.data);
         })
@@ -157,7 +156,6 @@ export default class ConstruccionDocumento extends Component {
             }
           });
     }
-
     
     render(){
         return(
@@ -218,9 +216,6 @@ export default class ConstruccionDocumento extends Component {
                 </div>
                 <br/>
                 <Link to={"/subProyecto/"+this.props.match.params.id_proyecto} style={{position:'absolute', left:'2%', top:'88px'}}><button type="button" className="btn boton"><ArrowBackIcon/></button></Link>
-                {/* <div style={{marginLeft:'280px'}}>
-                    <Link to={"/subProyecto/"+this.props.match.params.id_proyecto}><button type="button" className="btn boton"><ArrowBackIcon/> Volver</button></Link>
-                </div> */}
             </React.Fragment>
         );
     }

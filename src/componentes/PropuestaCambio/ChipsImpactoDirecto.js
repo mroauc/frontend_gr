@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Chip, Avatar } from '@material-ui/core';
+import { Chip } from '@material-ui/core';
 import Axios from 'axios';
 
 class ChipsImpactoDirecto extends Component{
@@ -19,7 +19,7 @@ class ChipsImpactoDirecto extends Component{
         const token = localStorage.getItem('token');
         const subp = this.props.subProyectos;
         for (let index = 0; index < subp.length; index++) {
-            await Axios.get(`http://localhost:8080/api/requerimiento/obtener/${subp[index].id_subProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
+            await Axios.get(localStorage.getItem('url') + `/api/requerimiento/obtener/${subp[index].id_subProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
             .then(response=>{
                 for (let index = 0; index < response.data.length; index++) {
                     this.setState({
@@ -32,7 +32,7 @@ class ChipsImpactoDirecto extends Component{
 
     obtenerExistentes=async()=>{
         const token = localStorage.getItem('token');
-        await Axios.get(`http://localhost:8080/api/impacto_directo/obtener/${this.props.id_propuestaCambio}`,{headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem('url') + `/api/impacto_directo/obtener/${this.props.id_propuestaCambio}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             for (let index = 0; index < response.data.length; index++) {                
                 this.setState({

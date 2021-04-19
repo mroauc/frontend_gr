@@ -33,7 +33,7 @@ export class ErroresModal extends Component{
     guardar=async()=>{
         if(this.validar()){
             const token = localStorage.getItem('token');
-            await Axios.post('http://localhost:8080/api/errores/guardar/',{
+            await Axios.post(localStorage.getItem('url') + '/api/errores/guardar/',{
                 id_proyecto: this.props.id_proyecto,
                 contenido: this.state.dataError.contenido,
                 id_usuario: this.state.dataError.id_usuario,
@@ -53,17 +53,16 @@ export class ErroresModal extends Component{
     notificar=(id_proyecto, contenido, fecha)=>{
         const token = localStorage.getItem('token');
         var nombre_proy = '';
-        Axios.get(`http://localhost:8080/api/proyecto/${id_proyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
+        Axios.get(localStorage.getItem('url') + `/api/proyecto/${id_proyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             nombre_proy=response.data.nombre;
-            Axios.get(`http://localhost:8080/api/usuario/id/${response.data.id_usuario}`, {headers: {"Authorization": `Bearer ${token}`}})
+            Axios.get(localStorage.getItem('url') + `/api/usuario/id/${response.data.id_usuario}`, {headers: {"Authorization": `Bearer ${token}`}})
             .then(response=>{
-                Axios.post('http://localhost:8080/api/email/enviar',{
+                Axios.post(localStorage.getItem('url') + '/api/email/enviar',{
                     email: response.data.email,
                     content: "Se ha registrado un nuevo error perteneciente al proyecto: <strong>"+nombre_proy+'</strong>.<br><br>El contenido del error es el siguiente: <i>"'+contenido+'"</i><br><br>'+fecha,
                     subject: "Nuevo Error Registrado"
                 }, {headers: {"Authorization": `Bearer ${token}`}});
-                console.log(response.data.email);
             });
         });
     }
@@ -71,7 +70,7 @@ export class ErroresModal extends Component{
     guardarActualizacion=()=>{
         if(this.validar()){
             const token = localStorage.getItem('token');
-            Axios.post('http://localhost:8080/api/errores/editar/',this.state.dataError, {headers: {"Authorization": `Bearer ${token}`}})
+            Axios.post(localStorage.getItem('url') + '/api/errores/editar/',this.state.dataError, {headers: {"Authorization": `Bearer ${token}`}})
             .then(response=>{
                 this.setState({
                     msj_contenido: ""

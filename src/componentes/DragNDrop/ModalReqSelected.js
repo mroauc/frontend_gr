@@ -32,7 +32,7 @@ class ModalReqSelected extends Component{
 
     componentDidMount(){
         const token = localStorage.getItem('token');
-        Axios.get('http://localhost:8080/api/template/',{headers: {"Authorization" : `Bearer ${token}`}})
+        Axios.get(localStorage.getItem('url') + '/api/template/',{headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 templates: response.data,
@@ -45,7 +45,7 @@ class ModalReqSelected extends Component{
 
     getUsuarios=()=>{
         const token = localStorage.getItem('token');
-        Axios.get(`http://localhost:8080/api/usuario/`,{headers: {"Authorization" : `Bearer ${token}`}})
+        Axios.get(localStorage.getItem('url') + `/api/usuario/`,{headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             this.setState({usuarios : response.data});
         })
@@ -53,7 +53,7 @@ class ModalReqSelected extends Component{
 
     getUsuariosSubProyecto=async()=>{
         const token = localStorage.getItem('token');
-        await Axios.get(`http://localhost:8080/api/encargadosubproyecto/obtener/${this.props.id_subProyecto}`,{headers: {"Authorization" : `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem('url') + `/api/encargadosubproyecto/obtener/${this.props.id_subProyecto}`,{headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             this.setState({usuariosSubProyecto: response.data});
         });
@@ -61,7 +61,7 @@ class ModalReqSelected extends Component{
 
     getUser=async()=>{
         const token = localStorage.getItem('token');
-        await Axios.get(`http://localhost:8080/api/usuario/${localStorage.getItem('email')}`,{headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem('url') + `/api/usuario/${localStorage.getItem('email')}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             var dataold = this.state.requerimiento;
             dataold.id_usuario = response.data.id;
@@ -124,7 +124,7 @@ class ModalReqSelected extends Component{
     componentWillReceiveProps(next_props){
         const token = localStorage.getItem('token');
         this.setState({requerimiento: this.props.requerimiento, template_actual: this.props.requerimiento.id_template});
-        Axios.get(`http://localhost:8080/api/usuarioactividad/id_requerimiento/${this.props.requerimiento.id_requerimiento}`, {headers: {"Authorization" : `Bearer ${token}`}})
+        Axios.get(localStorage.getItem('url') + `/api/usuarioactividad/id_requerimiento/${this.props.requerimiento.id_requerimiento}`, {headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             this.setState({id_usuario_responsable: response.data.id_usuario})
         })
@@ -136,9 +136,9 @@ class ModalReqSelected extends Component{
             var actual = this.state.requerimiento;
             actual.nombre = actual.categoria.concat(actual.id_requerimiento);
 
-            Axios.get('http://localhost:8080/api/usuarioactividad/id_requerimiento/'+ actual.id_requerimiento, {headers: {"Authorization" : `Bearer ${token}`}})
+            Axios.get(localStorage.getItem('url') + '/api/usuarioactividad/id_requerimiento/'+ actual.id_requerimiento, {headers: {"Authorization" : `Bearer ${token}`}})
             .then(response => {
-                Axios.post('http://localhost:8080/api/usuarioactividad/guardar',{
+                Axios.post(localStorage.getItem('url') + '/api/usuarioactividad/guardar',{
                     id_usuarioActividad: response.data.id_usuarioActividad,
                     fecha: response.data.fecha,
                     id_requerimiento: actual.id_requerimiento,
@@ -147,13 +147,13 @@ class ModalReqSelected extends Component{
             })
 
             if(this.state.template_actual !== this.state.requerimiento.id_template){
-                await Axios.get(`http://localhost:8080/api/template/${this.state.requerimiento.id_template}`,{headers: {"Authorization" : `Bearer ${token}`}})
+                await Axios.get(localStorage.getItem('url') + `/api/template/${this.state.requerimiento.id_template}`,{headers: {"Authorization" : `Bearer ${token}`}})
                 .then(response=>{
                     actual.descripcion = response.data.template;
                 });
             }
 
-            Axios.post('http://localhost:8080/api/requerimiento/editar/',actual, {headers: {"Authorization" : `Bearer ${token}`}})
+            Axios.post(localStorage.getItem('url') + '/api/requerimiento/editar/',actual, {headers: {"Authorization" : `Bearer ${token}`}})
             .then(response=>{
                 this.props.modalEditar();
                 this.props.begin();

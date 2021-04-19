@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import Menu from '../Menu/Menu';
-
 
 export default class DragnDropOrden extends Component {
 
@@ -13,7 +11,7 @@ export default class DragnDropOrden extends Component {
     getModulos= async ()=>{
         const token = localStorage.getItem('token');
         var copiaModulos = [];
-        await Axios.get(`http://localhost:8080/api/subProyecto/pertenecientes/${this.props.idProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem('url') + `/api/subProyecto/pertenecientes/${this.props.idProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{ 
             copiaModulos = response.data;
         });
@@ -43,7 +41,7 @@ export default class DragnDropOrden extends Component {
 
         for (let i = 0; i < copiaElementos.length; i++) {
             copiaElementos[i].index_documento = i+1;
-            await Axios.post(`http://localhost:8080/api/subProyecto/editar`,copiaElementos[i],{headers: {"Authorization": `Bearer ${token}`}});
+            await Axios.post(localStorage.getItem('url') + `/api/subProyecto/editar`,copiaElementos[i],{headers: {"Authorization": `Bearer ${token}`}});
         }
     }
 
@@ -100,7 +98,6 @@ export default class DragnDropOrden extends Component {
                                         </Draggable>
                                     </div>
                                 )
-                            
                             })}
                             {provided.placeholder}
                             </div>

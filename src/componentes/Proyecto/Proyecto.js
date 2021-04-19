@@ -4,7 +4,6 @@ import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import Menu from '../Menu/Menu';
 import ProyectoModal from './ProyectoModal';
 import TablaProyecto from './TablaProyecto';
-import html2pdf from 'html2pdf.js';
 import './Proyecto.css';
 import '../vistaCrud.css';
 import './TablaPDF.css';
@@ -31,7 +30,7 @@ class Proyecto extends Component{
         const token = localStorage.getItem('token');
         const tipo_usuario = localStorage.getItem("tipo");
         const id_usuario = localStorage.getItem("id");
-        Axios.get(`http://localhost:8080/api/proyecto/id_usuario/${id_usuario}/${tipo_usuario}`, {headers: {"Authorization": `Bearer ${token}`}})
+        Axios.get(localStorage.getItem('url') + `/api/proyecto/id_usuario/${id_usuario}/${tipo_usuario}`, {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 proyectos: response.data
@@ -48,7 +47,7 @@ class Proyecto extends Component{
 
     modalInsertar=async()=>{
         const token = localStorage.getItem('token');
-        await Axios.get(`http://localhost:8080/api/usuario/${localStorage.getItem('email')}`,{headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem('url') + `/api/usuario/${localStorage.getItem('email')}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 proyecto:{id_proyecto: 0, nombre: '', fecha_inicio: new Date().toLocaleDateString('fr-CA'), fecha_fin: '',id_usuario:0, fecha_creacion: ''},
@@ -84,7 +83,7 @@ class Proyecto extends Component{
 
     eliminar=()=>{
         const token = localStorage.getItem('token');
-        Axios.delete(`http://localhost:8080/api/proyecto/eliminar/${this.state.proyecto.id_proyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
+        Axios.delete(localStorage.getItem('url') + `/api/proyecto/eliminar/${this.state.proyecto.id_proyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({modalEliminar:false, proyecto:''});
             this.index();
@@ -94,7 +93,7 @@ class Proyecto extends Component{
     generarPDF=async(id_proyecto)=>{
         const token = localStorage.getItem('token');
         var copiaSubProyectos = [];
-        await Axios.get(`http://localhost:8080/api/subProyecto/pertenecientes/${id_proyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem('url') + `/api/subProyecto/pertenecientes/${id_proyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             copiaSubProyectos = response.data;
         })

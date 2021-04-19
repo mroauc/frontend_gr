@@ -28,7 +28,7 @@ class Errores extends Component{
     index=()=>{
         const token = localStorage.getItem('token');
         const id_proy = this.props.match.params.id_proyecto;
-        Axios.get(`http://localhost:8080/api/errores/pertenecientes/${id_proy}`,{headers: {"Authorization": `Bearer ${token}`}})
+        Axios.get(localStorage.getItem('url') + `/api/errores/pertenecientes/${id_proy}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 errores: response.data
@@ -45,7 +45,7 @@ class Errores extends Component{
 
     modalInsertar=async()=>{
         const token = localStorage.getItem('token');
-        await Axios.get(`http://localhost:8080/api/usuario/${localStorage.getItem('email')}`,{headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem('url') + `/api/usuario/${localStorage.getItem('email')}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 dataError:{id_error: 0, contenido: '', id_usuario:response.data.id,fecha:''}
@@ -81,7 +81,7 @@ class Errores extends Component{
 
     eliminar=()=>{
         const token = localStorage.getItem('token');
-        Axios.delete(`http://localhost:8080/api/errores/eliminar/${this.state.dataError.id_error}`,{headers: {"Authorization": `Bearer ${token}`}})
+        Axios.delete(localStorage.getItem('url') + `/api/errores/eliminar/${this.state.dataError.id_error}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({modalEliminar:false, dataError:''});
             this.index();

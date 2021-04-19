@@ -42,7 +42,7 @@ export class TablaErrores extends Component{
 
     componentDidMount(){
         const token = localStorage.getItem('token');
-        Axios.get('http://localhost:8080/api/usuario/',{headers: {"Authorization": `Bearer ${token}`}})
+        Axios.get(localStorage.getItem('url') + '/api/usuario/',{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 usuarios: response.data

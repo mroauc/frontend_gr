@@ -26,7 +26,7 @@ class Usuario extends Component{
 
     index=async()=>{
         const token = localStorage.getItem('token');
-        await Axios.get('http://localhost:8080/api/usuario/',{headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem('url') + '/api/usuario/',{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 usuarios: response.data
@@ -69,19 +69,18 @@ class Usuario extends Component{
             modalEliminar:true,
             usuario: usuario
         });
-        console.log(usuario);
     }
 
     eliminar= async ()=>{
         const token = localStorage.getItem('token');
         if(this.state.usuario.tipo === 'cliente'){
-            await Axios.get(`http://localhost:8080/api/cliente/id_usuario/${this.state.usuario.id}`, {headers: {"Authorization": `Bearer  ${token}`}})
+            await Axios.get(localStorage.getItem('url') + `/api/cliente/id_usuario/${this.state.usuario.id}`, {headers: {"Authorization": `Bearer  ${token}`}})
             .then(async response => {
-                await Axios.delete(`http://localhost:8080/api/cliente/eliminar/${response.data.id_cliente}`, {headers: {"Authorization": `Bearer  ${token}`}})
+                await Axios.delete(localStorage.getItem('url') + `/api/cliente/eliminar/${response.data.id_cliente}`, {headers: {"Authorization": `Bearer  ${token}`}})
             })
         }
 
-        await Axios.delete(`http://localhost:8080/api/usuario/eliminar/${this.state.usuario.id}`, {headers: {"Authorization": `Bearer  ${token}`}})
+        await Axios.delete(localStorage.getItem('url') + `/api/usuario/eliminar/${this.state.usuario.id}`, {headers: {"Authorization": `Bearer  ${token}`}})
         .then(response=>{
             this.index();
             this.setState({

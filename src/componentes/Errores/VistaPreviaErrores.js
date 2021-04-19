@@ -17,7 +17,7 @@ class VistaPreviaErrores extends Component{
         const token = localStorage.getItem('token');
         const tipo_usuario = localStorage.getItem("tipo");
         const id_usuario = localStorage.getItem("id");
-        await Axios.get(`http://localhost:8080/api/proyecto/id_usuario/${id_usuario}/${tipo_usuario}`, {headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem('url') + `/api/proyecto/id_usuario/${id_usuario}/${tipo_usuario}`, {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 proyectos: response.data

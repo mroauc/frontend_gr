@@ -35,7 +35,7 @@ class ProyectoModal extends Component{
 
     componentDidMount(){
         const token = localStorage.getItem('token');
-        Axios.get('http://localhost:8080/api/empresa/',{headers: {"Authorization": `Bearer ${token}`}})
+        Axios.get(localStorage.getItem('url') + '/api/empresa/',{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 empresas: response.data,
@@ -46,9 +46,8 @@ class ProyectoModal extends Component{
 
     guardar=async()=>{
         const token = localStorage.getItem('token');
-        var id_act_proyecto;
         if(this.validar()){
-            await Axios.post('http://localhost:8080/api/proyecto/guardar/',{
+            await Axios.post(localStorage.getItem('url') + '/api/proyecto/guardar/',{
                 nombre: this.state.proyecto.nombre,
                 fecha_inicio: this.state.proyecto.fecha_inicio,
                 fecha_fin: this.state.proyecto.fecha_fin,
@@ -67,7 +66,7 @@ class ProyectoModal extends Component{
         const token = localStorage.getItem('token');
 
         for (let index = 0; index < this.state.empresasSeleccionadas.length; index++) {
-            await Axios.post('http://localhost:8080/api/proyecto_empresa/guardar/',{
+            await Axios.post(localStorage.getItem('url') + '/api/proyecto_empresa/guardar/',{
                 id_empresa: this.state.empresasSeleccionadas[index],
                 id_proyecto: id_proyecto
             },{headers:{"Authorization": `Bearer ${token}`}})            
@@ -93,7 +92,7 @@ class ProyectoModal extends Component{
     guardarActualizacion=()=>{
         const token = localStorage.getItem('token');
         if(this.validar()){
-            Axios.post('http://localhost:8080/api/proyecto/editar/',this.state.proyecto, {headers: {"Authorization": `Bearer ${token}`}})
+            Axios.post(localStorage.getItem('url') + '/api/proyecto/editar/',this.state.proyecto, {headers: {"Authorization": `Bearer ${token}`}})
             .then(response=>{
                 this.props.modalInsertar();
                 this.props.index();
@@ -106,7 +105,7 @@ class ProyectoModal extends Component{
         const token = localStorage.getItem('token');
         var existentes = [];
         var original = [];
-        Axios.get(`http://localhost:8080/api/proyecto_empresa/obtener/${id_proyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
+        Axios.get(localStorage.getItem('url') + `/api/proyecto_empresa/obtener/${id_proyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             original = response.data;
             for (let index = 0; index < response.data.length; index++) {
@@ -116,7 +115,7 @@ class ProyectoModal extends Component{
             //eliminar
             for (let index = 0; index < existentes.length; index++) {
                 if(!this.state.empresasSeleccionadas.includes(existentes[index])){
-                    Axios.delete(`http://localhost:8080/api/proyecto_empresa/eliminar/${original[index].id_proyecto_empresa}`,{headers: {"Authorization": `Bearer ${token}`}})
+                    Axios.delete(localStorage.getItem('url') + `/api/proyecto_empresa/eliminar/${original[index].id_proyecto_empresa}`,{headers: {"Authorization": `Bearer ${token}`}})
                     .then(response=>{
                     });
                 } 
@@ -125,7 +124,7 @@ class ProyectoModal extends Component{
             //insertar
             for (let index = 0; index < this.state.empresasSeleccionadas.length; index++) {
                 if(!existentes.includes(this.state.empresasSeleccionadas[index])){
-                    Axios.post('http://localhost:8080/api/proyecto_empresa/guardar/',{
+                    Axios.post(localStorage.getItem('url') + '/api/proyecto_empresa/guardar/',{
                         id_empresa: this.state.empresasSeleccionadas[index],
                         id_proyecto: id_proyecto,
                     },{headers: {"Authorization": `Bearer ${token}`}});
@@ -182,7 +181,7 @@ class ProyectoModal extends Component{
 
     getJefesProyectos=async()=>{
         const token = localStorage.getItem('token');
-        await Axios.get('http://localhost:8080/api/usuario/',{headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem('url') + '/api/usuario/',{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 jefes_proyectos: response.data.filter(usuario => usuario.tipo === "jefe" && usuario.estado === "Activo")

@@ -6,6 +6,7 @@ import 'bootstrap/dist/js/bootstrap';
 class App extends Component {
   render(){
     localStorage.setItem('url',"104.236.118.82:8080");
+    // localStorage.setItem('url', "http://localhost:8080");
     return (
       
       <div className="App">

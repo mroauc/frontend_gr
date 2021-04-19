@@ -17,7 +17,7 @@ class RelacionRequerimientosModal extends Component{
 
     guardar=async()=>{
         const token = localStorage.getItem('token');
-        await Axios.post('http://localhost:8080/api/relacionrequerimientos/guardar/',{
+        await Axios.post(localStorage.getItem('url') + '/api/relacionrequerimientos/guardar/',{
             id_requerimiento_a: this.state.relacion.id_requerimiento_a,
             id_requerimiento_b: this.state.relacion.id_requerimiento_b
         },{headers: {"Authorization": `Bearer ${token}`}})
@@ -29,7 +29,7 @@ class RelacionRequerimientosModal extends Component{
 
     guardarActualizacion=()=>{
         const token = localStorage.getItem('token');
-        Axios.post('http://localhost:8080/api/relacionrequerimientos/editar/',this.state.relacion,{headers: {"Authorization": `Bearer ${token}`}})
+        Axios.post(localStorage.getItem('url') + '/api/relacionrequerimientos/editar/',this.state.relacion,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.props.modalInsertar();
             this.props.index();

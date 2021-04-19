@@ -21,7 +21,7 @@ class IndexDragdrop extends Component{
 
     cargarColor=async()=>{
         const token = localStorage.getItem('token');
-        await Axios.get(`http://localhost:8080/api/usuario/${localStorage.getItem('email')}`,{headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem('url') + `/api/usuario/${localStorage.getItem('email')}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({user: response.data});
             if(response.data.color_vistaDrag !== null){
@@ -42,7 +42,7 @@ class IndexDragdrop extends Component{
             divPrincipal.style.backgroundColor = this.state.colorSeleccionado;
             var usr = this.state.user;
             usr.color_vistaDrag = this.state.colorSeleccionado;
-            Axios.post('http://localhost:8080/api/usuario/editar/',usr, {headers: {"Authorization": `Bearer ${token}`}});
+            Axios.post(localStorage.getItem('url') + '/api/usuario/editar/',usr, {headers: {"Authorization": `Bearer ${token}`}});
             this.setState({colorSeleccionado: ''});
         }
         this.cambiarModal();

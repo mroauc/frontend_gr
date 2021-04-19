@@ -33,7 +33,7 @@ class RequerimientoModal extends Component{
 
     componentDidMount(){
         const token = localStorage.getItem('token');
-        Axios.get('http://localhost:8080/api/template/',{headers: {"Authorization" : `Bearer ${token}`}})
+        Axios.get(localStorage.getItem('url') + '/api/template/',{headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 templates: response.data
@@ -47,7 +47,7 @@ class RequerimientoModal extends Component{
         this.setState({requerimiento: this.props.requerimiento, template_actual: this.props.requerimiento.id_template});
         const token = localStorage.getItem("token");
         if(this.props.requerimiento.id_requerimiento !== undefined){
-            Axios.get('http://localhost:8080/api/usuarioactividad/id_requerimiento/'+this.props.requerimiento.id_requerimiento,{headers: {"Authorization" : `Bearer ${token}`}})
+            Axios.get(localStorage.getItem('url') + '/api/usuarioactividad/id_requerimiento/'+this.props.requerimiento.id_requerimiento,{headers: {"Authorization" : `Bearer ${token}`}})
             .then(response=>{
                 this.setState({
                     id_usuario_responsable : response.data.id_usuario
@@ -101,7 +101,7 @@ class RequerimientoModal extends Component{
     guardar=async()=>{
         const token = localStorage.getItem('token');
         if(this.validar()){
-            await Axios.post('http://localhost:8080/api/requerimiento/guardar/',{
+            await Axios.post(localStorage.getItem('url') + '/api/requerimiento/guardar/',{
                 nombre_descriptivo: this.state.requerimiento.nombre_descriptivo,
                 descripcion: this.state.requerimiento.descripcion,
                 id_usuario: this.state.requerimiento.id_usuario,
@@ -122,7 +122,7 @@ class RequerimientoModal extends Component{
     completarDatos=(requerimiento)=>{
         const token = localStorage.getItem('token');
 
-        Axios.get(`http://localhost:8080/api/template/${requerimiento.id_template}`,{headers: {"Authorization" : `Bearer ${token}`}})
+        Axios.get(localStorage.getItem('url') + `/api/template/${requerimiento.id_template}`,{headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             var req = requerimiento;
             req.nombre = requerimiento.categoria.concat(requerimiento.id_requerimiento);
@@ -130,7 +130,7 @@ class RequerimientoModal extends Component{
             this.ejecutarCompletacionDatos(req);
         });
         
-        Axios.post('http://localhost:8080/api/usuarioactividad/guardar',{
+        Axios.post(localStorage.getItem('url') + '/api/usuarioactividad/guardar',{
             fecha: new Date().toLocaleString(),
             id_requerimiento: requerimiento.id_requerimiento,
             id_usuario: this.state.id_usuario_responsable
@@ -139,7 +139,7 @@ class RequerimientoModal extends Component{
 
     ejecutarCompletacionDatos=(req)=>{
         const token = localStorage.getItem('token');
-        Axios.post('http://localhost:8080/api/requerimiento/editar/', req, {headers: {"Authorization" : `Bearer ${token}`}})
+        Axios.post(localStorage.getItem('url') + '/api/requerimiento/editar/', req, {headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             this.props.modalInsertar();
             this.props.index();
@@ -151,9 +151,9 @@ class RequerimientoModal extends Component{
             const actual = this.state.requerimiento;
             actual.nombre = actual.categoria.concat(actual.id_requerimiento);
             const token = localStorage.getItem('token');
-            Axios.get('http://localhost:8080/api/usuarioactividad/id_requerimiento/'+ actual.id_requerimiento, {headers: {"Authorization" : `Bearer ${token}`}})
+            Axios.get(localStorage.getItem('url') + '/api/usuarioactividad/id_requerimiento/'+ actual.id_requerimiento, {headers: {"Authorization" : `Bearer ${token}`}})
             .then(response => {
-                Axios.post('http://localhost:8080/api/usuarioactividad/guardar',{
+                Axios.post(localStorage.getItem('url') + '/api/usuarioactividad/guardar',{
                     id_usuarioActividad: response.data.id_usuarioActividad,
                     fecha: response.data.fecha,
                     id_requerimiento: actual.id_requerimiento,
@@ -162,13 +162,13 @@ class RequerimientoModal extends Component{
             })
 
             if(this.state.template_actual !== this.state.requerimiento.id_template){
-                await Axios.get(`http://localhost:8080/api/template/${this.state.requerimiento.id_template}`,{headers: {"Authorization" : `Bearer ${token}`}})
+                await Axios.get(localStorage.getItem('url') + `/api/template/${this.state.requerimiento.id_template}`,{headers: {"Authorization" : `Bearer ${token}`}})
                 .then(response=>{
                     actual.descripcion = response.data.template;
                 });
             }
             
-            Axios.post('http://localhost:8080/api/requerimiento/editar/',actual, {headers: {"Authorization" : `Bearer ${token}`}})
+            Axios.post(localStorage.getItem('url') + '/api/requerimiento/editar/',actual, {headers: {"Authorization" : `Bearer ${token}`}})
             .then(response=>{
                 this.props.modalInsertar();
                 this.props.index();
@@ -179,7 +179,7 @@ class RequerimientoModal extends Component{
 
     getUsuarios=()=>{
         const token = localStorage.getItem('token');
-        Axios.get(`http://localhost:8080/api/usuario/`,{headers: {"Authorization" : `Bearer ${token}`}})
+        Axios.get(localStorage.getItem('url') + `/api/usuario/`,{headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             this.setState({usuarios : response.data});
         })
@@ -187,7 +187,7 @@ class RequerimientoModal extends Component{
 
     getUsuariosSubProyecto= async ()=>{
         const token = localStorage.getItem('token');
-        await Axios.get(`http://localhost:8080/api/encargadosubproyecto/obtener/${this.props.requerimiento.id_subProyecto}`,{headers: {"Authorization" : `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem('url') + `/api/encargadosubproyecto/obtener/${this.props.requerimiento.id_subProyecto}`,{headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             this.setState({usuariosSubProyecto: response.data})
         })

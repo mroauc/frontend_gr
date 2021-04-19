@@ -54,7 +54,7 @@ class TemplateModal extends Component{
     guardar=async()=>{
         if(this.validar()){
             const token = localStorage.getItem('token');
-            await Axios.post('http://localhost:8080/api/template/guardar/',{
+            await Axios.post(localStorage.getItem('url') + '/api/template/guardar/',{
                 prefijo: this.state.template.prefijo,
                 nombre: this.state.template.nombre,
                 tipo: this.state.template.tipo,
@@ -76,7 +76,7 @@ class TemplateModal extends Component{
     guardarActualizacion=()=>{
         if(this.validar()){
             const token = localStorage.getItem('token');
-            Axios.post('http://localhost:8080/api/template/editar/',this.state.template, {headers: {"Authorization": `Bearer ${token}`}})
+            Axios.post(localStorage.getItem('url') + '/api/template/editar/',this.state.template, {headers: {"Authorization": `Bearer ${token}`}})
             .then(response=>{
                 if(this.state.antiguo_template !== this.state.template.template){
                     this.modificarRequerimientos(response.data.id_template, response.data.template, this.state.antiguo_template);
@@ -92,7 +92,7 @@ class TemplateModal extends Component{
         var nt = nuevoTemplate.replace(/<[^>]+>/g, '');
         var nuevotitulo = nt.replace('&nbsp;','');
 
-        Axios.get(`http://localhost:8080/api/requerimiento/obtener/template/${id_template}`, {headers: {"Authorization": `Bearer ${token}`}})
+        Axios.get(localStorage.getItem('url') + `/api/requerimiento/obtener/template/${id_template}`, {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             for (let index = 0; index < response.data.length; index++) {
                 var requeri = response.data[index];
@@ -100,7 +100,7 @@ class TemplateModal extends Component{
                 var titulo = tl.replace('&nbsp;', '')
                 var nueva_descr = requeri.descripcion.replace(titulo, nuevotitulo);
                 requeri.descripcion = nueva_descr;
-                Axios.post('http://localhost:8080/api/requerimiento/editar/',requeri, {headers: {"Authorization" : `Bearer ${token}`}});
+                Axios.post(localStorage.getItem('url') + '/api/requerimiento/editar/',requeri, {headers: {"Authorization" : `Bearer ${token}`}});
             }
         });
     }

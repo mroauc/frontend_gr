@@ -35,7 +35,7 @@ class RedactarReqModal extends Component{
         actual.descripcion = this.state.dataRequerimiento;
         this.setState({requerimiento: actual});
         const token = localStorage.getItem('token');
-        Axios.post('http://localhost:8080/api/requerimiento/editar/',this.state.requerimiento, {headers: {"Authorization": `Bearer ${token}`}})
+        Axios.post(localStorage.getItem('url') + '/api/requerimiento/editar/',this.state.requerimiento, {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.props.modalRedactar();
             this.props.index();

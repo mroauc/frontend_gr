@@ -38,7 +38,7 @@ class PropuestaCambio extends Component{
     index=async()=>{
         const token = localStorage.getItem('token');
         const id_proy = this.props.match.params.id_proyecto;
-        await Axios.get(`http://localhost:8080/api/subProyecto/pertenecientes/${id_proy}`,{headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem('url') + `/api/subProyecto/pertenecientes/${id_proy}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.cargarPropuestas(response.data);
         })
@@ -52,7 +52,7 @@ class PropuestaCambio extends Component{
         });
 
         for (let index = 0; index < subproy.length; index++) {
-            await Axios.get(`http://localhost:8080/api/propuestacambio/obtener/${subproy[index].id_subProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
+            await Axios.get(localStorage.getItem('url') + `/api/propuestacambio/obtener/${subproy[index].id_subProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
             .then(response=>{
                 var datos = this.state.propuestas;
                 this.setState({
@@ -68,7 +68,7 @@ class PropuestaCambio extends Component{
 
     modalInsertar=async()=>{
         const token = localStorage.getItem('token');
-        await Axios.get(`http://localhost:8080/api/usuario/${localStorage.getItem('email')}`,{headers:{"Authorization": `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem('url') + `/api/usuario/${localStorage.getItem('email')}`,{headers:{"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 propuesta:{
@@ -100,7 +100,7 @@ class PropuestaCambio extends Component{
         });
 
         const token = localStorage.getItem('token');
-        await Axios.get(`http://localhost:8080/api/impacto_directo/obtener/${this.state.propuesta.id_propuestaCambio}`,{headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem('url') + `/api/impacto_directo/obtener/${this.state.propuesta.id_propuestaCambio}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             if(response.data[0] !== undefined){
                 this.setState({
@@ -140,23 +140,20 @@ class PropuestaCambio extends Component{
 
     eliminar= async ()=>{
         const token = localStorage.getItem('token');
-        Axios.delete(`http://localhost:8080/api/propuestacambio/eliminar/${this.state.propuesta.id_propuestaCambio}`,{headers: {"Authorization": `Bearer ${token}`}})
+        Axios.delete(localStorage.getItem('url') + `/api/propuestacambio/eliminar/${this.state.propuesta.id_propuestaCambio}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({modalEliminar:false, propuesta:'', propuesta:{estado:'Pendiente'}});
             this.index();
         })
 
         let impactoOld = '';
-        console.log(this.state.propuesta.id_propuestaCambio);
 
-        await Axios.get(`http://localhost:8080/api/impacto_directo/obtener/${this.state.propuesta.id_propuestaCambio}`,{headers:{"Authorization": `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem('url') + `/api/impacto_directo/obtener/${this.state.propuesta.id_propuestaCambio}`,{headers:{"Authorization": `Bearer ${token}`}})
         .then(response => {
             impactoOld = response.data[0]
         })
 
-        console.log(impactoOld);
-
-        Axios.delete(`http://localhost:8080/api/impacto_directo/eliminar/${impactoOld.id_impacto_directo}`,{headers:{"Authorization": `Bearer ${token}`}})
+        Axios.delete(localStorage.getItem('url') + `/api/impacto_directo/eliminar/${impactoOld.id_impacto_directo}`,{headers:{"Authorization": `Bearer ${token}`}})
     }
 
     render(){

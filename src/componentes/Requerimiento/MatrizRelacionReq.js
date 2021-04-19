@@ -21,7 +21,7 @@ class MatrizRelacionReq extends Component{
         const token = localStorage.getItem('token');
         const id_subProyecto = this.props.match.params.id_subproyecto;
         var requeri = [];
-        await Axios.get(`http://localhost:8080/api/requerimiento/obtener/${id_subProyecto}`,{headers: {"Authorization": `Bearer  ${token}`}})
+        await Axios.get(localStorage.getItem('url') + `/api/requerimiento/obtener/${id_subProyecto}`,{headers: {"Authorization": `Bearer  ${token}`}})
         .then(response=>{
             for (let index = 0; index < response.data.length; index++) {
                 requeri.push(response.data[index]);
@@ -38,7 +38,7 @@ class MatrizRelacionReq extends Component{
         var relacion = [];
         const token = localStorage.getItem('token');
         for (let index = 0; index < this.state.requerimientos.length; index++) {
-            await Axios.get(`http://localhost:8080/api/relacionrequerimientos/obtener/${this.state.requerimientos[index].id_requerimiento}`, {headers: {"Authorization": `Bearer  ${token}`}})
+            await Axios.get(localStorage.getItem('url') + `/api/relacionrequerimientos/obtener/${this.state.requerimientos[index].id_requerimiento}`, {headers: {"Authorization": `Bearer  ${token}`}})
             .then(response=>{
                 relacion.push(response.data);
             })
