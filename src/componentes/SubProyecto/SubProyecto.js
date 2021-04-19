@@ -9,7 +9,7 @@ import Menu from '../Menu/Menu'
 import { Link } from 'react-router-dom'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
-const url="http://localhost:8080/api/subProyecto/";
+const url=localStorage.getItem("url")+"/api/subProyecto/";
 
 export default class SubProyecto extends Component{
 
@@ -38,7 +38,7 @@ export default class SubProyecto extends Component{
 
     getProyectos = async() =>{
         const token = localStorage.getItem('token');
-        await axios.get(`http://localhost:8080/api/proyecto/${this.props.match.params.id_proyecto}`,{headers: {"Authorization": `Bearer  ${token}`}})
+        await axios.get(localStorage.getItem("url")+`/api/proyecto/${this.props.match.params.id_proyecto}`,{headers: {"Authorization": `Bearer  ${token}`}})
         .then(response=>{
             this.setState({
                 nombre_proyecto: response.data.nombre
@@ -50,7 +50,7 @@ export default class SubProyecto extends Component{
         const token = localStorage.getItem('token');
         const id_proy = this.props.match.params.id_proyecto;
 
-        axios.get(`http://localhost:8080/api/subProyecto/pertenecientes/${id_proy}`,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
+        axios.get(url+`pertenecientes/${id_proy}`,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.setState({
                 data: response.data,
                 subProyecto:{
@@ -73,7 +73,7 @@ export default class SubProyecto extends Component{
     cambiarEstadoInsertar = async () => {
         const token = localStorage.getItem('token');
         const id_proy = this.props.match.params.id_proyecto;
-        await axios.get(`http://localhost:8080/api/usuario/${localStorage.getItem('email')}/`,{headers: {"Authorization": `Bearer ${token}`}})
+        await axios.get(localStorage.getItem("url")+`/api/usuario/${localStorage.getItem('email')}/`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 subProyecto: {

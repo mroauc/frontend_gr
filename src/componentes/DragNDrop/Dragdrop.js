@@ -92,7 +92,7 @@ function Dragdrop(id_subproyecto) {
 
   const mostrarRequerimiento=async(nombre)=>{
     const token = localStorage.getItem('token');
-    await Axios.get(`http://localhost:8080/api/requerimiento/nombre/${nombre}`, {headers: {"Authorization": `Bearer  ${token}`}})
+    await Axios.get(localStorage.getItem("url")+`/api/requerimiento/nombre/${nombre}`, {headers: {"Authorization": `Bearer  ${token}`}})
     .then(async response=>{
       await setRequerimiento(response.data);
       mostrar();
@@ -107,7 +107,7 @@ function Dragdrop(id_subproyecto) {
     const token = localStorage.getItem('token');
     var respuesta = [];
 
-    await Axios.get(`http://localhost:8080/api/requerimiento/obtener/${id_subproyecto.id_subproyecto}`, {headers: {"Authorization": `Bearer  ${token}`}})
+    await Axios.get(localStorage.getItem("url")+`/api/requerimiento/obtener/${id_subproyecto.id_subproyecto}`, {headers: {"Authorization": `Bearer  ${token}`}})
     .then(async response => {
       respuesta = response.data; 
       await setRequerimientos(response.data);
@@ -115,7 +115,7 @@ function Dragdrop(id_subproyecto) {
 
     if(localStorage.getItem("tipo") === "analista"){
       let usuarioActividad = [];
-        await Axios.get(`http://localhost:8080/api/usuarioactividad/`, {headers: {"Authorization": `Bearer  ${token}`}})
+        await Axios.get(localStorage.getItem("url")+`/api/usuarioactividad/`, {headers: {"Authorization": `Bearer  ${token}`}})
         .then(async response => {
             usuarioActividad = response.data
         })
@@ -183,11 +183,11 @@ function Dragdrop(id_subproyecto) {
       const token = localStorage.getItem('token');
       var versionAntigua = '';
 
-      await Axios.get(`http://localhost:8080/api/requerimiento/nombre/${removed.content}`, {headers: {"Authorization": `Bearer  ${token}`}})
+      await Axios.get(localStorage.getItem("url")+`/api/requerimiento/nombre/${removed.content}`, {headers: {"Authorization": `Bearer  ${token}`}})
       .then(response=>{
         versionAntigua = response.data;
         versionAntigua.estado = destColumn.name;
-        Axios.post('http://localhost:8080/api/requerimiento/editar/', versionAntigua, {headers: {"Authorization": `Bearer ${token}`}})
+        Axios.post(localStorage.getItem("url")+'/api/requerimiento/editar/', versionAntigua, {headers: {"Authorization": `Bearer ${token}`}})
       })
 
     }

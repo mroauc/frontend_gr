@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import './Cliente.css'
 
-const url="http://localhost:8080/api/cliente/";
+const url=localStorage.getItem('url')+"/api/cliente/";
 
 export default class ClienteModal extends Component {
     
@@ -40,7 +40,7 @@ export default class ClienteModal extends Component {
         if(id){
             const token = localStorage.getItem('token');
             console.log(id);
-            axios.get(`http://localhost:8080/api/usuario/id/${id}`,{headers: {"Authorization": `Bearer  ${token}`}})
+            axios.get(localStorage.getItem('url')+`/api/usuario/id/${id}`,{headers: {"Authorization": `Bearer  ${token}`}})
             .then(response => {
                 this.setState({
                     usuario: response.data
@@ -95,7 +95,7 @@ export default class ClienteModal extends Component {
         var urlGuardar = url + 'guardar';
         if(this.validar()){
             if(this.props.estadoInsertar){
-                await axios.post(`http://localhost:8080/auth/nuevo`, {
+                await axios.post(localStorage.getItem('url')+`/auth/nuevo`, {
                     nombre: this.state.usuario.nombre,
                     email: this.state.usuario.email,
                     estado: this.state.usuario.estado,
@@ -108,7 +108,7 @@ export default class ClienteModal extends Component {
                 })
             }
             else{
-                await axios.post(`http://localhost:8080/api/usuario/editar`, {
+                await axios.post(localStorage.getItem('url')+`/api/usuario/editar`, {
                     id: this.state.usuario.id,
                     email: this.state.usuario.email,
                     estado: this.state.usuario.estado,
@@ -138,7 +138,7 @@ export default class ClienteModal extends Component {
 
     getUsuarioByEmail = async () => {
     const token = localStorage.getItem('token');
-    await axios.get(`http://localhost:8080/api/usuario/${this.state.usuario.email}`,{headers: {"Authorization": `Bearer  ${token}`}})
+    await axios.get(localStorage.getItem('url')+`/api/usuario/${this.state.usuario.email}`,{headers: {"Authorization": `Bearer  ${token}`}})
         .then(async response => {
             await this.setState({
                 cliente:{
@@ -170,7 +170,7 @@ export default class ClienteModal extends Component {
     getEmpresas = async () => {
         const token = localStorage.getItem('token');
 
-        await axios.get("http://localhost:8080/api/empresa/",{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
+        await axios.get(localStorage.getItem('url')+"/api/empresa/",{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.setState({
                 empresas: response.data
             })

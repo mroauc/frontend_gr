@@ -21,7 +21,7 @@ export default class Manager extends Component {
     getRequerimientos=async()=> {
         const token = localStorage.getItem("token");
         const id_subproyecto = this.props.match.params.id_subproyecto;
-        await Axios.get(`http://localhost:8080/api/requerimiento/obtener/${id_subproyecto}`, {headers: {"Authorization": `Bearer  ${token}`}})
+        await Axios.get(localStorage.getItem('url')+`/api/requerimiento/obtener/${id_subproyecto}`, {headers: {"Authorization": `Bearer  ${token}`}})
         .then(async response => {
             await this.setState({
                 requerimientos: response.data

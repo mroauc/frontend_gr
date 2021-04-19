@@ -29,7 +29,7 @@ class VersionesAnteriores extends Component{
 
     obtenerUsuarios=async()=>{
         const token = localStorage.getItem('token');
-        await Axios.get('http://localhost:8080/api/usuario/tipo/analista', {headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem('url')+'/api/usuario/tipo/analista', {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({usuarios: response.data});
         });
@@ -37,7 +37,7 @@ class VersionesAnteriores extends Component{
 
     obtenerVersionesAnteriores=async()=>{
         const token = localStorage.getItem('token');
-        await Axios.get(`http://localhost:8080/api/versionanterior/requerimiento/${this.props.requerimiento.id_requerimiento}`, {headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem('url')+`/api/versionanterior/requerimiento/${this.props.requerimiento.id_requerimiento}`, {headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({versionesAnteriores: response.data});
         });

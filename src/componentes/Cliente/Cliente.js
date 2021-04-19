@@ -7,7 +7,7 @@ import ClienteTabla from './ClienteTabla';
 import ClienteModal from './ClienteModal';
 import Menu from '../Menu/Menu';
 
-const url="http://localhost:8080/api/cliente/";
+const url=localStorage.getItem("url")+"/api/cliente/";
 
 export default class Cliente extends Component{
    
@@ -43,7 +43,7 @@ export default class Cliente extends Component{
 
     getUsuarioCliente = () => {
         const token = localStorage.getItem('token');
-        axios.get("http://localhost:8080/api/usuario/tipo/cliente",{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
+        axios.get(localStorage.getItem('url')+"/api/usuario/tipo/cliente",{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
         })
         .catch(()=>{
             this.props.history.push('/noAutorizado');
@@ -91,10 +91,8 @@ export default class Cliente extends Component{
     eliminarCliente = async () => {
         const token = localStorage.getItem('token');
         var urlEliminar = url + 'eliminar/' + this.state.cliente.id_cliente;
-        console.log(urlEliminar);
-        console.log(this.state.cliente);
 
-        await axios.delete(`http://localhost:8080/api/usuario/eliminar/${this.state.cliente.id_user}`,{headers: {"Authorization": `Bearer  ${token}`}});
+        await axios.delete(localStorage.getItem('url')+`/api/usuario/eliminar/${this.state.cliente.id_user}`,{headers: {"Authorization": `Bearer  ${token}`}});
 
         await axios.delete(urlEliminar,{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.getClientes();

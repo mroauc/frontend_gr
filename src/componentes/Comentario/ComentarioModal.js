@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { Component } from 'react'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
-const url="http://localhost:8080/api/comentario/";
+const url=localStorage.getItem('url')+"/api/comentario/";
 
 export default class ComentarioModal extends Component {
 
@@ -56,7 +56,7 @@ export default class ComentarioModal extends Component {
 
     getRequerimientos = async () => {
         const token = localStorage.getItem('token');
-        await axios.get("http://localhost:8080/api/requerimiento/",{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
+        await axios.get(localStorage.getItem('url')+"/api/requerimiento/",{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.setState({
                 requerimientos: response.data
             })
@@ -66,7 +66,7 @@ export default class ComentarioModal extends Component {
 
     getUsuarios = async () => {
         const token = localStorage.getItem('token');
-        await axios.get("http://localhost:8080/api/usuario/",{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
+        await axios.get(localStorage.getItem('url')+"/api/usuario/",{headers: {"Authorization": `Bearer  ${token}`}}).then(response=>{
             this.setState({
                 usuarios: response.data
             })

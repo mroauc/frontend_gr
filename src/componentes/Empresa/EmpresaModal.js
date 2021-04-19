@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { Component } from 'react'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
-const url="http://localhost:8080/api/empresa/";
+const url=localStorage.getItem('url')+"/api/empresa/";
 
 export default class EmpresaModal extends Component {
     state ={

@@ -10,7 +10,7 @@ import ModalVerPalabra from './ModalVerPalabra'
 import { Link } from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
-const url="http://localhost:8080/api/palabra/";
+const url= localStorage.getItem('url')+"/api/palabra/";
 
 
 export default class Palabra extends Component{

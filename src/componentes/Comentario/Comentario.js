@@ -7,7 +7,6 @@ import './Comentario.css'
 import ModalComentario from './ComentarioModal'
 import TablaComentario from './ComentarioTabla'
 
-
 const url=localStorage.getItem('url')+"/api/comentario/";
 
 export default class Comentario extends Component {
@@ -44,7 +43,7 @@ export default class Comentario extends Component {
 
     cambiarEstadoInsertar = async () => {
         const token = localStorage.getItem('token');
-        await axios.get(`http://localhost:8080/api/usuario/${localStorage.getItem('email')}/`,{headers: {"Authorization": `Bearer ${token}`}})
+        await axios.get(localStorage.getItem('url')+`/api/usuario/${localStorage.getItem('email')}/`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
             this.setState({
                 comentario: {
