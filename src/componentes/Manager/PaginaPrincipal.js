@@ -6,6 +6,7 @@ import './PaginaPrincipal.css';
 import ReqModal from './ReqModal';
 import PaginacionRequerimiento from './PaginacionRequerimiento'
 import ModalEliminarReq from './ModalEliminarReq';
+import ModalInsercionMultiple from './ModalInsercionMultipe';
 
 var arregloOrdenado = [];
 
@@ -16,6 +17,7 @@ export default class PaginaPrincipal extends Component{
         usuario_actividad: [],
         modalInsertar: false,
         modalEliminar: false,
+        modalInsertarVarios: false,
         requerimiento: {
             id_requerimiento: 0,
             nombre: '', 
@@ -120,6 +122,10 @@ export default class PaginaPrincipal extends Component{
         await this.setState({modalInsertar: !this.state.modalInsertar});
     }
 
+    modalInsertarVarios=async()=>{
+        await this.setState({modalInsertarVarios: !this.state.modalInsertarVarios});
+    }
+
     modalEliminar=async()=>{
         await this.setState({modalEliminar: !this.state.modalEliminar});
     }
@@ -147,6 +153,7 @@ export default class PaginaPrincipal extends Component{
                     {(this.accesoUsuario()) ? 
                         <React.Fragment>
                             <button type="button" className="btn boton" onClick={()=>this.modalInsertar()}>Insertar</button> &nbsp;
+                            <button type="button" className="btn boton" onClick={()=>this.modalInsertarVarios()}>Insertar Varios</button> &nbsp;
                             <button type="button" className="btn boton" onClick={()=>this.modalEliminar()}>Eliminar</button> &nbsp;
                         </React.Fragment>
                         : ""
@@ -215,6 +222,15 @@ export default class PaginaPrincipal extends Component{
                     cambiarEstado = {this.modalEliminar}
                     funcionGetRequerimientos = {this.props.funcionGetRequerimientos}
                     actualizarTabla = {this.ordenarArregloReq}
+                />
+
+                <ModalInsercionMultiple
+                    id_subProyecto = {this.props.id_subproyecto}
+                    estadoModalInsertar = {this.state.modalInsertarVarios}
+                    modalInsertar = {this.modalInsertarVarios}
+                    getUsuarios = {this.getUsuarios}
+                    getDataUsuarioActividad = {this.getDataUsuarioActividad}
+                    funcionGetRequerimientos = {this.props.funcionGetRequerimientos}
                 />
 
             </div>

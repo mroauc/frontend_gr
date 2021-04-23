@@ -26,7 +26,12 @@ export default class Cliente extends Component{
 
     componentDidMount(){
         this.getClientes();
-        console.log(localStorage.getItem('url'));
+        this.cargarColor();
+    }
+
+    cargarColor=()=>{
+        var divPrincipal = document.getElementById("principal");
+        divPrincipal.style.backgroundColor = localStorage.getItem('color_bckgr');
     }
 
     getClientes = () => {
@@ -106,6 +111,7 @@ export default class Cliente extends Component{
         return(
             <React.Fragment>
                 <Menu/>
+                <div id="principal" className="contenedorPrincipal">
                 <div className="cliente col-10">
                     <div className="Encabezado"><p>Cliente</p></div>
 
@@ -136,7 +142,7 @@ export default class Cliente extends Component{
                         </ModalFooter>
                     </Modal>
                 </div>
-                    
+                </div>
                    
 
             </React.Fragment>

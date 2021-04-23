@@ -27,6 +27,15 @@ export default class TablaRequerimiento extends Component {
         this.setState({requerimientos : nuevosReq})
     }
 
+    componentDidMount(){
+        this.cargarColor();
+    }
+
+    cargarColor=()=>{
+        var divPrincipal = document.getElementById("principal");
+        divPrincipal.style.backgroundColor = localStorage.getItem('color_bckgr');
+    }
+
     componentWillReceiveProps(next_props){    
         if(localStorage.getItem("tipo") === "analista"){
             this.RequerimientosAnalista(next_props)
@@ -55,7 +64,7 @@ export default class TablaRequerimiento extends Component {
     render(){
         return(
             <div className="col-3" style={{height: '100%', display:'inline-block',padding: 0}}>
-                <div className="tabla-req">
+                <div id="principal" className="tabla-req">
                     <div style={{width:'100%', display:'flex'}}>
                         <input className="form-control form-mio" placeholder="Filtrar" onChange={this.BuscarRequerimiento}></input>
                     </div>

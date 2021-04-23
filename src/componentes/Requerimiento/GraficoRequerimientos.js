@@ -35,6 +35,12 @@ class GraficoRequerimiento extends Component{
     componentDidMount(){
         this.index();
         this.getProyecto();
+        this.cargarColor();
+    }
+
+    cargarColor=()=>{
+        var divPrincipal = document.getElementById("principal");
+        divPrincipal.style.backgroundColor = localStorage.getItem('color_bckgr');
     }
 
     index=async()=>{
@@ -122,11 +128,12 @@ class GraficoRequerimiento extends Component{
         return(
             <React.Fragment>
                 <Menu/>
-                <div className="contenedor-grafico">
+                <div id="principal" className="contenedorPrincipal">
+                <div className="contenedor-grafico" style={{backgroundColor:"white"}}>
                     <div className="titulo-grafico">
                         <label>Requerimientos registrados para el proyecto {this.state.proyecto.nombre}</label>
                     </div>
-                    <div className="contenedor-dos-graficos">
+                    <div className="contenedor-dos-graficos" >
                     <PieChart width={700} height={310}>
                         <Pie
                             data={this.state.data}
@@ -165,6 +172,7 @@ class GraficoRequerimiento extends Component{
                         <Link to={"/subProyecto/"+this.props.match.params.id_proyecto}><button type="button" className="btn boton"><ArrowBackIcon/> Volver</button></Link>
                     </div>        
                 }
+                </div>
             </React.Fragment>
         );
     }

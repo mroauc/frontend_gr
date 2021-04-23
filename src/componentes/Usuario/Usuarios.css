@@ -2,3 +2,8 @@
     margin: 25px auto;
 }
 
+.contenedorPrincipal{
+    display: flex;
+    flex-direction: column;
+    height: 94vh;
+}

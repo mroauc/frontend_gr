@@ -25,6 +25,12 @@ export default class Glosario extends Component {
     
     componentDidMount(){
         this.getGlosarios();
+        this.cargarColor();
+    }
+
+    cargarColor=()=>{
+        var divPrincipal = document.getElementById("principal");
+        divPrincipal.style.backgroundColor = localStorage.getItem('color_bckgr');
     }
     
     getGlosarios = () => {
@@ -91,6 +97,7 @@ export default class Glosario extends Component {
         return(
             <React.Fragment>
                 <Menu/>
+                <div id="principal" className="contenedorPrincipal">
                 <div className="glosario col-10">
                     <div className="Encabezado"><p>Glosario</p></div>
                     <button type="button" class="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Ingresar Glosario</button>
@@ -120,6 +127,7 @@ export default class Glosario extends Component {
                         </ModalFooter>
                     </Modal>
 
+                </div>
                 </div>
             </React.Fragment>
         );

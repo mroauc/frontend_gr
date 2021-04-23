@@ -42,6 +42,12 @@ class Template extends Component{
 
     componentDidMount(){
         this.index();
+        this.cargarColor();
+    }
+
+    cargarColor=()=>{
+        var divPrincipal = document.getElementById("principal");
+        divPrincipal.style.backgroundColor = localStorage.getItem('color_bckgr');
     }
 
     modalInsertar=()=>{
@@ -106,6 +112,7 @@ class Template extends Component{
         return(
             <React.Fragment>
                 <Menu/>
+                <div id="principal" className="contenedorPrincipal">
                 <div className="template col-10">
                 <div className="Encabezado"><p>Templates</p></div>
                 <button type="button" class="btn boton" onClick={() => this.modalInsertar()}>Insertar</button>
@@ -140,6 +147,7 @@ class Template extends Component{
                         <button className="btn btn-secundary" onClick={()=>this.setState({modalEliminar:false})}>No</button>
                     </ModalFooter>
                 </Modal>
+            </div>
             </div>
             </React.Fragment>
         );

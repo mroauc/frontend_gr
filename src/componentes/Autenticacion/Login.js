@@ -18,6 +18,7 @@ export default class Login extends Component{
                 localStorage.setItem('id',response.data.id);
                 localStorage.setItem('nombre',response.data.nombre);
                 localStorage.setItem('tipo', response.data.tipo);
+                localStorage.setItem('color_bckgr',response.data.color_backgr);
         })
     }
 

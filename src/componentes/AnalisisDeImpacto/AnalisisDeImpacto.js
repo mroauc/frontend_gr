@@ -33,7 +33,6 @@ function AnalisisImpacto(props) {
     }
 
     const getRelacionados = async () => {
-        //console.log(id_req);
         const token = localStorage.getItem('token');
         let requerimientoPrincipal;
         let childrenAux = []; 
@@ -80,15 +79,22 @@ function AnalisisImpacto(props) {
         })
     }
 
+    const cargarColor=()=>{
+        var divPrincipal = document.getElementById("principal");
+        divPrincipal.style.backgroundColor = localStorage.getItem('color_bckgr');
+    }
+
     useEffect(() => {
         getRequerimiento();
         getttIdProyecto();
+        cargarColor();
     },[]);
 
     return (
         <React.Fragment>
             <Menu/>
-            <div className="contenedor-propuesta">
+            <div id="principal" className="contenedorPrincipal">
+            <div className="contenedor-propuesta" style={{backgroundColor:"white"}}>
                 <label className="titulo-propuesta">
                     <strong>Análisis de Impacto de Propuesta de Cambio:</strong> Modificación de Requerimiento {requerimiento.nombre}
                 </label>
@@ -105,6 +111,7 @@ function AnalisisImpacto(props) {
                 </div>
             </div>
             <Link to={`/propuestaCambio/${idproyecto}`} style={{position:'absolute', left:'2%', top:'88px'}}><button type="button" className="btn boton"><ArrowBackIcon/></button></Link>
+            </div>
         </React.Fragment>
     );
 }

@@ -1,21 +1,28 @@
+import Axios from 'axios';
 import React, { Component } from 'react';
 import './Navigation.css';
 import {Link} from 'react-router-dom';
 import ModalCambioContraseña from '../Usuario/cambiarContraseña';
 import logoUCM from '../../imgs/UCM.png'
-
-import Axios from 'axios';
+import ModalCambioColor from '../Usuario/cambiarColor';
 
 class Navigation extends Component {
 
     state={
         celdaSeleccionada: 'Home',
-        estadoCambioContraseña: false
+        estadoCambioContraseña: false,
+        estadoCambioColor: false
     }
     
     cambiarEstadoModalContraseña = () => {
         this.setState({
             estadoCambioContraseña : !this.state.estadoCambioContraseña
+        })
+    }
+
+    cambiarEstadoModalColor=()=>{
+        this.setState({
+            estadoCambioColor: !this.state.estadoCambioColor
         })
     }
 
@@ -70,6 +77,7 @@ class Navigation extends Component {
                         </a>
                         <div className="subMenu dropdown-menu" aria-labelledby="navbarDropdown">
                             <a className="dropdown-item" href="#" onClick={this.cambiarEstadoModalContraseña}>Cambiar Contraseña</a>
+                            <a className="dropdown-item" href="#" onClick={this.cambiarEstadoModalColor}>Personalizar Color</a>
                             <Link className="dropdown-item" to="/logout">Cerrar Sesión</Link>
                         </div>
                     </li> 
@@ -80,6 +88,12 @@ class Navigation extends Component {
                 estadoCambioContraseña = {this.state.estadoCambioContraseña}
                 cambiarEstadoContraseña = {this.cambiarEstadoModalContraseña}
             />
+
+            <ModalCambioColor
+                estadoCambiarColor={this.state.estadoCambioColor}
+                cambiarEstadoModalColor={this.cambiarEstadoModalColor}
+            />
+
         </div>
         
       );
