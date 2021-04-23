@@ -6,10 +6,13 @@ import './DragDrop.css';
 import ModalReq from './ModalReq';
 import ModalReqSelected from './ModalReqSelected';
 import AddIcon from '@material-ui/icons/Add';
+import filtroDragdrop from './filtroDragdrop';
 
 function Dragdrop(id_subproyecto) {
 
   const [modalInsertar, setModalIsertar] = useState(false);
+  const [datosPrincipio, setdatosPrincipio] = useState([]);
+  let datosMil = [];
 
   const [requerimientoSeleccionado, setRequerimiento] = useState({
     id_requerimiento: 0,
@@ -51,6 +54,34 @@ function Dragdrop(id_subproyecto) {
   const [requerimientos, setRequerimientos] = useState([]);
 
   const columnsFromBackend =
+    {
+      ["1"]:{
+        name: 'Propuesto',
+        items: itemsPropuesto
+      },
+      ["2"]:{
+        name: 'Redactado',
+        items: itemsRedactado
+      },
+      ["3"]:{
+        name: 'Aprobado',
+        items: itemsAprobado
+      },
+      ["4"]: {
+        name: 'Por Hacer',
+        items: itemsPorHacer
+      },
+      ["5"]: {
+        name: 'En Proceso',
+        items: itemsEnProceso
+      },
+      ["6"]: {
+        name: 'Hecho',
+        items: itemsHecho
+      }
+    };
+
+    const columnsFromBackend2 =
     {
       ["1"]:{
         name: 'Propuesto',
@@ -150,6 +181,27 @@ function Dragdrop(id_subproyecto) {
       }
     })
     setColumns(columnsFromBackend);
+    localStorage.setItem("columns2",columnsFromBackend);
+    setdatosPrincipio(columnsFromBackend2);
+  }
+
+  const cambiarEstadoColumna = (id, datos_nuevos, datos_originales) => {
+    setColumns({
+      ...columns,
+      [id]: {
+        ...columns[id],
+        items: datos_nuevos
+      }
+    });
+
+    setdatosPrincipio({
+      ...columns,
+      [id]: {
+        ...columns[id],
+        items: datos_originales.items
+      }
+    });
+    
   }
 
   const buscarNombreDescripcion = (nombre) => {
@@ -180,6 +232,22 @@ function Dragdrop(id_subproyecto) {
         }
       })
 
+      setdatosPrincipio({
+        ...datosPrincipio,
+        [source.droppableId]: {
+          ...sourceColumn,
+          items: sourceItems
+        },
+        [destination.droppableId]: {
+          ...destColumn,
+          items: destItems
+        }
+      })
+
+      localStorage.setItem("columns2",columns);
+
+      datosMil = {...columns};
+
       const token = localStorage.getItem('token');
       var versionAntigua = '';
 
@@ -189,7 +257,6 @@ function Dragdrop(id_subproyecto) {
         versionAntigua.estado = destColumn.name;
         Axios.post(localStorage.getItem("url")+'/api/requerimiento/editar/', versionAntigua, {headers: {"Authorization": `Bearer ${token}`}})
       })
-
     }
     else{
       const column = columns[source.droppableId];
@@ -202,9 +269,13 @@ function Dragdrop(id_subproyecto) {
           ...column,
           items: copiedItems
         }
-      })
+      });
+      
+      datosMil = {...columns};
+
     }
   };
+
 
   const accesoUsuario = (contador) => {
     if(localStorage.getItem("tipo") === "admin" || localStorage.getItem("tipo") === "lider" || localStorage.getItem("tipo") === "jefe"){
@@ -214,7 +285,7 @@ function Dragdrop(id_subproyecto) {
   }
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', height: '77vh', paddingTop:'10px'}}>
+    <div style={{ display: 'flex', justifyContent: 'center', height: '77vh', paddingTop:'10px'}}> 
       <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
         {Object.entries(columns).map(([id, column], index) =>{
           return(
@@ -230,7 +301,7 @@ function Dragdrop(id_subproyecto) {
                     }
                   </div>
 
-                  <div style={{margin:8}}>
+                  <div style={{margin:8}} >
                     <Droppable droppableId="1" key="1">
                       {(provided, snapshot) => (
                         <div
@@ -244,9 +315,11 @@ function Dragdrop(id_subproyecto) {
                             marginBottom: '2px'
                           }}
                           
+                          
                           {...provided.droppableProps}
                         >
-                          <div>Propuesto</div>
+                          
+                          <div><label style={{display:'inline-block'}}>Propuesto</label><input className="form-control inputFiltroDrag2" placeholder="Filtrar" onChange={e => filtroDragdrop(e.target.value,1,column,datosPrincipio,requerimientos,cambiarEstadoColumna,principio)}></input> </div>
                           {column.items.map((item, index)=>{
                             
                             return(
@@ -296,7 +369,7 @@ function Dragdrop(id_subproyecto) {
                           
                           {...provided.droppableProps}
                         >
-                          <div>Redactado</div>
+                          <div><label style={{display:'inline-block'}}>Redactado</label><input style={{marginLeft:'3px'}} className="form-control inputFiltroDrag2" placeholder="Filtrar" onChange={e => filtroDragdrop(e.target.value,2,column,datosPrincipio,requerimientos,cambiarEstadoColumna,principio)}></input> </div>
                           {Object.entries(columns)[1][1].items.map((item, index)=>{
                             
                             return(
@@ -345,7 +418,7 @@ function Dragdrop(id_subproyecto) {
                           
                           {...provided.droppableProps}
                         >
-                          <div>Aprobado</div>
+                          <div><label style={{display:'inline-block'}}>Aprobado</label><input className="form-control inputFiltroDrag2" placeholder="Filtrar" onChange={e => filtroDragdrop(e.target.value,3,column,datosPrincipio,requerimientos,cambiarEstadoColumna,principio)}></input> </div>
                           {Object.entries(columns)[2][1].items.map((item, index)=>{
                             
                             return(
@@ -390,7 +463,6 @@ function Dragdrop(id_subproyecto) {
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <label><strong>{column.name}</strong></label>
                   <div style={{ margin: 8}}>
-
                     <Droppable droppableId={id} key={id}>
                     {(provided, snapshot) => {
                       return(
@@ -405,8 +477,8 @@ function Dragdrop(id_subproyecto) {
                             overflow: 'auto'
                           }}
                         >
+                          <input className="form-control inputFiltroDrag" placeholder="Filtrar" onChange={e => filtroDragdrop(e.target.value,id,column,datosPrincipio,requerimientos,cambiarEstadoColumna,principio)}></input> 
                           {column.items.map((item, index)=>{
-                            
                             return(
                               
                               <Draggable key={item.id} draggableId={item.id} index={index}>

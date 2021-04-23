@@ -4,7 +4,6 @@ import {Link} from 'react-router-dom';
 import ModalCambioContraseña from '../Usuario/cambiarContraseña';
 import logoUCM from '../../imgs/UCM.png'
 
-import Axios from 'axios';
 
 class Navigation extends Component {
 

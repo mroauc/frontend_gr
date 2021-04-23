@@ -60,3 +60,29 @@ a:hover{
     padding: 0.65rem;
     vertical-align: middle;
 }
+
+.inputFiltroDrag{
+    width: 65%;
+    margin: 0px auto 4px auto;
+    height: 30px;
+    background-color: rgba(255,255,255,0.3);
+    border: 1px solid rgb(179 179 179);
+}
+
+.inputFiltroDrag2{
+    width: 65%;
+    margin: 0px auto 4px auto;
+    height: 30px;
+    display: inline-block;
+    margin-left: 3px;
+    background-color: rgba(255,255,255,0.3);
+    border: 1px solid rgb(179 179 179);
+}
+
+.inputFiltroDrag:focus {
+    background-color: #ffffffb3;
+}
+
+.inputFiltroDrag2:focus {
+    background-color: #ffffffb3;
+}

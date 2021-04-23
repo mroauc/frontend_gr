@@ -26,7 +26,6 @@ export default class Cliente extends Component{
 
     componentDidMount(){
         this.getClientes();
-        console.log(localStorage.getItem('url'));
     }
 
     getClientes = () => {
