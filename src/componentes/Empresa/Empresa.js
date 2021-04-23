@@ -26,6 +26,12 @@ export default class Empresa extends Component{
 
     componentDidMount(){
         this.getEmpresas();
+        this.cargarColor();
+    }
+
+    cargarColor=()=>{
+        var divPrincipal = document.getElementById("principal");
+        divPrincipal.style.backgroundColor = localStorage.getItem('color_bckgr');
     }
 
     getEmpresas = () => {
@@ -94,6 +100,7 @@ export default class Empresa extends Component{
         return(
             <React.Fragment>
                 <Menu/>
+                <div id="principal" className="contenedorPrincipal">
                 <div className="empresa col-10">
                     <div className="Encabezado"><p>Empresa</p></div>
 
@@ -123,6 +130,7 @@ export default class Empresa extends Component{
                             <button className="btn btn-secunday" onClick={() => this.setState({modalEliminar : false})}>NO</button>
                         </ModalFooter>
                     </Modal>
+                </div>
                 </div>
             </React.Fragment>
         )

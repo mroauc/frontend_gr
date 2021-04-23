@@ -17,6 +17,12 @@ class IndexDragdrop extends Component{
 
     componentDidMount(){
         this.cargarColor();
+        this.cargarColorPrincipal();
+    }
+
+    cargarColorPrincipal=()=>{
+        var divPrincipal = document.getElementById("maximoPrincipal");
+        divPrincipal.style.backgroundColor = localStorage.getItem('color_bckgr');
     }
 
     cargarColor=async()=>{
@@ -91,6 +97,7 @@ class IndexDragdrop extends Component{
         return(
             <React.Fragment>
                 <Menu/>
+                <div id="maximoPrincipal" className="contenedorPrincipal">
                 <div className="contenedor-dnd" id="principal">
                     <div className="titulo-dnd">
                         <label>Vista Interactiva de Requerimientos</label>
@@ -136,6 +143,7 @@ class IndexDragdrop extends Component{
                         <button className="btn btn-danger" onClick={()=>this.cambiarModal()}>Cancelar</button>
                     </ModalFooter>
                 </Modal>
+                </div>
             </React.Fragment>
         )
     }

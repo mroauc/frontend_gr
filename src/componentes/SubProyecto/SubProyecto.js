@@ -34,6 +34,12 @@ export default class SubProyecto extends Component{
     componentDidMount(){
         this.getProyectos();
         this.getSubProyectos();
+        this.cargarColor();
+    }
+
+    cargarColor=()=>{
+        var divPrincipal = document.getElementById("principal");
+        divPrincipal.style.backgroundColor = localStorage.getItem('color_bckgr');
     }
 
     getProyectos = async() =>{
@@ -149,6 +155,7 @@ export default class SubProyecto extends Component{
         return(
             <React.Fragment>
                 <Menu />
+                <div id="principal" className="contenedorPrincipal">
                 <div className="subProyecto col-10">
                     <div className="Encabezado" style={{fontSize:'35px', textAlign:'initial', color:'white'}}><p>Módulos del proyecto: {this.state.nombre_proyecto}</p></div>
 
@@ -201,8 +208,9 @@ export default class SubProyecto extends Component{
 
 
                 </div>
+                </div>
 
             </React.Fragment>
         )
-}
+    }
 }

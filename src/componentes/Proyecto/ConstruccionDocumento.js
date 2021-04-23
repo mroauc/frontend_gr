@@ -40,6 +40,12 @@ export default class ConstruccionDocumento extends Component {
     componentDidMount(){
         this.getSecciones();
         this.getProyecto();
+        this.cargarColor();
+    }
+
+    cargarColor=()=>{
+        var divPrincipal = document.getElementById("principal");
+        divPrincipal.style.backgroundColor = localStorage.getItem('color_bckgr');
     }
 
     getProyecto = async () => {
@@ -161,7 +167,8 @@ export default class ConstruccionDocumento extends Component {
         return(
             <React.Fragment>
                 <Menu/>
-                <div className="contenedor-construccion_d">
+                <div id="principal" className="contenedorPrincipal">
+                <div className="contenedor-construccion_d" style={{backgroundColor:"white"}}>
                     <label className="titulo-construccion_d">
                         <strong>Construcción de documento para proyecto:</strong> {this.state.proyecto.nombre} 
                     </label>
@@ -216,6 +223,7 @@ export default class ConstruccionDocumento extends Component {
                 </div>
                 <br/>
                 <Link to={"/subProyecto/"+this.props.match.params.id_proyecto} style={{position:'absolute', left:'2%', top:'88px'}}><button type="button" className="btn boton"><ArrowBackIcon/></button></Link>
+                </div>
             </React.Fragment>
         );
     }

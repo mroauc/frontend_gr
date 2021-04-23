@@ -15,6 +15,12 @@ class MatrizRelacionReq extends Component{
 
     componentDidMount(){
         this.obtenerRequerimientos();
+        this.cargarColor();
+    }
+
+    cargarColor=()=>{
+        var divPrincipal = document.getElementById("principal");
+        divPrincipal.style.backgroundColor = localStorage.getItem('color_bckgr');
     }
 
     obtenerRequerimientos=async()=>{
@@ -65,7 +71,8 @@ class MatrizRelacionReq extends Component{
         return(
             <React.Fragment>
                 <Menu />
-                    <div className="contenedor-matriz">
+                <div id="principal" className="contenedorPrincipal">
+                    <div className="contenedor-matriz" style={{backgroundColor:"white"}}>
                         <div className="titulo-matriz">
                             <label>Listado de Relaciones entre Requerimientos</label>
                         </div>
@@ -101,6 +108,7 @@ class MatrizRelacionReq extends Component{
                     <div style={{marginLeft: '7.5%'}}>
                         <Link to={"/requerimiento/"+this.props.match.params.id_subproyecto}><button type="button" className="btn boton"><ArrowBackIcon/> Volver</button></Link>
                     </div>
+                </div>
             </React.Fragment>
         );
     }

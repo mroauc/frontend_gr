@@ -31,6 +31,12 @@ export default class Palabra extends Component{
 
     componentDidMount(){
         this.getPalabras();
+        this.cargarPalabra();
+    }
+
+    cargarPalabra=()=>{
+        var divPrincipal = document.getElementById("principal");
+        divPrincipal.style.backgroundColor = localStorage.getItem('color_bckgr');
     }
 
     getPalabras = () => {
@@ -122,6 +128,7 @@ export default class Palabra extends Component{
         return(
             <React.Fragment>
                 <Menu/>
+                <div id="principal" className="contenedorPrincipal">
                 <div className="palabra col-10">
                     <div className="Encabezado"><p>Palabras</p></div>
                     <button type="button" className="btn boton" onClick={() => this.cambiarEstadoInsertar()}>Ingresar Palabra</button> &nbsp;
@@ -159,6 +166,7 @@ export default class Palabra extends Component{
                         </ModalFooter>
                     </Modal>
 
+                </div>
                 </div>
             </React.Fragment>
         )

@@ -34,9 +34,9 @@
 
 .tabla-req{
     padding-left: 0px;
-    background-color: snow;
     height: 100%;
     width: 100%;
+    background-color: snow;
     border: 1px solid rgba(54, 54, 54, 0.4);
     border-radius: 3px;
     display: table;

@@ -64,6 +64,12 @@ class PropuestaCambio extends Component{
 
     componentDidMount(){
         this.index();
+        this.cargarColor();
+    }
+
+    cargarColor=()=>{
+        var divPrincipal = document.getElementById("principal");
+        divPrincipal.style.backgroundColor = localStorage.getItem('color_bckgr');
     }
 
     modalInsertar=async()=>{
@@ -160,6 +166,7 @@ class PropuestaCambio extends Component{
         return(
             <React.Fragment>
                 <Menu />
+                <div id="principal" className="contenedorPrincipal">
                 <div className="propuestaCambio col-10">
                 <div className="Encabezado"><p>Propuestas de Cambio</p></div>
                 <button type="button" className="btn boton" onClick={() => this.modalInsertar()}>Insertar</button> &nbsp;
@@ -197,6 +204,7 @@ class PropuestaCambio extends Component{
                         <button className="btn btn-secundary" onClick={()=>this.setState({modalEliminar:false})}>No</button>
                     </ModalFooter>
                 </Modal>
+            </div>
             </div>
             </React.Fragment>
         );

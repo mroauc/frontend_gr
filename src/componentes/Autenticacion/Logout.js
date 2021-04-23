@@ -10,6 +10,7 @@ export default class Logout extends Component{
         localStorage.removeItem('nombre');
         localStorage.removeItem('tipo');
         localStorage.removeItem('celda');
+        localStorage.removeItem('color_bckgr');
         this.props.history.push("/");
     }
 

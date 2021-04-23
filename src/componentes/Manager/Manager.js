@@ -16,6 +16,12 @@ export default class Manager extends Component {
 
     componentDidMount () {
         this.getRequerimientos();
+        this.cargarColor();
+    }
+
+    cargarColor=()=>{
+        var divPrincipal = document.getElementById("principal");
+        divPrincipal.style.backgroundColor = localStorage.getItem('color_bckgr');
     }
 
     getRequerimientos=async()=> {
@@ -61,6 +67,7 @@ export default class Manager extends Component {
         return(
             <React.Fragment>
                 <Menu/>
+                <div id="principal" className="contenedorPrincipal">
                 <div className="col-12 manager">
                     <TablaRequerimiento
                         requerimientos = {this.state.requerimientos}
@@ -78,6 +85,7 @@ export default class Manager extends Component {
                         cambiarTabActivo = {this.cambiarTabActivo}
                         agregarReqATab = {this.agregarReqATab}
                     />
+                </div>
                 </div>
             </React.Fragment>
         );

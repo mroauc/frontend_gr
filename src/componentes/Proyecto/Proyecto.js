@@ -43,6 +43,12 @@ class Proyecto extends Component{
 
     componentDidMount(){
         this.index();
+        this.cargarColor();
+    }
+
+    cargarColor=()=>{
+        var divPrincipal = document.getElementById("principal");
+        divPrincipal.style.backgroundColor = localStorage.getItem('color_bckgr');
     }
 
     modalInsertar=async()=>{
@@ -117,6 +123,7 @@ class Proyecto extends Component{
         return(
             <React.Fragment>
                 <Menu/>
+                <div id="principal" className="contenedorPrincipal">
                 <div className="proyecto col-10">
                 <div className="Encabezado"><p>Listado de Proyectos</p></div>
                 {
@@ -151,6 +158,8 @@ class Proyecto extends Component{
                         <button className="btn btn-secundary" onClick={()=>this.setState({modalEliminar:false})}>No</button>
                     </ModalFooter>
                 </Modal>
+
+            </div>
             </div>
             </React.Fragment>
         );
