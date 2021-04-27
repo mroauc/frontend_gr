@@ -1,28 +1,28 @@
 import Axios from 'axios';
 import React, {Component} from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import FiltroRequerimiento from './FiltroRequerimientos';
-import './ModalEliminarReq.css';
+import FiltroRequerimiento from '../Manager/FiltroRequerimientos';
+import './ModalReqPropuesta.css';
 
-class ModalEliminarReq extends Component{
-
+class ModalReqPropuesta extends Component{
     state={
         requerimientos: [],
-        seleccionados: []
+        seleccionado: ""
+    }
+
+    componentDidMount(){
+        this.setState({requerimientos: this.props.requerimientos, seleccionado: this.props.seleccionado});
     }
 
     componentWillReceiveProps(props){
-        this.setState({requerimientos: props.requerimientos, seleccionados: []});
+        this.setState({requerimientos: props.requerimientos, seleccionado: props.seleccionado});
     }
 
     changeHandler=async(e)=>{
-        let copiaSeleccionados = this.state.seleccionados;
         if(e.target.checked === true){
-            copiaSeleccionados.push(e.target.name);
-            await this.setState({seleccionados: copiaSeleccionados});
+            await this.setState({seleccionado: e.target.name});
         }else{
-            let seleccionadosFinal = copiaSeleccionados.filter(item => item !== e.target.name);
-            await this.setState({seleccionados: seleccionadosFinal});
+            await this.setState({seleccionado: ""});
         }
     }
 
@@ -34,29 +34,12 @@ class ModalEliminarReq extends Component{
         this.setState({requerimientos: nuevosRequerimientos});
     }
 
-    eliminar=async()=>{
-        const token = localStorage.getItem('token');
-        var cantidadElementos = this.state.seleccionados.length;
-
-        for (let index = 0; index < this.state.seleccionados.length-1; index++) {
-            await Axios.delete(localStorage.getItem('url')+`/api/requerimiento/eliminar/${this.state.seleccionados[index]}`, {headers: {"Authorization": `Bearer ${token}`}})
-        }
-
-        if(this.state.seleccionados.length>0){
-            await Axios.delete(localStorage.getItem('url')+`/api/requerimiento/eliminar/${this.state.seleccionados[this.state.seleccionados.length-1 ]}`, {headers: {"Authorization": `Bearer ${token}`}})
-            .then(response=>{
-                this.props.cambiarEstado();
-                this.props.funcionGetRequerimientos();
-            })
-        }
-    }
-
     render(){
         return(
             <React.Fragment>
                 <Modal isOpen = {this.props.abrir} toggle={() => {this.props.cambiarEstado()}} centered>
                     <ModalHeader style={{display : 'block'}}>
-                        <span>Eliminar Requerimientos</span>
+                        <span>Seleccionar Requerimiento</span>
                         <span style={{cursor:'pointer', float:'right'}} onClick={() => {this.props.cambiarEstado()}}>X</span>
                     </ModalHeader>
                     <ModalBody>
@@ -65,7 +48,7 @@ class ModalEliminarReq extends Component{
                             {this.state.requerimientos.map(requerimiento=>{
                                 return(
                                     <div key={requerimiento.id_requerimiento}>
-                                        <input id={requerimiento.id_requerimiento} name={requerimiento.id_requerimiento.toString()} type="checkbox" className="inputCheckbox" onChange={this.changeHandler} checked={this.state.seleccionados.includes(requerimiento.id_requerimiento.toString())} />
+                                        <input id={requerimiento.id_requerimiento} name={requerimiento.id_requerimiento.toString()} type="checkbox" className="inputCheckbox" onChange={this.changeHandler} checked={this.state.seleccionado === requerimiento.id_requerimiento.toString()} />
                                         <label>{requerimiento.nombre + " - " + requerimiento.nombre_descriptivo.substr(0,30)}</label><br/>
                                     </div>
                                 );
@@ -73,7 +56,7 @@ class ModalEliminarReq extends Component{
                         </div>
                     </ModalBody>
                     <ModalFooter>
-                        <button className="btn btn-success" onClick= {() => {this.eliminar()}}>Eliminar</button>
+                        <button className="btn btn-success" onClick= {() => {this.props.seleccionarReq(this.state.seleccionado)}}>Seleccionar</button>
                         <button className="btn btn-danger" onClick={() => {this.props.cambiarEstado()}}>Cancelar</button>
                     </ModalFooter>
                 </Modal>
@@ -81,5 +64,4 @@ class ModalEliminarReq extends Component{
         );
     }
 }
-
-export default ModalEliminarReq;
+export default ModalReqPropuesta

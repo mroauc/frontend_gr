@@ -2,6 +2,7 @@ import Axios from 'axios';
 import React, { Component } from 'react'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import ChipsImpactoDirecto from './ChipsImpactoDirecto';
+import ModalReqPropuesta from './ModalReqPropuesta';
 
 class PropuestaCambioModal extends Component{
     state={
@@ -21,17 +22,20 @@ class PropuestaCambioModal extends Component{
             estado: 'Pendiente'
         },
         requerimientos : [],
+        requerimiento : "",
         msj_nombre: "",
         msj_idsubproyecto: "",
         msj_fechapeticion: "",
         msj_descripcion: "",
-        requerimientoImpactoDirecto : ''
+        msj_requerimiento: "",
+        requerimientoImpactoDirecto : '',
+        modalReq: false
     }
 
     componentWillReceiveProps(next_props){
         const token = localStorage.getItem('token');
         this.setState({propuestaCambio: this.props.propuestaCambio});
-        this.getRequerimientos(next_props.propuestaCambio.id_subproyecto);
+        
         if(this.props.tipoModal === "actualizar"){
             Axios.get(localStorage.getItem('url') + `/api/impacto_directo/obtener/${next_props.propuestaCambio.id_propuestaCambio}`,{headers: {"Authorization": `Bearer ${token}`}})
             .then(response=>{
@@ -40,7 +44,8 @@ class PropuestaCambioModal extends Component{
                         requerimientoImpactoDirecto : response.data[0].id_requerimiento
                     });
                 }
-            }) }   
+            }) }
+            
         this.obtenerRecarga();
     }
 
@@ -51,7 +56,7 @@ class PropuestaCambioModal extends Component{
         }else{
             this.setState({requerimientoImpactoDirecto: ''});
         }
-        this.getRequerimientos(this.props.propuestaCambio.id_subproyecto);
+        this.getRequerimientos();
     }
 
     componentDidMount(){
@@ -67,6 +72,7 @@ class PropuestaCambioModal extends Component{
                 subProyectos: response.data
             });
         })
+        this.getRequerimientos();
     }
 
     validar=()=>{
@@ -95,6 +101,12 @@ class PropuestaCambioModal extends Component{
                 msj_descripcion: "Campo Vacio"
             });
             salida=false;
+        }
+        if(!this.state.requerimientoImpactoDirecto){
+            this.setState({
+                msj_requerimiento: "Campo Vacio"
+            })
+            salida = false;
         }
         return salida;
     }
@@ -164,6 +176,33 @@ class PropuestaCambioModal extends Component{
         })
     }
 
+    modalReq=async()=>{
+        await this.setState({modalReq: !this.state.modalReq});
+    }
+
+    seleccionarReq=(requerimiento)=>{
+        if(requerimiento !== ""){
+            this.setState({requerimientoImpactoDirecto: requerimiento});
+            var requerimientoSel = this.state.requerimientos.find(req => req.id_requerimiento.toString() === requerimiento);
+            var copia_propuesta = {...this.state.propuestaCambio};
+            copia_propuesta.id_subproyecto = requerimientoSel.id_subProyecto;
+            this.setState({propuestaCambio: copia_propuesta});
+            this.setState({requerimiento : requerimientoSel});
+
+        }
+        else{
+            this.setState({requerimientoImpactoDirecto: requerimiento});
+            var copia_propuesta = {...this.state.propuestaCambio};
+            copia_propuesta.id_subproyecto = "";
+            this.setState({propuestaCambio: copia_propuesta});
+            this.setState({requerimiento : ""});
+            console.log(requerimiento);
+        }
+        this.setState({msj_requerimiento: ""});
+        this.setState({msj_idsubproyecto: ""});
+        this.modalReq();
+    }
+
     guardarActualizacion=async()=>{
         if(this.validar()){
             const token = localStorage.getItem('token');
@@ -201,18 +240,25 @@ class PropuestaCambioModal extends Component{
         });
     }
 
-    getRequerimientos = async (id_subProyecto) => {
+    getRequerimientos = async () => {
+        var requerimientosAsociados = [];
+        const token = localStorage.getItem('token');
+        for (var i = 0; i < this.state.subProyectos.length; i++) {
+            await Axios.get(localStorage.getItem('url') + `/api/requerimiento/obtener/${this.state.subProyectos[i].id_subProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
+            .then(async response => {
+                if(response.data.length !== 0)
+                    requerimientosAsociados = await requerimientosAsociados.concat(response.data);
+                
+                if(i === this.state.subProyectos.length-1)
+                    await this.setState({requerimientos : requerimientosAsociados});
+            })    
+        }
+        var requerimientoSel = requerimientosAsociados.find(req => req.id_requerimiento=== this.state.requerimientoImpactoDirecto);
+        if(requerimientoSel !== undefined){
+            this.setState({requerimiento: requerimientoSel});   
+        }
         
-        if(id_subProyecto !== ""){
-            const token = localStorage.getItem('token');
-            await Axios.get(localStorage.getItem('url') + `/api/requerimiento/obtener/${id_subProyecto}`,{headers: {"Authorization": `Bearer ${token}`}})
-            .then(response => {
-                this.setState({requerimientos : response.data})
-            })
-        }
-        else{
-            await this.setState({requerimientos : []})
-        }
+        
     }
 
     changeHandler=async(e)=>{
@@ -286,8 +332,10 @@ class PropuestaCambioModal extends Component{
             msj_nombre: "",
             msj_fechapeticion: "",
             msj_descripcion: "",
-            msj_idsubproyecto: ""
+            msj_idsubproyecto: "",
+            requerimiento: ""
         });
+        
         this.props.modalInsertar();
     }
 
@@ -308,8 +356,17 @@ class PropuestaCambioModal extends Component{
                                 {this.state.msj_nombre}
                             </div>
                             <br/>
+                            <label htmlFor="requerimiento">Impacto Directo</label>
+                            <div style={{display:'flex'}}>
+                                <input className={ (this.state.msj_requerimiento)? "form-control is-invalid col-8" : "form-control col-8"} style={{marginRight:'5px'}} type="text" name="requerimientoImpactoDirecto" id="requerimientoImpactoDirecto" onChange={(e) => {this.setState({requerimientoImpactoDirecto: e.target.value})}} onClick={()=>{this.setState({msj_requerimiento: ""})}} value={this.state.requerimiento === "" ? "Seleccione un requerimiento" : this.state.requerimiento.nombre+" - "+this.state.requerimiento.nombre_descriptivo} readOnly={true} disabled={true}/>
+                                <button className="col-4 btn btn-primary" onClick={()=> this.modalReq()}>Seleccionar</button>
+                            </div>
+                            <div className="invalid-feedback">
+                                {this.state.msj_requerimiento}
+                            </div>
+                            <br/>
                             <label htmlFor="id_modulo">ID Modulo</label>
-                            <select name="id_subproyecto" id="id_subproyecto" className={ (this.state.msj_idsubproyecto)? "form-control is-invalid" : "form-control"} value={this.state.propuestaCambio.id_subproyecto} onChange={(e) => {this.changeHandler(e); this.getRequerimientos(e.target.value)}} onClick={()=>{this.setState({msj_idsubproyecto: ""})}}>
+                            <select name="id_subproyecto" id="id_subproyecto" className={ (this.state.msj_idsubproyecto)? "form-control is-invalid" : "form-control"} value={this.state.propuestaCambio.id_subproyecto} onChange={(e) => {this.changeHandler(e); this.getRequerimientos()}} onClick={()=>{this.setState({msj_idsubproyecto: ""})}} readOnly={true} disabled={true}>
                                 <option value="">Seleccione un Módulo</option>
                                 {this.state.subProyectos.map(subp=>{
                                     return(
@@ -339,7 +396,7 @@ class PropuestaCambioModal extends Component{
 
                             }
                             <br/>
-                            <label htmlFor="descripcion">Impacto Directo</label>
+                            {/* <label htmlFor="descripcion">Impacto Directo</label>
                             <select className="form-control" type="text" name="requerimientoImpactoDirecto" id="requerimientoImpactoDirecto" onChange={(e) => {this.setState({requerimientoImpactoDirecto: e.target.value})}} value={this.state.requerimientoImpactoDirecto}>
                                 <option value="">Seleccione un requerimiento</option>
                                 {
@@ -349,7 +406,7 @@ class PropuestaCambioModal extends Component{
                                         )
                                     })
                                 }
-                            </select>
+                            </select> */}
                             
                             <br/>
                             <label htmlFor="justificacion">Justificacion</label>
@@ -405,7 +462,16 @@ class PropuestaCambioModal extends Component{
                         }
                         <button className="btn btn-danger" onClick={()=>{this.cerrar()}}>Cancelar</button>
                     </ModalFooter>
+                    
+
                 </Modal>
+                <ModalReqPropuesta
+                        requerimientos = {this.state.requerimientos}
+                        abrir = {this.state.modalReq}
+                        cambiarEstado = {this.modalReq}
+                        seleccionarReq = {this.seleccionarReq}
+                        seleccionado = {this.state.requerimientoImpactoDirecto}
+                    />
 
             </React.Fragment>
         );
