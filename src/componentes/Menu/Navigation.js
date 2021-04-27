@@ -4,11 +4,7 @@ import './Navigation.css';
 import {Link} from 'react-router-dom';
 import ModalCambioContraseña from '../Usuario/cambiarContraseña';
 import logoUCM from '../../imgs/UCM.png'
-<<<<<<< HEAD
-
-=======
 import ModalCambioColor from '../Usuario/cambiarColor';
->>>>>>> 1f523426fda7361cde4aba573a5e1c6bf9ccbc5e
 
 class Navigation extends Component {
 

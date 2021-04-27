@@ -26,15 +26,12 @@ export default class Cliente extends Component{
 
     componentDidMount(){
         this.getClientes();
-<<<<<<< HEAD
-=======
         this.cargarColor();
     }
 
     cargarColor=()=>{
         var divPrincipal = document.getElementById("principal");
         divPrincipal.style.backgroundColor = localStorage.getItem('color_bckgr');
->>>>>>> 1f523426fda7361cde4aba573a5e1c6bf9ccbc5e
     }
 
     getClientes = () => {
