@@ -143,7 +143,7 @@ class Requerimiento extends Component{
                 
                 <div style={{float:'right', textDecoration:'none'}}>
                     <Link to={"/dragdrop/"+this.props.match.params.id_subproyecto}><button type="button" className="btn boton">Vista Interactiva</button> </Link>
-                    <Link to={"/matrizRelacion/"+this.props.match.params.id_subproyecto}><button type="button" className="btn boton">Ver Relacion Requerimientos</button> </Link>
+                    <Link to={"/matrizRelacion/"+this.props.match.params.id_subproyecto}><button type="button" className="btn boton">Trazabilidad</button> </Link>
                 </div>
                 
                 <TablaRequerimiento

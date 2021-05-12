@@ -13,7 +13,7 @@ class ReqModal extends Component{
             id_usuario: '',
             id_subProyecto: this.props.id_subProyecto,
             fecha_creacion: '',
-            prioridad: '',
+            prioridad: 'Baja',
             estado: 'Propuesto',
             categoria: '',
             id_template: ''
@@ -23,6 +23,7 @@ class ReqModal extends Component{
         templates : [],
         usuarios: [],
         usuariosSubProyecto: [],
+        numeroRequerimientos: '',
 
         errorNombreDescriptivo: '',
         errorInputUsuarioResponsable: '',
@@ -45,7 +46,16 @@ class ReqModal extends Component{
     }
 
     componentWillReceiveProps(next_props){
-        this.setState({requerimiento: this.props.requerimiento, id_usuario_responsable: ''});
+        this.setState({
+            requerimiento: this.props.requerimiento, 
+            id_usuario_responsable: '',
+            numeroRequerimientos: this.props.requerimientos.length + 1
+        });
+        if(localStorage.getItem("tipo")==="analista"){
+            this.setState({
+                id_usuario_responsable: localStorage.getItem("id")
+            });
+        }
     }
 
     getUser=async()=>{
@@ -128,11 +138,15 @@ class ReqModal extends Component{
 
     guardar=async()=>{
         const token = localStorage.getItem('token');
+        var usuario_resp = this.state.id_usuario_responsable;
+        if(localStorage.getItem("tipo")==="analista"){
+            usuario_resp = localStorage.getItem("id");
+        }
         if(this.validar()){
             await Axios.post(localStorage.getItem('url')+'/api/requerimiento/guardar/',{
                 nombre_descriptivo: this.state.requerimiento.nombre_descriptivo,
                 descripcion: this.state.requerimiento.descripcion,
-                id_usuario: this.state.id_usuario_responsable,
+                id_usuario: usuario_resp,
                 id_subProyecto: this.state.requerimiento.id_subProyecto,
                 fecha_creacion: new Date().toLocaleString(),
                 prioridad: this.state.requerimiento.prioridad,
@@ -152,7 +166,7 @@ class ReqModal extends Component{
         await Axios.get(localStorage.getItem('url')+`/api/template/${requerimiento.id_template}`,{headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             var req = requerimiento;
-            req.nombre = requerimiento.categoria.concat(requerimiento.id_requerimiento);
+            req.nombre = requerimiento.categoria.concat(this.state.numeroRequerimientos);
             req.descripcion = response.data.template;
             this.ejecutarCompletacionDatos(req);
         });
@@ -184,7 +198,7 @@ class ReqModal extends Component{
                     </ModalHeader>
                     <ModalBody>
                         <div className="form-group">
-                            <label htmlFor="nombre_descriptivo">Descripcion</label>
+                            <label htmlFor="nombre_descriptivo">Nombre Corto</label>
                             <input className={(this.state.errorNombreDescriptivo)? "form-control is-invalid" : "form-control"} type="text" name="nombre_descriptivo" id="nombre_descriptivo" value={this.state.requerimiento.nombre_descriptivo} onChange={this.changeHandler} onClick={() => {this.setState({errorNombreDescriptivo : ''})}}/>
                             <div class="invalid-feedback" style={{display: 'block'}}>
                                 {this.state.errorNombreDescriptivo}
@@ -192,7 +206,7 @@ class ReqModal extends Component{
                             <br/>
                             
                             <label htmlFor="id_responsable">Usuario Responsable</label>
-                            <select className={(this.state.errorInputUsuarioResponsable)? "form-control is-invalid" : "form-control"} type="text" name="id_usuario_responsable" id="id_usuario_responsable" value={this.state.id_usuario_responsable} onChange={(e) => {this.setState({id_usuario_responsable : e.target.value})}} onClick={() => {this.setState({errorInputUsuarioResponsable : ''})}}>
+                            <select className={(this.state.errorInputUsuarioResponsable)? "form-control is-invalid" : "form-control"} type="text" name="id_usuario_responsable" id="id_usuario_responsable" value={this.state.id_usuario_responsable} onChange={(e) => {this.setState({id_usuario_responsable : e.target.value})}} disabled={(localStorage.getItem("tipo")==="analista")? "true": ""} onClick={() => {this.setState({errorInputUsuarioResponsable : ''})}}>
                                 <option value="">Seleccionar Usuario Responsable</option>
                                 {this.state.usuariosSubProyecto.map(usuario => {
                                     const usuarioEncontrado = this.state.usuarios.find(posibleUsuario => posibleUsuario.id === usuario.id_usuario); 
@@ -208,10 +222,10 @@ class ReqModal extends Component{
                                 {this.state.errorInputUsuarioResponsable}
                             </div>
                             <br/>
+
                             <label htmlFor="prioridad">Prioridad</label>
                             <select className={(this.state.errorInputPrioridad)? "form-control is-invalid" : "form-control"} name="prioridad" id="prioridad" value={this.state.requerimiento.prioridad} onChange={this.changeHandler} onClick={() => {this.setState({errorInputPrioridad : ''})}}>
-                                <option value="" selected>Seleccione una prioridad</option>
-                                <option value="Baja">Baja</option>
+                                <option value="Baja" selected>Baja</option>
                                 <option value="Media">Media</option>
                                 <option value="Alta">Alta</option>
                             </select>

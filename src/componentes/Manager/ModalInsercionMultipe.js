@@ -6,7 +6,7 @@ class ModalInsercionMultiple extends Component{
 
     state={
         base_requerimiento: {
-            prioridad: '',
+            prioridad: 'Baja',
             categoria: '',
             id_template: '',
             id_usuario_responsable: ''
@@ -20,7 +20,8 @@ class ModalInsercionMultiple extends Component{
         errorInputPrioridad: '',
         errorInputCategoria: '',
         errorInputTemplate: '',
-        errorNombreDescriptivo: ''
+        errorNombreDescriptivo: '',
+        numeroRequerimientos: ''
     }
 
     componentDidMount(){
@@ -28,6 +29,19 @@ class ModalInsercionMultiple extends Component{
         this.getUsuarios();
         this.getUsuariosSubproyecto();
         this.getTemplates();
+    }
+
+    componentWillReceiveProps(next_props){
+        this.setState({
+            numeroRequerimientos: this.props.requerimientos.length + 1
+        });
+        if(localStorage.getItem("tipo")==="analista"){
+            var copia = this.state.base_requerimiento;
+            copia.id_usuario_responsable = localStorage.getItem("id");
+            this.setState({
+                base_requerimiento: copia
+            });
+        }
     }
 
     getUsuarios=async()=>{
@@ -93,6 +107,7 @@ class ModalInsercionMultiple extends Component{
                 id_usuario_responsable: ''
             },
             nombre_descriptivo: '',
+            id_usuario: ''
         });
     }
 
@@ -155,6 +170,10 @@ class ModalInsercionMultiple extends Component{
             exito.style.display = '';
 
             const token = localStorage.getItem('token');
+            var usuario_resp = this.state.id_usuario_responsable;
+            if(localStorage.getItem("tipo")==="analista"){
+                usuario_resp = localStorage.getItem("id");
+            }
             await Axios.post(localStorage.getItem('url')+'/api/requerimiento/guardar/',{
                 nombre_descriptivo: this.state.nombre_descriptivo,
                 descripcion: '',
@@ -186,7 +205,7 @@ class ModalInsercionMultiple extends Component{
         await Axios.get(localStorage.getItem('url')+`/api/template/${requerimiento.id_template}`,{headers: {"Authorization" : `Bearer ${token}`}})
         .then(response=>{
             var req = requerimiento;
-            req.nombre = requerimiento.categoria.concat(requerimiento.id_requerimiento);
+            req.nombre = requerimiento.categoria.concat(this.state.numeroRequerimientos);
             req.descripcion = response.data.template;
             this.ejecutarCompletacionDatos(req);
         });
@@ -220,7 +239,7 @@ class ModalInsercionMultiple extends Component{
                     <ModalBody>
                         <div className="form-group" id="pagina1">                       
                             <label htmlFor="id_usuario_responsable">Usuario Responsable</label>
-                            <select className={(this.state.errorInputUsuarioResponsable)? "form-control is-invalid" : "form-control"} type="text" name="id_usuario_responsable" id="id_usuario_responsable" value={this.state.base_requerimiento.id_usuario_responsable} onChange={this.changeHandler} onClick={() => {this.setState({errorInputUsuarioResponsable : ''})}}>
+                            <select className={(this.state.errorInputUsuarioResponsable)? "form-control is-invalid" : "form-control"} type="text" name="id_usuario_responsable" id="id_usuario_responsable" value={this.state.base_requerimiento.id_usuario_responsable} onChange={this.changeHandler} disabled={(localStorage.getItem("tipo")==="analista")? "true": ""} onClick={() => {this.setState({errorInputUsuarioResponsable : ''})}}>
                                 <option value="">Seleccionar Usuario Responsable</option>
                                 {this.state.usuariosSubProyecto.map(usuario => {
                                     const usuarioEncontrado = this.state.usuarios.find(posibleUsuario => posibleUsuario.id === usuario.id_usuario); 
@@ -238,8 +257,7 @@ class ModalInsercionMultiple extends Component{
                             <br/>
                             <label htmlFor="prioridad">Prioridad</label>
                             <select className={(this.state.errorInputPrioridad)? "form-control is-invalid" : "form-control"} name="prioridad" id="prioridad" value={this.state.base_requerimiento.prioridad} onChange={this.changeHandler} onClick={() => {this.setState({errorInputPrioridad : ''})}}>
-                                <option value="" selected>Seleccione una prioridad</option>
-                                <option value="Baja">Baja</option>
+                                <option value="Baja" selected>Baja</option>
                                 <option value="Media">Media</option>
                                 <option value="Alta">Alta</option>
                             </select>
@@ -278,7 +296,7 @@ class ModalInsercionMultiple extends Component{
                         </div>
 
                         <div className="form-group" id="pagina2" style={{display:'none'}}>
-                            <label htmlFor="nombre_descriptivo">Descripcion</label>
+                            <label htmlFor="nombre_descriptivo">Nombre Corto</label>
                             <input className={(this.state.errorNombreDescriptivo)? "form-control is-invalid" : "form-control"} type="text" name="nombre_descriptivo" id="nombre_descriptivo" value={this.state.nombre_descriptivo} onChange={(e)=>{this.setState({nombre_descriptivo: e.target.value})}} onClick={()=>{this.setState({errorNombreDescriptivo : ''});this.desactivarAlerta();}}/>
                             <div class="invalid-feedback" style={{display: 'block'}}>
                                 {this.state.errorNombreDescriptivo}

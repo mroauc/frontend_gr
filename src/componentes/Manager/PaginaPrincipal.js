@@ -26,7 +26,7 @@ export default class PaginaPrincipal extends Component{
             id_usuario: 0,
             id_subProyecto: this.props.id_subproyecto,
             fecha_creacion: '',
-            prioridad: '',
+            prioridad: 'Baja',
             estado: '',
             categoria: '',
             id_template: ''
@@ -112,7 +112,7 @@ export default class PaginaPrincipal extends Component{
                 id_usuario: '',
                 id_subProyecto: this.props.id_subproyecto,
                 fecha_creacion: '',
-                prioridad: '',
+                prioridad: 'Baja',
                 estado: '',
                 categoria: '',
                 id_template: ''
@@ -137,9 +137,18 @@ export default class PaginaPrincipal extends Component{
     }
 
     accesoUsuario = () => {
-        if(localStorage.getItem("tipo") === "admin" || localStorage.getItem("tipo") === "lider" || localStorage.getItem("tipo") === "jefe")
+        /*if(localStorage.getItem("tipo") === "admin" || localStorage.getItem("tipo") === "lider" || localStorage.getItem("tipo") === "jefe")
             return true;
-        return false;
+            
+        return false;*/
+
+        if(localStorage.getItem("tipo") === "analista"){
+            var copia = this.state.requerimiento;
+            copia.id_usuario = localStorage.getItem("id");
+        }
+
+        return true;
+        
     }
 
     render(){
@@ -162,7 +171,7 @@ export default class PaginaPrincipal extends Component{
 
                     <div style={{float:'right', textDecoration:'none', marginRight:'5%'}}>
                     <Link to={"/dragdrop/"+this.props.id_subproyecto}><button type="button" className="btn boton">Vista Interactiva</button> </Link>
-                    <Link to={"/matrizRelacion/"+this.props.id_subproyecto}><button type="button" className="btn boton">Ver Relacion Requerimientos</button> </Link>
+                    <Link to={"/matrizRelacion/"+this.props.id_subproyecto}><button type="button" className="btn boton">Trazabilidad</button> </Link>
                     </div>
                 </div>
                 
@@ -214,6 +223,7 @@ export default class PaginaPrincipal extends Component{
                     getDataUsuarioActividad = {this.getDataUsuarioActividad}
                     cambiarTabActivo = {this.props.cambiarTabActivo}
                     agregarReqATab = {this.props.agregarReqATab} 
+                    requerimientos = {this.props.requerimientos}
                 />
 
                 <ModalEliminarReq
@@ -231,6 +241,7 @@ export default class PaginaPrincipal extends Component{
                     getUsuarios = {this.getUsuarios}
                     getDataUsuarioActividad = {this.getDataUsuarioActividad}
                     funcionGetRequerimientos = {this.props.funcionGetRequerimientos}
+                    requerimientos = {this.props.requerimientos}
                 />
 
             </div>

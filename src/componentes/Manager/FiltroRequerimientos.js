@@ -12,12 +12,16 @@ function FiltroUsuario (requerimientos, valorBusqueda, cambiarRequerimientos) {
         const fecha_creacion = requerimiento.fecha_creacion;
         const nombreDescriptivo = requerimiento.nombre_descriptivo.toLowerCase();
 
-        const datos = idRequerimiento + " " + categoria + " " + estado + " " + nombre + " " + prioridad + " " + fecha_creacion + " " + nombreDescriptivo;
+        const redaccion = requerimiento.descripcion.toLowerCase();
+        var temporal = document.createElement("div");
+        temporal.innerHTML = redaccion;
+        var contenidoRedaccion = temporal.textContent || temporal.innerText || "";
+
+        const datos = idRequerimiento + " " + categoria + " " + estado + " " + nombre + " " + prioridad + " " + fecha_creacion + " " + nombreDescriptivo + " " + contenidoRedaccion;
         const busquedaMinuscula = valorBusqueda.toLowerCase();
         
         return  datos.indexOf(busquedaMinuscula) > -1
     })
-    console.log(filtro);
 
     cambiarRequerimientos(filtro);
     
