@@ -32,9 +32,6 @@ class ModalInsercionMultiple extends Component{
     }
 
     componentWillReceiveProps(next_props){
-        this.setState({
-            numeroRequerimientos: this.props.requerimientos.length + 1
-        });
         if(localStorage.getItem("tipo")==="analista"){
             var copia = this.state.base_requerimiento;
             copia.id_usuario_responsable = localStorage.getItem("id");
@@ -42,6 +39,41 @@ class ModalInsercionMultiple extends Component{
                 base_requerimiento: copia
             });
         }
+
+        this.obtencionNumeroReq();
+    }
+
+    obtencionNumeroReq=async()=>{
+        const token=localStorage.getItem('token');
+        var numeroRequeri
+        await Axios.get(localStorage.getItem('url')+`/api/requerimiento/obtenerRequerimientos/${this.props.id_subProyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
+        .then(async response=>{
+            numeroRequeri = response.data
+
+             // Cómputo del numero de ID que se concatenará al nombre.
+            if(numeroRequeri.length+1 === 1 || numeroRequeri === null){
+                await this.setState({
+                    numeroRequerimientos: numeroRequeri.length + 1
+                });
+            }else{
+                numeroRequeri.sort(function (a,b){
+                    if(a.id_requerimiento > b.id_requerimiento){
+                        return 1;
+                    }
+                    if(a.id_requerimiento < b.id_requerimiento){
+                        return -1
+                    }
+                    return 0;
+                });
+                var aux = numeroRequeri[numeroRequeri.length-1].nombre;
+                if(aux !== null){
+                    var nombre = parseInt(aux.substr(4),10);
+                    await this.setState({
+                        numeroRequerimientos: nombre + 1
+                    });
+                }
+            }
+        });
     }
 
     getUsuarios=async()=>{
@@ -101,7 +133,7 @@ class ModalInsercionMultiple extends Component{
             errorInputTemplate:'',
             base_requerimiento: {
                 id_usuario: '',
-                prioridad: '',
+                prioridad: 'Baja',
                 categoria: '',
                 id_template: '',
                 id_usuario_responsable: ''
@@ -219,10 +251,11 @@ class ModalInsercionMultiple extends Component{
     ejecutarCompletacionDatos=async(requerimiento)=>{
         const token = localStorage.getItem('token');
         await Axios.post(localStorage.getItem('url')+'/api/requerimiento/editar/', requerimiento, {headers: {"Authorization" : `Bearer ${token}`}})
-        .then(response=>{
+        .then(async response=>{
             this.props.getUsuarios();
             this.props.getDataUsuarioActividad();
             this.props.funcionGetRequerimientos();
+            await this.obtencionNumeroReq();
         });
     }
 

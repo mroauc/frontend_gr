@@ -5,13 +5,15 @@ import {Link} from 'react-router-dom';
 import ModalCambioContraseña from '../Usuario/cambiarContraseña';
 import logoUCM from '../../imgs/UCM.png'
 import ModalCambioColor from '../Usuario/cambiarColor';
+import ModalCambioConfig from '../Usuario/cambiarConfiguracion';
 
 class Navigation extends Component {
 
     state={
         celdaSeleccionada: 'Home',
         estadoCambioContraseña: false,
-        estadoCambioColor: false
+        estadoCambioColor: false,
+        estadoCambioConfig: false
     }
     
     cambiarEstadoModalContraseña = () => {
@@ -24,6 +26,12 @@ class Navigation extends Component {
         this.setState({
             estadoCambioColor: !this.state.estadoCambioColor
         })
+    }
+
+    cambiarEstadoModalConfig=()=>{
+        this.setState({
+            estadoCambioConfig: !this.state.estadoCambioConfig
+        });
     }
 
     seleccionarCelda = (nombre_celda) => {
@@ -78,6 +86,7 @@ class Navigation extends Component {
                         <div className="subMenu dropdown-menu" aria-labelledby="navbarDropdown">
                             <a className="dropdown-item" href="#" onClick={this.cambiarEstadoModalContraseña}>Cambiar Contraseña</a>
                             <a className="dropdown-item" href="#" onClick={this.cambiarEstadoModalColor}>Personalizar Color</a>
+                            <a className="dropdown-item" href="#" onClick={this.cambiarEstadoModalConfig}>Configuración Requerimientos</a>
                             <Link className="dropdown-item" to="/logout">Cerrar Sesión</Link>
                         </div>
                     </li> 
@@ -92,6 +101,11 @@ class Navigation extends Component {
             <ModalCambioColor
                 estadoCambiarColor={this.state.estadoCambioColor}
                 cambiarEstadoModalColor={this.cambiarEstadoModalColor}
+            />
+
+            <ModalCambioConfig
+                estadoCambiarConfig = {this.state.estadoCambioConfig}
+                cambiarEstadoConfig = {this.cambiarEstadoModalConfig}
             />
 
         </div>

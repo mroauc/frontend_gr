@@ -48,13 +48,67 @@ class ReqModal extends Component{
     componentWillReceiveProps(next_props){
         this.setState({
             requerimiento: this.props.requerimiento, 
-            id_usuario_responsable: '',
-            numeroRequerimientos: this.props.requerimientos.length + 1
+            id_usuario_responsable: ''
         });
+
+        // Carga de configuración previa en caso de existir.
+        if(this.props.requerimiento.id_requerimiento !== null || this.props.requerimiento.id_requerimiento !== 0){
+            const token=localStorage.getItem('token');
+            Axios.get(localStorage.getItem('url')+`/api/configReq/obtener/${localStorage.getItem('id')}`,{headers: {"Authorization":`Bearer ${token}`}})
+            .then(response=>{
+                if(response.data !== null){
+                    var aux = this.state.requerimiento;
+                    aux.categoria = response.data.categoria;
+                    aux.id_template = response.data.id_template;
+                    aux.prioridad = response.data.prioridad;
+                    this.setState({
+                        requerimiento: aux
+                    });
+                }
+            })
+        }
+
+        // En caso de ser analista, lo que ingrese estará a cargo de él.
         if(localStorage.getItem("tipo")==="analista"){
             this.setState({
                 id_usuario_responsable: localStorage.getItem("id")
             });
+        }
+
+        this.obtencionNumeroReq();
+    }
+
+    obtencionNumeroReq=async()=>{
+        const token=localStorage.getItem('token');
+        var numeroRequeri
+        await Axios.get(localStorage.getItem('url')+`/api/requerimiento/obtenerRequerimientos/${this.props.id_subProyecto}`, {headers: {"Authorization": `Bearer ${token}`}})
+        .then(response=>{
+            numeroRequeri = response.data
+        });
+
+        // Cómputo del numero de ID que se concatenará al nombre.
+        if(numeroRequeri.length+1 === 1 || numeroRequeri === null){
+            this.setState({
+                numeroRequerimientos: numeroRequeri.length + 1
+            });
+        }else{
+            numeroRequeri.sort(function (a,b){
+                if(a.id_requerimiento > b.id_requerimiento){
+                    return 1;
+                }
+                if(a.id_requerimiento < b.id_requerimiento){
+                    return -1
+                }
+                return 0;
+            });
+            
+            var aux = numeroRequeri[numeroRequeri.length-1].nombre;
+            if(aux !== null){
+                var nombre = parseInt(aux.substr(4),10);
+                this.setState({
+                    numeroRequerimientos: nombre + 1
+                });
+            }
         }
     }
 

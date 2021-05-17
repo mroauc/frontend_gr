@@ -37,8 +37,8 @@ function Dragdrop(id_subproyecto) {
     id_usuario: '',
     id_subProyecto: id_subproyecto.id_subproyecto,
     fecha_creacion: '',
-    prioridad: '',
-    estado: '',
+    prioridad: 'Baja',
+    estado: 'Propuesto',
     categoria: '',
     id_template: ''
 }

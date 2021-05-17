@@ -12,7 +12,7 @@ class ModalReq extends Component{
             id_usuario: '',
             id_subProyecto: this.props.id_subProyecto,
             fecha_creacion: '',
-            prioridad: '',
+            prioridad: 'Baja',
             estado: 'Propuesto',
             categoria: '',
             id_template: ''
@@ -169,6 +169,20 @@ class ModalReq extends Component{
 
     componentWillReceiveProps(next_props){
         this.setState({requerimiento: this.props.requerimiento, id_usuario_responsable: ''});
+
+        const token = localStorage.getItem('token');
+        Axios.get(localStorage.getItem('url')+`/api/configReq/obtener/${localStorage.getItem('id')}`,{headers: {"Authorization":`Bearer ${token}`}})
+        .then(response=>{
+            if(response.data !== null){
+                var aux = this.state.requerimiento;
+                aux.categoria = response.data.categoria;
+                aux.id_template = response.data.id_template;
+                aux.prioridad = response.data.prioridad;
+                this.setState({
+                    requerimiento: aux
+                });
+            }
+        });
     }
 
     render(){
@@ -181,7 +195,7 @@ class ModalReq extends Component{
                     </ModalHeader>
                     <ModalBody>
                         <div className="form-group">
-                            <label htmlFor="nombre_descriptivo">Descripcion</label>
+                            <label htmlFor="nombre_descriptivo">Nombre Corto</label>
                             <input className={(this.state.errorNombreDescriptivo)? "form-control is-invalid" : "form-control"} type="text" name="nombre_descriptivo" id="nombre_descriptivo" value={this.state.requerimiento.nombre_descriptivo} onChange={this.changeHandler} onClick={() => {this.setState({errorNombreDescriptivo : ''})}}/>
                             <div class="invalid-feedback" style={{display: 'block'}}>
                                 {this.state.errorNombreDescriptivo}
@@ -206,8 +220,7 @@ class ModalReq extends Component{
                             <br/>
                             <label htmlFor="prioridad">Prioridad</label>
                             <select className={(this.state.errorInputPrioridad)? "form-control is-invalid" : "form-control"} name="prioridad" id="prioridad" value={this.state.requerimiento.prioridad} onChange={this.changeHandler} onClick={() => {this.setState({errorInputPrioridad : ''})}}>
-                                <option value="" selected>Seleccione una prioridad</option>
-                                <option value="Baja">Baja</option>
+                                <option value="Baja" selected>Baja</option>
                                 <option value="Media">Media</option>
                                 <option value="Alta">Alta</option>
                             </select>
