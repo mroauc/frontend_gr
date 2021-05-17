@@ -100,6 +100,31 @@ class ModalInsercionMultiple extends Component{
         .then(response=>{
             this.setState({usuariosSubProyecto: response.data});
         });
+        this.getLiderJefe();
+    }
+
+    getLiderJefe = async () => {
+        const token = localStorage.getItem('token');
+        var id_jefe;
+        var id_lider;
+        
+        await Axios.get(localStorage.getItem('url')+`/api/subProyecto/${this.props.id_subProyecto}`,{headers: {"Authorization" : `Bearer ${token}`}})
+        .then(async response => {
+            id_lider = response.data.id_usuario;
+            await Axios.get(localStorage.getItem('url')+`/api/proyecto/${response.data.id_proyecto}`,{headers: {"Authorization" : `Bearer ${token}`}})
+            .then(response2 => {
+                id_jefe = response2.data.id_usuario;
+            })
+        });
+
+        var ultimoUsuario = this.state.usuariosSubProyecto[this.state.usuariosSubProyecto.length-1];
+        var usuarioJefe = {id_encargadoSubProyecto: ultimoUsuario.id_encargadoSubProyecto+1, id_subProyecto: ultimoUsuario.id_subProyecto, id_usuario: id_jefe};
+        var usuarioLider = {id_encargadoSubProyecto: ultimoUsuario.id_encargadoSubProyecto+2, id_subProyecto: ultimoUsuario.id_subProyecto, id_usuario: id_lider};
+
+        var copiaUsuarios = [...this.state.usuariosSubProyecto];
+        copiaUsuarios.push(usuarioLider);
+        copiaUsuarios.push(usuarioJefe);
+        this.setState({usuariosSubProyecto: copiaUsuarios});
     }
 
     getUsuario=async()=>{
