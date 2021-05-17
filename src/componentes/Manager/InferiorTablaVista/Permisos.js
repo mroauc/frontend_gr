@@ -33,6 +33,31 @@ export default class Permisos extends Component {
                 usuariosSubProyecto: response.data
             });
         });
+        this.getLiderJefe();
+    }
+
+    getLiderJefe = async () => {
+        const token = localStorage.getItem('token');
+        var id_jefe;
+        var id_lider;
+        
+        await Axios.get(localStorage.getItem('url')+`/api/subProyecto/${this.props.requerimiento.id_subProyecto}`,{headers: {"Authorization" : `Bearer ${token}`}})
+        .then(async response => {
+            id_lider = response.data.id_usuario;
+            await Axios.get(localStorage.getItem('url')+`/api/proyecto/${response.data.id_proyecto}`,{headers: {"Authorization" : `Bearer ${token}`}})
+            .then(response2 => {
+                id_jefe = response2.data.id_usuario;
+            })
+        });
+
+        var ultimoUsuario = this.state.usuariosSubProyecto[this.state.usuariosSubProyecto.length-1];
+        var usuarioJefe = {id_encargadoSubProyecto: ultimoUsuario.id_encargadoSubProyecto+1, id_subProyecto: ultimoUsuario.id_subProyecto, id_usuario: id_jefe};
+        var usuarioLider = {id_encargadoSubProyecto: ultimoUsuario.id_encargadoSubProyecto+2, id_subProyecto: ultimoUsuario.id_subProyecto, id_usuario: id_lider};
+
+        var copiaUsuarios = [...this.state.usuariosSubProyecto];
+        copiaUsuarios.push(usuarioLider);
+        copiaUsuarios.push(usuarioJefe);
+        this.setState({usuariosSubProyecto: copiaUsuarios});
     }
 
     obtenerUsuarioResponsable=async()=>{
@@ -115,12 +140,12 @@ export default class Permisos extends Component {
                         <div className="col-8">
                             <select className="form-control inputpermiso" type="text" name="usuarioResponsable" id="usuarioResponsable" value={this.state.usuarioResponsable} onChange={(e) => {this.setState({usuarioResponsable: e.target.value})}} disabled={localStorage.getItem("tipo") === "analista" ? true : false} readOnly={localStorage.getItem("tipo") === "analista" ? true : false}>
                                 <option value="">Seleccionar Usuario Responsable</option>
-                                {this.state.usuariosSubProyecto.map(usuario => {
+                                {this.state.usuariosSubProyecto.reverse().map(usuario => {
                                     const usuarioEncontrado = this.state.usuarios.find(posibleUsuario => posibleUsuario.id === usuario.id_usuario); 
                                     if(usuarioEncontrado !== undefined){
                                         if(usuarioEncontrado.tipo !== "cliente" && usuarioEncontrado.estado === 'Activo')
                                             return(
-                                                <option value={usuario.id_usuario} >{this.obtenerNombreUsuario(usuario.id_usuario)}</option>
+                                                <option value={usuario.id_usuario} >{this.obtenerNombreUsuario(usuario.id_usuario)+" - "+usuarioEncontrado.tipo.toUpperCase()}</option>
                                         );
                                     }
                                 })}

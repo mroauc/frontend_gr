@@ -59,8 +59,9 @@
 
 .tab-content-inferior {
     padding: 10px;
-    height: 94%;
+    height: 47vh;
     padding-top: 1px;
+    overflow: auto;
     
 }
 

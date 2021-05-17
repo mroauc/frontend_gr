@@ -11,6 +11,7 @@ class PropuestaCambioModal extends Component{
             id_propuestaCambio: 0,
             nombre: '',
             id_subproyecto: "",
+            id_proyecto: this.props.id_proyecto,
             fecha_peticion: new Date().toLocaleDateString('fr-CA'),
             id_usuario: '',
             descripcion: '',
@@ -84,12 +85,12 @@ class PropuestaCambioModal extends Component{
             });
             salida=false;
         }
-        if(!this.state.propuestaCambio.id_subproyecto){
-            this.setState({
-                msj_idsubproyecto: "Campo Vacio"
-            });
-            salida=false;
-        }
+        // if(!this.state.propuestaCambio.id_subproyecto){
+        //     this.setState({
+        //         msj_idsubproyecto: "Campo Vacio"
+        //     });
+        //     salida=false;
+        // }
         if(!this.state.propuestaCambio.fecha_peticion){
             this.setState({
                 msj_fechapeticion: "Campo Vacio"
@@ -102,12 +103,12 @@ class PropuestaCambioModal extends Component{
             });
             salida=false;
         }
-        if(!this.state.requerimientoImpactoDirecto){
-            this.setState({
-                msj_requerimiento: "Campo Vacio"
-            })
-            salida = false;
-        }
+        // if(!this.state.requerimientoImpactoDirecto){
+        //     this.setState({
+        //         msj_requerimiento: "Campo Vacio"
+        //     })
+        //     salida = false;
+        // }
         return salida;
     }
 
@@ -117,6 +118,7 @@ class PropuestaCambioModal extends Component{
             await Axios.post(localStorage.getItem('url') + '/api/propuestacambio/guardar/',{
                 nombre: this.state.propuestaCambio.nombre,
                 id_subproyecto: this.state.propuestaCambio.id_subproyecto,
+                id_proyecto: this.props.id_proyecto,
                 fecha_peticion: this.state.propuestaCambio.fecha_peticion,
                 id_usuario: this.state.propuestaCambio.id_usuario,
                 descripcion: this.state.propuestaCambio.descripcion,
@@ -137,7 +139,8 @@ class PropuestaCambioModal extends Component{
                 this.props.modalInsertar();
                 this.props.index();
                 this.insertarImpactoDirecto(response.data.id_propuestaCambio);
-                this.notificar(response.data.id_subproyecto, response.data.descripcion, response.data.fecha_peticion);
+                if(response.data.id_subproyecto !== 0)
+                    this.notificar(response.data.id_subproyecto, response.data.descripcion, response.data.fecha_peticion);
             })
         }
     }
@@ -365,7 +368,7 @@ class PropuestaCambioModal extends Component{
                                 {this.state.msj_requerimiento}
                             </div>
                             <br/>
-                            <label htmlFor="id_modulo">ID Modulo</label>
+                            <label htmlFor="id_modulo">Módulo</label>
                             <select name="id_subproyecto" id="id_subproyecto" className={ (this.state.msj_idsubproyecto)? "form-control is-invalid" : "form-control"} value={this.state.propuestaCambio.id_subproyecto} onChange={(e) => {this.changeHandler(e); this.getRequerimientos()}} onClick={()=>{this.setState({msj_idsubproyecto: ""})}} readOnly={true} disabled={true}>
                                 <option value="">Seleccione un Módulo</option>
                                 {this.state.subProyectos.map(subp=>{
@@ -396,17 +399,6 @@ class PropuestaCambioModal extends Component{
 
                             }
                             <br/>
-                            {/* <label htmlFor="descripcion">Impacto Directo</label>
-                            <select className="form-control" type="text" name="requerimientoImpactoDirecto" id="requerimientoImpactoDirecto" onChange={(e) => {this.setState({requerimientoImpactoDirecto: e.target.value})}} value={this.state.requerimientoImpactoDirecto}>
-                                <option value="">Seleccione un requerimiento</option>
-                                {
-                                    this.state.requerimientos.map(req => {
-                                        return(
-                                            <option key={req.id_requerimiento} value={req.id_requerimiento}>{req.nombre + " - " + req.nombre_descriptivo.substr(0,50)}</option>
-                                        )
-                                    })
-                                }
-                            </select> */}
                             
                             <br/>
                             <label htmlFor="justificacion">Justificacion</label>

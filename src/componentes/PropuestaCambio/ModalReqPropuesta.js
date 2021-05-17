@@ -48,7 +48,7 @@ class ModalReqPropuesta extends Component{
                             {this.state.requerimientos.map(requerimiento=>{
                                 return(
                                     <div key={requerimiento.id_requerimiento}>
-                                        <input id={requerimiento.id_requerimiento} name={requerimiento.id_requerimiento.toString()} type="checkbox" className="inputCheckbox" onChange={this.changeHandler} checked={this.state.seleccionado === requerimiento.id_requerimiento.toString()} />
+                                        <input id={requerimiento.id_requerimiento} name={requerimiento.id_requerimiento.toString()} type="checkbox" className="inputCheckbox" onChange={this.changeHandler} checked={parseInt(this.state.seleccionado) === requerimiento.id_requerimiento} />
                                         <label>{requerimiento.nombre + " - " + requerimiento.nombre_descriptivo.substr(0,30)}</label><br/>
                                     </div>
                                 );

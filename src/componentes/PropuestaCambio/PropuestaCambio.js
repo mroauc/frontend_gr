@@ -22,6 +22,7 @@ class PropuestaCambio extends Component{
             id_propuestaCambio: 0,
             nombre: '',
             id_subproyecto: 0,
+            id_proyecto: this.props.match.params.id_proyecto,
             fecha_peticion: new Date().toLocaleDateString('fr-CA'),
             id_usuario: 0,
             descripcion: '',
@@ -38,10 +39,14 @@ class PropuestaCambio extends Component{
     index=async()=>{
         const token = localStorage.getItem('token');
         const id_proy = this.props.match.params.id_proyecto;
-        await Axios.get(localStorage.getItem('url') + `/api/subProyecto/pertenecientes/${id_proy}`,{headers: {"Authorization": `Bearer ${token}`}})
+        await Axios.get(localStorage.getItem('url') + `/api/propuestacambio/id_proyecto/${id_proy}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response=>{
-            this.cargarPropuestas(response.data);
-        })
+            this.setState({propuestas: response.data});
+        });
+        // await Axios.get(localStorage.getItem('url') + `/api/subProyecto/pertenecientes/${id_proy}`,{headers: {"Authorization": `Bearer ${token}`}})
+        // .then(response=>{
+        //     this.cargarPropuestas(response.data);
+        // })
     }
 
     cargarPropuestas=async(subproy)=>{
@@ -81,6 +86,7 @@ class PropuestaCambio extends Component{
                     id_propuestaCambio: 0,
                     nombre: '',
                     id_subproyecto: 0,
+                    id_proyecto: this.props.match.params.id_proyecto,
                     fecha_peticion: new Date().toLocaleDateString('fr-CA'),
                     id_usuario: response.data.id,
                     descripcion: '',
