@@ -20,7 +20,17 @@
 
 .tab-content-inferior{
     height: 90%;
+    padding: 1px 10px 5px 10px;
+    overflow: auto;
+    
 }
+
+@media (max-width: 1420px) {
+    .tab-content-inferior{
+        height: 33vh;
+    }
+}
+
 
 .barraDivisora{
     width: calc(100% + 22px);

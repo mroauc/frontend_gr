@@ -103,7 +103,7 @@ class PropuestaCambio extends Component{
                 <label htmlFor="prioridad"><strong>Propuestas de cambios:</strong></label>
 
                 <div className="muestraPropuestas">
-                    <table className="table table-hover">
+                    <table className="table table-hover" style={{margin: '5px auto', height: 'max-content'}}>
                         <thead>
                             <tr>
                                 <th scope="col">Nombre</th>

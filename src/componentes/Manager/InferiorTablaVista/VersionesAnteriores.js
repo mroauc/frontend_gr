@@ -57,7 +57,7 @@ class VersionesAnteriores extends Component{
             <div style={{height: '98%', overflow: 'auto'}}>
                 <label htmlFor="prioridad"><strong>Versiones Anteriores:</strong></label>
                 <div className="muestraVersiones">
-                    <table className="table table-hover" style={{margin:'5px auto'}}>
+                    <table className="table table-hover" style={{margin:'5px auto', height: 'max-content'}}>
                         <thead>
                             <tr>
                                 <th scope="col">#</th>

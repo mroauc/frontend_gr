@@ -54,17 +54,3 @@
 .equis:hover{
     color: rgb(0, 0, 0);
 }
-
-/* TABSINFERIOR */
-
-.tab-content-inferior {
-    padding: 10px;
-    height: 47vh;
-    padding-top: 1px;
-    overflow: auto;
-    
-}
-
-/* .tabs-inferior{
-    
-} */

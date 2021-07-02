@@ -73,7 +73,7 @@ export default class Comentario extends Component{
 
     render(){
         return(
-            <div style={{height:'98%'}}>
+            <div style={{height:'97%'}}>
                 <div className="areaCrear">
                     <div className="col-9" style={{paddingLeft: '0'}}>
                         <textarea className={(this.state.errorComentario)? "textComentario invalid" : "textComentario"} placeholder="Ingresar Comentario&#10;(Máx. 255 carácteres)" rows="3" maxLength="255" onChange={this.changeHandler} value={this.state.nuevo_comentario} onClick={() => {this.setState({errorComentario : ''})}}></textarea>

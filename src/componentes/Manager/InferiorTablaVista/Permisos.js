@@ -134,7 +134,7 @@ export default class Permisos extends Component {
     
     render(){
         return(
-            <div style={{height:'98%'}}>
+            <div style={{height:'98%', width: '99%'}}>
                 <label htmlFor="id_responsable">Usuario Responsable</label>
                     <div className="row">
                         <div className="col-8">
