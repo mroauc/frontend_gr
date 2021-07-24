@@ -107,6 +107,7 @@ export default class TablaVista extends Component {
                                     <div style={{marginBottom:'10px'}}>
                                         <button className="btn boton" onClick={()=>this.insertar(filtrado[0])}><SaveOutlinedIcon/></button> &nbsp;
                                         <button className="btn boton" onClick={()=>this.modalEliminar()}><DeleteIcon/></button>
+                                        <label style={{margin: '0 10px', fontSize: '20px', color: '#383838'}}>{filtrado[0].nombre_descriptivo}</label>
                                     </div>
                                     : <div style={{height:'30px'}}></div>
                                 }

@@ -63,7 +63,7 @@ export default class TablaRequerimiento extends Component {
 
     render(){
         return(
-            <div className="col-3" style={{height: '100%', display:'inline-block',padding: 0}}>
+            <div className="col-3" style={{height: '100%', display:'inline-block',padding: 0, overflow:'auto'}}>
                 <div id="principal" className="tabla-req">
                     <div style={{width:'100%', display:'flex'}}>
                         <input className="form-control form-mio" placeholder="Filtrar" onChange={this.BuscarRequerimiento}></input>
